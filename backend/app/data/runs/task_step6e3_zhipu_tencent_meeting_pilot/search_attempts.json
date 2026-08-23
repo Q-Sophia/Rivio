@@ -1,0 +1,15 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "searchattempt_d02f6228c0c8",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "research_task_id": "researchtask_tencent_meeting_official_features",
+    "provider": "zhipu",
+    "query": "腾讯会议 官方 产品功能 在线会议 屏幕共享 录制 字幕",
+    "status": "completed",
+    "result_count": 3,
+    "error": "",
+    "created_at": "2026-08-14T16:21:44.416005Z"
+  }
+]

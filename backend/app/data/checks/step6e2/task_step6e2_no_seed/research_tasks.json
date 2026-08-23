@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_no_seed",
+    "task_id": "task_step6e2_no_seed",
+    "information_need_id": "need_feature",
+    "title": "核实 ClassIn 产品能力",
+    "objective": "采集 ClassIn 官方功能资料",
+    "competitor": "ClassIn",
+    "dimension": "产品能力",
+    "query_hints": [],
+    "seed_urls": [],
+    "preferred_domains": [],
+    "snapshot_source_ids": [],
+    "preferred_source_types": [
+      "official_site"
+    ],
+    "priority": "medium",
+    "status": "requires_human",
+    "stop_condition": "获得至少一条官方网页资料",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  }
+]

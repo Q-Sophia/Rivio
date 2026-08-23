@@ -1,0 +1,955 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_collector",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "collector",
+    "node_id": "collect_sources",
+    "task_key": "collect_sources",
+    "system_context": [
+      "Agent role（智能体角色）：collector。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "source_count": 3,
+      "evidence_count": 21,
+      "competitors": [
+        "腾讯会议"
+      ],
+      "source_types": [
+        "official_site"
+      ],
+      "next_expected_output": [
+        "SourceDocument",
+        "SourceEvidence"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "raw_web_results_must_be_structured"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 788,
+    "token_budget": 4000,
+    "created_at": "2026-08-21T06:55:13.187471Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_extractor",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "extractor",
+    "node_id": "build_product_cards",
+    "task_key": "build_product_cards",
+    "system_context": [
+      "Agent role（智能体角色）：extractor。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "evidence_by_competitor": {
+        "腾讯会议": 21
+      },
+      "product_card_contract": "ProductCard fields must keep source_ids and evidence_ids.",
+      "next_expected_output": [
+        "ProductCard"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9",
+        "ev_664f24d75569",
+        "ev_61d68ec6120d",
+        "ev_959600cea190",
+        "ev_e8fe9591b139",
+        "ev_394c24698cef",
+        "ev_7fc585e65cf8",
+        "ev_fd97a18ea86b",
+        "ev_508d04279241",
+        "ev_cc10a9b41e95"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241",
+      "ev_cc10a9b41e95"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 868,
+    "token_budget": 4000,
+    "created_at": "2026-08-21T06:55:13.193471Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_analyst",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "analyst",
+    "node_id": "build_claims",
+    "task_key": "build_claims",
+    "system_context": [
+      "Agent role（智能体角色）：analyst。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "product_cards": [
+        {
+          "id": "prod_腾讯会议",
+          "name": "腾讯会议",
+          "positioning": "聊天框新升级，氛围不减，高效参会；云录制字幕沉浸回顾；质量mos指标，秒速纠察会议质量。 开启云录制字幕，文本内容融入录制视频内，沉浸式回顾会议内容。 操作指引：进入会议录制，选择需要查看的录制文件，在视频播放进度条右侧，点击【CC】按钮。",
+          "evidence_ids": [
+            "ev_ae4f59361b6b",
+            "ev_72051f57f735",
+            "ev_50f96d84eeb9",
+            "ev_a7eb4b68c09e",
+            "ev_adb6e7a2871f",
+            "ev_37f065adf193",
+            "ev_d26887b451b1",
+            "ev_277c3bcce6bf",
+            "ev_2594fba7bb74",
+            "ev_53701da105dd",
+            "ev_2d06aaf0fc28",
+            "ev_e9daa5ae1cc9",
+            "ev_664f24d75569",
+            "ev_61d68ec6120d",
+            "ev_959600cea190",
+            "ev_e8fe9591b139",
+            "ev_394c24698cef",
+            "ev_7fc585e65cf8",
+            "ev_fd97a18ea86b",
+            "ev_508d04279241",
+            "ev_cc10a9b41e95"
+          ]
+        }
+      ],
+      "evidence_by_dimension": {
+        "feature": 21
+      },
+      "weak_claim_ids": [],
+      "next_expected_output": [
+        "AnalysisClaim"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9",
+        "ev_664f24d75569",
+        "ev_61d68ec6120d",
+        "ev_959600cea190",
+        "ev_e8fe9591b139",
+        "ev_394c24698cef",
+        "ev_7fc585e65cf8",
+        "ev_fd97a18ea86b",
+        "ev_508d04279241",
+        "ev_cc10a9b41e95"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241",
+      "ev_cc10a9b41e95"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "claims_require_evidence_ids"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 1009,
+    "token_budget": 6000,
+    "created_at": "2026-08-21T06:55:13.197472Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_citation",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "citation",
+    "node_id": "check_citations",
+    "task_key": "check_citations",
+    "system_context": [
+      "Agent role（智能体角色）：citation。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "claims": [],
+      "citation_policy": "Every claim.evidence_ids item must resolve to SourceEvidence and SourceDocument.",
+      "next_expected_output": [
+        "CitationCheck"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9",
+        "ev_664f24d75569",
+        "ev_61d68ec6120d",
+        "ev_959600cea190",
+        "ev_e8fe9591b139",
+        "ev_394c24698cef",
+        "ev_7fc585e65cf8",
+        "ev_fd97a18ea86b",
+        "ev_508d04279241",
+        "ev_cc10a9b41e95"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241",
+      "ev_cc10a9b41e95"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 863,
+    "token_budget": 4000,
+    "created_at": "2026-08-21T06:55:13.202473Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_writer",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "writer",
+    "node_id": "build_report",
+    "task_key": "build_report",
+    "system_context": [
+      "Agent role（智能体角色）：writer。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "supported_claim_ids": [],
+      "weak_claim_ids": [],
+      "citation_checks": [],
+      "writer_rule": "Do not introduce strong conclusions without claim_id references.",
+      "next_expected_output": [
+        "CompetitiveReport"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9",
+        "ev_664f24d75569",
+        "ev_61d68ec6120d",
+        "ev_959600cea190",
+        "ev_e8fe9591b139",
+        "ev_394c24698cef",
+        "ev_7fc585e65cf8",
+        "ev_fd97a18ea86b",
+        "ev_508d04279241"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary",
+      "mem_run_supported_claims"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "report_conclusions_require_claim_ids"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 879,
+    "token_budget": 6000,
+    "created_at": "2026-08-21T06:55:13.208475Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_reviewer",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "agent_role": "reviewer",
+    "node_id": "review_report",
+    "task_key": "review_report",
+    "system_context": [
+      "Agent role（智能体角色）：reviewer。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+      "competitors": [
+        "腾讯会议"
+      ],
+      "focus_areas": [
+        "feature"
+      ],
+      "completed_task_keys": [
+        "researchtask_tencent_meeting_official_features",
+        "extract_evidence_researchtask_tencent_meeting_official_features"
+      ],
+      "skipped_task_keys": [],
+      "quality_gate_ids": [],
+      "artifact_counts": {
+        "sources": 3,
+        "evidence": 21,
+        "product_cards": 1,
+        "claims": 0,
+        "citation_checks": 0,
+        "review_feedback": 0,
+        "quality_gates": 0,
+        "task_records": 3,
+        "feedback_tasks": 0
+      }
+    },
+    "working_context": {
+      "report_ids": [],
+      "review_issue_ids": [],
+      "quality_gate_status": "not_run",
+      "feedback_task_keys": [],
+      "next_expected_output": [
+        "ReviewFeedback",
+        "QualityGateDecision",
+        "Feedback TaskRecord"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "evidence": [
+        "ev_ae4f59361b6b",
+        "ev_72051f57f735",
+        "ev_50f96d84eeb9",
+        "ev_a7eb4b68c09e",
+        "ev_adb6e7a2871f",
+        "ev_37f065adf193",
+        "ev_d26887b451b1",
+        "ev_277c3bcce6bf",
+        "ev_2594fba7bb74",
+        "ev_53701da105dd",
+        "ev_2d06aaf0fc28",
+        "ev_e9daa5ae1cc9",
+        "ev_664f24d75569",
+        "ev_61d68ec6120d",
+        "ev_959600cea190",
+        "ev_e8fe9591b139",
+        "ev_394c24698cef",
+        "ev_7fc585e65cf8",
+        "ev_fd97a18ea86b",
+        "ev_508d04279241"
+      ],
+      "product_cards": [
+        "prod_腾讯会议"
+      ],
+      "claims": [],
+      "citation_checks": [],
+      "reports": [],
+      "task_records": [
+        "queue_researchtask_tencent_meeting_official_features",
+        "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+        "queue_analyze_research_evidence"
+      ]
+    },
+    "source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241"
+    ],
+    "product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "task_record_ids": [
+      "queue_researchtask_tencent_meeting_official_features",
+      "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+      "queue_analyze_research_evidence"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 860,
+    "token_budget": 5000,
+    "created_at": "2026-08-21T06:55:13.214477Z"
+  }
+]

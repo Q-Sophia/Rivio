@@ -1,0 +1,67 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question": "目标客户是希望快速上线、无需自建平台的教育机构，还是需要深度定制、集成到自有系统的技术团队？",
+    "decision_link": "决定选择一体化平台（ClassIn）还是低代码/开源方案（腾讯云 LCIC、BigBlueButton）。",
+    "dimensions": [
+      "customer",
+      "positioning"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question": "客户对数据主权、部署位置和运维成本有何要求？是否接受自托管带来的运维责任？",
+    "decision_link": "影响 BigBlueButton 的适用性，以及云服务（ClassIn、腾讯云）与自托管的取舍。",
+    "dimensions": [
+      "risk",
+      "ecosystem"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question": "客户对实时互动的规模（如并发人数、音视频质量）和延迟有何具体要求？",
+    "decision_link": "影响对 ClassIn 16 人互动、腾讯云 17 人连麦和百万级直播、BigBlueButton 未提及规模的评估。",
+    "dimensions": [
+      "feature",
+      "customer"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question": "客户是否需要与现有 LMS（学习管理系统）或业务系统集成？集成深度要求如何？",
+    "decision_link": "影响对腾讯云 Open API、BigBlueButton LMS 集成、ClassIn API 能力的评估。",
+    "dimensions": [
+      "ecosystem",
+      "feature"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question": "客户的预算模型是订阅制（按年/月）还是自托管的一次性投入？",
+    "decision_link": "影响定价维度的比较，ClassIn 和腾讯云是订阅制，BigBlueButton 是开源但需自建成本。",
+    "dimensions": [
+      "pricing",
+      "risk"
+    ],
+    "priority": "medium"
+  }
+]

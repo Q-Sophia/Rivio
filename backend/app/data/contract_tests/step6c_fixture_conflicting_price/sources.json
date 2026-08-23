@@ -1,0 +1,77 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "src_conflicting_price_1_positioning_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "title": "甲方案positioning资料",
+    "url": "https://fixture.invalid/conflicting_price/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "甲方案面向标准采购场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "src_conflicting_price_1_pricing_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "title": "甲方案pricing资料",
+    "url": "https://fixture.invalid/conflicting_price/1/pricing/1",
+    "source_type": "official_site",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "甲方案官方页面显示年度价格为一万元。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "src_conflicting_price_1_pricing_2",
+    "task_id": "step6c_fixture_conflicting_price",
+    "title": "甲方案pricing资料",
+    "url": "https://fixture.invalid/conflicting_price/1/pricing/2",
+    "source_type": "report",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "第三方资料称甲方案年度价格为一万五千元。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "src_conflicting_price_2_positioning_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "title": "乙方案positioning资料",
+    "url": "https://fixture.invalid/conflicting_price/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "乙方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "乙方案面向标准采购场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "src_conflicting_price_2_pricing_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "title": "乙方案pricing资料",
+    "url": "https://fixture.invalid/conflicting_price/2/pricing/1",
+    "source_type": "official_site",
+    "competitor": "乙方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "乙方案官方页面显示年度价格为一万二千元。",
+    "reliability_score": 0.85
+  }
+]

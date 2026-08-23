@@ -1,0 +1,44 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "ev_missing_not_absent_1_positioning_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "source_id": "src_missing_not_absent_1_positioning_1",
+    "competitor": "甲方案",
+    "dimension": "positioning",
+    "snippet": "甲方案面向目标客户。",
+    "normalized_fact": "甲方案面向目标客户。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "ev_missing_not_absent_1_feature_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "source_id": "src_missing_not_absent_1_feature_1",
+    "competitor": "甲方案",
+    "dimension": "feature",
+    "snippet": "甲方案公开确认提供某项核心能力。",
+    "normalized_fact": "甲方案公开确认提供某项核心能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "ev_missing_not_absent_2_positioning_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "source_id": "src_missing_not_absent_2_positioning_1",
+    "competitor": "乙方案",
+    "dimension": "positioning",
+    "snippet": "乙方案面向目标客户。",
+    "normalized_fact": "乙方案面向目标客户。",
+    "confidence": 0.85
+  }
+]

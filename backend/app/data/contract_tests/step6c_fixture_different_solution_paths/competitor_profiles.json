@@ -1,0 +1,122 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_成品方案",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "name": "成品方案",
+    "role": "direct",
+    "selection_reason": "成品方案代表与当前决策相关的完整成品路径。",
+    "represented_path": "完整成品路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "希望快速交付的团队"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "提供完整工作流并由厂商负责持续运维。",
+    "offering_scope": "成品方案提供完成核心任务所需的共同基础能力。",
+    "delivery_model": "厂商负责完整工作流、快速交付与持续运维，客户定制控制较少。",
+    "business_model": "成品方案公开了标准方案的价格与计费边界。",
+    "source_ids": [
+      "src_different_solution_paths_1_positioning_1",
+      "src_different_solution_paths_1_feature_1",
+      "src_different_solution_paths_1_pricing_1",
+      "src_different_solution_paths_1_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_different_solution_paths_1_positioning_1",
+      "ev_different_solution_paths_1_feature_1",
+      "ev_different_solution_paths_1_pricing_1",
+      "ev_different_solution_paths_1_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_能力平台",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "name": "能力平台",
+    "role": "indirect",
+    "selection_reason": "能力平台代表与当前决策相关的平台集成路径。",
+    "represented_path": "平台集成路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "具备研发能力的团队"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "提供模块化能力并由客户团队完成集成。",
+    "offering_scope": "能力平台提供完成核心任务所需的共同基础能力。",
+    "delivery_model": "平台提供能力，客户承担集成速度、自研责任和生态依赖。",
+    "business_model": "能力平台公开了标准方案的价格与计费边界。",
+    "source_ids": [
+      "src_different_solution_paths_2_positioning_1",
+      "src_different_solution_paths_2_feature_1",
+      "src_different_solution_paths_2_pricing_1",
+      "src_different_solution_paths_2_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_different_solution_paths_2_positioning_1",
+      "ev_different_solution_paths_2_feature_1",
+      "ev_different_solution_paths_2_pricing_1",
+      "ev_different_solution_paths_2_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_自主建设",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "name": "自主建设",
+    "role": "substitute",
+    "selection_reason": "自主建设代表与当前决策相关的自主建设路径。",
+    "represented_path": "自主建设路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "强调控制权的团队"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "提供最大控制权并由内部团队承担建设责任。",
+    "offering_scope": "自主建设提供完成核心任务所需的共同基础能力。",
+    "delivery_model": "内部团队承担开发、总体拥有成本、运维责任与迁移控制。",
+    "business_model": "自主建设公开了标准方案的价格与计费边界。",
+    "source_ids": [
+      "src_different_solution_paths_3_positioning_1",
+      "src_different_solution_paths_3_feature_1",
+      "src_different_solution_paths_3_pricing_1",
+      "src_different_solution_paths_3_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_different_solution_paths_3_positioning_1",
+      "ev_different_solution_paths_3_feature_1",
+      "ev_different_solution_paths_3_pricing_1",
+      "ev_different_solution_paths_3_risk_1"
+    ],
+    "confidence": 0.8
+  }
+]

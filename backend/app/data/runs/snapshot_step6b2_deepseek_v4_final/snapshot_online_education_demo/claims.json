@@ -1,0 +1,323 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_001",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "ClassIn 定位为面向教育机构的在线直播教学平台，强调多人实时互动、丰富教学场景与软硬件一体化生态。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_002",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "腾讯云实时互动-教育版（LCIC）定位为低代码教育实时互动产品，帮助在线教育平台快速集成音视频、白板等能力，降低开发成本。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code"
+    ],
+    "confidence": 0.88,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_003",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "BigBlueButton 定位为开源虚拟教室软件，支持自托管部署，适用于在线辅导、翻转课堂、群体协作和在线课程等教育场景。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_004",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "ClassIn 提供免费版、基础版（1800元/年起）、商业版（9600元/年起）和臻享版（联系客户经理，预充值模式）的完整版本体系，满足不同规模机构需求。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api"
+    ],
+    "confidence": 0.84,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_005",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "腾讯云 LCIC 提供免费试用版及月付套餐（1,499元/月、3,599元/月、6,999元/月），包含不同音视频时长和 API 服务，价格较高。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_006",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "BigBlueButton 开源免费，但需自行承担服务器部署和运维成本，无官方 SaaS 服务。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.79,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_007",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "ClassIn 支持多达16人的同步面对面教学，提供互动式电子黑板、答题器、计时器、屏幕共享等几十种教学工具，并支持多种课件格式。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support"
+    ],
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_008",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "腾讯云 LCIC 集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能，支持多达17人同屏连麦互动，百万人观看时延小于1秒。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording"
+    ],
+    "confidence": 0.87,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_009",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "BigBlueButton 支持文档上传、虚拟白板、分组讨论、公开/私下聊天、共享笔记、屏幕共享、虚拟举手、表情符号反馈、摄像头视频分享和自定义背景等功能。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_010",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "ClassIn 构建软硬件一体化生态，提供 ClassIn X 团队研发的专业教学终端，并配备 AI 学习管理系统，覆盖作业、测评、录播课等全过程数据管理。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "confidence": 0.8,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_011",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "腾讯云 LCIC 提供全平台客户端集成方案（小程序、Android、iOS、Windows、macOS、Web/H5、uni-app、Flutter），并通过 Open API 与排课、用户、课件系统无缝对接。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "confidence": 0.88,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_012",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "BigBlueButton 支持与 Moodle、Canvas 等 LMS（学习管理系统）集成，但该信息来源于第三方社交媒体，可靠性较低。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.55,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "weak"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_013",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "customer",
+    "claim_text": "ClassIn 覆盖少儿英语、语言培训、职业培训、STEAM 等广泛教育领域，支持一对一、小班、大班、直播、双师等多种教学场景。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes"
+    ],
+    "confidence": 0.83,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_014",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "customer",
+    "claim_text": "腾讯云 LCIC 面向在线教育平台开发者及需要快速搭建在线课堂的机构，覆盖 1v1 教学、小班互动、直播大班课、AI 课堂等场景，声称可降低 90% 开发工作。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_scenarios_dev_reduction"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_015",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "customer",
+    "claim_text": "BigBlueButton 的教育用例包括一对一辅导、翻转课堂、群体协作和在线课程，主要面向教育机构与学校。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_education_use_cases"
+    ],
+    "confidence": 0.84,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_016",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "risk",
+    "claim_text": "腾讯云 LCIC 内置消息安全审核和 AI 噪声检测功能，有助于保障课堂质量，但也可能带来内容审核相关的合规风险。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "confidence": 0.78,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_017",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "risk",
+    "claim_text": "BigBlueButton 采用自托管部署模式，需要自行承担服务器运维成本和技术能力，存在部署和运维风险。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_018",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "other",
+    "claim_text": "ClassIn 提供实时学习报告系统，支持课后交流与教学质量跟踪，有助于提升教学效果。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_learning_report"
+    ],
+    "confidence": 0.82,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  }
+]

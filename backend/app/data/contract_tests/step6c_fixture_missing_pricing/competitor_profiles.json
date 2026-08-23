@@ -1,0 +1,73 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_甲方案",
+    "task_id": "step6c_fixture_missing_pricing",
+    "name": "甲方案",
+    "role": "direct",
+    "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "目标客户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向目标客户的标准方案。",
+    "offering_scope": "甲方案覆盖核心任务。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "甲方案公开标准价格。",
+    "source_ids": [
+      "src_missing_pricing_1_positioning_1",
+      "src_missing_pricing_1_feature_1",
+      "src_missing_pricing_1_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_missing_pricing_1_positioning_1",
+      "ev_missing_pricing_1_feature_1",
+      "ev_missing_pricing_1_pricing_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_乙方案",
+    "task_id": "step6c_fixture_missing_pricing",
+    "name": "乙方案",
+    "role": "direct",
+    "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "目标客户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向目标客户的灵活方案。",
+    "offering_scope": "乙方案覆盖核心任务。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "当前缺少定价资料。",
+    "source_ids": [
+      "src_missing_pricing_2_positioning_1",
+      "src_missing_pricing_2_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_missing_pricing_2_positioning_1",
+      "ev_missing_pricing_2_feature_1"
+    ],
+    "confidence": 0.8
+  }
+]

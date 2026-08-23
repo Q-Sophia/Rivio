@@ -1,0 +1,14 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_7a30ae6fc656",
+    "task_id": "task_step6g_single_classin",
+    "question": "各候选产品在产品能力上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "识别 ClassIn 的主要竞品并比较产品能力。",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "high"
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "src_1",
+    "task_id": "debug_gap",
+    "title": "腾讯会议介绍",
+    "url": "https://meeting.tencent.com/",
+    "source_type": "official_site",
+    "competitor": "腾讯会议",
+    "accessed_at": "2026-08-14T16:09:43.771674Z",
+    "content_excerpt": "xxx",
+    "reliability_score": 0.9
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "src_2",
+    "task_id": "debug_gap",
+    "title": "Zoom 官方页面",
+    "url": "https://zoom.us/",
+    "source_type": "official_site",
+    "competitor": "Zoom",
+    "accessed_at": "2026-08-14T16:09:43.771674Z",
+    "content_excerpt": "xxx",
+    "reliability_score": 0.9
+  }
+]

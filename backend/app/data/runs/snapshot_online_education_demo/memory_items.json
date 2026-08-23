@@ -1,0 +1,191 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "volatile": false,
+      "reuse_policy": "safe_cross_task_design_preference"
+    },
+    "id": "mem_user_pref_evidence_first",
+    "task_id": "snapshot_online_education_demo",
+    "scope": "long_term",
+    "kind": "user_preference",
+    "key": "user_pref.evidence_first_report",
+    "content": "The user wants a mature evidence-first multi-agent competitive analysis system, not a toy LLM report generator.",
+    "summary": "Project preference: keep evidence-first workflow and traceability.",
+    "source_ids": [],
+    "evidence_ids": [],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "confidence": 0.95,
+    "ttl_days": null,
+    "last_verified_at": null,
+    "created_at": "2026-08-12T11:04:33.126418Z",
+    "updated_at": "2026-08-12T11:04:33.126418Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "volatile": false,
+      "reuse_policy": "safe_cross_task_framework"
+    },
+    "id": "mem_framework_competitive_analysis",
+    "task_id": "snapshot_online_education_demo",
+    "scope": "long_term",
+    "kind": "domain_framework",
+    "key": "framework.competitive_analysis_dimensions",
+    "content": "Competitive analysis should cover positioning, feature baseline, technical access, ecosystem, pricing/business model, risks, and product R&D recommendations.",
+    "summary": "Reusable analysis framework for competitive intelligence reports.",
+    "source_ids": [],
+    "evidence_ids": [],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "confidence": 0.9,
+    "ttl_days": null,
+    "last_verified_at": null,
+    "created_at": "2026-08-12T11:04:33.126418Z",
+    "updated_at": "2026-08-12T11:04:33.126418Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "volatile": false,
+      "reuse_policy": "safe_cross_task_governance"
+    },
+    "id": "mem_policy_source_traceability",
+    "task_id": "snapshot_online_education_demo",
+    "scope": "long_term",
+    "kind": "source_policy",
+    "key": "policy.source_traceability",
+    "content": "Web, MCP, RAG, or LLM outputs must not bypass SourceDocument, SourceEvidence, AnalysisClaim, CitationCheck, and ReviewFeedback.",
+    "summary": "Reusable source and citation policy.",
+    "source_ids": [],
+    "evidence_ids": [],
+    "claim_ids": [],
+    "citation_check_ids": [],
+    "report_ids": [],
+    "confidence": 0.95,
+    "ttl_days": null,
+    "last_verified_at": null,
+    "created_at": "2026-08-12T11:04:33.126418Z",
+    "updated_at": "2026-08-12T11:04:33.126418Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "volatile": true,
+      "reuse_policy": "task_scoped_only"
+    },
+    "id": "mem_run_snapshot_summary",
+    "task_id": "snapshot_online_education_demo",
+    "scope": "run",
+    "kind": "run_summary",
+    "key": "run.snapshot_online_education.summary",
+    "content": "Loaded 9 sources, 32 evidence items, 3 product cards, 5 claims, 5 citation checks, and 1 feedback tasks.",
+    "summary": "Run-level artifact count summary.",
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article",
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "claim_ids": [
+      "cl_llm_online_education_positioning",
+      "cl_llm_online_education_feature",
+      "cl_llm_online_education_pricing",
+      "cl_llm_online_education_ecosystem",
+      "cl_llm_online_education_risk"
+    ],
+    "citation_check_ids": [
+      "cite_cl_llm_online_education_positioning",
+      "cite_cl_llm_online_education_feature",
+      "cite_cl_llm_online_education_pricing",
+      "cite_cl_llm_online_education_ecosystem",
+      "cite_cl_llm_online_education_risk"
+    ],
+    "report_ids": [
+      "report_llm_online_education_product_rd"
+    ],
+    "confidence": 0.9,
+    "ttl_days": null,
+    "last_verified_at": "2026-08-12T11:04:33.126418Z",
+    "created_at": "2026-08-12T11:04:33.126418Z",
+    "updated_at": "2026-08-12T11:04:33.126418Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "volatile": true,
+      "reuse_policy": "task_scoped_only"
+    },
+    "id": "mem_run_supported_claims",
+    "task_id": "snapshot_online_education_demo",
+    "scope": "run",
+    "kind": "approved_claim",
+    "key": "run.snapshot_online_education.supported_claims",
+    "content": "Supported claim ids: cl_llm_online_education_positioning, cl_llm_online_education_feature, cl_llm_online_education_pricing, cl_llm_online_education_risk. Weak claim ids: cl_llm_online_education_ecosystem.",
+    "summary": "Run-level claim quality summary.",
+    "source_ids": [],
+    "evidence_ids": [],
+    "claim_ids": [
+      "cl_llm_online_education_positioning",
+      "cl_llm_online_education_feature",
+      "cl_llm_online_education_pricing",
+      "cl_llm_online_education_ecosystem",
+      "cl_llm_online_education_risk"
+    ],
+    "citation_check_ids": [
+      "cite_cl_llm_online_education_positioning",
+      "cite_cl_llm_online_education_feature",
+      "cite_cl_llm_online_education_pricing",
+      "cite_cl_llm_online_education_ecosystem",
+      "cite_cl_llm_online_education_risk"
+    ],
+    "report_ids": [],
+    "confidence": 0.9,
+    "ttl_days": null,
+    "last_verified_at": "2026-08-12T11:04:33.126418Z",
+    "created_at": "2026-08-12T11:04:33.126418Z",
+    "updated_at": "2026-08-12T11:04:33.126418Z"
+  }
+]

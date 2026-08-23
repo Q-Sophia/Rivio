@@ -1,0 +1,30 @@
+{
+  "experiment_id": "step6c_deepseek_v4_pilot",
+  "status": "failed",
+  "real_llm_called": true,
+  "provider": "compatible",
+  "model": "deepseek-v4-flash",
+  "api_style": "chat_completions",
+  "structured_output_mode": "json_object",
+  "thinking_mode": "disabled",
+  "temperature": 0.0,
+  "max_tokens": 8000,
+  "source_task_id": "snapshot_step6c_professional_mock",
+  "same_input_and_schema": true,
+  "call_budget": 2,
+  "preferred_variant_for_next_pilot": "",
+  "results": [
+    {
+      "variant": "v1_baseline",
+      "task_id": "step6c_deepseek_v4_pilot_v1_baseline",
+      "status": "failed",
+      "error": "ValueError: LLMProviderResponseError: 模型输出文本不是有效 JSON"
+    },
+    {
+      "variant": "v2_candidate",
+      "task_id": "step6c_deepseek_v4_pilot_v2_candidate",
+      "status": "failed",
+      "error": "ValueError: LLMProviderResponseError: 模型输出文本不是有效 JSON"
+    }
+  ]
+}

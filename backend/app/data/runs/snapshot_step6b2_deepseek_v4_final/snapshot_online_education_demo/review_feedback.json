@@ -1,0 +1,40 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "reviewer": "run_review_demo.py",
+      "rule": "deterministic_report_claim_citation_product_card_checks"
+    },
+    "id": "review_online_education_report",
+    "task_id": "snapshot_online_education_demo",
+    "reviewer_run_id": "rule_milestone3_reviewer",
+    "overall_score": 8.0,
+    "approved": true,
+    "issues": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "issue_claim_012_weak_citation",
+        "task_id": "snapshot_online_education_demo",
+        "severity": "medium",
+        "target_type": "claim",
+        "target_id": "claim_012",
+        "message": "Claim has weak citation support: All evidence_ids exist, but weak evidence/source reliability is present: ev_bbb_lms_integration"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "issue_report_missing_rd_keywords",
+        "task_id": "snapshot_online_education_demo",
+        "severity": "medium",
+        "target_type": "report",
+        "target_id": "report_online_education_demo",
+        "message": "Report is missing product R&D perspective keywords: 产品研发, 功能基线, 技术接入, 研发建议"
+      }
+    ],
+    "suggestions": [
+      "Review medium severity issues, especially weak citation support, before presentation."
+    ],
+    "created_at": "2026-08-12T17:42:24.541857Z"
+  }
+]

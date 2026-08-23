@@ -1,0 +1,33 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "report_online_education_demo",
+    "task_id": "snapshot_online_education_demo",
+    "title": "在线教育实时互动产品竞品分析报告",
+    "markdown": "# 在线教育实时互动产品竞品分析报告\n\n## 1. 产品定位与目标用户\n\nClassIn 定位为面向教育机构的在线直播教学平台，强调多人实时互动、丰富教学场景与软硬件一体化生态 [claim_001]。其目标用户覆盖个人教师、中小型教育机构及中大机构，支持少儿英语、语言培训、职业培训、STEAM 等广泛教育领域，并支持一对一、小班、大班、直播、双师等多种教学场景 [claim_013]。\n\n腾讯云实时互动-教育版（LCIC）定位为低代码教育实时互动产品，帮助在线教育平台快速集成音视频、白板等能力，降低开发成本 [claim_002]。其目标用户为在线教育平台开发者及需要快速搭建在线课堂的机构，覆盖 1v1 教学、小班互动、直播大班课、AI 课堂等场景，声称可降低 90% 开发工作 [claim_014]。\n\nBigBlueButton 定位为开源虚拟教室软件，支持自托管部署，适用于在线辅导、翻转课堂、群体协作和在线课程等教育场景 [claim_003]。其教育用例包括一对一辅导、翻转课堂、群体协作和在线课程，主要面向教育机构与学校 [claim_015]。\n\n## 2. 定价与商业模式\n\nClassIn 提供免费版、基础版（1800元/年起）、商业版（9600元/年起）和臻享版（联系客户经理，预充值模式）的完整版本体系，满足不同规模机构需求 [claim_004]。\n\n腾讯云 LCIC 提供免费试用版及月付套餐（1,499元/月、3,599元/月、6,999元/月），包含不同音视频时长和 API 服务，价格较高 [claim_005]。\n\nBigBlueButton 开源免费，但需自行承担服务器部署和运维成本，无官方 SaaS 服务 [claim_006]。\n\n## 3. 核心功能对比\n\nClassIn 支持多达16人的同步面对面教学，提供互动式电子黑板、答题器、计时器、屏幕共享等几十种教学工具，并支持多种课件格式 [claim_007]。此外，ClassIn 提供实时学习报告系统，支持课后交流与教学质量跟踪，有助于提升教学效果 [claim_018]。\n\n腾讯云 LCIC 集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能，支持多达17人同屏连麦互动，百万人观看时延小于1秒 [claim_008]。\n\nBigBlueButton 支持文档上传、虚拟白板、分组讨论、公开/私下聊天、共享笔记、屏幕共享、虚拟举手、表情符号反馈、摄像头视频分享和自定义背景等功能 [claim_009]。\n\n## 4. 生态与集成能力\n\nClassIn 构建软硬件一体化生态，提供 ClassIn X 团队研发的专业教学终端，并配备 AI 学习管理系统，覆盖作业、测评、录播课等全过程数据管理 [claim_010]。\n\n腾讯云 LCIC 提供全平台客户端集成方案（小程序、Android、iOS、Windows、macOS、Web/H5、uni-app、Flutter），并通过 Open API 与排课、用户、课件系统无缝对接 [claim_011]。\n\nBigBlueButton 支持与 Moodle、Canvas 等 LMS（学习管理系统）集成，但该信息来源于第三方社交媒体，可靠性较低 [claim_012]。\n\n## 5. 风险与注意事项\n\n腾讯云 LCIC 内置消息安全审核和 AI 噪声检测功能，有助于保障课堂质量，但也可能带来内容审核相关的合规风险 [claim_016]。\n\nBigBlueButton 采用自托管部署模式，需要自行承担服务器运维成本和技术能力，存在部署和运维风险 [claim_017]。\n\n## 6. 总结\n\n三款产品定位差异明显：ClassIn 侧重教学场景和软硬件生态，腾讯云 LCIC 侧重低代码集成和云基础设施，BigBlueButton 侧重开源自托管。定价上，ClassIn 提供阶梯式版本，腾讯云 LCIC 月付较高，BigBlueButton 免费但需自运维。功能上，ClassIn 和腾讯云 LCIC 互动能力较强，BigBlueButton 功能全面但依赖自部署。生态上，ClassIn 和腾讯云 LCIC 集成能力较强，BigBlueButton 的 LMS 集成信息可靠性较低。风险方面，腾讯云 LCIC 有合规风险，BigBlueButton 有运维风险。",
+    "claim_ids": [
+      "claim_001",
+      "claim_002",
+      "claim_003",
+      "claim_004",
+      "claim_005",
+      "claim_006",
+      "claim_007",
+      "claim_008",
+      "claim_009",
+      "claim_010",
+      "claim_011",
+      "claim_012",
+      "claim_013",
+      "claim_014",
+      "claim_015",
+      "claim_016",
+      "claim_017",
+      "claim_018"
+    ],
+    "created_by_agent_run_id": "run_build_report",
+    "created_at": "2026-08-12T17:42:24.280698Z",
+    "sections": {}
+  }
+]

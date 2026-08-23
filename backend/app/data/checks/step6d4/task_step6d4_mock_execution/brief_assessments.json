@@ -1,0 +1,27 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "brief_task_step6d4_mock_execution",
+    "task_id": "task_step6d4_mock_execution",
+    "decision_question": "比较三种在线教学方案，为高校下一学年技术选型提供依据。",
+    "industry": "在线教育",
+    "target_customers": [],
+    "core_scenarios": [],
+    "selected_dimensions": [
+      "customer",
+      "ecosystem",
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "missing_fields": [
+      "目标客户",
+      "核心场景"
+    ],
+    "sufficient_for_analysis": false
+  }
+]

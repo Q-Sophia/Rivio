@@ -1,0 +1,72 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_甲方案",
+    "task_id": "step6c_fixture_conflicting_price",
+    "name": "甲方案",
+    "role": "direct",
+    "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "采购团队"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向标准采购场景。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "甲方案官方页面显示年度价格为一万元。；第三方资料称甲方案年度价格为一万五千元。",
+    "source_ids": [
+      "src_conflicting_price_1_positioning_1",
+      "src_conflicting_price_1_pricing_1",
+      "src_conflicting_price_1_pricing_2"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_1_positioning_1",
+      "ev_conflicting_price_1_pricing_1",
+      "ev_conflicting_price_1_pricing_2"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_乙方案",
+    "task_id": "step6c_fixture_conflicting_price",
+    "name": "乙方案",
+    "role": "direct",
+    "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "采购团队"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向标准采购场景。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "乙方案官方页面显示年度价格为一万二千元。",
+    "source_ids": [
+      "src_conflicting_price_2_positioning_1",
+      "src_conflicting_price_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_2_positioning_1",
+      "ev_conflicting_price_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

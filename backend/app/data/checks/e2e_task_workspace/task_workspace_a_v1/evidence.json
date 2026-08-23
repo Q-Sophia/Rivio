@@ -1,0 +1,17 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "ev_workspace_a",
+    "task_id": "task_workspace_a_v1",
+    "source_id": "src_workspace_a",
+    "competitor": "Alpha",
+    "dimension": "other",
+    "snippet": "Alpha 提供课堂互动功能。",
+    "normalized_fact": "Alpha 提供课堂互动功能。",
+    "confidence": 0.5,
+    "source_text_start": 0,
+    "source_text_end": 14,
+    "extraction_method": "workspace_fixture"
+  }
+]

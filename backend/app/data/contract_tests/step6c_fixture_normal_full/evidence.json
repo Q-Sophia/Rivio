@@ -1,0 +1,173 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_1_positioning_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_1_positioning_1",
+    "competitor": "启明协作",
+    "dimension": "positioning",
+    "snippet": "启明协作面向明确的目标客户与任务场景。",
+    "normalized_fact": "启明协作面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "baseline_candidate": true
+    },
+    "id": "ev_normal_full_1_feature_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_1_feature_1",
+    "competitor": "启明协作",
+    "dimension": "feature",
+    "snippet": "启明协作提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "启明协作提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_1_pricing_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_1_pricing_1",
+    "competitor": "启明协作",
+    "dimension": "pricing",
+    "snippet": "启明协作公开了标准方案的价格与计费边界。",
+    "normalized_fact": "启明协作公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_1_risk_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_1_risk_1",
+    "competitor": "启明协作",
+    "dimension": "risk",
+    "snippet": "启明协作存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "启明协作存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_2_positioning_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_2_positioning_1",
+    "competitor": "远航协作",
+    "dimension": "positioning",
+    "snippet": "远航协作面向明确的目标客户与任务场景。",
+    "normalized_fact": "远航协作面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "baseline_candidate": true
+    },
+    "id": "ev_normal_full_2_feature_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_2_feature_1",
+    "competitor": "远航协作",
+    "dimension": "feature",
+    "snippet": "远航协作提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "远航协作提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_2_pricing_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_2_pricing_1",
+    "competitor": "远航协作",
+    "dimension": "pricing",
+    "snippet": "远航协作公开了标准方案的价格与计费边界。",
+    "normalized_fact": "远航协作公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_2_risk_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_2_risk_1",
+    "competitor": "远航协作",
+    "dimension": "risk",
+    "snippet": "远航协作存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "远航协作存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_3_positioning_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_3_positioning_1",
+    "competitor": "星图协作",
+    "dimension": "positioning",
+    "snippet": "星图协作面向明确的目标客户与任务场景。",
+    "normalized_fact": "星图协作面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "baseline_candidate": true
+    },
+    "id": "ev_normal_full_3_feature_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_3_feature_1",
+    "competitor": "星图协作",
+    "dimension": "feature",
+    "snippet": "星图协作提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "星图协作提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_3_pricing_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_3_pricing_1",
+    "competitor": "星图协作",
+    "dimension": "pricing",
+    "snippet": "星图协作公开了标准方案的价格与计费边界。",
+    "normalized_fact": "星图协作公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full"
+    },
+    "id": "ev_normal_full_3_risk_1",
+    "task_id": "step6c_fixture_normal_full",
+    "source_id": "src_normal_full_3_risk_1",
+    "competitor": "星图协作",
+    "dimension": "risk",
+    "snippet": "星图协作存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "星图协作存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  }
+]

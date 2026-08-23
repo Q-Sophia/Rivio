@@ -1,0 +1,15 @@
+.venv/
+venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+*.pyc
+.idea/
+.vscode/
+.env
+.env.*
+
+# Local runtime state
+backend/app/data/logs/*.log
+backend/app/data/logs/*.pid
+backend/app/data/tmp/

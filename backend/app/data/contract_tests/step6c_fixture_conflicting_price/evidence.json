@@ -1,0 +1,74 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "ev_conflicting_price_1_positioning_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "source_id": "src_conflicting_price_1_positioning_1",
+    "competitor": "甲方案",
+    "dimension": "positioning",
+    "snippet": "甲方案面向标准采购场景。",
+    "normalized_fact": "甲方案面向标准采购场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "ev_conflicting_price_1_pricing_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "source_id": "src_conflicting_price_1_pricing_1",
+    "competitor": "甲方案",
+    "dimension": "pricing",
+    "snippet": "甲方案官方页面显示年度价格为一万元。",
+    "normalized_fact": "甲方案官方页面显示年度价格为一万元。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price",
+      "conflicting": true,
+      "counter_evidence": true
+    },
+    "id": "ev_conflicting_price_1_pricing_2",
+    "task_id": "step6c_fixture_conflicting_price",
+    "source_id": "src_conflicting_price_1_pricing_2",
+    "competitor": "甲方案",
+    "dimension": "pricing",
+    "snippet": "第三方资料称甲方案年度价格为一万五千元。",
+    "normalized_fact": "第三方资料称甲方案年度价格为一万五千元。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "ev_conflicting_price_2_positioning_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "source_id": "src_conflicting_price_2_positioning_1",
+    "competitor": "乙方案",
+    "dimension": "positioning",
+    "snippet": "乙方案面向标准采购场景。",
+    "normalized_fact": "乙方案面向标准采购场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price"
+    },
+    "id": "ev_conflicting_price_2_pricing_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "source_id": "src_conflicting_price_2_pricing_1",
+    "competitor": "乙方案",
+    "dimension": "pricing",
+    "snippet": "乙方案官方页面显示年度价格为一万二千元。",
+    "normalized_fact": "乙方案官方页面显示年度价格为一万二千元。",
+    "confidence": 0.85
+  }
+]

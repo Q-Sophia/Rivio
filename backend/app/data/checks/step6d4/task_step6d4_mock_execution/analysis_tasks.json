@@ -1,0 +1,39 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "execution_started": true,
+      "dataset_compatibility": "compatible",
+      "compatibility_assessment_id": "compat_9c3a9cacf1df",
+      "execution_plan_id": "execplan_d8a3c0e7aab8",
+      "execution_status": "ExecutionRunStatus.COMPLETED",
+      "execution_authorized": true,
+      "execution_authorization_id": "authorization_7ba74edb32f6",
+      "task_board_id": "board_cc5ccfd0fc2d",
+      "execution_run_id": "execrun_fba66d48592b",
+      "execution_mode": "mock",
+      "execution_error": ""
+    },
+    "id": "task_step6d4_mock_execution",
+    "task_id": "task_step6d4_mock_execution",
+    "query": "比较三种在线教学方案，为高校下一学年技术选型提供依据。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "industry": "在线教育",
+    "focus_areas": [
+      "产品能力",
+      "价格",
+      "生态",
+      "部署责任"
+    ],
+    "report_subject": "高校在线教学云方案竞品分析",
+    "preferred_title": "Step6D.4 用户任务执行验收报告",
+    "mode": "snapshot",
+    "status": "completed",
+    "created_at": "2026-08-23T13:54:45.651317Z",
+    "updated_at": "2026-08-23T13:54:47.831763Z"
+  }
+]

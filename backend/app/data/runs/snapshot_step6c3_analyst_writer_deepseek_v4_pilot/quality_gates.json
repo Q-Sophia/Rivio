@@ -1,0 +1,55 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "report_id": "report_online_education_001",
+      "review_feedback_id": "review_online_education_report",
+      "rule": "citation_and_review_issues_to_taskboard_feedback_tasks",
+      "feedback_task_keys": [
+        "supplement_analysis_claim_004",
+        "supplement_analysis_claim_015"
+      ]
+    },
+    "id": "gate_review_citation_feedback",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "gate_name": "review_citation_feedback_gate",
+    "status": "passed_with_warnings",
+    "passed": true,
+    "blocking": false,
+    "severity": "medium",
+    "issue_ids": [
+      "issue_claim_004_weak_citation",
+      "issue_claim_015_weak_citation",
+      "issue_report_missing_rd_keywords"
+    ],
+    "citation_check_ids": [
+      "cite_claim_001",
+      "cite_claim_002",
+      "cite_claim_004",
+      "cite_claim_005",
+      "cite_claim_006",
+      "cite_claim_007",
+      "cite_claim_008",
+      "cite_claim_009",
+      "cite_claim_010",
+      "cite_claim_011",
+      "cite_claim_012",
+      "cite_claim_013",
+      "cite_claim_014",
+      "cite_claim_015",
+      "cite_claim_016",
+      "cite_claim_017",
+      "cite_claim_018",
+      "cite_claim_019",
+      "cite_claim_020",
+      "cite_claim_021",
+      "cite_claim_022"
+    ],
+    "created_task_ids": [
+      "tb_feedback_analyze_claim_004",
+      "tb_feedback_analyze_claim_015"
+    ],
+    "message": "Review approved=True; weak_citations=2; blocking_citations=0; feedback_tasks=2.",
+    "created_at": "2026-08-14T10:44:53.951669Z"
+  }
+]

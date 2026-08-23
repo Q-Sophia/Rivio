@@ -1,0 +1,30 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "reviewer": "run_review_demo.py",
+      "rule": "deterministic_report_claim_citation_product_card_checks"
+    },
+    "id": "review_online_education_report",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "reviewer_run_id": "rule_milestone3_reviewer",
+    "overall_score": 9.0,
+    "approved": true,
+    "issues": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "issue_cl_llm_online_education_ecosystem_weak_citation",
+        "task_id": "snapshot_step6b_domestic_fallback_demo",
+        "severity": "medium",
+        "target_type": "claim",
+        "target_id": "cl_llm_online_education_ecosystem",
+        "message": "Claim has weak citation support: All evidence_ids exist, but weak evidence/source reliability is present: ev_bbb_lms_integration"
+      }
+    ],
+    "suggestions": [
+      "Review medium severity issues, especially weak citation support, before presentation."
+    ],
+    "created_at": "2026-08-12T11:04:22.644691Z"
+  }
+]

@@ -1,0 +1,482 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_claims",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "llm_call_id": "llmcall_build_claims",
+    "agent_role": "analyst",
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "raw_output": {
+      "item": {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm",
+          "industry": "待确认行业",
+          "source_count": 6
+        },
+        "id": "portfolio_step6c_fixture_goal_underspecified",
+        "task_id": "step6c_fixture_goal_underspecified",
+        "prompt_id": "competitive_analyst",
+        "prompt_version": "2.2.1-candidate",
+        "brief_assessment": {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm"
+          },
+          "id": "brief_step6c_fixture_goal_underspecified",
+          "task_id": "step6c_fixture_goal_underspecified",
+          "decision_question": "分析三个产品",
+          "industry": "待确认行业",
+          "target_customers": [
+            "目标客户群体"
+          ],
+          "core_scenarios": [
+            "核心使用或采购场景"
+          ],
+          "selected_dimensions": [
+            "feature",
+            "positioning"
+          ],
+          "missing_fields": [
+            "决策问题"
+          ],
+          "sufficient_for_analysis": false
+        },
+        "competitor_profiles": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_甲产品",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "name": "甲产品",
+            "role": "direct",
+            "selection_reason": "甲产品代表与当前决策相关的一体化成品路径。",
+            "represented_path": "一体化成品路径",
+            "comparable_dimensions": [
+              "feature",
+              "positioning"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "待确认客户"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "甲产品公开了基础定位。",
+            "offering_scope": "甲产品公开了基础能力。",
+            "delivery_model": "由供应方承担主要交付与持续服务责任。",
+            "business_model": "当前缺少定价资料。",
+            "source_ids": [
+              "src_goal_underspecified_1_positioning_1",
+              "src_goal_underspecified_1_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_1_positioning_1",
+              "ev_goal_underspecified_1_feature_1"
+            ],
+            "confidence": 0.8
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_乙产品",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "name": "乙产品",
+            "role": "direct",
+            "selection_reason": "乙产品代表与当前决策相关的一体化成品路径。",
+            "represented_path": "一体化成品路径",
+            "comparable_dimensions": [
+              "feature",
+              "positioning"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "待确认客户"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "乙产品公开了基础定位。",
+            "offering_scope": "乙产品公开了基础能力。",
+            "delivery_model": "由供应方承担主要交付与持续服务责任。",
+            "business_model": "当前缺少定价资料。",
+            "source_ids": [
+              "src_goal_underspecified_2_positioning_1",
+              "src_goal_underspecified_2_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_2_positioning_1",
+              "ev_goal_underspecified_2_feature_1"
+            ],
+            "confidence": 0.8
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_丙产品",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "name": "丙产品",
+            "role": "direct",
+            "selection_reason": "丙产品代表与当前决策相关的一体化成品路径。",
+            "represented_path": "一体化成品路径",
+            "comparable_dimensions": [
+              "feature",
+              "positioning"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "待确认客户"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "丙产品公开了基础定位。",
+            "offering_scope": "丙产品公开了基础能力。",
+            "delivery_model": "由供应方承担主要交付与持续服务责任。",
+            "business_model": "当前缺少定价资料。",
+            "source_ids": [
+              "src_goal_underspecified_3_positioning_1",
+              "src_goal_underspecified_3_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_3_positioning_1",
+              "ev_goal_underspecified_3_feature_1"
+            ],
+            "confidence": 0.8
+          }
+        ],
+        "key_intelligence_questions": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_fixture_goal_underspecified_customer",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+            "decision_link": "分析三个产品",
+            "dimensions": [
+              "customer",
+              "positioning"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_fixture_goal_underspecified_tradeoff",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+            "decision_link": "分析三个产品",
+            "dimensions": [
+              "feature",
+              "pricing",
+              "ecosystem",
+              "risk"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_fixture_goal_underspecified_evidence",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+            "decision_link": "分析三个产品",
+            "dimensions": [
+              "feature",
+              "positioning"
+            ],
+            "priority": "medium"
+          }
+        ],
+        "information_needs": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_fixture_goal_underspecified_1",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question_id": "kiq_step6c_fixture_goal_underspecified_customer",
+            "dimension": "customer",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "分析三个产品"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_fixture_goal_underspecified_2",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question_id": "kiq_step6c_fixture_goal_underspecified_tradeoff",
+            "dimension": "feature",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "分析三个产品"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_fixture_goal_underspecified_3",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "question_id": "kiq_step6c_fixture_goal_underspecified_evidence",
+            "dimension": "feature",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "分析三个产品"
+          }
+        ],
+        "evidence_coverage": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_甲产品_feature",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "甲产品",
+            "dimension": "feature",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_1_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_1_feature_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_甲产品_positioning",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "甲产品",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_1_positioning_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_1_positioning_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_乙产品_feature",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "乙产品",
+            "dimension": "feature",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_2_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_2_feature_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_乙产品_positioning",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "乙产品",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_2_positioning_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_2_positioning_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_丙产品_feature",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "丙产品",
+            "dimension": "feature",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_3_feature_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_3_feature_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_丙产品_positioning",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitor": "丙产品",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_goal_underspecified_3_positioning_1"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_3_positioning_1"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          }
+        ],
+        "comparability_notes": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_step6c_fixture_goal_underspecified_feature",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitors": [
+              "甲产品",
+              "乙产品",
+              "丙产品"
+            ],
+            "dimension": "feature",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_step6c_fixture_goal_underspecified_positioning",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitors": [
+              "甲产品",
+              "乙产品",
+              "丙产品"
+            ],
+            "dimension": "positioning",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          }
+        ],
+        "items": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_step6c_fixture_goal_underspecified_feature",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "dimension": "feature",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，甲产品、乙产品、丙产品在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "甲产品",
+              "乙产品",
+              "丙产品"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_1_feature_1",
+              "ev_goal_underspecified_2_feature_1",
+              "ev_goal_underspecified_3_feature_1"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+            "confidence": 0.85,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_step6c_fixture_goal_underspecified_positioning",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "dimension": "positioning",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，甲产品、乙产品、丙产品在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "甲产品",
+              "乙产品",
+              "丙产品"
+            ],
+            "evidence_ids": [
+              "ev_goal_underspecified_1_positioning_1",
+              "ev_goal_underspecified_2_positioning_1",
+              "ev_goal_underspecified_3_positioning_1"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+            "confidence": 0.85,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          }
+        ],
+        "research_gaps": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_step6c_fixture_goal_underspecified_brief",
+            "task_id": "step6c_fixture_goal_underspecified",
+            "competitors": [
+              "甲产品",
+              "乙产品",
+              "丙产品"
+            ],
+            "dimension": "research_brief",
+            "missing_information": "目标客户、核心任务场景和组织约束尚未明确。",
+            "decision_blocked": "无法判断观察到的差异是否对目标客户形成真实价值。",
+            "why_existing_evidence_is_insufficient": "当前证据主要描述竞品自身，不能代替目标客户研究。",
+            "suggested_queries": [
+              "访谈目标客户的任务、痛点、替代做法和购买约束"
+            ],
+            "preferred_source_types": [
+              "客户访谈",
+              "用户研究",
+              "内部战略资料"
+            ],
+            "priority": "high",
+            "stop_condition": "目标客户与核心场景已由任务负责人确认并形成研究简报。",
+            "related_evidence_ids": []
+          }
+        ]
+      },
+      "generated_by": "AgentRole.ANALYST",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "portfolio_step6c_fixture_goal_underspecified"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-14T09:24:10.082408Z"
+  }
+]

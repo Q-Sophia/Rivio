@@ -1,0 +1,431 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "Step6E.1 Research Planner",
+      "workflow_shape": "dynamic_research_tasks",
+      "execution_started": false
+    },
+    "id": "board_e73d3770d972",
+    "task_id": "task_user_b2028c97646e",
+    "status": "ready",
+    "tasks": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_2afeacee26e3",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_2afeacee26e3",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_2afeacee26e3",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_56b958ccac0a"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 ClassIn 的产品能力证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.816503Z",
+        "updated_at": "2026-08-14T12:11:45.816503Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_6d36efb39746",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_6d36efb39746",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_6d36efb39746",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "ready",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_56b958ccac0a"
+        ],
+        "output_refs": [],
+        "reason": "采集能够回答 腾讯会议 在产品能力方面表现的可靠资料",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_2fe30da1e3f8",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_2fe30da1e3f8",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_2fe30da1e3f8",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_56b958ccac0a"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 BigBlueButton 的产品能力证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_e9f357f8326a",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_e9f357f8326a",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_e9f357f8326a",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_9bd869fdc1f7"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 ClassIn 的价格证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_91eedfbc09f8",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_91eedfbc09f8",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_91eedfbc09f8",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "ready",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_9bd869fdc1f7"
+        ],
+        "output_refs": [],
+        "reason": "采集能够回答 腾讯会议 在价格方面表现的可靠资料",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_d0d92e1f75b1",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_d0d92e1f75b1",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_d0d92e1f75b1",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_9bd869fdc1f7"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 BigBlueButton 的价格证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_8c0ddeb30db4",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_8c0ddeb30db4",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_8c0ddeb30db4",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_81e71fd8ec4a"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 ClassIn 的部署责任证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_bf6295163e9e",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_bf6295163e9e",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_bf6295163e9e",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "ready",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_81e71fd8ec4a"
+        ],
+        "output_refs": [],
+        "reason": "采集能够回答 腾讯会议 在部署责任方面表现的可靠资料",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_d4e4e08b9a52",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_d4e4e08b9a52",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_d4e4e08b9a52",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_81e71fd8ec4a"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 BigBlueButton 的部署责任证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_ce23af09152e",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_ce23af09152e",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_ce23af09152e",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_04a76a5c1432"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 ClassIn 的生态集成证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_222dc3d6a336",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_222dc3d6a336",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_222dc3d6a336",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "ready",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_04a76a5c1432"
+        ],
+        "output_refs": [],
+        "reason": "采集能够回答 腾讯会议 在生态集成方面表现的可靠资料",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "research_task_id": "researchtask_4cfbc6e9c3df",
+          "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+          "planner": "research_planner_agent"
+        },
+        "id": "queue_researchtask_4cfbc6e9c3df",
+        "task_id": "task_user_b2028c97646e",
+        "task_key": "researchtask_4cfbc6e9c3df",
+        "parent_task_id": "",
+        "task_type": "supplement_collection",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "information_need:need_04a76a5c1432"
+        ],
+        "output_refs": [
+          "existing_snapshot_evidence"
+        ],
+        "reason": "复核人工快照中 BigBlueButton 的生态集成证据",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T12:11:45.817502Z",
+        "updated_at": "2026-08-14T12:11:45.817502Z",
+        "started_at": null,
+        "completed_at": null,
+        "error": ""
+      }
+    ],
+    "max_review_rounds": 3,
+    "current_review_round": 0,
+    "created_at": "2026-08-14T12:11:45.817502Z",
+    "updated_at": "2026-08-14T12:11:45.817502Z"
+  }
+]

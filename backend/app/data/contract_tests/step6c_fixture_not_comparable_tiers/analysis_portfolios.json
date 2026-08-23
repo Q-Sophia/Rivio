@@ -1,0 +1,417 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "industry": "数字服务",
+      "source_count": 4,
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "portfolio_step6c_fixture_not_comparable_tiers",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.2-candidate",
+    "brief_assessment": {
+      "schema_version": "v1",
+      "metadata": {
+        "generation_mode": "mock_llm"
+      },
+      "id": "brief_step6c_fixture_not_comparable_tiers",
+      "task_id": "step6c_fixture_not_comparable_tiers",
+      "decision_question": "比较免费版与企业版的成本，但必须先统一服务边界",
+      "industry": "数字服务",
+      "target_customers": [
+        "目标客户群体"
+      ],
+      "core_scenarios": [
+        "核心使用或采购场景"
+      ],
+      "selected_dimensions": [
+        "positioning",
+        "pricing"
+      ],
+      "missing_fields": [],
+      "sufficient_for_analysis": true
+    },
+    "competitor_profiles": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_免费版本",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "name": "免费版本",
+        "role": "direct",
+        "selection_reason": "免费版本代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "positioning",
+          "pricing"
+        ],
+        "non_comparable_dimensions": [
+          "pricing"
+        ],
+        "target_customers": [
+          "个人用户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向个人试用场景。",
+        "offering_scope": "当前供给属性需要继续核验。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "免费版本不收取授权费用。",
+        "source_ids": [
+          "src_not_comparable_tiers_1_positioning_1",
+          "src_not_comparable_tiers_1_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_1_positioning_1",
+          "ev_not_comparable_tiers_1_pricing_1"
+        ],
+        "confidence": 0.8
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_企业版本",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "name": "企业版本",
+        "role": "direct",
+        "selection_reason": "企业版本代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "positioning",
+          "pricing"
+        ],
+        "non_comparable_dimensions": [
+          "pricing"
+        ],
+        "target_customers": [
+          "大型组织"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向大型组织采购场景。",
+        "offering_scope": "当前供给属性需要继续核验。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "企业版本按合同提供服务与支持。",
+        "source_ids": [
+          "src_not_comparable_tiers_2_positioning_1",
+          "src_not_comparable_tiers_2_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_2_positioning_1",
+          "ev_not_comparable_tiers_2_pricing_1"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "key_intelligence_questions": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_not_comparable_tiers_customer",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界",
+        "dimensions": [
+          "customer",
+          "positioning"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_not_comparable_tiers_tradeoff",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界",
+        "dimensions": [
+          "feature",
+          "pricing",
+          "ecosystem",
+          "risk"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_not_comparable_tiers_evidence",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界",
+        "dimensions": [
+          "positioning",
+          "pricing"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "information_needs": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_not_comparable_tiers_1",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question_id": "kiq_step6c_fixture_not_comparable_tiers_customer",
+        "dimension": "customer",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_not_comparable_tiers_2",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question_id": "kiq_step6c_fixture_not_comparable_tiers_tradeoff",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_not_comparable_tiers_3",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "question_id": "kiq_step6c_fixture_not_comparable_tiers_evidence",
+        "dimension": "positioning",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较免费版与企业版的成本，但必须先统一服务边界"
+      }
+    ],
+    "evidence_coverage": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_免费版本_positioning",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitor": "免费版本",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_not_comparable_tiers_1_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_1_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_免费版本_pricing",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitor": "免费版本",
+        "dimension": "pricing",
+        "status": "partial",
+        "source_ids": [
+          "src_not_comparable_tiers_1_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_1_pricing_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_企业版本_positioning",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitor": "企业版本",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_not_comparable_tiers_2_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_2_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_企业版本_pricing",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitor": "企业版本",
+        "dimension": "pricing",
+        "status": "partial",
+        "source_ids": [
+          "src_not_comparable_tiers_2_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_2_pricing_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      }
+    ],
+    "comparability_notes": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_not_comparable_tiers_positioning",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "dimension": "positioning",
+        "comparable": false,
+        "basis": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_not_comparable_tiers_pricing",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "dimension": "pricing",
+        "comparable": false,
+        "basis": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      }
+    ],
+    "items": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_not_comparable_tiers_positioning",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "dimension": "positioning",
+        "claim_type": "fact",
+        "claim_text": "现有输入可确认 免费版本、企业版本 的产品定位信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_1_positioning_1",
+          "ev_not_comparable_tiers_2_positioning_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "对象层级或责任边界不同，不能形成直接优劣排名。",
+        "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_not_comparable_tiers_pricing",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "dimension": "pricing",
+        "claim_type": "fact",
+        "claim_text": "现有输入可确认 免费版本、企业版本 的定价与成本信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "evidence_ids": [
+          "ev_not_comparable_tiers_1_pricing_1",
+          "ev_not_comparable_tiers_2_pricing_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "对象层级或责任边界不同，不能形成直接优劣排名。",
+        "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      }
+    ],
+    "research_gaps": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_step6c_fixture_not_comparable_tiers_positioning_comparability",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "dimension": "comparability",
+        "missing_information": "产品定位缺少统一版本、服务边界或责任口径。",
+        "decision_blocked": "不能进行直接优劣排名或总体成本比较。",
+        "why_existing_evidence_is_insufficient": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+        "suggested_queries": [
+          "补充同版本、同规模和相同责任边界的资料"
+        ],
+        "preferred_source_types": [
+          "官方定价与条款",
+          "产品或服务说明"
+        ],
+        "priority": "high",
+        "stop_condition": "对象已统一到相同版本层级和责任边界，或明确保持不可比。",
+        "related_evidence_ids": []
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_step6c_fixture_not_comparable_tiers_pricing_comparability",
+        "task_id": "step6c_fixture_not_comparable_tiers",
+        "competitors": [
+          "免费版本",
+          "企业版本"
+        ],
+        "dimension": "comparability",
+        "missing_information": "定价与成本缺少统一版本、服务边界或责任口径。",
+        "decision_blocked": "不能进行直接优劣排名或总体成本比较。",
+        "why_existing_evidence_is_insufficient": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+        "suggested_queries": [
+          "补充同版本、同规模和相同责任边界的资料"
+        ],
+        "preferred_source_types": [
+          "官方定价与条款",
+          "产品或服务说明"
+        ],
+        "priority": "high",
+        "stop_condition": "对象已统一到相同版本层级和责任边界，或明确保持不可比。",
+        "related_evidence_ids": []
+      }
+    ]
+  }
+]

@@ -1,0 +1,178 @@
+{
+  "experiment_id": "step6c_deepseek_v4_candidate_2_2_2_pilot",
+  "real_llm_called": true,
+  "provider": "compatible",
+  "model": "deepseek-v4-flash",
+  "api_style": "chat_completions",
+  "structured_output_mode": "json_object",
+  "thinking_mode": "disabled",
+  "temperature": 0.0,
+  "max_tokens": 16000,
+  "source_task_id": "snapshot_step6c_professional_mock",
+  "same_input_and_schema": true,
+  "call_budget": 1,
+  "selected_variant": "v2_candidate",
+  "status": "completed_with_rejections",
+  "preferred_variant_for_next_pilot": "v2_candidate",
+  "results": [
+    {
+      "variant": "v2_candidate",
+      "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "request_id": "911a02bc-61df-4474-9b49-06ef2c94e79d",
+      "duration_ms": 57659,
+      "input_tokens": 16259,
+      "output_tokens": 10792,
+      "used_fallback": false,
+      "status": "completed_with_rejections",
+      "competitor_profiles_count": 3,
+      "claims_v2_count": 9,
+      "research_gaps_count": 5,
+      "rejected_claims_count": 1,
+      "rejected_claims": [
+        {
+          "claim_id": "claim_006",
+          "reasons": [
+            "文本点名但 competitors 未登记: ClassIn"
+          ],
+          "claim": {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "claim_006",
+            "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+            "dimension": "risk",
+            "claim_type": "comparison",
+            "claim_text": "腾讯云实时互动 / TRTC 教育方案提供课中消息安全审核和噪声去除功能，BigBlueButton 因自托管而承担运维责任；ClassIn 无风险维度证据。",
+            "competitors": [
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_tencent_moderation_ai_noise",
+              "ev_bbb_deployment_risk"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "基于风险证据：腾讯云内容审核、BigBlueButton 自托管运维。",
+            "uncertainty": "ClassIn 风险资料缺失，不能评价其风险水平。",
+            "decision_impact": "客户需根据内容安全和运维能力选择验证重点。",
+            "confidence": 0.7,
+            "produced_by_agent_run_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+            "citation_status": "supported"
+          }
+        }
+      ],
+      "recovered_from_saved_raw_output": true,
+      "metric_pass_rate": 1.0,
+      "quality_gate_failures": [],
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=89; total=89"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=9; total=9"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=9; total=9"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']; allowed=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=3; total=3"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=5; total=5"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.5556,
+          "passed": true,
+          "details": "cross=5; non_fact=9"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=6; total=6"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=9; non_fact=9"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=4; total=4"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=36"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 5,
+            "inference": 2,
+            "opportunity": 1,
+            "risk": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        }
+      }
+    }
+  ]
+}

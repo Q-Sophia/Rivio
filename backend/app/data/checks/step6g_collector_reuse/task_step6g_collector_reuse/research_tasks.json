@@ -1,0 +1,54 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "research_reuse_1",
+    "task_id": "task_step6g_collector_reuse",
+    "information_need_id": "need_reuse_1",
+    "title": "复用网页抽取维度 产品能力",
+    "objective": "核实 ClassIn 的产品能力",
+    "competitor": "ClassIn",
+    "dimension": "产品能力",
+    "query_hints": [],
+    "seed_urls": [
+      "https://provider.test/classin"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [],
+    "preferred_source_types": [],
+    "priority": "medium",
+    "status": "collected",
+    "stop_condition": "固定 URL 完成一次采集后可被不同抽取任务复用",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "research_reuse_2",
+    "task_id": "task_step6g_collector_reuse",
+    "information_need_id": "need_reuse_2",
+    "title": "复用网页抽取维度 生态与集成",
+    "objective": "核实 ClassIn 的生态与集成",
+    "competitor": "ClassIn",
+    "dimension": "生态与集成",
+    "query_hints": [],
+    "seed_urls": [
+      "https://provider.test/classin"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [],
+    "preferred_source_types": [],
+    "priority": "medium",
+    "status": "collected",
+    "stop_condition": "固定 URL 完成一次采集后可被不同抽取任务复用",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  }
+]

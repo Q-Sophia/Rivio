@@ -1,0 +1,16 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_board_id": "board_cc5ccfd0fc2d"
+    },
+    "id": "authorization_7ba74edb32f6",
+    "task_id": "task_step6d4_mock_execution",
+    "plan_id": "execplan_d8a3c0e7aab8",
+    "authorized": true,
+    "queue_status": "queued",
+    "requested_by": "user_ui",
+    "execution_started": false,
+    "authorized_at": "2026-08-23T13:54:45.773690Z"
+  }
+]

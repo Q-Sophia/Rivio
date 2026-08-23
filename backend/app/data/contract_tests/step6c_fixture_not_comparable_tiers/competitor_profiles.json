@@ -1,0 +1,74 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_免费版本",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "name": "免费版本",
+    "role": "direct",
+    "selection_reason": "免费版本代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [
+      "pricing"
+    ],
+    "target_customers": [
+      "个人用户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向个人试用场景。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "免费版本不收取授权费用。",
+    "source_ids": [
+      "src_not_comparable_tiers_1_positioning_1",
+      "src_not_comparable_tiers_1_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_1_positioning_1",
+      "ev_not_comparable_tiers_1_pricing_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_企业版本",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "name": "企业版本",
+    "role": "direct",
+    "selection_reason": "企业版本代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [
+      "pricing"
+    ],
+    "target_customers": [
+      "大型组织"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向大型组织采购场景。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "企业版本按合同提供服务与支持。",
+    "source_ids": [
+      "src_not_comparable_tiers_2_positioning_1",
+      "src_not_comparable_tiers_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_2_positioning_1",
+      "ev_not_comparable_tiers_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

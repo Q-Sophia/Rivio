@@ -1,0 +1,1350 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_006",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "执行摘要",
+    "line_index": 6,
+    "statement_kind": "claim",
+    "text": "产品定位与解决路径：该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_007",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "执行摘要",
+    "line_index": 7,
+    "statement_kind": "claim",
+    "text": "核心能力：该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.84
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_008",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "执行摘要",
+    "line_index": 8,
+    "statement_kind": "claim",
+    "text": "目标客户与适用场景：该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [
+        "competitor_classin"
+      ],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_021",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "竞品与解决路径",
+    "line_index": 21,
+    "statement_kind": "profile",
+    "text": "ClassIn：面向教育机构的开箱即用在线教学产品；交付方式为以完整产品和客户端能力交付，具体服务责任仍需结合合同确认。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "competitor_classin"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [
+        "competitor_腾讯云实时互动___trtc_教育方案"
+      ],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_022",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "竞品与解决路径",
+    "line_index": 22,
+    "statement_kind": "profile",
+    "text": "腾讯云实时互动 / TRTC 教育方案：供教育平台集成的云端实时互动能力；交付方式为通过云服务、SDK（软件开发工具包）或 API（应用程序编程接口）接入现有业务系统。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "competitor_腾讯云实时互动___trtc_教育方案"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [
+        "competitor_bigbluebutton"
+      ],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_023",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "竞品与解决路径",
+    "line_index": 23,
+    "statement_kind": "profile",
+    "text": "BigBlueButton：开源自托管的虚拟教室方案；交付方式为由采用方自行部署并承担基础设施、维护与升级责任。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "competitor_bigbluebutton"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [
+        "competitor_classin",
+        "competitor_腾讯云实时互动___trtc_教育方案",
+        "competitor_bigbluebutton"
+      ],
+      "comparability_note_ids": [],
+      "reference_count": 3
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_025",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "竞品与解决路径",
+    "line_index": 25,
+    "statement_kind": "profile",
+    "text": "这些对象代表的产品形态、交付责任和采用路径并不完全相同，因此不能用功能数量或单一价格直接排序。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "competitor_classin",
+      "competitor_腾讯云实时互动___trtc_教育方案",
+      "competitor_bigbluebutton"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_030",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 30,
+    "statement_kind": "claim",
+    "text": "ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_031",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 31,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_032",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 32,
+    "statement_kind": "claim",
+    "text": "限制：缺少统一版本、真实采用效果或客户验证资料。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_034",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 34,
+    "statement_kind": "claim",
+    "text": "ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在目标客户方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_035",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 35,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_036",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 36,
+    "statement_kind": "claim",
+    "text": "限制：缺少统一版本、真实采用效果或客户验证资料。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_038",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 38,
+    "statement_kind": "claim",
+    "text": "ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.84
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_039",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 39,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.84
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_040",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 40,
+    "statement_kind": "claim",
+    "text": "限制：缺少统一版本、真实采用效果或客户验证资料。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.84
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_042",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 42,
+    "statement_kind": "claim",
+    "text": "ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在生态与集成方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.45
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_043",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 43,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮生态与集成验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.45
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_044",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 44,
+    "statement_kind": "claim",
+    "text": "限制：当前仅有较弱来源，该发现只能作为检索线索。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.45
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_046",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 46,
+    "statement_kind": "claim",
+    "text": "ClassIn、腾讯云实时互动 / TRTC 教育方案在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_047",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 47,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_048",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 48,
+    "statement_kind": "claim",
+    "text": "限制：缺少统一版本、真实采用效果或客户验证资料。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_050",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 50,
+    "statement_kind": "claim",
+    "text": "腾讯云实时互动 / TRTC 教育方案、BigBlueButton在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_051",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 51,
+    "statement_kind": "claim",
+    "text": "决策含义：该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_052",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "核心维度对比",
+    "line_index": 52,
+    "statement_kind": "claim",
+    "text": "限制：缺少统一版本、真实采用效果或客户验证资料。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_056",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "成本、交付与采用条件",
+    "line_index": 56,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_057",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "成本、交付与采用条件",
+    "line_index": 57,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮生态与集成验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_ecosystem"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.45
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_058",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "成本、交付与采用条件",
+    "line_index": 58,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_059",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "成本、交付与采用条件",
+    "line_index": 59,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_pricing"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_063",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "风险、限制与不确定性",
+    "line_index": 63,
+    "statement_kind": "claim",
+    "text": "风险判断依据：按对象各选取一条风险与限制结构化证据，并先检查证据覆盖范围；决策影响：该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图；限制：缺少统一版本、真实采用效果或客户验证资料",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_risk"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_071",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 71,
+    "statement_kind": "research_gap",
+    "text": "目标客户、核心任务场景和组织约束尚未明确。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "supporting_artifact_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_072",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 72,
+    "statement_kind": "research_gap",
+    "text": "阻塞决策：无法判断观察到的差异是否对目标客户形成真实价值。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "supporting_artifact_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_073",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 73,
+    "statement_kind": "research_gap",
+    "text": "停止条件：目标客户与核心场景已由任务负责人确认并形成研究简报。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "supporting_artifact_ids": [
+      "gap_task_step6d4_mock_execution_brief"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_074",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 74,
+    "statement_kind": "research_gap",
+    "text": "ClassIn 缺少风险与限制资料。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_075",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 75,
+    "statement_kind": "research_gap",
+    "text": "阻塞决策：相关维度不能进行同口径横向比较。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_076",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 76,
+    "statement_kind": "research_gap",
+    "text": "停止条件：已找到直接资料，或明确记录该维度无法公开确认。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_classin_risk_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_077",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 77,
+    "statement_kind": "research_gap",
+    "text": "BigBlueButton 缺少定价与成本资料。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_078",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 78,
+    "statement_kind": "research_gap",
+    "text": "阻塞决策：相关维度不能进行同口径横向比较。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_079",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 79,
+    "statement_kind": "research_gap",
+    "text": "停止条件：已找到直接资料，或明确记录该维度无法公开确认。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_pricing_coverage"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_080",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 80,
+    "statement_kind": "research_gap",
+    "text": "BigBlueButton 的生态与集成资料存在较弱证据，需要补充核验。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_081",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 81,
+    "statement_kind": "research_gap",
+    "text": "阻塞决策：当前证据强度不足以支持高置信度判断。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_082",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "后续研究缺口",
+    "line_index": 82,
+    "statement_kind": "research_gap",
+    "text": "停止条件：冲突已解释或获得至少一条适用的强直接证据。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "supporting_artifact_ids": [
+      "gap_bigbluebutton_ecosystem_weak"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_088",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "决策建议",
+    "line_index": 88,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_positioning"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.86
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_089",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "决策建议",
+    "line_index": 89,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_feature"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.84
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_professional_task_step6d4_mock_execution_090",
+    "task_id": "task_step6d4_mock_execution",
+    "report_id": "report_professional_task_step6d4_mock_execution",
+    "section": "决策建议",
+    "line_index": 90,
+    "statement_kind": "claim",
+    "text": "该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+    "claim_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "clv2_task_step6d4_mock_execution_customer"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.82
+  }
+]

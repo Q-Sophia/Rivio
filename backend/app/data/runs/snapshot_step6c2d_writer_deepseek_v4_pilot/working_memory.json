@@ -1,0 +1,126 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "memory_scope": "task_run",
+      "dimension_counts": {
+        "customer": 4,
+        "feature": 12,
+        "pricing": 6,
+        "ecosystem": 5,
+        "positioning": 3,
+        "risk": 2
+      },
+      "approved": true,
+      "review_score": 8.0
+    },
+    "id": "wm_snapshot_online_education",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+    "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+    "active_competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "focus_areas": [
+      "customer",
+      "ecosystem",
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "current_task_key": "review_report",
+    "completed_task_keys": [
+      "collect_sources",
+      "build_product_cards",
+      "build_claims",
+      "check_citations",
+      "build_report",
+      "review_report"
+    ],
+    "pending_task_keys": [],
+    "blocked_task_keys": [],
+    "skipped_task_keys": [
+      "supplement_analysis_clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem"
+    ],
+    "selected_source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article",
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "selected_evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "selected_product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "selected_claim_ids": [
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk"
+    ],
+    "weak_claim_ids": [
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem"
+    ],
+    "invalid_claim_ids": [],
+    "review_issue_ids": [
+      "issue_clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem_weak_citation",
+      "issue_report_missing_rd_keywords"
+    ],
+    "feedback_task_ids": [
+      "tb_feedback_analyze_clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem"
+    ],
+    "quality_gate_ids": [
+      "gate_review_citation_feedback"
+    ],
+    "notes": [
+      "Short-term memory is scoped to this task_id and should not be reused as a current market fact in another run.",
+      "Long-term memory can store frameworks, preferences, and source policies; volatile product facts must keep evidence_ids and verification timestamps."
+    ],
+    "updated_at": "2026-08-14T10:05:24.660192Z"
+  }
+]

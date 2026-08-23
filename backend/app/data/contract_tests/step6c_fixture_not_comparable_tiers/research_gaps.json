@@ -1,0 +1,50 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_step6c_fixture_not_comparable_tiers_positioning_comparability",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "competitors": [
+      "免费版本",
+      "企业版本"
+    ],
+    "dimension": "comparability",
+    "missing_information": "产品定位缺少统一版本、服务边界或责任口径。",
+    "decision_blocked": "不能进行直接优劣排名或总体成本比较。",
+    "why_existing_evidence_is_insufficient": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+    "suggested_queries": [
+      "补充同版本、同规模和相同责任边界的资料"
+    ],
+    "preferred_source_types": [
+      "官方定价与条款",
+      "产品或服务说明"
+    ],
+    "priority": "high",
+    "stop_condition": "对象已统一到相同版本层级和责任边界，或明确保持不可比。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_step6c_fixture_not_comparable_tiers_pricing_comparability",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "competitors": [
+      "免费版本",
+      "企业版本"
+    ],
+    "dimension": "comparability",
+    "missing_information": "定价与成本缺少统一版本、服务边界或责任口径。",
+    "decision_blocked": "不能进行直接优劣排名或总体成本比较。",
+    "why_existing_evidence_is_insufficient": "对象的版本层级、服务边界或责任范围不同，不能直接排名。",
+    "suggested_queries": [
+      "补充同版本、同规模和相同责任边界的资料"
+    ],
+    "preferred_source_types": [
+      "官方定价与条款",
+      "产品或服务说明"
+    ],
+    "priority": "high",
+    "stop_condition": "对象已统一到相同版本层级和责任边界，或明确保持不可比。",
+    "related_evidence_ids": []
+  }
+]

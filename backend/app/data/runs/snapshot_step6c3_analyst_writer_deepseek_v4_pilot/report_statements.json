@@ -1,0 +1,1052 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 2
+    },
+    "id": "stmt_report_online_education_001_004",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "执行摘要",
+    "line_index": 4,
+    "statement_kind": "claim",
+    "text": "本报告面向在线教育实时互动与虚拟教室方案的产品研发选型，对比 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton。三者均覆盖实时互动教学，但产品形态差异显著：ClassIn 为客户端型完整教学产品，腾讯云为低代码开发平台，BigBlueButton 为开源自托管软件 。这一差异决定了实施责任、集成路径与运维成本的不同，选型应首先明确自身对产品完整度、开发集成和运维责任的需求 。",
+    "claim_ids": [
+      "claim_001",
+      "claim_022"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_001",
+      "claim_022"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 6
+    },
+    "id": "stmt_report_online_education_001_006",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "执行摘要",
+    "line_index": 6,
+    "statement_kind": "claim",
+    "text": "核心结论：ClassIn 适合需要开箱即用、覆盖广泛教学场景的机构；腾讯云适合需要快速集成到现有平台的开发团队；BigBlueButton 适合具备运维能力、希望控制授权成本的机构 。成本维度因 BigBlueButton 无定价信息、腾讯云定价来源可靠性较低而无法同口径比较 。风险维度证据覆盖不足，需在选型前补充官方材料 。",
+    "claim_ids": [
+      "claim_022",
+      "claim_012",
+      "claim_021"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [
+      "rg_001",
+      "rg_002",
+      "rg_003"
+    ],
+    "supporting_artifact_ids": [
+      "claim_022",
+      "claim_012",
+      "claim_021",
+      "rg_001",
+      "rg_002",
+      "rg_003"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_010",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "研究目标与决策背景",
+    "line_index": 10,
+    "statement_kind": "research_gap",
+    "text": "本报告服务于产品研发选型决策，需回答三个问题：各方案的产品定位与交付责任边界、核心能力与适用场景、成本与风险的可比性。当前研究简报未提供明确的目标客户画像和核心场景定义，这限制了适配性评估的精度 。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [
+      "rg_005"
+    ],
+    "supporting_artifact_ids": [
+      "rg_005"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 2
+    },
+    "id": "stmt_report_online_education_001_014",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "竞品与解决路径",
+    "line_index": 14,
+    "statement_kind": "claim",
+    "text": "三条解决路径对应不同的交付责任边界：ClassIn 以完整教学产品交付，腾讯云以低代码平台交付，BigBlueButton 以开源自托管软件交付 。这直接影响实施周期和运维成本 。",
+    "claim_ids": [
+      "claim_001",
+      "claim_007"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_001",
+      "claim_007"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.6
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_016",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "竞品与解决路径",
+    "line_index": 16,
+    "statement_kind": "claim",
+    "text": "ClassIn 路径：完整教学产品，提供客户端、教学工具、课件支持、课堂控制、学习报告、AI 学习管理系统及软硬件一体化生态，按版本订阅收费 。",
+    "claim_ids": [
+      "claim_014"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_014"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.75
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_017",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "竞品与解决路径",
+    "line_index": 17,
+    "statement_kind": "claim",
+    "text": "腾讯云路径：低代码平台，提供音视频、白板、屏幕共享、录制、直播等核心能力，通过 Open API 和 SDK 集成到业务平台 。",
+    "claim_ids": [
+      "claim_013"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_013"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 2
+    },
+    "id": "stmt_report_online_education_001_018",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "竞品与解决路径",
+    "line_index": 18,
+    "statement_kind": "claim",
+    "text": "BigBlueButton 路径：开源自托管软件，需自行在 Ubuntu 服务器上安装和维护，可与 LMS 集成 。",
+    "claim_ids": [
+      "claim_020",
+      "claim_015"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_020",
+      "claim_015"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.4
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 2
+    },
+    "id": "stmt_report_online_education_001_024",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 24,
+    "statement_kind": "claim",
+    "text": "三者均定位为在线教育实时互动或虚拟教室方案，但产品形态不同 。ClassIn 定位为完整教学产品，腾讯云定位为低代码平台，BigBlueButton 定位为开源自托管软件，三者代表不同的交付责任边界 。",
+    "claim_ids": [
+      "claim_001",
+      "claim_007"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_001",
+      "claim_007"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.6
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_028",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 28,
+    "statement_kind": "claim",
+    "text": "三者均提供音视频互动、白板、课件支持和屏幕共享等核心功能，但能力边界不同：ClassIn 强调课堂控制与教学工具，腾讯云强调低延时与录制，BigBlueButton 强调协作与互动工具 。",
+    "claim_ids": [
+      "claim_002"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_002"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_030",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 30,
+    "statement_kind": "claim",
+    "text": "ClassIn 支持多达 16 人的同步面对面教学，提供互动式电子黑板、课堂工具、课件支持和课堂控制 。",
+    "claim_ids": [
+      "claim_008"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_008"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_031",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 31,
+    "statement_kind": "claim",
+    "text": "腾讯云支持多达 17 人同屏连麦互动，并声称百万人小于 1 秒的超低延时直播观看体验 。",
+    "claim_ids": [
+      "claim_009"
+    ],
+    "evidence_ids": [
+      "ev_tencent_scale_latency"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_009"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_032",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 32,
+    "statement_kind": "claim",
+    "text": "BigBlueButton 提供文档上传、虚拟白板、分组讨论、聊天、共享笔记、屏幕共享、举手、表情、摄像头视频和自定义背景等功能 。",
+    "claim_ids": [
+      "claim_010"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_010"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_036",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 36,
+    "statement_kind": "claim",
+    "text": "三者均提供生态集成能力，但集成方式不同：ClassIn 提供软硬件一体化和 AI 学习管理系统，腾讯云提供 Open API 和跨平台 SDK，BigBlueButton 可与 LMS 集成 。",
+    "claim_ids": [
+      "claim_004"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_004"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_038",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 38,
+    "statement_kind": "claim",
+    "text": "腾讯云提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter 全平台互通的客户端集成方案，并通过 Open API 与排课、用户管理、课件系统对接 。",
+    "claim_ids": [
+      "claim_013"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_013"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_039",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 39,
+    "statement_kind": "claim",
+    "text": "ClassIn 提供软硬件一体化生态，包括 ClassIn X 团队自主研发的专业教学终端，并包含 AI 学习管理系统 。",
+    "claim_ids": [
+      "claim_014"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_014"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.75
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_040",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 40,
+    "statement_kind": "claim",
+    "text": "BigBlueButton 可与 LMS（学习管理系统）如 Moodle、Canvas 等系统集成，但该证据来源为第三方文章，可靠性较低 。",
+    "claim_ids": [
+      "claim_015"
+    ],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_015"
+    ],
+    "citation_status": "weak",
+    "confidence": 0.4
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_044",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 44,
+    "statement_kind": "claim",
+    "text": "三者均面向教育机构和教学场景，但目标客户和场景侧重不同：ClassIn 覆盖广泛教学场景和特殊科目，腾讯云面向需要快速搭建实时互动能力的平台，BigBlueButton 面向需要自托管的机构 。",
+    "claim_ids": [
+      "claim_005"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_005"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_046",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 46,
+    "statement_kind": "claim",
+    "text": "ClassIn 支持广泛的教学场景，包括少儿英语、语言培训、职业培训、STEAM 以及马术、舞蹈、篆刻等特殊科目，并覆盖一对一、小班、大班、直播、双师等教学模式 。",
+    "claim_ids": [
+      "claim_016"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_016"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_047",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 47,
+    "statement_kind": "claim",
+    "text": "腾讯云提供 1v1 教学、小班互动、直播大班课、圆桌会议、拍摄直播、伪直播、分组直播、AI 课堂等丰富的直播教学场景，并声称可降低在线教育平台 90% 的开发工作 。",
+    "claim_ids": [
+      "claim_017"
+    ],
+    "evidence_ids": [
+      "ev_tencent_scenarios_dev_reduction"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_017"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_048",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "核心维度对比",
+    "line_index": 48,
+    "statement_kind": "claim",
+    "text": "BigBlueButton 的教育用例包括在线辅导（一对一）、翻转课堂（课程前录制内容）、群体协作（多对多）和在线课程（一对多）。",
+    "claim_ids": [
+      "claim_018"
+    ],
+    "evidence_ids": [
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_018"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 3
+    },
+    "id": "stmt_report_online_education_001_052",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "成本、交付与采用条件",
+    "line_index": 52,
+    "statement_kind": "claim",
+    "text": "成本维度无法进行同口径比较。ClassIn 提供免费版、基础版（1800元/年起）、商业版（9600元/年起）和臻享版（预充值）等分层定价 。腾讯云提供免费试用和 1499元/月、3599元/月、6999元/月等付费档位，但该定价来源为第三方开发者文章，非官方定价页面，可靠性较低 。BigBlueButton 作为开源软件，可能降低授权成本，但自托管可能带来服务器和运维成本，现有证据不足以证明其总体拥有成本最低 。",
+    "claim_ids": [
+      "claim_011",
+      "claim_012",
+      "claim_021"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_011",
+      "claim_012",
+      "claim_021"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_054",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "成本、交付与采用条件",
+    "line_index": 54,
+    "statement_kind": "claim",
+    "text": "采用条件取决于团队能力与业务模式：若需要开箱即用的完整教学产品，可优先评估 ClassIn；若需要快速集成到现有平台，可优先评估腾讯云；若具备运维能力且希望控制授权成本，可评估 BigBlueButton 。",
+    "claim_ids": [
+      "claim_022"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_022"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_058",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "风险、限制与不确定性",
+    "line_index": 58,
+    "statement_kind": "claim",
+    "text": "风险维度证据覆盖不足，无法进行同口径比较。腾讯云提供内容安全审核和 AI 降噪控制，BigBlueButton 的自托管模式带来运维责任，两者风险责任边界不同 。",
+    "claim_ids": [
+      "claim_006"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_006"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.6
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_060",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "风险、限制与不确定性",
+    "line_index": 60,
+    "statement_kind": "claim",
+    "text": "腾讯云针对课中用户发送的文字、图片等消息实现安全审核，并通过深度学习技术智能检测和去除噪声干扰 。",
+    "claim_ids": [
+      "claim_019"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_019"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_061",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "风险、限制与不确定性",
+    "line_index": 61,
+    "statement_kind": "claim",
+    "text": "BigBlueButton 为开源自托管软件，需自行在 Ubuntu 服务器上安装和维护，因此采用它意味着承担自托管和运维责任 。",
+    "claim_ids": [
+      "claim_020"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_020"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_063",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "风险、限制与不确定性",
+    "line_index": 63,
+    "statement_kind": "research_gap",
+    "text": "ClassIn 在风险维度（如数据安全、合规、运维责任、内容审核）的证据缺失，无法评估其风险水平 。腾讯云的风险证据仅覆盖内容安全，其他风险维度缺失 。BigBlueButton 的风险证据仅覆盖部署运维责任，其他风险维度缺失 。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "rg_001"
+    ],
+    "supporting_artifact_ids": [
+      "rg_001"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_069",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "后续研究缺口",
+    "line_index": 69,
+    "statement_kind": "research_gap",
+    "text": "ClassIn 风险维度证据缺失，无法评估其风险水平，影响选型决策 。",
+    "claim_ids": [],
+    "evidence_ids": [],
+    "research_gap_ids": [
+      "rg_001"
+    ],
+    "supporting_artifact_ids": [
+      "rg_001"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_070",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "后续研究缺口",
+    "line_index": 70,
+    "statement_kind": "research_gap",
+    "text": "BigBlueButton 定价和总体拥有成本信息缺失，无法进行成本比较，影响预算规划 。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk"
+    ],
+    "research_gap_ids": [
+      "rg_002"
+    ],
+    "supporting_artifact_ids": [
+      "rg_002"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_071",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "后续研究缺口",
+    "line_index": 71,
+    "statement_kind": "research_gap",
+    "text": "腾讯云官方定价信息缺失，现有来源为第三方文章，影响成本估算的准确性 。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "research_gap_ids": [
+      "rg_003"
+    ],
+    "supporting_artifact_ids": [
+      "rg_003"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_072",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "后续研究缺口",
+    "line_index": 72,
+    "statement_kind": "research_gap",
+    "text": "BigBlueButton 与 LMS 集成的官方证据缺失，现有来源为第三方文章，影响集成可行性评估 。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "research_gap_ids": [
+      "rg_004"
+    ],
+    "supporting_artifact_ids": [
+      "rg_004"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_073",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "后续研究缺口",
+    "line_index": 73,
+    "statement_kind": "research_gap",
+    "text": "目标客户和核心场景的具体信息不足，无法准确评估各方案对目标客户的适配性 。",
+    "claim_ids": [],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "research_gap_ids": [
+      "rg_005"
+    ],
+    "supporting_artifact_ids": [
+      "rg_005"
+    ],
+    "citation_status": "pending",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 3
+    },
+    "id": "stmt_report_online_education_001_079",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "决策建议",
+    "line_index": 79,
+    "statement_kind": "claim",
+    "text": "1. 若需要开箱即用的完整教学产品：可优先评估 ClassIn，其覆盖广泛教学场景和特殊科目 ，但需确认其容量限制是否满足大规模互动教学需求 ，并补充其风险维度资料 。",
+    "claim_ids": [
+      "claim_016",
+      "claim_008"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control"
+    ],
+    "research_gap_ids": [
+      "rg_001"
+    ],
+    "supporting_artifact_ids": [
+      "claim_016",
+      "claim_008",
+      "rg_001"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 3
+    },
+    "id": "stmt_report_online_education_001_080",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "决策建议",
+    "line_index": 80,
+    "statement_kind": "claim",
+    "text": "2. 若需要快速集成到现有平台：可优先评估腾讯云，其提供全平台互通和 Open API 集成 ，但需以官方定价为准，避免成本估算偏差 ，并验证其低延时和百万级观看的实际性能 。",
+    "claim_ids": [
+      "claim_013",
+      "claim_012",
+      "claim_009"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_tencent_scale_latency"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_013",
+      "claim_012",
+      "claim_009"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 3
+    },
+    "id": "stmt_report_online_education_001_081",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "决策建议",
+    "line_index": 81,
+    "statement_kind": "claim",
+    "text": "3. 若具备运维能力且希望控制授权成本：可评估 BigBlueButton，其提供协作与互动工具 ，但需承担自托管和运维责任 ，并补充其部署和运维成本估算 。",
+    "claim_ids": [
+      "claim_010",
+      "claim_020"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [
+      "rg_002"
+    ],
+    "supporting_artifact_ids": [
+      "claim_010",
+      "claim_020",
+      "rg_002"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.7
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "profile_ids": [],
+      "comparability_note_ids": [],
+      "reference_count": 1
+    },
+    "id": "stmt_report_online_education_001_083",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "report_id": "report_online_education_001",
+    "section": "决策建议",
+    "line_index": 83,
+    "statement_kind": "claim",
+    "text": "最终选择需在补充上述研究缺口后，结合团队技术能力和业务模式做出 。",
+    "claim_ids": [
+      "claim_022"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "research_gap_ids": [],
+    "supporting_artifact_ids": [
+      "claim_022"
+    ],
+    "citation_status": "supported",
+    "confidence": 0.5
+  }
+]

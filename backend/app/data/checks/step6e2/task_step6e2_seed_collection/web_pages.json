@@ -1,0 +1,18 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "webpage_c511b476a5af",
+    "task_id": "task_step6e2_seed_collection",
+    "source_id": "src_d2ea5f8436c3",
+    "requested_url": "https://provider.test/seed",
+    "final_url": "https://provider.test/final",
+    "title": "ClassIn 功能页",
+    "text": "ClassIn 功能页\n互动课堂\n支持多人实时音视频互动和互动白板，支持屏幕共享、课堂录制、课件演示与多种课堂协作功能。",
+    "content_type": "text/html",
+    "content_hash": "d53d20a18684f1f4e67c28a62dc6e43cbe1abc098b0db6987a362126361ea1a1",
+    "render_mode": "http",
+    "browser_engine": "",
+    "fetched_at": "2026-08-21T08:13:37.802312Z"
+  }
+]

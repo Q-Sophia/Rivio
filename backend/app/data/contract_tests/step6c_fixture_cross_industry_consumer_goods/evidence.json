@@ -1,0 +1,114 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_1_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_1_positioning_1",
+    "competitor": "暖行杯",
+    "dimension": "positioning",
+    "snippet": "暖行杯面向城市通勤人群。",
+    "normalized_fact": "暖行杯面向城市通勤人群。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_1_customer_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_1_customer_1",
+    "competitor": "暖行杯",
+    "dimension": "customer",
+    "snippet": "主要场景为通勤携带与办公室饮水。",
+    "normalized_fact": "主要场景为通勤携带与办公室饮水。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_1_feature_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_1_feature_1",
+    "competitor": "暖行杯",
+    "dimension": "feature",
+    "snippet": "采用轻量杯身与六小时保温设计。",
+    "normalized_fact": "采用轻量杯身与六小时保温设计。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_1_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_1_pricing_1",
+    "competitor": "暖行杯",
+    "dimension": "pricing",
+    "snippet": "公开建议零售价为一百九十九元。",
+    "normalized_fact": "公开建议零售价为一百九十九元。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_2_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_2_positioning_1",
+    "competitor": "山川杯",
+    "dimension": "positioning",
+    "snippet": "山川杯面向户外与长途使用人群。",
+    "normalized_fact": "山川杯面向户外与长途使用人群。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_2_customer_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_2_customer_1",
+    "competitor": "山川杯",
+    "dimension": "customer",
+    "snippet": "主要场景为户外活动与长途旅行。",
+    "normalized_fact": "主要场景为户外活动与长途旅行。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_2_feature_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_2_feature_1",
+    "competitor": "山川杯",
+    "dimension": "feature",
+    "snippet": "采用耐磨涂层与大容量杯型。",
+    "normalized_fact": "采用耐磨涂层与大容量杯型。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "ev_cross_industry_consumer_goods_2_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "source_id": "src_cross_industry_consumer_goods_2_pricing_1",
+    "competitor": "山川杯",
+    "dimension": "pricing",
+    "snippet": "公开建议零售价为二百三十九元。",
+    "normalized_fact": "公开建议零售价为二百三十九元。",
+    "confidence": 0.85
+  }
+]

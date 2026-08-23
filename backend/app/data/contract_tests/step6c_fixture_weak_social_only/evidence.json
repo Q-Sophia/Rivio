@@ -1,0 +1,58 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "ev_weak_social_only_1_positioning_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "source_id": "src_weak_social_only_1_positioning_1",
+    "competitor": "甲方案",
+    "dimension": "positioning",
+    "snippet": "甲方案面向目标客户。",
+    "normalized_fact": "甲方案面向目标客户。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "ev_weak_social_only_1_risk_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "source_id": "src_weak_social_only_1_risk_1",
+    "competitor": "甲方案",
+    "dimension": "risk",
+    "snippet": "社交媒体用户称甲方案偶尔不稳定。",
+    "normalized_fact": "社交媒体用户称甲方案偶尔不稳定。",
+    "confidence": 0.35
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "ev_weak_social_only_2_positioning_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "source_id": "src_weak_social_only_2_positioning_1",
+    "competitor": "乙方案",
+    "dimension": "positioning",
+    "snippet": "乙方案面向目标客户。",
+    "normalized_fact": "乙方案面向目标客户。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "ev_weak_social_only_2_risk_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "source_id": "src_weak_social_only_2_risk_1",
+    "competitor": "乙方案",
+    "dimension": "risk",
+    "snippet": "社交媒体用户称乙方案偶尔不稳定。",
+    "normalized_fact": "社交媒体用户称乙方案偶尔不稳定。",
+    "confidence": 0.35
+  }
+]

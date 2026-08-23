@@ -1,0 +1,51 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "mock_provider": true,
+      "temperature": 0.2,
+      "max_tokens": 4000,
+      "output_language": "zh-CN",
+      "real_calls_enabled": false,
+      "api_surface": "mock",
+      "structured_output_mode": "json_schema",
+      "thinking_mode": "provider_default",
+      "report_claim_refs_added": [],
+      "rejected_portfolio_claims_count": 0,
+      "rejected_portfolio_claims": [],
+      "input_payload_artifact_types": [
+        "analysis_task",
+        "evidence",
+        "product_cards",
+        "sources"
+      ],
+      "request_id": "",
+      "attempts": 0,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "id": "llmcall_build_claims",
+    "task_id": "step6c_cross_industry_consumer_goods",
+    "agent_run_id": "run_cross_industry",
+    "node_id": "build_claims",
+    "agent_role": "analyst",
+    "provider": "mock",
+    "model": "mock-structured-v1",
+    "mode": "llm_with_fallback",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.1-candidate",
+    "prompt_hash": "fixture-hash",
+    "prompt_summary": "使用简体中文执行通用竞品分析契约测试。",
+    "context_bundle_id": "ctxbundle_a49b43176884",
+    "input_artifact_refs": {},
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "output_summary": "已生成 CompetitiveAnalysisPortfolioV2，对象编号=portfolio_step6c_cross_industry_consumer_goods",
+    "status": "completed",
+    "used_fallback": false,
+    "fallback_reason": "",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-14T09:24:09.689178Z",
+    "completed_at": "2026-08-14T09:24:09.691186Z"
+  }
+]

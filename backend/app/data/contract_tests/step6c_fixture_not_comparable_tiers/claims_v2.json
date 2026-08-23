@@ -1,0 +1,54 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_not_comparable_tiers_positioning",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "dimension": "positioning",
+    "claim_type": "fact",
+    "claim_text": "现有输入可确认 免费版本、企业版本 的产品定位信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+    "competitors": [
+      "免费版本",
+      "企业版本"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_1_positioning_1",
+      "ev_not_comparable_tiers_2_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "对象层级或责任边界不同，不能形成直接优劣排名。",
+    "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_not_comparable_tiers_pricing",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "dimension": "pricing",
+    "claim_type": "fact",
+    "claim_text": "现有输入可确认 免费版本、企业版本 的定价与成本信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+    "competitors": [
+      "免费版本",
+      "企业版本"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_1_pricing_1",
+      "ev_not_comparable_tiers_2_pricing_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "对象层级或责任边界不同，不能形成直接优劣排名。",
+    "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  }
+]

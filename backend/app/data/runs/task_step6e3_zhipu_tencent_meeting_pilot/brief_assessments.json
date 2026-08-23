@@ -1,0 +1,20 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "brief_task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "decision_question": "核实腾讯会议的产品功能并形成可引用证据",
+    "industry": "在线会议与协作",
+    "target_customers": [],
+    "core_scenarios": [],
+    "selected_dimensions": [
+      "产品能力"
+    ],
+    "missing_fields": [
+      "target_customers",
+      "core_scenarios"
+    ],
+    "sufficient_for_analysis": false
+  }
+]

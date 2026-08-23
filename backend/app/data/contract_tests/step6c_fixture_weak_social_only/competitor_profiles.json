@@ -1,0 +1,70 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_甲方案",
+    "task_id": "step6c_fixture_weak_social_only",
+    "name": "甲方案",
+    "role": "direct",
+    "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "目标客户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向目标客户。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "当前缺少定价资料。",
+    "source_ids": [
+      "src_weak_social_only_1_positioning_1",
+      "src_weak_social_only_1_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_weak_social_only_1_positioning_1",
+      "ev_weak_social_only_1_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_乙方案",
+    "task_id": "step6c_fixture_weak_social_only",
+    "name": "乙方案",
+    "role": "direct",
+    "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "positioning",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "目标客户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向目标客户。",
+    "offering_scope": "当前供给属性需要继续核验。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "当前缺少定价资料。",
+    "source_ids": [
+      "src_weak_social_only_2_positioning_1",
+      "src_weak_social_only_2_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_weak_social_only_2_positioning_1",
+      "ev_weak_social_only_2_risk_1"
+    ],
+    "confidence": 0.8
+  }
+]

@@ -1,0 +1,43 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "evaluation_method": "deterministic_dataset_profile_v1",
+      "network_used": false,
+      "llm_used": false
+    },
+    "id": "compat_b29e14c11bdc",
+    "task_id": "task_step6d3_incompatible",
+    "dataset_id": "online_education",
+    "dataset_label": "在线教育实时互动与虚拟教室人工快照",
+    "status": "incompatible",
+    "industry_match": false,
+    "requested_competitors": [
+      "产品甲",
+      "产品乙",
+      "产品丙"
+    ],
+    "matched_competitors": [],
+    "matched_competitor_map": {},
+    "missing_competitors": [
+      "产品甲",
+      "产品乙",
+      "产品丙"
+    ],
+    "supported_focus_areas": [],
+    "unsupported_focus_areas": [
+      "诊断准确率"
+    ],
+    "competitor_coverage_ratio": 0.0,
+    "source_count": 9,
+    "evidence_count": 32,
+    "blocking_reasons": [
+      "当前资料只覆盖在线教育实时互动与虚拟教室场景。",
+      "当前资料缺少以下比较对象：产品甲、产品乙、产品丙",
+      "当前资料未建立以下分析维度：诊断准确率"
+    ],
+    "warnings": [],
+    "recommended_action": "需要新建行业资料集或接入 WebCollector（网页采集器），不能复用当前快照。",
+    "evaluated_at": "2026-08-14T12:07:51.470867Z"
+  }
+]

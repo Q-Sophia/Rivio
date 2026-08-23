@@ -1,0 +1,397 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_001",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_001",
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_002",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_002",
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "status": "supported",
+    "message": "All 11 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_004",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_004",
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "status": "weak",
+    "message": "All evidence_ids exist, but weak evidence/source reliability is present: ev_bbb_lms_integration",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_005",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_005",
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "status": "supported",
+    "message": "All 4 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_006",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_006",
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_007",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_007",
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_008",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_008",
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control"
+    ],
+    "status": "supported",
+    "message": "All 5 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_009",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_009",
+    "evidence_ids": [
+      "ev_tencent_scale_latency"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_010",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_010",
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_011",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_011",
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api"
+    ],
+    "status": "supported",
+    "message": "All 4 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_012",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_012",
+    "evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_013",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_013",
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_014",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_014",
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_015",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_015",
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "status": "weak",
+    "message": "All evidence_ids exist, but weak evidence/source reliability is present: ev_bbb_lms_integration",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_016",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_016",
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_017",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_017",
+    "evidence_ids": [
+      "ev_tencent_scenarios_dev_reduction"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_018",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_018",
+    "evidence_ids": [
+      "ev_bbb_education_use_cases"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_019",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_019",
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_020",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_020",
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_021",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_021",
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_022",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "claim_id": "claim_022",
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-14T10:44:35.387143Z"
+  }
+]

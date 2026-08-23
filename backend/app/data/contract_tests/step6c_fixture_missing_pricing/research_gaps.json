@@ -1,0 +1,25 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_乙方案_pricing_coverage",
+    "task_id": "step6c_fixture_missing_pricing",
+    "competitors": [
+      "乙方案"
+    ],
+    "dimension": "pricing",
+    "missing_information": "乙方案 缺少定价与成本资料。",
+    "decision_blocked": "相关维度不能进行同口径横向比较。",
+    "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+    "suggested_queries": [
+      "查找 乙方案 的官方资料和可信第三方资料"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "medium",
+    "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+    "related_evidence_ids": []
+  }
+]

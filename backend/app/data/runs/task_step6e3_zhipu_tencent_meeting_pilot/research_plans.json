@@ -1,0 +1,35 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "step6e4_last_refresh": "2026-08-21T06:29:58.098976+00:00",
+      "step6e4_exhausted_gap_ids": []
+    },
+    "id": "researchplan_f28218ec4dad",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "decision_question": "核实腾讯会议的产品功能并形成可引用证据",
+    "status": "ready_for_analysis",
+    "kiq_ids": [],
+    "information_need_ids": [],
+    "research_task_ids": [
+      "researchtask_tencent_meeting_official_features"
+    ],
+    "covered_competitors": [],
+    "missing_competitors": [
+      "腾讯会议"
+    ],
+    "covered_dimensions": [
+      "feature"
+    ],
+    "missing_dimensions": [],
+    "budget": {
+      "max_collection_rounds": 3,
+      "max_sources_per_task": 3,
+      "max_total_sources": 3,
+      "max_real_llm_calls": 0,
+      "stop_when_all_required_facts_covered": true
+    },
+    "planner_provider": "manual_real_search_pilot_v1",
+    "created_at": "2026-08-14T16:21:44.130985Z"
+  }
+]

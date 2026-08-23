@@ -1,0 +1,167 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cp_classin",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "name": "ClassIn",
+    "role": "direct",
+    "selection_reason": "ClassIn 是面向教育机构的完整在线教学产品，直接提供实时互动和虚拟教室功能，是客户可直接采购的解决方案。",
+    "represented_path": "完整教育 SaaS 产品，包含客户端、教学工具、学习管理系统和硬件终端，按版本订阅收费。",
+    "comparable_dimensions": [
+      "positioning",
+      "feature",
+      "pricing",
+      "ecosystem",
+      "customer"
+    ],
+    "non_comparable_dimensions": [
+      "risk"
+    ],
+    "target_customers": [
+      "教育机构",
+      "个人教师",
+      "小团队",
+      "中大机构",
+      "成熟在线教育团队"
+    ],
+    "core_scenarios": [
+      "一对一教学",
+      "小班",
+      "大班",
+      "直播",
+      "双师教学"
+    ],
+    "value_proposition": "覆盖广泛教学场景的多人实时互动教学平台，提供丰富课堂工具和 AI 学习管理。",
+    "offering_scope": "软件客户端、教学工具、学习报告、AI 学习管理系统、硬件终端。",
+    "delivery_model": "SaaS 订阅，按年购买，提供免费版、基础版、商业版、臻享版。",
+    "business_model": "订阅制，按版本收费，臻享版预充值模式。",
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms"
+    ],
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cp_tencent",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "name": "腾讯云实时互动 / TRTC 教育方案",
+    "role": "direct",
+    "selection_reason": "腾讯云 LCIC 是低代码教育实时互动产品，提供音视频、白板、录制等能力，是客户可集成的平台型方案。",
+    "represented_path": "低代码开发平台，提供 SDK 和 Open API，供教育平台集成，按套餐订阅。",
+    "comparable_dimensions": [
+      "positioning",
+      "feature",
+      "pricing",
+      "ecosystem",
+      "customer",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "在线教育平台",
+      "需要快速搭建教育应用的开发者"
+    ],
+    "core_scenarios": [
+      "1v1教学",
+      "小班互动",
+      "直播大班课",
+      "圆桌会议",
+      "拍摄直播",
+      "伪直播",
+      "分组直播",
+      "AI课堂"
+    ],
+    "value_proposition": "低代码开发，降低在线教育平台 90% 开发工作，提供全平台互通和超低延时直播。",
+    "offering_scope": "音视频连麦、互动白板、屏幕共享、云端录制、直播、Open API、多平台 SDK。",
+    "delivery_model": "云服务，按套餐订阅，提供免费试用和付费套餐。",
+    "business_model": "订阅制，按音视频时长和课堂容量计费。",
+    "source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cp_bbb",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "name": "BigBlueButton",
+    "role": "direct",
+    "selection_reason": "BigBlueButton 是开源自托管虚拟教室，提供实时互动功能，是客户可自行部署的解决方案。",
+    "represented_path": "开源软件，自托管部署，可集成 LMS，无订阅费用但需自行运维。",
+    "comparable_dimensions": [
+      "positioning",
+      "feature",
+      "ecosystem",
+      "customer",
+      "risk"
+    ],
+    "non_comparable_dimensions": [
+      "pricing"
+    ],
+    "target_customers": [
+      "教育机构",
+      "需要自托管和定制化的组织"
+    ],
+    "core_scenarios": [
+      "在线辅导（一对一）",
+      "翻转课堂",
+      "群体协作（多对多）",
+      "在线课程（一对多）"
+    ],
+    "value_proposition": "开源免费，可自托管，提供文档上传、白板、分组讨论等协作功能，可集成 LMS。",
+    "offering_scope": "虚拟教室软件，包括文档上传、白板、分组讨论、聊天、共享笔记、屏幕共享、举手、表情、摄像头。",
+    "delivery_model": "自托管部署，需在 Ubuntu 22.04 上安装。",
+    "business_model": "开源免费，无订阅费用，但需自行承担基础设施和运维成本。",
+    "source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.72
+  }
+]

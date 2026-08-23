@@ -1,0 +1,41 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "llm_provider": "mock",
+      "llm_model": "mock-intent-structured-v1",
+      "prompt_version": "1.0.0-candidate",
+      "blocking_validation_source": "deterministic_backend",
+      "execution_started": false
+    },
+    "id": "draft_step6d_mock_acceptance",
+    "task_id": "draft_step6d_mock_acceptance",
+    "request_text": "请对比 ClassIn、腾讯会议和 BigBlueButton 在在线教学场景中的产品能力、价格和生态，帮助高校选择教学云平台。",
+    "decision_question": "请对比 ClassIn、腾讯会议和 BigBlueButton 在在线教学场景中的产品能力、价格和生态，帮助高校选择教学云平台。",
+    "industry": "在线教育与教学云服务",
+    "competitors": [
+      "ClassIn",
+      "腾讯会议",
+      "BigBlueButton 在在线教学场景中"
+    ],
+    "target_customers": [],
+    "core_scenarios": [],
+    "focus_areas": [
+      "定价与成本",
+      "生态与集成"
+    ],
+    "constraints": [],
+    "report_subject": "在线教育与教学云服务：ClassIn、腾讯会议、BigBlueButton 在在线教学场景中",
+    "preferred_title": "",
+    "missing_fields": [],
+    "clarification_questions": [
+      "可选补充：主要面向哪类客户或购买角色？",
+      "可选补充：最需要比较的使用或购买场景是什么？"
+    ],
+    "ready_for_confirmation": true,
+    "status": "ready",
+    "created_at": "2026-08-14T11:03:51.231619Z",
+    "updated_at": "2026-08-14T11:03:51.235621Z"
+  }
+]

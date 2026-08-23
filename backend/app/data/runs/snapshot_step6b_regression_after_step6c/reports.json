@@ -1,0 +1,29 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_report",
+      "output_language": "zh-CN"
+    },
+    "id": "report_llm_snapshot_step6b_regression_after_step6c",
+    "task_id": "snapshot_step6b_regression_after_step6c",
+    "title": "通用竞品分析报告",
+    "markdown": "# 通用竞品分析报告\n\n## 任务背景\n\n本报告基于结构化 SourceEvidence（来源证据）、ProductCard（产品卡片）、AnalysisClaim（分析结论）和 CitationCheck（引用检查）生成，覆盖 ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton。\n\n## 竞争对象与解决路径概览\n\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在产品定位上采用不同路线；产品研发选型应结合目标用户、交付方式和可控性要求进行权衡。 [cl_llm_online_education_positioning]\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在供给能力、任务覆盖范围和可定制方式上存在差异，这些属性是否形成客户价值仍需进一步验证。 [cl_llm_online_education_feature]\n- 现有定价证据显示，ClassIn、腾讯云实时互动 / TRTC 教育方案的计费方式和成本边界不同，比较时需要同时考虑软件费用、使用规模与部署运维成本。 [cl_llm_online_education_pricing]\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在生态连接、外部依赖和扩展方式上各有侧重，采用与转换成本应结合任务所属行业单独评估。 [cl_llm_online_education_ecosystem]\n- 现有风险证据显示，BigBlueButton、腾讯云实时互动 / TRTC 教育方案在服务依赖、部署维护或证据充分性方面存在不同限制，关键结论仍需结合引用强度审慎使用。 [cl_llm_online_education_risk]\n\n## 供给属性基线观察\n\n决策团队应优先用客户任务、供给属性、采用成本和证据充分性进行比较。[cl_llm_online_education_feature]\n\n## 生产、交付与生态分析\n\n生产方式、交付责任、生态连接和外部依赖需要按任务所属行业分别评价。[cl_llm_online_education_ecosystem]\n\n## 商业模式与成本结构\n\n商业模式判断必须回到定价证据和部署成本证据。[cl_llm_online_education_pricing]\n\n## 风险与限制\n\n弱引用和缺证据结论不能直接作为最终决策依据。[cl_llm_online_education_risk]\n\n## 产品研发建议\n\n建议先明确目标客户、客户任务和希望承担的责任边界，再选择与任务行业相符的比较维度。[cl_llm_online_education_positioning]\n\n## AnalysisClaim（分析结论）引用列表\n\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在产品定位上采用不同路线；产品研发选型应结合目标用户、交付方式和可控性要求进行权衡。 [cl_llm_online_education_positioning]\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在供给能力、任务覆盖范围和可定制方式上存在差异，这些属性是否形成客户价值仍需进一步验证。 [cl_llm_online_education_feature]\n- 现有定价证据显示，ClassIn、腾讯云实时互动 / TRTC 教育方案的计费方式和成本边界不同，比较时需要同时考虑软件费用、使用规模与部署运维成本。 [cl_llm_online_education_pricing]\n- 现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在生态连接、外部依赖和扩展方式上各有侧重，采用与转换成本应结合任务所属行业单独评估。 [cl_llm_online_education_ecosystem]\n- 现有风险证据显示，BigBlueButton、腾讯云实时互动 / TRTC 教育方案在服务依赖、部署维护或证据充分性方面存在不同限制，关键结论仍需结合引用强度审慎使用。 [cl_llm_online_education_risk]\n",
+    "claim_ids": [
+      "cl_llm_online_education_positioning",
+      "cl_llm_online_education_feature",
+      "cl_llm_online_education_pricing",
+      "cl_llm_online_education_ecosystem",
+      "cl_llm_online_education_risk"
+    ],
+    "created_by_agent_run_id": "run_build_report",
+    "created_at": "2026-08-13T15:46:04.975730Z",
+    "sections": {
+      "mode": "mock_llm",
+      "product_count": 3,
+      "claim_count": 5,
+      "output_language": "zh-CN"
+    }
+  }
+]

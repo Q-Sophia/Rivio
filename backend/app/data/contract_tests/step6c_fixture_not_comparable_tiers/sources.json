@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "src_not_comparable_tiers_1_positioning_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "title": "免费版本positioning资料",
+    "url": "https://fixture.invalid/not_comparable_tiers/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "免费版本",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "免费版本面向个人试用场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "src_not_comparable_tiers_1_pricing_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "title": "免费版本pricing资料",
+    "url": "https://fixture.invalid/not_comparable_tiers/1/pricing/1",
+    "source_type": "official_site",
+    "competitor": "免费版本",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "免费版本不收取授权费用。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "src_not_comparable_tiers_2_positioning_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "title": "企业版本positioning资料",
+    "url": "https://fixture.invalid/not_comparable_tiers/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "企业版本",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "企业版本面向大型组织采购场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "src_not_comparable_tiers_2_pricing_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "title": "企业版本pricing资料",
+    "url": "https://fixture.invalid/not_comparable_tiers/2/pricing/1",
+    "source_type": "official_site",
+    "competitor": "企业版本",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "企业版本按合同提供服务与支持。",
+    "reliability_score": 0.85
+  }
+]

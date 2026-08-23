@@ -1,0 +1,73 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "network_used": false,
+      "real_llm_used": false,
+      "planning_method": "deterministic_mock_v1",
+      "waiting_for_collector_count": 12,
+      "competitor_discovery_required": true,
+      "competitor_discovery_method": "local_snapshot_source_catalog",
+      "discovered_competitors": [
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "known_url_revalidation": true,
+      "step6e4_last_refresh": "2026-08-23T14:18:39.195170+00:00",
+      "step6e4_exhausted_gap_ids": []
+    },
+    "id": "researchplan_616ea22be2ef",
+    "task_id": "task_user_105009557443",
+    "decision_question": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。",
+    "status": "needs_collection",
+    "kiq_ids": [
+      "kiq_c5e3adeb0b9a",
+      "kiq_3430bc8b77ba",
+      "kiq_079ea7a3f266",
+      "kiq_408bc624ab50"
+    ],
+    "information_need_ids": [
+      "need_97ca2da038ac",
+      "need_ea3ebf832436",
+      "need_556bdd7b2f3a",
+      "need_c229885c326e"
+    ],
+    "research_task_ids": [
+      "researchtask_effb596f5ac9",
+      "researchtask_630fb717fc76",
+      "researchtask_42938c2e914c",
+      "researchtask_94a7472f128c",
+      "researchtask_efeec12bedfd",
+      "researchtask_6ba203645c44",
+      "researchtask_bb4c05ee220d",
+      "researchtask_b130f2e29e9d",
+      "researchtask_b93755ab2dfc",
+      "researchtask_5fc05579fe57",
+      "researchtask_b355ab36f4e5",
+      "researchtask_f974a0aecdc8"
+    ],
+    "covered_competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "missing_competitors": [],
+    "covered_dimensions": [],
+    "missing_dimensions": [
+      "ecosystem",
+      "feature",
+      "other",
+      "positioning",
+      "pricing"
+    ],
+    "budget": {
+      "max_collection_rounds": 3,
+      "max_sources_per_task": 5,
+      "max_total_sources": 40,
+      "max_real_llm_calls": 0,
+      "stop_when_all_required_facts_covered": true
+    },
+    "planner_provider": "mock-research-planner-v1",
+    "created_at": "2026-08-23T14:17:07.054439Z"
+  }
+]

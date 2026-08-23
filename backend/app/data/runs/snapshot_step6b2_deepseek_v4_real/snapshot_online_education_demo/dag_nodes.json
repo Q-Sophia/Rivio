@@ -1,0 +1,139 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_collect_sources",
+      "task_key": "collect_sources"
+    },
+    "id": "collect_sources",
+    "task_id": "snapshot_online_education_demo",
+    "label": "collect_sources",
+    "agent_role": "collector",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "snapshot:online_education"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "started_at": "2026-08-12T11:32:11.193594Z",
+    "completed_at": "2026-08-12T11:32:11.205598Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_product_cards",
+      "task_key": "build_product_cards",
+      "error": "ValueError: ValueError: prod_tencent_lcic.core_features 存在非中文或空内容"
+    },
+    "id": "build_product_cards",
+    "task_id": "snapshot_online_education_demo",
+    "label": "build_product_cards",
+    "agent_role": "extractor",
+    "status": "failed",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence"
+    ],
+    "output_refs": [],
+    "started_at": "2026-08-12T11:32:11.285800Z",
+    "completed_at": "2026-08-12T11:32:20.675176Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_claims",
+      "task_key": "build_claims"
+    },
+    "id": "build_claims",
+    "task_id": "snapshot_online_education_demo",
+    "label": "build_claims",
+    "agent_role": "analyst",
+    "status": "pending",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "input_refs": [
+      "product_cards",
+      "evidence"
+    ],
+    "output_refs": [],
+    "started_at": null,
+    "completed_at": null
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_check_citations",
+      "task_key": "check_citations"
+    },
+    "id": "check_citations",
+    "task_id": "snapshot_online_education_demo",
+    "label": "check_citations",
+    "agent_role": "citation",
+    "status": "pending",
+    "depends_on": [
+      "build_claims"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [],
+    "started_at": null,
+    "completed_at": null
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_report",
+      "task_key": "build_report"
+    },
+    "id": "build_report",
+    "task_id": "snapshot_online_education_demo",
+    "label": "build_report",
+    "agent_role": "writer",
+    "status": "pending",
+    "depends_on": [
+      "check_citations"
+    ],
+    "input_refs": [
+      "product_cards",
+      "claims",
+      "citation_checks"
+    ],
+    "output_refs": [],
+    "started_at": null,
+    "completed_at": null
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_review_report",
+      "task_key": "review_report"
+    },
+    "id": "review_report",
+    "task_id": "snapshot_online_education_demo",
+    "label": "review_report",
+    "agent_role": "reviewer",
+    "status": "pending",
+    "depends_on": [
+      "build_report"
+    ],
+    "input_refs": [
+      "reports",
+      "claims",
+      "citation_checks",
+      "product_cards"
+    ],
+    "output_refs": [],
+    "started_at": null,
+    "completed_at": null
+  }
+]

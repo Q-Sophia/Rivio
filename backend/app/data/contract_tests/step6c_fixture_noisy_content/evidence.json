@@ -1,0 +1,58 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "noisy_content"
+    },
+    "id": "ev_noisy_content_1_positioning_1",
+    "task_id": "step6c_fixture_noisy_content",
+    "source_id": "src_noisy_content_1_positioning_1",
+    "competitor": "甲方案",
+    "dimension": "positioning",
+    "snippet": "甲方案面向目标客户。",
+    "normalized_fact": "甲方案面向目标客户。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "noisy_content"
+    },
+    "id": "ev_noisy_content_1_feature_1",
+    "task_id": "step6c_fixture_noisy_content",
+    "source_id": "src_noisy_content_1_feature_1",
+    "competitor": "甲方案",
+    "dimension": "feature",
+    "snippet": "甲方案覆盖核心任务。",
+    "normalized_fact": "甲方案覆盖核心任务。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "noisy_content"
+    },
+    "id": "ev_noisy_content_2_positioning_1",
+    "task_id": "step6c_fixture_noisy_content",
+    "source_id": "src_noisy_content_2_positioning_1",
+    "competitor": "乙方案",
+    "dimension": "positioning",
+    "snippet": "乙方案面向目标客户。",
+    "normalized_fact": "乙方案面向目标客户。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "noisy_content"
+    },
+    "id": "ev_noisy_content_2_feature_1",
+    "task_id": "step6c_fixture_noisy_content",
+    "source_id": "src_noisy_content_2_feature_1",
+    "competitor": "乙方案",
+    "dimension": "feature",
+    "snippet": "乙方案覆盖核心任务。",
+    "normalized_fact": "乙方案覆盖核心任务。",
+    "confidence": 0.85
+  }
+]

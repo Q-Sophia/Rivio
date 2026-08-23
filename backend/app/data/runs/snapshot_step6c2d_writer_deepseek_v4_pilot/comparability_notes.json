@@ -1,0 +1,90 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "customer",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "ecosystem",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "feature",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "positioning",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "dimension": "pricing",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_risk",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "risk",
+    "comparable": true,
+    "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+    "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+  }
+]

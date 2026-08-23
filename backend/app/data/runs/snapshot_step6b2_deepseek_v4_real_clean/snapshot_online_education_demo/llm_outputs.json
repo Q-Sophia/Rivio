@@ -1,0 +1,525 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_product_cards",
+    "task_id": "snapshot_online_education_demo",
+    "llm_call_id": "llmcall_build_product_cards",
+    "agent_role": "extractor",
+    "output_schema": "ProductCard[]",
+    "raw_output": {
+      "items": [
+        {
+          "id": "prod_classin",
+          "task_id": "snapshot_online_education_demo",
+          "name": "ClassIn",
+          "company": "北京翼鸥教育科技有限公司",
+          "positioning": "面向教育机构的在线直播教学客户端，支持多人实时互动与丰富教学场景",
+          "target_users": [
+            "个人教师",
+            "小团队",
+            "中小型教育机构",
+            "中大型机构",
+            "成熟在线教育团队"
+          ],
+          "pricing_summary": "免费版、基础版（1800元/年起）、商业版（9600元/年起）、臻享版（联系客户经理，预充值模式）",
+          "core_features": [
+            "支持多达16人同步面对面教学",
+            "互动式电子黑板，支持预编辑、多页滚动和无限使用",
+            "配备互动式小黑板、答题器、计时器、屏幕共享、视频墙、随机选人等教学工具",
+            "支持动画PPT、视频、音频、Word、PDF等多种课件及多课件组合",
+            "提供举手、抢答、授奖、上下讲台等课堂控制功能",
+            "实时学习报告系统，跟踪教学质量",
+            "AI学习管理系统，覆盖作业、测评、录播课等"
+          ],
+          "strengths": [
+            "教学场景覆盖广泛，包括一对一、小班、大班、直播、双师教学",
+            "支持特殊科目如马术、舞蹈、篆刻等",
+            "软硬件一体化生态，提供专业教学终端",
+            "版本分级明确，满足不同规模机构需求"
+          ],
+          "weaknesses": [
+            "免费版限制较多，单次课堂40分钟，7人互动",
+            "高级功能如API需选购或联系销售",
+            "商业版和臻享版价格较高"
+          ],
+          "source_ids": [
+            "src_classin_intro",
+            "src_classin_pricing_tools",
+            "src_classin_hardware",
+            "src_classin_download"
+          ],
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_16_way_interaction",
+            "ev_classin_teaching_modes",
+            "ev_classin_whiteboard_tools",
+            "ev_classin_classroom_toolkit",
+            "ev_classin_courseware_support",
+            "ev_classin_classroom_control",
+            "ev_classin_learning_report",
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_classin_business_api",
+            "ev_classin_premium_prepaid_api",
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_client_positioning",
+            "ev_classin_ai_lms"
+          ],
+          "confidence": 0.85
+        },
+        {
+          "id": "prod_tencent_lcic",
+          "task_id": "snapshot_online_education_demo",
+          "name": "腾讯云实时互动-教育版",
+          "company": "腾讯云",
+          "positioning": "低代码教育实时互动产品，提供音视频、白板、屏幕共享等核心能力",
+          "target_users": [
+            "在线教育平台开发者",
+            "教育机构",
+            "需要快速搭建在线课堂的团队"
+          ],
+          "pricing_summary": "提供免费试用、轻量版（1499元/月）、标准版（3599元/月）、旗舰版（6999元/月）等套餐，包含不同音视频时长和API服务",
+          "core_features": [
+            "集成音视频连麦、互动白板、屏幕共享、云端录制和直播",
+            "支持1v1教学、小班互动、直播大班课、圆桌会议、拍摄直播、伪直播、分组直播、AI课堂等场景",
+            "支持动态/静态课件、H5课件、PPT、Word、Excel、PDF、JPG、PNG等课件演示",
+            "支持手动/自动录制，同步录制音视频流、白板内容、课件内容",
+            "提供Open API，可对接排课系统、用户管理系统、课件系统",
+            "支持小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台"
+          ],
+          "strengths": [
+            "低代码开发，可降低90%开发工作",
+            "支持多达17人同屏连麦互动",
+            "百万人小于1秒的超低延时直播观看",
+            "跨平台客户端集成方案完善",
+            "内置消息安全审核和AI降噪"
+          ],
+          "weaknesses": [
+            "定价按套餐月付，长期成本可能较高",
+            "高级API服务需更高套餐",
+            "依赖腾讯云生态"
+          ],
+          "source_ids": [
+            "src_tencent_lcic_product",
+            "src_tencent_lcic_pricing_article"
+          ],
+          "evidence_ids": [
+            "ev_tencent_lcic_low_code",
+            "ev_tencent_core_features",
+            "ev_tencent_scenarios_dev_reduction",
+            "ev_tencent_cross_platform",
+            "ev_tencent_scale_latency",
+            "ev_tencent_courseware_recording",
+            "ev_tencent_open_api",
+            "ev_tencent_moderation_ai_noise",
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ],
+          "confidence": 0.82
+        },
+        {
+          "id": "prod_bigbluebutton",
+          "task_id": "snapshot_online_education_demo",
+          "name": "BigBlueButton",
+          "company": "BigBlueButton Inc.",
+          "positioning": "开源虚拟教室，支持自托管，适用于在线辅导、翻转课堂、群体协作和在线课程",
+          "target_users": [
+            "教育机构",
+            "学校",
+            "需要自托管在线课堂的团队",
+            "LMS用户（如Moodle、Canvas）"
+          ],
+          "pricing_summary": "开源免费，需自行部署在Ubuntu 22.04服务器上",
+          "core_features": [
+            "支持上传PowerPoint、Word、PDF和图片等文档",
+            "虚拟白板，支持多用户协作",
+            "分组讨论，支持协作学习",
+            "公开和私下聊天",
+            "共享笔记",
+            "屏幕共享",
+            "虚拟举手、表情符号反馈",
+            "摄像头视频和自定义背景"
+          ],
+          "strengths": [
+            "开源免费，可自托管，数据自主可控",
+            "安装相对简单，30分钟内可完成",
+            "与LMS（如Moodle、Canvas）集成",
+            "教育用例广泛，包括一对一、翻转课堂、群体协作、在线课程"
+          ],
+          "weaknesses": [
+            "需要自行部署和维护服务器，运维成本高",
+            "功能相对基础，缺乏高级教学工具",
+            "第三方集成信息可靠性较低"
+          ],
+          "source_ids": [
+            "src_bbb_features",
+            "src_bbb_github",
+            "src_bbb_juejin_lms"
+          ],
+          "evidence_ids": [
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools",
+            "ev_bbb_engagement_video",
+            "ev_bbb_open_source_self_hosted",
+            "ev_bbb_deployment_risk",
+            "ev_bbb_education_use_cases",
+            "ev_bbb_lms_integration"
+          ],
+          "confidence": 0.78
+        }
+      ],
+      "generated_by": "extractor",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "prod_classin",
+      "prod_tencent_lcic",
+      "prod_bigbluebutton"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-12T11:34:02.899654Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_claims",
+    "task_id": "snapshot_online_education_demo",
+    "llm_call_id": "llmcall_build_claims",
+    "agent_role": "analyst",
+    "output_schema": "AnalysisClaim[]",
+    "raw_output": {
+      "items": [
+        {
+          "id": "claim_001",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "positioning",
+          "claim_text": "ClassIn 定位为面向教育机构的在线直播教学客户端，强调多人实时互动与丰富教学场景。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_client_positioning"
+          ],
+          "confidence": 0.86,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_002",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "ClassIn 支持多达16人同步面对面教学，并配备互动式电子黑板、答题器、计时器、屏幕共享、视频墙、随机选人等教学工具。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_16_way_interaction",
+            "ev_classin_whiteboard_tools",
+            "ev_classin_classroom_toolkit"
+          ],
+          "confidence": 0.85,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_003",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "ClassIn 支持动画PPT、视频、音频、Word、PDF等多种课件及多课件组合，并提供举手、抢答、授奖、上下讲台等课堂控制功能。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_courseware_support",
+            "ev_classin_classroom_control"
+          ],
+          "confidence": 0.85,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_004",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "ClassIn 提供实时学习报告系统，跟踪教学质量，并配备AI学习管理系统，覆盖作业、测评、录播课等。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_learning_report",
+            "ev_classin_ai_lms"
+          ],
+          "confidence": 0.82,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_005",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "pricing",
+          "claim_text": "ClassIn 提供免费版、基础版（1800元/年起）、商业版（9600元/年起）和臻享版（联系客户经理，预充值模式），其中免费版限制较多，单次课堂40分钟，7人互动。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_classin_business_api",
+            "ev_classin_premium_prepaid_api"
+          ],
+          "confidence": 0.84,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_006",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "ecosystem",
+          "claim_text": "ClassIn 构建软硬件一体化生态，提供专业教学终端，并集成AI学习管理系统。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_ai_lms"
+          ],
+          "confidence": 0.8,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_007",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "customer",
+          "claim_text": "ClassIn 覆盖广泛的教学场景，包括一对一、小班、大班、直播、双师教学，并支持特殊科目如马术、舞蹈、篆刻等。",
+          "competitors": [
+            "ClassIn"
+          ],
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_teaching_modes"
+          ],
+          "confidence": 0.83,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_008",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "positioning",
+          "claim_text": "腾讯云实时互动-教育版定位为低代码教育实时互动产品，提供音视频、白板、屏幕共享等核心能力，可降低90%开发工作。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_lcic_low_code",
+            "ev_tencent_scenarios_dev_reduction"
+          ],
+          "confidence": 0.87,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_009",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "腾讯云实时互动-教育版集成音视频连麦、互动白板、屏幕共享、云端录制和直播，支持1v1教学、小班互动、直播大班课、圆桌会议、拍摄直播、伪直播、分组直播、AI课堂等场景。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_core_features",
+            "ev_tencent_scenarios_dev_reduction"
+          ],
+          "confidence": 0.87,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_010",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "腾讯云实时互动-教育版支持动态/静态课件、H5课件、PPT、Word、Excel、PDF、JPG、PNG等课件演示，并支持手动/自动录制，同步录制音视频流、白板内容、课件内容。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_courseware_recording"
+          ],
+          "confidence": 0.87,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_011",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "腾讯云实时互动-教育版支持多达17人同屏连麦互动，以及百万人小于1秒的超低延时直播观看。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_scale_latency"
+          ],
+          "confidence": 0.86,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_012",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "ecosystem",
+          "claim_text": "腾讯云实时互动-教育版提供Open API，可对接排课系统、用户管理系统、课件系统，并支持小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_open_api",
+            "ev_tencent_cross_platform"
+          ],
+          "confidence": 0.88,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_013",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "pricing",
+          "claim_text": "腾讯云实时互动-教育版提供免费试用、轻量版（1499元/月）、标准版（3599元/月）、旗舰版（6999元/月）等套餐，包含不同音视频时长和API服务。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ],
+          "confidence": 0.72,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_014",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "risk",
+          "claim_text": "腾讯云实时互动-教育版内置消息安全审核和AI降噪功能，以保障课堂内容安全与音质。",
+          "competitors": [
+            "腾讯云实时互动 / TRTC 教育方案"
+          ],
+          "evidence_ids": [
+            "ev_tencent_moderation_ai_noise"
+          ],
+          "confidence": 0.78,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_015",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "positioning",
+          "claim_text": "BigBlueButton 是开源虚拟教室，支持自托管，适用于在线辅导、翻转课堂、群体协作和在线课程。",
+          "competitors": [
+            "BigBlueButton"
+          ],
+          "evidence_ids": [
+            "ev_bbb_open_source_self_hosted",
+            "ev_bbb_education_use_cases"
+          ],
+          "confidence": 0.85,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_016",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "feature",
+          "claim_text": "BigBlueButton 支持上传PowerPoint、Word、PDF和图片等文档，提供虚拟白板、分组讨论、公开和私下聊天、共享笔记、屏幕共享、虚拟举手、表情符号反馈、摄像头视频和自定义背景。",
+          "competitors": [
+            "BigBlueButton"
+          ],
+          "evidence_ids": [
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools",
+            "ev_bbb_engagement_video"
+          ],
+          "confidence": 0.85,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_017",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "pricing",
+          "claim_text": "BigBlueButton 开源免费，但需自行部署在Ubuntu 22.04服务器上，运维成本较高。",
+          "competitors": [
+            "BigBlueButton"
+          ],
+          "evidence_ids": [
+            "ev_bbb_open_source_self_hosted",
+            "ev_bbb_deployment_risk"
+          ],
+          "confidence": 0.79,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "supported"
+        },
+        {
+          "id": "claim_018",
+          "task_id": "snapshot_online_education_demo",
+          "dimension": "ecosystem",
+          "claim_text": "BigBlueButton 可与LMS（如Moodle、Canvas）集成，但第三方集成信息可靠性较低。",
+          "competitors": [
+            "BigBlueButton"
+          ],
+          "evidence_ids": [
+            "ev_bbb_lms_integration"
+          ],
+          "confidence": 0.55,
+          "produced_by_agent_run_id": "run_001",
+          "citation_status": "weak"
+        }
+      ],
+      "generated_by": "analyst",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "claim_001",
+      "claim_002",
+      "claim_003",
+      "claim_004",
+      "claim_005",
+      "claim_006",
+      "claim_007",
+      "claim_008",
+      "claim_009",
+      "claim_010",
+      "claim_011",
+      "claim_012",
+      "claim_013",
+      "claim_014",
+      "claim_015",
+      "claim_016",
+      "claim_017",
+      "claim_018"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-12T11:34:17.125906Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_report",
+    "task_id": "snapshot_online_education_demo",
+    "llm_call_id": "llmcall_build_report",
+    "agent_role": "writer",
+    "output_schema": "CompetitiveReport",
+    "raw_output": {},
+    "parsed_object_ids": [],
+    "validation_status": "failed",
+    "validation_errors": [
+      "ValueError: CompetitiveReport.markdown missing claim ids: claim_007"
+    ],
+    "created_at": "2026-08-12T11:34:25.467054Z"
+  }
+]

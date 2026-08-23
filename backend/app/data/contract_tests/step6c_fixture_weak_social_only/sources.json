@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "src_weak_social_only_1_positioning_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "title": "甲方案positioning资料",
+    "url": "https://fixture.invalid/weak_social_only/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "甲方案面向目标客户。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "src_weak_social_only_1_risk_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "title": "甲方案risk资料",
+    "url": "https://fixture.invalid/weak_social_only/1/risk/1",
+    "source_type": "social",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "社交媒体用户称甲方案偶尔不稳定。",
+    "reliability_score": 0.35
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "src_weak_social_only_2_positioning_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "title": "乙方案positioning资料",
+    "url": "https://fixture.invalid/weak_social_only/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "乙方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "乙方案面向目标客户。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "src_weak_social_only_2_risk_1",
+    "task_id": "step6c_fixture_weak_social_only",
+    "title": "乙方案risk资料",
+    "url": "https://fixture.invalid/weak_social_only/2/risk/1",
+    "source_type": "social",
+    "competitor": "乙方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "社交媒体用户称乙方案偶尔不稳定。",
+    "reliability_score": 0.35
+  }
+]

@@ -1,0 +1,15 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "searchattempt_0aee06e9314a",
+    "task_id": "task_step6e2_search_discovery",
+    "research_task_id": "researchtask_tencent_meeting",
+    "provider": "mock_search",
+    "query": "腾讯会议 官方 产品 功能",
+    "status": "completed",
+    "result_count": 2,
+    "error": "",
+    "created_at": "2026-08-21T07:24:17.450962Z"
+  }
+]

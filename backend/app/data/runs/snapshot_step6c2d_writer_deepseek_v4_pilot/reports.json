@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "writer_prompt_id": "competitive_writer",
+      "writer_prompt_version": "2.1.0-candidate",
+      "writer_prompt_hash": "48c6b71c728aca271427e9ff3c2d5ab5cac888c6d36d7ba3798fe26f1275da51"
+    },
+    "id": "report_snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "title": "在线教育实时互动与虚拟教室解决方案竞品分析报告",
+    "markdown": "# 在线教育实时互动与虚拟教室解决方案竞品分析报告\n\n## 执行摘要\n\n本报告面向在线教育实时互动与虚拟教室方案的产品研发选型，对比 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton 三条路径。三者分别代表开箱即用的教学产品、可集成的云端实时互动能力、以及开源自托管的虚拟教室方案，在产品定位、交付方式、成本结构和风险边界上差异明显 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]。当前证据足以支撑路径层面的初步判断，但目标客户与核心场景尚未明确，且 BigBlueButton 的定价、ClassIn 的风险维度资料缺失，正式选型前需补齐这些缺口 [gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief][gap_classin_risk_coverage][gap_bigbluebutton_pricing_coverage]。\n\n## 研究目标与决策背景\n\n本次选型需要回答：在在线教育场景下，自研产品应选择完整教学产品、云端能力集成，还是开源自托管方案。决策的关键在于产品定位、核心能力、成本、生态、适用场景与风险六个维度。当前研究简报缺少目标客户与核心场景的明确描述，导致现有竞品差异无法直接转化为客户价值判断，这是本次分析的主要限制 [gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief]。\n\n## 竞品与解决路径\n\n三条路径对应不同的实施责任和团队能力要求：\n\n- **ClassIn** 以完整产品和客户端能力交付，提供同步面对面教学、互动式电子黑板及多种教学工具，适合希望快速上线、较少自研投入的教育机构 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。\n- **腾讯云实时互动 / TRTC 教育方案** 通过云服务、SDK（软件开发工具包）或 API（应用程序编程接口）接入现有业务系统，提供音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能，适合已有业务系统、需要深度集成的平台 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。\n- **BigBlueButton** 是开源自托管的虚拟教室方案，提供文档上传、虚拟白板、分组讨论、共享笔记、屏幕共享、举手反馈、表情符号和摄像头视频等功能，适合具备运维能力、需要自主掌控数据的机构 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。\n\n三条路径在目标客户上存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]。\n\n## 核心维度对比\n\n### 产品定位\n\nClassIn 定位为面向教育机构的开箱即用在线教学产品；腾讯云实时互动 / TRTC 教育方案定位为供教育平台集成的云端实时互动能力；BigBlueButton 定位为开源自托管的虚拟教室方案 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]。\n\n### 功能能力\n\nClassIn 支持多达 16 人的同步面对面教学，拥有互动式电子黑板，并配备互动式小黑板、答题器、计时器、教师屏幕共享、视频墙、随机选人答题等几十种教学工具 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。腾讯云实时互动 / TRTC 教育方案集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能，支持多达 17 人同屏连麦互动以及百万人小于 1 秒的超低延时直播观看体验 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。BigBlueButton 提供文档上传、虚拟白板、分组讨论、共享笔记、屏幕共享、举手反馈、表情符号和摄像头视频等功能 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]。\n\n### 生态与集成\n\nClassIn 拥有硬件生态和 AI 与 LMS（学习管理系统）相关能力 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]。腾讯云实时互动 / TRTC 教育方案提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter 全平台互通的客户端集成方案，并开放 API（应用程序编程接口）[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]。BigBlueButton 支持与 LMS（学习管理系统）集成，但相关证据较弱，需补充核验 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem][gap_bigbluebutton_ecosystem_weak]。\n\n### 目标客户\n\nClassIn 面向教育机构，腾讯云实时互动 / TRTC 教育方案面向需要集成的平台，BigBlueButton 面向教育机构 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]。但目标客户的具体画像和场景尚未明确，需进一步验证 [gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief]。\n\n## 成本、交付与采用条件\n\n### 定价与成本\n\nClassIn 提供免费版，每月限制 10 次课，累计 50 次免费课堂，单次课堂 40 分钟限制，7 人音视频实时互动；基础版 ￥1800 起，原价 ￥3100/年，按年购买开通版本，支持 300 人大班教学、云端录课、屏幕共享、个人后台 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]。腾讯云实时互动 / TRTC 教育方案提供多档订阅，价格从 0 元/月到 6,999 元/月，音视频时长从 50 小时/月到 4,200 小时/月，课堂容量从无限到 2,000 人，API 对接服务从无到专属 VIP 对接服务 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]。BigBlueButton 的定价与成本资料缺失，无法进行同口径比较 [gap_bigbluebutton_pricing_coverage]。\n\n### 交付与采用条件\n\nClassIn 以完整产品交付，适合快速上线；腾讯云实时互动 / TRTC 教育方案以云服务、SDK（软件开发工具包）或 API（应用程序编程接口）接入，适合深度集成；BigBlueButton 由采用方自行部署并承担基础设施、维护与升级责任 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]。\n\n## 风险、限制与不确定性\n\n腾讯云实时互动 / TRTC 教育方案存在内容审核与 AI 降噪相关的风险与限制 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]。BigBlueButton 存在部署风险，包括基础设施、维护与升级责任 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]。ClassIn 的风险维度资料缺失，无法进行同口径比较 [gap_classin_risk_coverage]。\n\n此外，生态与集成维度的证据整体较弱，尤其是 BigBlueButton 的 LMS（学习管理系统）集成证据，需补充核验 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem][gap_bigbluebutton_ecosystem_weak]。\n\n## 后续研究缺口\n\n- 目标客户、核心任务场景和组织约束尚未明确，无法判断观察到的差异是否对目标客户形成真实价值 [gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief]。\n- ClassIn 缺少风险与限制资料，相关维度不能进行同口径横向比较 [gap_classin_risk_coverage]。\n- BigBlueButton 缺少定价与成本资料，相关维度不能进行同口径横向比较 [gap_bigbluebutton_pricing_coverage]。\n- BigBlueButton 的生态与集成资料存在较弱证据，需要补充核验 [gap_bigbluebutton_ecosystem_weak]。\n\n## 决策建议\n\n1. **若团队优先快速上线且接受商业产品依赖**：可优先评估 ClassIn，其完整产品形态可降低自研投入，但需确认其风险与限制资料，并明确目标客户与场景是否匹配 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][gap_classin_risk_coverage]。\n2. **若团队已有业务系统且需要深度集成**：可优先评估腾讯云实时互动 / TRTC 教育方案，其全平台 SDK（软件开发工具包）与 API（应用程序编程接口）支持灵活集成，但需评估内容审核与 AI 降噪等风险 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]。\n3. **若团队具备运维能力且需要自主掌控数据**：可评估 BigBlueButton 开源自托管方案，但需补充其定价与成本资料，并核验其生态集成证据 [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][gap_bigbluebutton_pricing_coverage][gap_bigbluebutton_ecosystem_weak]。\n\n以上建议均需在明确目标客户与核心场景后，结合成本与合规缺口进行最终验证 [gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief]。\n\n## 结论引用索引\n\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]",
+    "claim_ids": [
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+      "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk"
+    ],
+    "created_by_agent_run_id": "run_build_report",
+    "created_at": "2026-08-14T10:05:24.458144Z",
+    "sections": {
+      "report_version": "2.1.0-candidate",
+      "prompt_id": "competitive_writer",
+      "prompt_hash": "48c6b71c728aca271427e9ff3c2d5ab5cac888c6d36d7ba3798fe26f1275da51",
+      "prompt_status": "candidate_not_runtime_enabled",
+      "title_source": "report_subject",
+      "research_gap_ids": [
+        "gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief",
+        "gap_classin_risk_coverage",
+        "gap_bigbluebutton_pricing_coverage",
+        "gap_bigbluebutton_ecosystem_weak"
+      ],
+      "report_statement_ids": [
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_004",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_008",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_014",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_015",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_016",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_018",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_024",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_028",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_032",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_036",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_042",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_046",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_050",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_052",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_056",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_057",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_058",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_059",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_063",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_064",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_065",
+        "stmt_report_snapshot_step6c2d_writer_deepseek_v4_pilot_067"
+      ],
+      "report_statement_count": 22
+    }
+  }
+]

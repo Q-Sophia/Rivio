@@ -1,0 +1,50 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_c419c607ee9f",
+    "task_id": "task_user_a3b3a1240667",
+    "question": "各候选产品在产品定位上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "这份分析要帮助用户决定如何选择或评估ClassIn的替代方案",
+    "dimensions": [
+      "产品定位"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_9304c7b23273",
+    "task_id": "task_user_a3b3a1240667",
+    "question": "各候选产品在产品能力上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "这份分析要帮助用户决定如何选择或评估ClassIn的替代方案",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_78f5b09de7eb",
+    "task_id": "task_user_a3b3a1240667",
+    "question": "各候选产品在定价与成本上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "这份分析要帮助用户决定如何选择或评估ClassIn的替代方案",
+    "dimensions": [
+      "定价与成本"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_77b73dd79c87",
+    "task_id": "task_user_a3b3a1240667",
+    "question": "各候选产品在生态与集成上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "这份分析要帮助用户决定如何选择或评估ClassIn的替代方案",
+    "dimensions": [
+      "生态与集成"
+    ],
+    "priority": "medium"
+  }
+]

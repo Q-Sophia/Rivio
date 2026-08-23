@@ -1,0 +1,299 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_customer",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "customer",
+    "status": "sufficient",
+    "source_ids": [
+      "src_classin_intro"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_ecosystem",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "ecosystem",
+    "status": "sufficient",
+    "source_ids": [
+      "src_classin_download",
+      "src_classin_hardware"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_feature",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "feature",
+    "status": "sufficient",
+    "source_ids": [
+      "src_classin_intro"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_positioning",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "positioning",
+    "status": "partial",
+    "source_ids": [
+      "src_classin_download"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_pricing",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "pricing",
+    "status": "sufficient",
+    "source_ids": [
+      "src_classin_pricing_tools"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_classin_risk",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "ClassIn",
+    "dimension": "risk",
+    "status": "missing",
+    "source_ids": [],
+    "evidence_ids": [],
+    "limitations": "当前输入没有该维度证据。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_customer",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "customer",
+    "status": "partial",
+    "source_ids": [
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_scenarios_dev_reduction"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_ecosystem",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "ecosystem",
+    "status": "sufficient",
+    "source_ids": [
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_feature",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "feature",
+    "status": "sufficient",
+    "source_ids": [
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_positioning",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "status": "partial",
+    "source_ids": [
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_pricing",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "pricing",
+    "status": "sufficient",
+    "source_ids": [
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯云实时互动___trtc_教育方案_risk",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "risk",
+    "status": "partial",
+    "source_ids": [
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_customer",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "customer",
+    "status": "partial",
+    "source_ids": [
+      "src_bbb_github"
+    ],
+    "evidence_ids": [
+      "ev_bbb_education_use_cases"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_ecosystem",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "ecosystem",
+    "status": "weak",
+    "source_ids": [
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "limitations": "当前只有较弱来源，不能支撑高置信度决策。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_feature",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "feature",
+    "status": "sufficient",
+    "source_ids": [
+      "src_bbb_features"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_positioning",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "positioning",
+    "status": "partial",
+    "source_ids": [
+      "src_bbb_github"
+    ],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_pricing",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "pricing",
+    "status": "missing",
+    "source_ids": [],
+    "evidence_ids": [],
+    "limitations": "当前输入没有该维度证据。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_bigbluebutton_risk",
+    "task_id": "task_step6d4_mock_execution",
+    "competitor": "BigBlueButton",
+    "dimension": "risk",
+    "status": "partial",
+    "source_ids": [
+      "src_bbb_github"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+  }
+]

@@ -1,0 +1,104 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question_id": "kiq_001",
+    "dimension": "positioning",
+    "required_facts": [
+      "各方案的定位声明",
+      "目标客户描述",
+      "核心场景"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "product_docs"
+    ],
+    "comparability_basis": "产品定位和客户任务",
+    "decision_link": "确定解决路径"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question_id": "kiq_002",
+    "dimension": "feature",
+    "required_facts": [
+      "音视频互动人数上限",
+      "直播观看人数",
+      "延迟指标",
+      "功能清单"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "technical_docs"
+    ],
+    "comparability_basis": "实时互动能力指标",
+    "decision_link": "评估功能满足度"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question_id": "kiq_003",
+    "dimension": "pricing",
+    "required_facts": [
+      "订阅价格",
+      "计费方式",
+      "容量限制",
+      "基础设施成本",
+      "运维成本"
+    ],
+    "preferred_source_types": [
+      "pricing_page",
+      "official_site",
+      "cost_analysis"
+    ],
+    "comparability_basis": "总体拥有成本",
+    "decision_link": "成本预算"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question_id": "kiq_004",
+    "dimension": "ecosystem",
+    "required_facts": [
+      "API 可用性",
+      "SDK 支持平台",
+      "LMS 集成",
+      "第三方系统对接"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "developer_docs"
+    ],
+    "comparability_basis": "集成能力和生态",
+    "decision_link": "评估部署和迁移成本"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question_id": "kiq_005",
+    "dimension": "risk",
+    "required_facts": [
+      "内容审核机制",
+      "数据隐私政策",
+      "运维责任",
+      "合规认证"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "security_docs",
+      "terms_of_service"
+    ],
+    "comparability_basis": "风险控制措施和责任边界",
+    "decision_link": "风险管理"
+  }
+]

@@ -1,0 +1,243 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_collect_sources",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "collect_sources",
+    "parent_task_id": "",
+    "task_type": "collect_sources",
+    "target_agent_role": "collector",
+    "status": "completed",
+    "priority": "high",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [
+      "snapshot:online_education"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_build_product_cards",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "build_product_cards",
+    "parent_task_id": "",
+    "task_type": "build_product_cards",
+    "target_agent_role": "extractor",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "evidence"
+    ],
+    "output_refs": [
+      "product_cards"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_build_claims",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "build_claims",
+    "parent_task_id": "",
+    "task_type": "build_claims",
+    "target_agent_role": "analyst",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "product_cards",
+      "evidence"
+    ],
+    "output_refs": [
+      "claims"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_check_citations",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "check_citations",
+    "parent_task_id": "",
+    "task_type": "check_citations",
+    "target_agent_role": "citation",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_claims"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [
+      "citation_checks",
+      "claims"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_build_report",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "build_report",
+    "parent_task_id": "",
+    "task_type": "build_report",
+    "target_agent_role": "writer",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "check_citations"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "product_cards",
+      "claims",
+      "citation_checks"
+    ],
+    "output_refs": [
+      "reports"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_review_report",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "review_report",
+    "parent_task_id": "",
+    "task_type": "review_report",
+    "target_agent_role": "reviewer",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_report"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "reports",
+      "claims",
+      "citation_checks",
+      "product_cards"
+    ],
+    "output_refs": [
+      "review_feedback"
+    ],
+    "reason": "Fixed snapshot workflow task mapping.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.148234Z",
+    "updated_at": "2026-08-11T15:47:42.148234Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "tb_supplement_collection_pricing",
+    "task_id": "snapshot_online_education_demo",
+    "task_key": "supplement_collection_pricing",
+    "parent_task_id": "review_report",
+    "task_type": "supplement_collection",
+    "target_agent_role": "collector",
+    "status": "ready",
+    "priority": "high",
+    "depends_on": [
+      "review_report"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "review_feedback"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "reason": "Reviewer found weak pricing citation.",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-11T15:47:42.152008Z",
+    "updated_at": "2026-08-11T15:47:42.182755Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  }
+]

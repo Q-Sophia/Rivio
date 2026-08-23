@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "ba_001",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "decision_question": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+    "industry": "online education",
+    "target_customers": [],
+    "core_scenarios": [],
+    "selected_dimensions": [
+      "positioning",
+      "feature",
+      "pricing",
+      "ecosystem",
+      "customer",
+      "risk"
+    ],
+    "missing_fields": [
+      "target_customers",
+      "core_scenarios",
+      "constraints",
+      "geography",
+      "timeframe"
+    ],
+    "sufficient_for_analysis": false
+  }
+]

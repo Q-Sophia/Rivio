@@ -1,0 +1,38 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_1",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question": "腾讯会议的产品功能在哪些版本（免费版、专业版、商业版、企业版）中可用，版本间功能差异如何？",
+    "decision_link": "影响功能核实结论的适用范围，避免将特定版本功能误认为全版本通用。",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_2",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question": "腾讯会议各功能（如云录制、屏幕共享、会议质量监控）的详细使用条件、限制和操作路径是什么？",
+    "decision_link": "为功能核实提供可操作、可验证的细节，支持形成可引用证据。",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_3",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question": "腾讯会议的产品功能是否覆盖目标客户的核心场景（如培训、营销、招聘等）？",
+    "decision_link": "帮助判断功能核实是否满足决策需求，若场景缺失则需补充研究。",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "medium"
+  }
+]

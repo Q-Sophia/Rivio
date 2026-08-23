@@ -1,0 +1,18 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_parse_draft_0427c5ec30d0",
+    "task_id": "draft_0427c5ec30d0",
+    "llm_call_id": "llmcall_parse_draft_0427c5ec30d0",
+    "agent_role": "intent",
+    "output_schema": "AnalysisTaskDraft",
+    "raw_output": {},
+    "parsed_object_ids": [],
+    "validation_status": "failed",
+    "validation_errors": [
+      "LLMProviderTransientError: 真实模型调用在 2 次尝试后失败：[WinError 10061] 由于目标计算机积极拒绝，无法连接。"
+    ],
+    "created_at": "2026-08-14T12:11:46.363694Z"
+  }
+]

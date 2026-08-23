@@ -1,0 +1,21 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "run_research_planning",
+    "task_id": "task_user_b2028c97646e",
+    "node_id": "research_planning",
+    "agent_role": "orchestrator",
+    "status": "completed",
+    "input_summary": "Input artifacts: analysis_tasks, dataset_profile",
+    "output_summary": "生成 4 个 KIQ、4 个信息需求和 12 个研究任务，其中 4 个等待采集。",
+    "reasoning_summary": "",
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "duration_ms": 14,
+    "error": "",
+    "created_at": "2026-08-14T12:11:45.781497Z",
+    "started_at": "2026-08-14T12:11:45.781497Z",
+    "completed_at": "2026-08-14T12:11:45.795499Z"
+  }
+]

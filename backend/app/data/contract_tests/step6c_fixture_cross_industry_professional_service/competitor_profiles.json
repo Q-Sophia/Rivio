@@ -1,0 +1,88 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_明策咨询",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "name": "明策咨询",
+    "role": "direct",
+    "selection_reason": "明策咨询代表与当前决策相关的标准化专业服务路径。",
+    "represented_path": "标准化专业服务路径",
+    "comparable_dimensions": [
+      "customer",
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "成长企业"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向成长企业的标准化合规咨询服务。",
+    "offering_scope": "由固定顾问团队按标准流程交付。",
+    "delivery_model": "固定顾问团队按流程交付并承担质量复核责任。",
+    "business_model": "按项目范围和顾问投入计费。",
+    "source_ids": [
+      "src_cross_industry_professional_service_1_positioning_1",
+      "src_cross_industry_professional_service_1_customer_1",
+      "src_cross_industry_professional_service_1_feature_1",
+      "src_cross_industry_professional_service_1_pricing_1",
+      "src_cross_industry_professional_service_1_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_professional_service_1_positioning_1",
+      "ev_cross_industry_professional_service_1_customer_1",
+      "ev_cross_industry_professional_service_1_feature_1",
+      "ev_cross_industry_professional_service_1_pricing_1",
+      "ev_cross_industry_professional_service_1_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_远见顾问",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "name": "远见顾问",
+    "role": "direct",
+    "selection_reason": "远见顾问代表与当前决策相关的定制专业服务路径。",
+    "represented_path": "定制专业服务路径",
+    "comparable_dimensions": [
+      "customer",
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "大型组织"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向大型组织的定制合规咨询服务。",
+    "offering_scope": "由资深顾问组成专项团队交付。",
+    "delivery_model": "专项顾问团队按合同周期交付并承担项目治理责任。",
+    "business_model": "按合同周期和团队配置计费。",
+    "source_ids": [
+      "src_cross_industry_professional_service_2_positioning_1",
+      "src_cross_industry_professional_service_2_customer_1",
+      "src_cross_industry_professional_service_2_feature_1",
+      "src_cross_industry_professional_service_2_pricing_1",
+      "src_cross_industry_professional_service_2_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_professional_service_2_positioning_1",
+      "ev_cross_industry_professional_service_2_customer_1",
+      "ev_cross_industry_professional_service_2_feature_1",
+      "ev_cross_industry_professional_service_2_pricing_1",
+      "ev_cross_industry_professional_service_2_risk_1"
+    ],
+    "confidence": 0.8
+  }
+]

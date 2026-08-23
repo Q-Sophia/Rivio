@@ -1,0 +1,166 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_feature",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "feature",
+    "claim_type": "baseline",
+    "claim_text": "现有证据表明，启明协作、远航协作、星图协作在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "启明协作",
+      "远航协作",
+      "星图协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_feature_1",
+      "ev_normal_full_2_feature_1",
+      "ev_normal_full_3_feature_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_positioning",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "positioning",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，启明协作、远航协作、星图协作在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "启明协作",
+      "远航协作",
+      "星图协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_positioning_1",
+      "ev_normal_full_2_positioning_1",
+      "ev_normal_full_3_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_pricing",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "pricing",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，启明协作、远航协作、星图协作在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "启明协作",
+      "远航协作",
+      "星图协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_pricing_1",
+      "ev_normal_full_2_pricing_1",
+      "ev_normal_full_3_pricing_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_risk",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "risk",
+    "claim_type": "risk",
+    "claim_text": "现有证据表明，启明协作、远航协作、星图协作在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "启明协作",
+      "远航协作",
+      "星图协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_risk_1",
+      "ev_normal_full_2_risk_1",
+      "ev_normal_full_3_risk_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条风险与限制结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_confirmed_fact",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "positioning",
+    "claim_type": "fact",
+    "claim_text": "现有直接资料可确认 启明协作 在产品定位方面的公开信息。",
+    "competitors": [
+      "启明协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "该事实仅复述一条已知结构化证据，不扩展为跨对象判断。",
+    "uncertainty": "该事实的客户价值与实际效果仍需独立验证。",
+    "decision_impact": "作为对象画像的已确认输入，不单独决定产品方向。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_normal_full_recommendation_candidate",
+    "task_id": "step6c_fixture_normal_full",
+    "dimension": "strategy",
+    "claim_type": "recommendation",
+    "claim_text": "当前可先把已确认的共同属性作为基线候选，并围绕责任边界和适配条件开展客户验证；这是一项带条件的建议候选，不是正式决策。",
+    "competitors": [
+      "启明协作",
+      "远航协作",
+      "星图协作"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_feature_1",
+      "ev_normal_full_2_feature_1",
+      "ev_normal_full_3_feature_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "建议候选来自已通过可比性检查的跨对象发现，未把竞品共同投入直接转换为产品路线图。",
+    "uncertainty": "仍需客户需求、自身能力、成本和风险验证。",
+    "decision_impact": "进入客户访谈或小范围验证，不直接承诺正式路线图。",
+    "confidence": 0.65,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  }
+]

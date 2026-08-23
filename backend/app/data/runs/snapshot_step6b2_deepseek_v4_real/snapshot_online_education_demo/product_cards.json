@@ -1,0 +1,166 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "prod_classin",
+    "task_id": "snapshot_online_education_demo",
+    "name": "ClassIn",
+    "company": "北京翼鸥教育科技有限公司",
+    "positioning": "面向教育机构的在线直播教学平台，支持多种教学场景和软硬件一体化。",
+    "target_users": [
+      "个人教师",
+      "小团队",
+      "中小型培训机构",
+      "中大机构",
+      "成熟在线教育团队"
+    ],
+    "pricing_summary": "免费版、基础版（1800元/年起）、商业版（9600元/年起）、臻享版（联系客户经理，预充值模式）。",
+    "core_features": [
+      "16人同步面对面教学",
+      "互动式电子白板",
+      "课堂工具（小黑板、答题器、计时器等）",
+      "多课件支持（PPT、视频、音频、Word、PDF）",
+      "课堂控制（举手、抢答、授奖等）",
+      "实时学习报告",
+      "AI学习管理系统",
+      "API能力（商业版及以上）"
+    ],
+    "strengths": [
+      "教学场景覆盖广",
+      "软硬件一体化生态",
+      "AI赋能教学管理"
+    ],
+    "weaknesses": [
+      "免费版限制较多",
+      "高级功能需付费"
+    ],
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms"
+    ],
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "prod_tencent_lcic",
+    "task_id": "snapshot_online_education_demo",
+    "name": "腾讯云实时互动-教育版",
+    "company": "腾讯云",
+    "positioning": "低代码教育实时互动产品，帮助在线教育平台快速集成音视频、白板等能力。",
+    "target_users": [
+      "在线教育平台开发者",
+      "教育机构",
+      "需要快速搭建在线课堂的企业"
+    ],
+    "pricing_summary": "提供免费试用版及付费套餐（1499元/月、3599元/月、6999元/月），包含不同音视频时长和课堂容量。",
+    "core_features": [
+      "音视频连麦",
+      "互动白板",
+      "屏幕共享",
+      "云端录制",
+      "直播",
+      "多平台SDK（小程序、Android、iOS、Windows、macOS、Web/H5、uni-app、Flutter）",
+      "Open API对接",
+      "AI课堂"
+    ],
+    "strengths": [
+      "低代码开发，降低90%开发工作",
+      "超低延迟（百万观众小于1秒）",
+      "跨平台支持广泛",
+      "内置安全审核和噪声抑制"
+    ],
+    "weaknesses": [
+      "付费套餐价格较高",
+      "高级API对接服务需更高套餐"
+    ],
+    "source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.82
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "prod_bigbluebutton",
+    "task_id": "snapshot_online_education_demo",
+    "name": "BigBlueButton",
+    "company": "BigBlueButton Inc.",
+    "positioning": "开源的虚拟教室软件，支持自托管，适用于在线教学和协作学习。",
+    "target_users": [
+      "教育机构",
+      "学校",
+      "需要自建在线课堂的组织",
+      "LMS用户（Moodle、Canvas等）"
+    ],
+    "pricing_summary": "开源免费，但需自行承担服务器部署和运维成本。",
+    "core_features": [
+      "文档上传（PPT、Word、PDF、图片）",
+      "虚拟白板",
+      "分组讨论",
+      "公共/私人聊天",
+      "共享笔记",
+      "屏幕共享",
+      "虚拟举手",
+      "表情符号",
+      "网络摄像头视频",
+      "自定义背景"
+    ],
+    "strengths": [
+      "开源免费",
+      "可自托管，数据自主可控",
+      "与LMS集成（Moodle、Canvas）"
+    ],
+    "weaknesses": [
+      "需要自行部署和维护",
+      "功能相对基础，高级功能有限"
+    ],
+    "source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.8
+  }
+]

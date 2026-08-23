@@ -1,0 +1,15 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "comp_note_1",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "competitors": [
+      "腾讯会议"
+    ],
+    "dimension": "产品能力",
+    "comparable": true,
+    "basis": "所有证据均来自腾讯会议官方渠道，功能描述口径一致，可进行内部一致性比较。",
+    "limitations": "证据未覆盖所有版本和所有功能，部分功能（如会议质量监控）仅提及企业版/教育版，版本差异需进一步核实。"
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_1_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_1_positioning_1",
+    "competitor": "明策咨询",
+    "dimension": "positioning",
+    "snippet": "明策咨询面向成长企业。",
+    "normalized_fact": "明策咨询面向成长企业。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_1_customer_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_1_customer_1",
+    "competitor": "明策咨询",
+    "dimension": "customer",
+    "snippet": "客户需要阶段性合规诊断与整改建议。",
+    "normalized_fact": "客户需要阶段性合规诊断与整改建议。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_1_feature_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_1_feature_1",
+    "competitor": "明策咨询",
+    "dimension": "feature",
+    "snippet": "由固定顾问团队按标准流程交付。",
+    "normalized_fact": "由固定顾问团队按标准流程交付。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_1_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_1_pricing_1",
+    "competitor": "明策咨询",
+    "dimension": "pricing",
+    "snippet": "按项目范围和顾问投入计费。",
+    "normalized_fact": "按项目范围和顾问投入计费。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_1_risk_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_1_risk_1",
+    "competitor": "明策咨询",
+    "dimension": "risk",
+    "snippet": "服务效果依赖顾问经验与客户资料完整度。",
+    "normalized_fact": "服务效果依赖顾问经验与客户资料完整度。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_2_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_2_positioning_1",
+    "competitor": "远见顾问",
+    "dimension": "positioning",
+    "snippet": "远见顾问面向大型组织。",
+    "normalized_fact": "远见顾问面向大型组织。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_2_customer_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_2_customer_1",
+    "competitor": "远见顾问",
+    "dimension": "customer",
+    "snippet": "客户需要跨部门、长期的定制咨询支持。",
+    "normalized_fact": "客户需要跨部门、长期的定制咨询支持。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_2_feature_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_2_feature_1",
+    "competitor": "远见顾问",
+    "dimension": "feature",
+    "snippet": "由资深顾问组成专项团队交付。",
+    "normalized_fact": "由资深顾问组成专项团队交付。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_2_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_2_pricing_1",
+    "competitor": "远见顾问",
+    "dimension": "pricing",
+    "snippet": "按合同周期和团队配置计费。",
+    "normalized_fact": "按合同周期和团队配置计费。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_professional_service"
+    },
+    "id": "ev_cross_industry_professional_service_2_risk_1",
+    "task_id": "step6c_fixture_cross_industry_professional_service",
+    "source_id": "src_cross_industry_professional_service_2_risk_1",
+    "competitor": "远见顾问",
+    "dimension": "risk",
+    "snippet": "交付一致性依赖团队配置与项目治理。",
+    "normalized_fact": "交付一致性依赖团队配置与项目治理。",
+    "confidence": 0.85
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "collection_method": "web_collector_seed_url_v1",
+      "research_task_id": "researchtask_task_step6e5_research_loop_complete_feature_round_1",
+      "search_result_id": "",
+      "content_hash": "5b0a30ead0633fd911dfed1fdbdbd73a9fef9a77987f32519eeec3dc7e22daa6",
+      "render_mode": "http",
+      "browser_engine": ""
+    },
+    "id": "src_dada2660a0f6",
+    "task_id": "task_step6e5_research_loop_complete",
+    "title": "测试会议能力说明甲",
+    "url": "https://step6e5.test/one",
+    "source_type": "official_site",
+    "competitor": "测试会议",
+    "accessed_at": "2026-08-23T13:54:51.061238Z",
+    "content_excerpt": "测试会议能力说明甲\n测试会议支持屏幕共享、会议录制和实时字幕，帮助企业完成远程协作。\n测试会议提供多人音视频会议和跨终端协作功能，本页为官方能力说明甲。",
+    "reliability_score": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "collection_method": "web_collector_seed_url_v1",
+      "research_task_id": "researchtask_task_step6e5_research_loop_complete_feature_round_1",
+      "search_result_id": "",
+      "content_hash": "4e4d89c0e628d32c583f6f896b9882932de7003559f6b86076b97326bc6429a5",
+      "render_mode": "http",
+      "browser_engine": ""
+    },
+    "id": "src_093820e945c9",
+    "task_id": "task_step6e5_research_loop_complete",
+    "title": "测试会议能力说明乙",
+    "url": "https://step6e5.test/two",
+    "source_type": "official_site",
+    "competitor": "测试会议",
+    "accessed_at": "2026-08-23T13:54:51.062238Z",
+    "content_excerpt": "测试会议能力说明乙\n测试会议支持屏幕共享、会议录制和实时字幕，帮助企业完成远程协作。\n测试会议提供多人音视频会议和跨终端协作功能，本页为官方能力说明乙。",
+    "reliability_score": 0.8
+  }
+]

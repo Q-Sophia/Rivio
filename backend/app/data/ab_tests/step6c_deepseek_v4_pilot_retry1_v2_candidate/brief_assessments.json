@@ -1,0 +1,26 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "ba_001",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "decision_question": "Analyze online education real-time interaction and virtual classroom competitors from local snapshot evidence.",
+    "industry": "online education",
+    "target_customers": [],
+    "core_scenarios": [],
+    "selected_dimensions": [
+      "positioning",
+      "feature",
+      "pricing",
+      "ecosystem",
+      "customer",
+      "risk"
+    ],
+    "missing_fields": [
+      "target_customers",
+      "core_scenarios",
+      "decision_context"
+    ],
+    "sufficient_for_analysis": false
+  }
+]

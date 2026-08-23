@@ -1,0 +1,85 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_001",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question_id": "kiq_001",
+    "dimension": "customer",
+    "required_facts": [
+      "目标客户类型（教育机构/开发者）",
+      "客户规模",
+      "客户技术能力"
+    ],
+    "preferred_source_types": [
+      "客户案例",
+      "市场调研",
+      "官方文档"
+    ],
+    "comparability_basis": "客户类型和规模",
+    "decision_link": "确定竞争集合和评估标准"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_002",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question_id": "kiq_002",
+    "dimension": "feature",
+    "required_facts": [
+      "最大并发互动人数",
+      "直播观看人数",
+      "延时指标",
+      "互动功能深度"
+    ],
+    "preferred_source_types": [
+      "官方文档",
+      "技术白皮书",
+      "性能测试报告"
+    ],
+    "comparability_basis": "场景类型和性能指标",
+    "decision_link": "评估功能是否满足核心场景"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_003",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question_id": "kiq_003",
+    "dimension": "risk",
+    "required_facts": [
+      "部署模式",
+      "数据存储位置",
+      "定制化能力",
+      "开源许可"
+    ],
+    "preferred_source_types": [
+      "官方文档",
+      "开源仓库",
+      "合规报告"
+    ],
+    "comparability_basis": "部署模式和自主可控程度",
+    "decision_link": "评估风险和数据主权"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "in_004",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question_id": "kiq_004",
+    "dimension": "pricing",
+    "required_facts": [
+      "订阅价格",
+      "开发集成成本",
+      "运维成本",
+      "硬件成本"
+    ],
+    "preferred_source_types": [
+      "定价页面",
+      "成本分析报告",
+      "客户案例"
+    ],
+    "comparability_basis": "总拥有成本（TCO）",
+    "decision_link": "评估投资回报"
+  }
+]

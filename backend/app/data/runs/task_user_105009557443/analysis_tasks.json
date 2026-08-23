@@ -1,0 +1,30 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source_draft_id": "draft_96b127bc4480",
+      "request_text": "请调研 ClassIn 的竞品分析",
+      "target_customers": [],
+      "core_scenarios": [],
+      "constraints": [],
+      "competitor_discovery_required": true,
+      "execution_started": false,
+      "dataset_compatibility": "not_checked",
+      "next_step": "Step6D.3 dataset compatibility and execution planning"
+    },
+    "id": "task_user_105009557443",
+    "task_id": "task_user_105009557443",
+    "query": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "industry": "",
+    "focus_areas": [],
+    "report_subject": "ClassIn竞品分析",
+    "preferred_title": "",
+    "mode": "live",
+    "status": "pending",
+    "created_at": "2026-08-23T14:17:04.411931Z",
+    "updated_at": "2026-08-23T14:17:04.411931Z"
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "network_used": false,
+      "real_llm_used": false,
+      "planning_method": "deterministic_mock_v1",
+      "waiting_for_collector_count": 3,
+      "competitor_discovery_required": false,
+      "competitor_discovery_method": "not_run",
+      "discovered_competitors": [],
+      "known_url_revalidation": false
+    },
+    "id": "researchplan_d5effa068669",
+    "task_id": "task_step6e1_dynamic_research",
+    "decision_question": "比较三种在线教学工具，为高校平台选型提供依据。",
+    "status": "needs_collection",
+    "kiq_ids": [
+      "kiq_4020e7e0f0d5",
+      "kiq_e8287da51862",
+      "kiq_eb4cc2f915b2"
+    ],
+    "information_need_ids": [
+      "need_a03284400aa0",
+      "need_2d31f6dd7727",
+      "need_daecc34ab8ff"
+    ],
+    "research_task_ids": [
+      "researchtask_3e2d8e8219f3",
+      "researchtask_778c1fd8af0f",
+      "researchtask_431fa529c838",
+      "researchtask_6559446d180f",
+      "researchtask_d537e5c6b145",
+      "researchtask_9511f98069b7",
+      "researchtask_c139f29f4689",
+      "researchtask_b646acae314d",
+      "researchtask_770fffa73798"
+    ],
+    "covered_competitors": [
+      "ClassIn",
+      "BigBlueButton"
+    ],
+    "missing_competitors": [
+      "腾讯会议"
+    ],
+    "covered_dimensions": [
+      "产品能力",
+      "价格",
+      "生态"
+    ],
+    "missing_dimensions": [],
+    "budget": {
+      "max_collection_rounds": 3,
+      "max_sources_per_task": 5,
+      "max_total_sources": 40,
+      "max_real_llm_calls": 0,
+      "stop_when_all_required_facts_covered": true
+    },
+    "planner_provider": "mock-research-planner-v1",
+    "created_at": "2026-08-23T13:54:49.484418Z"
+  }
+]

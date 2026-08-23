@@ -1,0 +1,104 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_cl_llm_online_education_positioning",
+    "task_id": "snapshot_online_education_demo",
+    "claim_id": "cl_llm_online_education_positioning",
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-12T17:40:13.590425Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_cl_llm_online_education_feature",
+    "task_id": "snapshot_online_education_demo",
+    "claim_id": "cl_llm_online_education_feature",
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report"
+    ],
+    "status": "supported",
+    "message": "All 6 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-12T17:40:13.590425Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_cl_llm_online_education_pricing",
+    "task_id": "snapshot_online_education_demo",
+    "claim_id": "cl_llm_online_education_pricing",
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "status": "supported",
+    "message": "All 6 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-12T17:40:13.590425Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_cl_llm_online_education_ecosystem",
+    "task_id": "snapshot_online_education_demo",
+    "claim_id": "cl_llm_online_education_ecosystem",
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "status": "weak",
+    "message": "All evidence_ids exist, but weak evidence/source reliability is present: ev_bbb_lms_integration",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-12T17:40:13.590425Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_cl_llm_online_education_risk",
+    "task_id": "snapshot_online_education_demo",
+    "claim_id": "cl_llm_online_education_risk",
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-12T17:40:13.590425Z"
+  }
+]

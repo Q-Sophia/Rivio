@@ -1,0 +1,173 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_1_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_1_positioning_1",
+    "competitor": "成品方案",
+    "dimension": "positioning",
+    "snippet": "成品方案面向明确的目标客户与任务场景。",
+    "normalized_fact": "成品方案面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths",
+      "baseline_candidate": true
+    },
+    "id": "ev_different_solution_paths_1_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_1_feature_1",
+    "competitor": "成品方案",
+    "dimension": "feature",
+    "snippet": "成品方案提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "成品方案提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_1_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_1_pricing_1",
+    "competitor": "成品方案",
+    "dimension": "pricing",
+    "snippet": "成品方案公开了标准方案的价格与计费边界。",
+    "normalized_fact": "成品方案公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_1_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_1_risk_1",
+    "competitor": "成品方案",
+    "dimension": "risk",
+    "snippet": "成品方案存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "成品方案存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_2_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_2_positioning_1",
+    "competitor": "能力平台",
+    "dimension": "positioning",
+    "snippet": "能力平台面向明确的目标客户与任务场景。",
+    "normalized_fact": "能力平台面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths",
+      "baseline_candidate": true
+    },
+    "id": "ev_different_solution_paths_2_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_2_feature_1",
+    "competitor": "能力平台",
+    "dimension": "feature",
+    "snippet": "能力平台提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "能力平台提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_2_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_2_pricing_1",
+    "competitor": "能力平台",
+    "dimension": "pricing",
+    "snippet": "能力平台公开了标准方案的价格与计费边界。",
+    "normalized_fact": "能力平台公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_2_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_2_risk_1",
+    "competitor": "能力平台",
+    "dimension": "risk",
+    "snippet": "能力平台存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "能力平台存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_3_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_3_positioning_1",
+    "competitor": "自主建设",
+    "dimension": "positioning",
+    "snippet": "自主建设面向明确的目标客户与任务场景。",
+    "normalized_fact": "自主建设面向明确的目标客户与任务场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths",
+      "baseline_candidate": true
+    },
+    "id": "ev_different_solution_paths_3_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_3_feature_1",
+    "competitor": "自主建设",
+    "dimension": "feature",
+    "snippet": "自主建设提供完成核心任务所需的共同基础能力。",
+    "normalized_fact": "自主建设提供完成核心任务所需的共同基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_3_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_3_pricing_1",
+    "competitor": "自主建设",
+    "dimension": "pricing",
+    "snippet": "自主建设公开了标准方案的价格与计费边界。",
+    "normalized_fact": "自主建设公开了标准方案的价格与计费边界。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "ev_different_solution_paths_3_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "source_id": "src_different_solution_paths_3_risk_1",
+    "competitor": "自主建设",
+    "dimension": "risk",
+    "snippet": "自主建设存在需要评估的采用、维护或转换风险。",
+    "normalized_fact": "自主建设存在需要评估的采用、维护或转换风险。",
+    "confidence": 0.85
+  }
+]

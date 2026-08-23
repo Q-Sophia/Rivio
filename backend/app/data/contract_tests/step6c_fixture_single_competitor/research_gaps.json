@@ -1,0 +1,25 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_step6c_fixture_single_competitor_comparison_scope",
+    "task_id": "step6c_fixture_single_competitor",
+    "competitors": [
+      "甲方案"
+    ],
+    "dimension": "comparison_scope",
+    "missing_information": "当前只有一个竞争对象，缺少横向比较基准。",
+    "decision_blocked": "不能判断观察结果是对象特征还是行业共性。",
+    "why_existing_evidence_is_insufficient": "单对象资料不能支撑跨竞品比较。",
+    "suggested_queries": [
+      "补充至少一个直接竞品或替代方案"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "high",
+    "stop_condition": "已补充一个与决策问题相关且可说明选择理由的比较对象。",
+    "related_evidence_ids": []
+  }
+]

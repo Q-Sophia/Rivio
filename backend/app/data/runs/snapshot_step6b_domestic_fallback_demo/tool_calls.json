@@ -1,0 +1,550 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.814086+00:00",
+      "completed_at": "2026-08-12T11:04:21.815086+00:00"
+    },
+    "id": "tool_run_collect_sources_001",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "snapshot_collector.collect",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "snapshot_id": "online_education",
+      "snapshot_root": null
+    },
+    "output_summary": "Returned tuple with 2 items",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.814086Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.816086+00:00",
+      "completed_at": "2026-08-12T11:04:21.818087+00:00"
+    },
+    "id": "tool_run_collect_sources_002",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "sources",
+      "items": {
+        "type": "list",
+        "count": 9,
+        "item_type": "SourceDocument"
+      }
+    },
+    "output_summary": "Saved 9 sources",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.816086Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.819088+00:00",
+      "completed_at": "2026-08-12T11:04:21.821089+00:00"
+    },
+    "id": "tool_run_collect_sources_003",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "evidence",
+      "items": {
+        "type": "list",
+        "count": 32,
+        "item_type": "SourceEvidence"
+      }
+    },
+    "output_summary": "Saved 32 evidence items",
+    "status": "completed",
+    "duration_ms": 2,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.819088Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.896105+00:00",
+      "completed_at": "2026-08-12T11:04:21.922111+00:00"
+    },
+    "id": "tool_run_build_product_cards_004",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 2,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 2 artifact groups, total_items=41",
+    "status": "completed",
+    "duration_ms": 26,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.896105Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.924111+00:00",
+      "completed_at": "2026-08-12T11:04:21.924111+00:00"
+    },
+    "id": "tool_run_build_product_cards_005",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "node_id": "build_product_cards",
+      "message": "已验证 evidence.source_id（证据来源编号）引用"
+    },
+    "output_summary": "已验证 evidence.source_id（证据来源编号）引用",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.924111Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:21.985125+00:00",
+      "completed_at": "2026-08-12T11:04:21.995127+00:00"
+    },
+    "id": "tool_run_build_product_cards_006",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 10,
+    "error": "",
+    "created_at": "2026-08-12T11:04:21.985125Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.000129+00:00",
+      "completed_at": "2026-08-12T11:04:22.002131+00:00"
+    },
+    "id": "tool_run_build_product_cards_007",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "product_cards",
+      "items": {
+        "type": "list",
+        "count": 3,
+        "item_type": "ProductCard"
+      }
+    },
+    "output_summary": "已保存 3 个 mock LLM（模拟大模型）产品卡片",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.000129Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.082147+00:00",
+      "completed_at": "2026-08-12T11:04:22.094148+00:00"
+    },
+    "id": "tool_run_build_claims_008",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 2,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 2 artifact groups, total_items=35",
+    "status": "completed",
+    "duration_ms": 12,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.082147Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.096151+00:00",
+      "completed_at": "2026-08-12T11:04:22.096151+00:00"
+    },
+    "id": "tool_run_build_claims_009",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "node_id": "build_claims",
+      "message": "已验证 product_cards.evidence_ids（产品卡片证据编号）引用"
+    },
+    "output_summary": "已验证 product_cards.evidence_ids（产品卡片证据编号）引用",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.096151Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.159017+00:00",
+      "completed_at": "2026-08-12T11:04:22.171020+00:00"
+    },
+    "id": "tool_run_build_claims_010",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 12,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.159017Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.200028+00:00",
+      "completed_at": "2026-08-12T11:04:22.201028+00:00"
+    },
+    "id": "tool_run_build_claims_011",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "claims",
+      "items": {
+        "type": "list",
+        "count": 5,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "已保存 5 个 mock LLM（模拟大模型）分析结论",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.200028Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.285635+00:00",
+      "completed_at": "2026-08-12T11:04:22.299637+00:00"
+    },
+    "id": "tool_run_check_citations_012",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 3,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 3 artifact groups, total_items=46",
+    "status": "completed",
+    "duration_ms": 13,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.285635Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.301639+00:00",
+      "completed_at": "2026-08-12T11:04:22.302640+00:00"
+    },
+    "id": "tool_run_check_citations_013",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "citation_checker.check_claims",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "sources": {
+        "type": "list",
+        "count": 9,
+        "item_type": "SourceDocument"
+      },
+      "evidence": {
+        "type": "list",
+        "count": 32,
+        "item_type": "SourceEvidence"
+      },
+      "claims": {
+        "type": "list",
+        "count": 5,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "Returned tuple with 2 items",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.301639Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.304640+00:00",
+      "completed_at": "2026-08-12T11:04:22.304640+00:00"
+    },
+    "id": "tool_run_check_citations_014",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "node_id": "check_citations",
+      "message": "Checked 5 claim citation links, supported=4, weak=1"
+    },
+    "output_summary": "Checked 5 claim citation links, supported=4, weak=1",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.304640Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.306639+00:00",
+      "completed_at": "2026-08-12T11:04:22.307639+00:00"
+    },
+    "id": "tool_run_check_citations_015",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "claims",
+      "items": {
+        "type": "list",
+        "count": 5,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "Saved 5 claims with citation status",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.306639Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.308640+00:00",
+      "completed_at": "2026-08-12T11:04:22.309639+00:00"
+    },
+    "id": "tool_run_check_citations_016",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "citation_checks",
+      "items": {
+        "type": "list",
+        "count": 5,
+        "item_type": "CitationCheck"
+      }
+    },
+    "output_summary": "Saved 5 citation checks",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.308640Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.385661+00:00",
+      "completed_at": "2026-08-12T11:04:22.411671+00:00"
+    },
+    "id": "tool_run_build_report_017",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_report",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 5,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 5 artifact groups, total_items=54",
+    "status": "completed",
+    "duration_ms": 26,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.385661Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.483682+00:00",
+      "completed_at": "2026-08-12T11:04:22.497190+00:00"
+    },
+    "id": "tool_run_build_report_018",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_report",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 12,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.483682Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.529143+00:00",
+      "completed_at": "2026-08-12T11:04:22.530144+00:00"
+    },
+    "id": "tool_run_build_report_019",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_build_report",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "reports",
+      "items": {
+        "type": "list",
+        "count": 1,
+        "item_type": "CompetitiveReport"
+      }
+    },
+    "output_summary": "已保存 1 份 mock LLM（模拟大模型）竞品报告",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.529143Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.629688+00:00",
+      "completed_at": "2026-08-12T11:04:22.642692+00:00"
+    },
+    "id": "tool_run_review_report_020",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_review_report",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 4,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 4 artifact groups, total_items=14",
+    "status": "completed",
+    "duration_ms": 13,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.629688Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.644691+00:00",
+      "completed_at": "2026-08-12T11:04:22.644691+00:00"
+    },
+    "id": "tool_run_review_report_021",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_review_report",
+    "tool_name": "review_checker.check_report",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "report": {
+        "schema": "CompetitiveReport",
+        "id": "report_llm_online_education_product_rd"
+      },
+      "claims": {
+        "type": "list",
+        "count": 5,
+        "item_type": "AnalysisClaim"
+      },
+      "citation_checks": {
+        "type": "list",
+        "count": 5,
+        "item_type": "CitationCheck"
+      },
+      "product_cards": {
+        "type": "list",
+        "count": 3,
+        "item_type": "ProductCard"
+      }
+    },
+    "output_summary": "Returned ReviewFeedback review_online_education_report",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.644691Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:04:22.646692+00:00",
+      "completed_at": "2026-08-12T11:04:22.647692+00:00"
+    },
+    "id": "tool_run_review_report_022",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "agent_run_id": "run_review_report",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_step6b_domestic_fallback_demo",
+      "artifact_type": "review_feedback",
+      "items": {
+        "type": "list",
+        "count": 1,
+        "item_type": "ReviewFeedback"
+      }
+    },
+    "output_summary": "Saved review feedback, approved=True, score=9.0",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:04:22.646692Z"
+  }
+]

@@ -1,0 +1,74 @@
+{
+  "schema_version": "v1",
+  "prompts": [
+    {
+      "id": "intent_parser",
+      "version": "1.0.0-candidate",
+      "path": "intent_parser/v1.yaml",
+      "agent_role": "intent",
+      "output_contract": "AnalysisTaskDraft",
+      "language": "zh-CN",
+      "status": "candidate_not_runtime_enabled",
+      "requires": ["UserRequestText"],
+      "evaluation_plan": "docs/step6d_intent_intake.md"
+    },
+    {
+      "id": "competitive_analyst_baseline",
+      "version": "1.0.0-ab-baseline",
+      "path": "competitive_analyst/baseline_v1.yaml",
+      "agent_role": "analyst",
+      "output_contract": "CompetitiveAnalysisPortfolioV2",
+      "language": "zh-CN",
+      "status": "evaluation_only",
+      "requires": [
+        "AnalysisTask",
+        "SourceDocument[]",
+        "SourceEvidence[]",
+        "ProductCard[]"
+      ],
+      "evaluation_plan": "docs/step6c_prompt_evaluation_plan.md"
+    },
+    {
+      "id": "competitive_analyst",
+      "version": "2.2.2-candidate",
+      "path": "competitive_analyst/v2.yaml",
+      "agent_role": "analyst",
+      "output_contract": "CompetitiveAnalysisPortfolioV2",
+      "language": "zh-CN",
+      "status": "candidate_not_runtime_enabled",
+      "requires": [
+        "AnalysisTask",
+        "SourceDocument[]",
+        "SourceEvidence[]",
+        "ProductCard[]",
+        "CompetitorProfile",
+        "KeyIntelligenceQuestion",
+        "InformationNeed",
+        "AnalysisClaimV2",
+        "ResearchGap",
+        "EvidenceCoverage"
+      ],
+      "evaluation_plan": "docs/step6c_prompt_evaluation_plan.md"
+    },
+    {
+      "id": "competitive_writer",
+      "version": "2.1.1-candidate",
+      "path": "competitive_writer/v2.yaml",
+      "agent_role": "writer",
+      "output_contract": "CompetitiveReport",
+      "language": "zh-CN",
+      "status": "candidate_not_runtime_enabled",
+      "requires": [
+        "AnalysisTask",
+        "BriefAssessment",
+        "CompetitorProfile[]",
+        "EvidenceCoverage[]",
+        "ComparabilityNote[]",
+        "AnalysisClaimV2[]",
+        "CitationCheck[]",
+        "ResearchGap[]"
+      ],
+      "evaluation_plan": "docs/step6c_writer_evaluation_plan.md"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_tencent_meeting_feature",
+    "task_id": "task_step6e3_web_evidence",
+    "information_need_id": "need_feature",
+    "title": "核实腾讯会议产品能力",
+    "objective": "采集并抽取腾讯会议官方功能事实",
+    "competitor": "腾讯会议",
+    "dimension": "产品能力",
+    "query_hints": [],
+    "seed_urls": [
+      "https://meeting.tencent.test/product"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [],
+    "preferred_source_types": [
+      "official_site"
+    ],
+    "priority": "medium",
+    "status": "evidence_extracted",
+    "stop_condition": "获得至少一条可追溯官方证据",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_1_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "成品方案positioning资料",
+    "url": "https://fixture.invalid/different_solution_paths/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "成品方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "成品方案面向明确的目标客户与任务场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_1_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "成品方案feature资料",
+    "url": "https://fixture.invalid/different_solution_paths/1/feature/1",
+    "source_type": "official_site",
+    "competitor": "成品方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "成品方案提供完成核心任务所需的共同基础能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_1_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "成品方案pricing资料",
+    "url": "https://fixture.invalid/different_solution_paths/1/pricing/1",
+    "source_type": "official_site",
+    "competitor": "成品方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "成品方案公开了标准方案的价格与计费边界。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_1_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "成品方案risk资料",
+    "url": "https://fixture.invalid/different_solution_paths/1/risk/1",
+    "source_type": "official_site",
+    "competitor": "成品方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "成品方案存在需要评估的采用、维护或转换风险。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_2_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "能力平台positioning资料",
+    "url": "https://fixture.invalid/different_solution_paths/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "能力平台",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "能力平台面向明确的目标客户与任务场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_2_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "能力平台feature资料",
+    "url": "https://fixture.invalid/different_solution_paths/2/feature/1",
+    "source_type": "official_site",
+    "competitor": "能力平台",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "能力平台提供完成核心任务所需的共同基础能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_2_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "能力平台pricing资料",
+    "url": "https://fixture.invalid/different_solution_paths/2/pricing/1",
+    "source_type": "official_site",
+    "competitor": "能力平台",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "能力平台公开了标准方案的价格与计费边界。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_2_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "能力平台risk资料",
+    "url": "https://fixture.invalid/different_solution_paths/2/risk/1",
+    "source_type": "official_site",
+    "competitor": "能力平台",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "能力平台存在需要评估的采用、维护或转换风险。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_3_positioning_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "自主建设positioning资料",
+    "url": "https://fixture.invalid/different_solution_paths/3/positioning/1",
+    "source_type": "official_site",
+    "competitor": "自主建设",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "自主建设面向明确的目标客户与任务场景。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_3_feature_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "自主建设feature资料",
+    "url": "https://fixture.invalid/different_solution_paths/3/feature/1",
+    "source_type": "official_site",
+    "competitor": "自主建设",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "自主建设提供完成核心任务所需的共同基础能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_3_pricing_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "自主建设pricing资料",
+    "url": "https://fixture.invalid/different_solution_paths/3/pricing/1",
+    "source_type": "official_site",
+    "competitor": "自主建设",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "自主建设公开了标准方案的价格与计费边界。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "different_solution_paths"
+    },
+    "id": "src_different_solution_paths_3_risk_1",
+    "task_id": "step6c_fixture_different_solution_paths",
+    "title": "自主建设risk资料",
+    "url": "https://fixture.invalid/different_solution_paths/3/risk/1",
+    "source_type": "official_site",
+    "competitor": "自主建设",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "自主建设存在需要评估的采用、维护或转换风险。",
+    "reliability_score": 0.85
+  }
+]

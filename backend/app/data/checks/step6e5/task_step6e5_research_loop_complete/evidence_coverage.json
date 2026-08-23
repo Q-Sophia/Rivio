@@ -1,0 +1,26 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_测试会议_feature",
+    "task_id": "task_step6e5_research_loop_complete",
+    "competitor": "测试会议",
+    "dimension": "feature",
+    "status": "sufficient",
+    "source_ids": [
+      "src_093820e945c9",
+      "src_dada2660a0f6"
+    ],
+    "evidence_ids": [
+      "ev_11d5dd0d06bf",
+      "ev_6f6682b92d37",
+      "ev_545306fbb3d2",
+      "ev_5fdce9542dff",
+      "ev_65e4c4746a8c",
+      "ev_ada4b455005a",
+      "ev_116ce23f5d2e",
+      "ev_bfa7a2336e69"
+    ],
+    "limitations": "证据数量已形成基础覆盖，仍建议采用统一口径复核。"
+  }
+]

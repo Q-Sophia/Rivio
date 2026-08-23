@@ -1,0 +1,1180 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_product_cards",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "llm_call_id": "llmcall_build_product_cards",
+    "agent_role": "extractor",
+    "output_schema": "ProductCard[]",
+    "raw_output": {
+      "items": [
+        {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm",
+            "source": "LLMClient._mock_product_card",
+            "output_language": "zh-CN"
+          },
+          "id": "prod_llm_classin",
+          "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+          "name": "ClassIn",
+          "company": "ClassIn",
+          "positioning": "ClassIn 的产品卡片基于 15 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本。",
+          "target_users": [
+            "目标客户与业务负责人",
+            "产品、服务与战略评估人员"
+          ],
+          "pricing_summary": "免费版 | 免费 | 老师备课与学生自学 | ... 每月限制 10 次课，累计 50 次免费课堂；单次课堂 40 分钟限制；7 人音视频实时互动。；基础版 | ￥1800 起；原价 ￥3100/年，按年购买开通版本 | 个人教师 / 小团队 ... 300 人大班教学；云端录课；屏幕共享；个人后台。",
+          "core_features": [
+            "支持多达 16 人的同步面对面教学，教师和学生都可以使用视频窗口、音频并进行交互。",
+            "拥有互动式电子黑板，具有预编辑、多页滚动和无限使用功能，支持授权人员同时操作和使用。",
+            "配备了互动式小黑板、答题器、计时器、教师屏幕共享、视频墙、随机选人答题等几十种教学工具。",
+            "支持多种交互式教学课件，如动画效果 PPT、视频、音频、Word、pdf 等，同时支持多课件组合教学。",
+            "具有举手、抢答、授奖、上下讲台等课堂控制功能，能够营造竞争激烈的课堂氛围。"
+          ],
+          "strengths": [
+            "现有证据覆盖 5 个分析维度，具备基础可追溯性。"
+          ],
+          "weaknesses": [
+            "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+          ],
+          "source_ids": [
+            "src_classin_download",
+            "src_classin_hardware",
+            "src_classin_intro",
+            "src_classin_pricing_tools"
+          ],
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_16_way_interaction",
+            "ev_classin_teaching_modes",
+            "ev_classin_whiteboard_tools",
+            "ev_classin_classroom_toolkit",
+            "ev_classin_courseware_support",
+            "ev_classin_classroom_control",
+            "ev_classin_learning_report",
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_classin_business_api",
+            "ev_classin_premium_prepaid_api",
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_client_positioning",
+            "ev_classin_ai_lms"
+          ],
+          "confidence": 0.72
+        },
+        {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm",
+            "source": "LLMClient._mock_product_card",
+            "output_language": "zh-CN"
+          },
+          "id": "prod_llm_腾讯云实时互动___trtc_教育方案",
+          "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+          "name": "腾讯云实时互动 / TRTC 教育方案",
+          "company": "腾讯云实时互动 / TRTC 教育方案",
+          "positioning": "腾讯云实时互动 / TRTC 教育方案 的产品卡片基于 10 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本、风险与限制。",
+          "target_users": [
+            "目标客户与业务负责人",
+            "产品、服务与战略评估人员"
+          ],
+          "pricing_summary": "价格 | 0元/月 | 1,499元/月 | 3,599元/月 | 6,999元/月 ... 音视频时长 | 50小时/月 | 750小时/月 | 2,000小时/月 | 4,200小时/月。；课堂容量 | 无限 | 1,000人 | 2,000人 | 无限 ... API对接服务 | — | 轻量API对接服务 | 标准API对接服务 | 专属VIP对接服务。",
+          "core_features": [
+            "集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能。",
+            "提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台互通的客户端集成方案。",
+            "支持多达17人同屏连麦互动以及百万人小于1秒的超低延时直播观看体验。",
+            "支持动态 / 静态课件、H5课件、PPT、Word、Excel、PDF 文档、JPG、PNG 图片等教学课件演示... 支持手动/自动录制，老师和学生音视频流、白板内容、课件内容同步录制。",
+            "通过调用Open API即可实现与业务侧教学平台中的排课系统、用户管理系统与课件系统完成无缝对接。"
+          ],
+          "strengths": [
+            "现有证据覆盖 6 个分析维度，具备基础可追溯性。"
+          ],
+          "weaknesses": [
+            "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+          ],
+          "source_ids": [
+            "src_tencent_lcic_pricing_article",
+            "src_tencent_lcic_product"
+          ],
+          "evidence_ids": [
+            "ev_tencent_lcic_low_code",
+            "ev_tencent_core_features",
+            "ev_tencent_scenarios_dev_reduction",
+            "ev_tencent_cross_platform",
+            "ev_tencent_scale_latency",
+            "ev_tencent_courseware_recording",
+            "ev_tencent_open_api",
+            "ev_tencent_moderation_ai_noise",
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ],
+          "confidence": 0.72
+        },
+        {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm",
+            "source": "LLMClient._mock_product_card",
+            "output_language": "zh-CN"
+          },
+          "id": "prod_llm_bigbluebutton",
+          "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+          "name": "BigBlueButton",
+          "company": "BigBlueButton",
+          "positioning": "BigBlueButton 的产品卡片基于 7 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、风险与限制。",
+          "target_users": [
+            "目标客户与业务负责人",
+            "产品、服务与战略评估人员"
+          ],
+          "pricing_summary": "当前快照中的定价证据有限，需要后续调研补充。",
+          "core_features": [
+            "上传PowerPoint、Word、PDF和图片等文档。使用虚拟白板来突出内容。让学生参与分组讨论，参与协作学习。",
+            "通过公开和私下聊天与你的班级交流。用多用户白板鼓励创造性思维。使用共享笔记，方便团队协作。直观的屏幕共享，让学生保持参与。",
+            "在课堂上通过虚拟举手提供反馈。通过我们丰富的表情符号表达自我。上课时分享你的摄像头视频，并使用自定义背景。",
+            "工具集成：可以与 LMS（学习管理系统）如 Moodle、Canvas 等系统集成，方便教学资源管理。"
+          ],
+          "strengths": [
+            "现有证据覆盖 5 个分析维度，具备基础可追溯性。"
+          ],
+          "weaknesses": [
+            "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+          ],
+          "source_ids": [
+            "src_bbb_features",
+            "src_bbb_github",
+            "src_bbb_juejin_lms"
+          ],
+          "evidence_ids": [
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools",
+            "ev_bbb_engagement_video",
+            "ev_bbb_open_source_self_hosted",
+            "ev_bbb_deployment_risk",
+            "ev_bbb_education_use_cases",
+            "ev_bbb_lms_integration"
+          ],
+          "confidence": 0.72
+        }
+      ],
+      "generated_by": "AgentRole.EXTRACTOR",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-14T10:21:12.561790Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_claims",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "llm_call_id": "llmcall_build_claims",
+    "agent_role": "analyst",
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "raw_output": {
+      "item": {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm",
+          "industry": "online education",
+          "source_count": 9
+        },
+        "id": "portfolio_snapshot_step6c2d_writer_deepseek_v4_pil",
+        "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+        "prompt_id": "competitive_analyst",
+        "prompt_version": "2.2.1-candidate",
+        "brief_assessment": {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm"
+          },
+          "id": "brief_snapshot_step6c2d_writer_deepseek_v4_pil",
+          "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+          "decision_question": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+          "industry": "online education",
+          "target_customers": [],
+          "core_scenarios": [],
+          "selected_dimensions": [
+            "customer",
+            "ecosystem",
+            "feature",
+            "positioning",
+            "pricing",
+            "risk"
+          ],
+          "missing_fields": [
+            "目标客户",
+            "核心场景"
+          ],
+          "sufficient_for_analysis": false
+        },
+        "competitor_profiles": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_classin",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "name": "ClassIn",
+            "role": "direct",
+            "selection_reason": "ClassIn 是任务预选研究对象，现有资料覆盖5 个证据维度。",
+            "represented_path": "面向教育机构的开箱即用在线教学产品",
+            "comparable_dimensions": [
+              "customer",
+              "ecosystem",
+              "feature",
+              "positioning",
+              "pricing"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "目标客户与业务负责人",
+              "产品、服务与战略评估人员"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "ClassIn 的产品卡片基于 15 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本。",
+            "offering_scope": "支持多达 16 人的同步面对面教学，教师和学生都可以使用视频窗口、音频并进行交互。；拥有互动式电子黑板，具有预编辑、多页滚动和无限使用功能，支持授权人员同时操作和使用。；配备了互动式小黑板、答题器、计时器、教师屏幕共享、视频墙、随机选人答题等几十种教学工具。",
+            "delivery_model": "以完整产品和客户端能力交付，具体服务责任仍需结合合同确认",
+            "business_model": "免费版 | 免费 | 老师备课与学生自学 | ... 每月限制 10 次课，累计 50 次免费课堂；单次课堂 40 分钟限制；7 人音视频实时互动。；基础版 | ￥1800 起；原价 ￥3100/年，按年购买开通版本 | 个人教师 / 小团队 ... 300 人大班教学；云端录课；屏幕共享；个人后台。",
+            "source_ids": [
+              "src_classin_download",
+              "src_classin_hardware",
+              "src_classin_intro",
+              "src_classin_pricing_tools"
+            ],
+            "evidence_ids": [
+              "ev_classin_scene_breadth",
+              "ev_classin_16_way_interaction",
+              "ev_classin_teaching_modes",
+              "ev_classin_whiteboard_tools",
+              "ev_classin_classroom_toolkit",
+              "ev_classin_courseware_support",
+              "ev_classin_classroom_control",
+              "ev_classin_learning_report",
+              "ev_classin_free_limits",
+              "ev_classin_basic_price_capacity",
+              "ev_classin_business_api",
+              "ev_classin_premium_prepaid_api",
+              "ev_classin_hardware_ecosystem",
+              "ev_classin_client_positioning",
+              "ev_classin_ai_lms"
+            ],
+            "confidence": 0.72
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_腾讯云实时互动___trtc_教育方案",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "name": "腾讯云实时互动 / TRTC 教育方案",
+            "role": "direct",
+            "selection_reason": "腾讯云实时互动 / TRTC 教育方案 是任务预选研究对象，现有资料覆盖6 个证据维度。",
+            "represented_path": "供教育平台集成的云端实时互动能力",
+            "comparable_dimensions": [
+              "customer",
+              "ecosystem",
+              "feature",
+              "positioning",
+              "pricing",
+              "risk"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "目标客户与业务负责人",
+              "产品、服务与战略评估人员"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "腾讯云实时互动 / TRTC 教育方案 的产品卡片基于 10 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本、风险与限制。",
+            "offering_scope": "集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能。；提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台互通的客户端集成方案。；支持多达17人同屏连麦互动以及百万人小于1秒的超低延时直播观看体验。",
+            "delivery_model": "通过云服务、SDK（软件开发工具包）或 API（应用程序编程接口）接入现有业务系统",
+            "business_model": "价格 | 0元/月 | 1,499元/月 | 3,599元/月 | 6,999元/月 ... 音视频时长 | 50小时/月 | 750小时/月 | 2,000小时/月 | 4,200小时/月。；课堂容量 | 无限 | 1,000人 | 2,000人 | 无限 ... API对接服务 | — | 轻量API对接服务 | 标准API对接服务 | 专属VIP对接服务。",
+            "source_ids": [
+              "src_tencent_lcic_pricing_article",
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_lcic_low_code",
+              "ev_tencent_core_features",
+              "ev_tencent_scenarios_dev_reduction",
+              "ev_tencent_cross_platform",
+              "ev_tencent_scale_latency",
+              "ev_tencent_courseware_recording",
+              "ev_tencent_open_api",
+              "ev_tencent_moderation_ai_noise",
+              "ev_tencent_pricing_tiers",
+              "ev_tencent_pricing_capacity_api"
+            ],
+            "confidence": 0.72
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_bigbluebutton",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "name": "BigBlueButton",
+            "role": "direct",
+            "selection_reason": "BigBlueButton 是任务预选研究对象，现有资料覆盖5 个证据维度。",
+            "represented_path": "开源自托管的虚拟教室方案",
+            "comparable_dimensions": [
+              "customer",
+              "ecosystem",
+              "feature",
+              "positioning",
+              "risk"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "目标客户与业务负责人",
+              "产品、服务与战略评估人员"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "BigBlueButton 的产品卡片基于 7 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、风险与限制。",
+            "offering_scope": "上传PowerPoint、Word、PDF和图片等文档。使用虚拟白板来突出内容。让学生参与分组讨论，参与协作学习。；通过公开和私下聊天与你的班级交流。用多用户白板鼓励创造性思维。使用共享笔记，方便团队协作。直观的屏幕共享，让学生保持参与。；在课堂上通过虚拟举手提供反馈。通过我们丰富的表情符号表达自我。上课时分享你的摄像头视频，并使用自定义背景。",
+            "delivery_model": "由采用方自行部署并承担基础设施、维护与升级责任",
+            "business_model": "当前快照中的定价证据有限，需要后续调研补充。",
+            "source_ids": [
+              "src_bbb_features",
+              "src_bbb_github",
+              "src_bbb_juejin_lms"
+            ],
+            "evidence_ids": [
+              "ev_bbb_feature_set",
+              "ev_bbb_collaboration_tools",
+              "ev_bbb_engagement_video",
+              "ev_bbb_open_source_self_hosted",
+              "ev_bbb_deployment_risk",
+              "ev_bbb_education_use_cases",
+              "ev_bbb_lms_integration"
+            ],
+            "confidence": 0.72
+          }
+        ],
+        "key_intelligence_questions": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+            "dimensions": [
+              "customer",
+              "positioning"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_tradeoff",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+            "dimensions": [
+              "feature",
+              "pricing",
+              "ecosystem",
+              "risk"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_evidence",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+            "dimensions": [
+              "customer",
+              "ecosystem",
+              "feature",
+              "positioning",
+              "pricing",
+              "risk"
+            ],
+            "priority": "medium"
+          }
+        ],
+        "information_needs": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_snapshot_step6c2d_writer_deepseek_v4_pil_1",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question_id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+            "dimension": "customer",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_snapshot_step6c2d_writer_deepseek_v4_pil_2",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question_id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_tradeoff",
+            "dimension": "feature",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_snapshot_step6c2d_writer_deepseek_v4_pil_3",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "question_id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_evidence",
+            "dimension": "customer",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+          }
+        ],
+        "evidence_coverage": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "customer",
+            "status": "sufficient",
+            "source_ids": [
+              "src_classin_intro"
+            ],
+            "evidence_ids": [
+              "ev_classin_scene_breadth",
+              "ev_classin_teaching_modes"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_ecosystem",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "ecosystem",
+            "status": "sufficient",
+            "source_ids": [
+              "src_classin_download",
+              "src_classin_hardware"
+            ],
+            "evidence_ids": [
+              "ev_classin_hardware_ecosystem",
+              "ev_classin_ai_lms"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_feature",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "feature",
+            "status": "sufficient",
+            "source_ids": [
+              "src_classin_intro"
+            ],
+            "evidence_ids": [
+              "ev_classin_16_way_interaction",
+              "ev_classin_whiteboard_tools",
+              "ev_classin_classroom_toolkit",
+              "ev_classin_courseware_support",
+              "ev_classin_classroom_control",
+              "ev_classin_learning_report"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_positioning",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_classin_download"
+            ],
+            "evidence_ids": [
+              "ev_classin_client_positioning"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_pricing",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "pricing",
+            "status": "sufficient",
+            "source_ids": [
+              "src_classin_pricing_tools"
+            ],
+            "evidence_ids": [
+              "ev_classin_free_limits",
+              "ev_classin_basic_price_capacity",
+              "ev_classin_business_api",
+              "ev_classin_premium_prepaid_api"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_classin_risk",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "ClassIn",
+            "dimension": "risk",
+            "status": "missing",
+            "source_ids": [],
+            "evidence_ids": [],
+            "limitations": "当前输入没有该维度证据。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "customer",
+            "status": "partial",
+            "source_ids": [
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_scenarios_dev_reduction"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_ecosystem",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "ecosystem",
+            "status": "sufficient",
+            "source_ids": [
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_cross_platform",
+              "ev_tencent_open_api"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_feature",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "feature",
+            "status": "sufficient",
+            "source_ids": [
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_core_features",
+              "ev_tencent_scale_latency",
+              "ev_tencent_courseware_recording"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_positioning",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_lcic_low_code"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_pricing",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "pricing",
+            "status": "sufficient",
+            "source_ids": [
+              "src_tencent_lcic_pricing_article"
+            ],
+            "evidence_ids": [
+              "ev_tencent_pricing_tiers",
+              "ev_tencent_pricing_capacity_api"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_腾讯云实时互动___trtc_教育方案_risk",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "腾讯云实时互动 / TRTC 教育方案",
+            "dimension": "risk",
+            "status": "partial",
+            "source_ids": [
+              "src_tencent_lcic_product"
+            ],
+            "evidence_ids": [
+              "ev_tencent_moderation_ai_noise"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "customer",
+            "status": "partial",
+            "source_ids": [
+              "src_bbb_github"
+            ],
+            "evidence_ids": [
+              "ev_bbb_education_use_cases"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_ecosystem",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "ecosystem",
+            "status": "weak",
+            "source_ids": [
+              "src_bbb_juejin_lms"
+            ],
+            "evidence_ids": [
+              "ev_bbb_lms_integration"
+            ],
+            "limitations": "当前只有较弱来源，不能支撑高置信度决策。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_feature",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "feature",
+            "status": "sufficient",
+            "source_ids": [
+              "src_bbb_features"
+            ],
+            "evidence_ids": [
+              "ev_bbb_feature_set",
+              "ev_bbb_collaboration_tools",
+              "ev_bbb_engagement_video"
+            ],
+            "limitations": "证据数量已形成基础覆盖，仍需结合决策风险复核。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_positioning",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_bbb_github"
+            ],
+            "evidence_ids": [
+              "ev_bbb_open_source_self_hosted"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_pricing",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "pricing",
+            "status": "missing",
+            "source_ids": [],
+            "evidence_ids": [],
+            "limitations": "当前输入没有该维度证据。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_bigbluebutton_risk",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitor": "BigBlueButton",
+            "dimension": "risk",
+            "status": "partial",
+            "source_ids": [
+              "src_bbb_github"
+            ],
+            "evidence_ids": [
+              "ev_bbb_deployment_risk"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          }
+        ],
+        "comparability_notes": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "customer",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "ecosystem",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "feature",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "positioning",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案"
+            ],
+            "dimension": "pricing",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_snapshot_step6c2d_writer_deepseek_v4_pil_risk",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "risk",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          }
+        ],
+        "items": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "customer",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在目标客户方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_classin_scene_breadth",
+              "ev_classin_teaching_modes",
+              "ev_tencent_scenarios_dev_reduction",
+              "ev_bbb_education_use_cases"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条目标客户结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+            "confidence": 0.82,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "ecosystem",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在生态与集成方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_classin_hardware_ecosystem",
+              "ev_classin_ai_lms",
+              "ev_tencent_cross_platform",
+              "ev_tencent_open_api",
+              "ev_bbb_lms_integration"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条生态与集成结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "当前仅有较弱来源，该发现只能作为检索线索。",
+            "decision_impact": "该发现可用于确定下一轮生态与集成验证重点，不能单独形成正式路线图。",
+            "confidence": 0.45,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "feature",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_classin_16_way_interaction",
+              "ev_classin_whiteboard_tools",
+              "ev_tencent_core_features",
+              "ev_tencent_scale_latency",
+              "ev_bbb_feature_set",
+              "ev_bbb_collaboration_tools"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+            "confidence": 0.84,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "positioning",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_classin_client_positioning",
+              "ev_tencent_lcic_low_code",
+              "ev_bbb_open_source_self_hosted"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+            "confidence": 0.86,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "pricing",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案"
+            ],
+            "evidence_ids": [
+              "ev_classin_free_limits",
+              "ev_classin_basic_price_capacity",
+              "ev_tencent_pricing_tiers",
+              "ev_tencent_pricing_capacity_api"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+            "confidence": 0.72,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "dimension": "risk",
+            "claim_type": "risk",
+            "claim_text": "现有证据表明，腾讯云实时互动 / TRTC 教育方案、BigBlueButton在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "evidence_ids": [
+              "ev_tencent_moderation_ai_noise",
+              "ev_bbb_deployment_risk"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条风险与限制结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图。",
+            "confidence": 0.72,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          }
+        ],
+        "research_gaps": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn",
+              "腾讯云实时互动 / TRTC 教育方案",
+              "BigBlueButton"
+            ],
+            "dimension": "research_brief",
+            "missing_information": "目标客户、核心任务场景和组织约束尚未明确。",
+            "decision_blocked": "无法判断观察到的差异是否对目标客户形成真实价值。",
+            "why_existing_evidence_is_insufficient": "当前证据主要描述竞品自身，不能代替目标客户研究。",
+            "suggested_queries": [
+              "访谈目标客户的任务、痛点、替代做法和购买约束"
+            ],
+            "preferred_source_types": [
+              "客户访谈",
+              "用户研究",
+              "内部战略资料"
+            ],
+            "priority": "high",
+            "stop_condition": "目标客户与核心场景已由任务负责人确认并形成研究简报。",
+            "related_evidence_ids": []
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_classin_risk_coverage",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "ClassIn"
+            ],
+            "dimension": "risk",
+            "missing_information": "ClassIn 缺少风险与限制资料。",
+            "decision_blocked": "相关维度不能进行同口径横向比较。",
+            "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+            "suggested_queries": [
+              "查找 ClassIn 的官方资料和可信第三方资料"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "可信第三方资料"
+            ],
+            "priority": "medium",
+            "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+            "related_evidence_ids": []
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_bigbluebutton_pricing_coverage",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "BigBlueButton"
+            ],
+            "dimension": "pricing",
+            "missing_information": "BigBlueButton 缺少定价与成本资料。",
+            "decision_blocked": "相关维度不能进行同口径横向比较。",
+            "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+            "suggested_queries": [
+              "查找 BigBlueButton 的官方资料和可信第三方资料"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "可信第三方资料"
+            ],
+            "priority": "medium",
+            "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+            "related_evidence_ids": []
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_bigbluebutton_ecosystem_weak",
+            "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+            "competitors": [
+              "BigBlueButton"
+            ],
+            "dimension": "ecosystem",
+            "missing_information": "BigBlueButton 的生态与集成资料存在较弱证据，需要补充核验。",
+            "decision_blocked": "当前证据强度不足以支持高置信度判断。",
+            "why_existing_evidence_is_insufficient": "当前只有较弱来源，不能支撑高置信度决策。",
+            "suggested_queries": [
+              "优先查找同版本、同地区的官方或独立直接资料"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "可信第三方资料"
+            ],
+            "priority": "high",
+            "stop_condition": "冲突已解释或获得至少一条适用的强直接证据。",
+            "related_evidence_ids": [
+              "ev_bbb_lms_integration"
+            ]
+          }
+        ]
+      },
+      "generated_by": "AgentRole.ANALYST",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "portfolio_snapshot_step6c2d_writer_deepseek_v4_pil"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-14T10:21:12.766015Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_report",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "llm_call_id": "llmcall_build_report",
+    "agent_role": "writer",
+    "output_schema": "CompetitiveReport",
+    "raw_output": {
+      "item": {
+        "id": "report_snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+        "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+        "title": "在线教育实时互动与虚拟教室解决方案竞品分析报告",
+        "markdown": "# 在线教育实时互动与虚拟教室解决方案竞品分析报告\n\n## 执行摘要\n\n本报告面向在线教育实时互动与虚拟教室解决方案的选型决策，对比 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton 三条路径。三者分别代表开箱即用的教学产品、可集成的云端实时互动能力、以及自托管开源虚拟教室，对应不同的实施责任、成本结构和团队能力要求。当前资料足以支撑路径层面的初步判断，但目标客户与核心场景尚未确认，且部分维度存在证据缺口，正式选型前需补齐。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]\n\n## 研究目标与决策背景\n\n本次分析服务于产品研发选型，需要回答三个问题：三条路径分别适合什么组织形态；各自的核心能力、成本与生态边界在哪里；在什么条件下选择哪条路径。分析覆盖产品定位、功能能力、定价与成本、生态与集成、目标客户和风险六个维度。需要说明的是，当前研究简报尚未确认目标客户与核心任务场景，这直接限制了对“差异是否构成价值”的判断，因此本报告以路径对比为主，不给出绝对排名。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]\n\n## 竞品与解决路径\n\n三条路径对应三种不同的解决思路：\n\n- **ClassIn** 以完整教学产品交付，内置互动式电子黑板、答题器、计时器、屏幕共享、视频墙、随机选人答题等数十种教学工具，支持最多 16 人同步面对面教学，教师与学生均可使用视频、音频与交互功能。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]\n- **腾讯云实时互动 / TRTC 教育方案** 以云服务、SDK（软件开发工具包）或 API（应用程序编程接口）形式接入现有业务系统，集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能，支持小程序、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter 全平台互通。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n- **BigBlueButton** 作为开源自托管方案，由采用方自行部署并承担基础设施、维护与升级责任，提供文档上传、虚拟白板、分组讨论、公开与私下聊天、多用户白板、共享笔记、屏幕共享、虚拟举手、表情符号与摄像头分享等功能。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]\n\n三条路径在功能能力上存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]\n\n## 核心维度对比\n\n### 产品定位\n\nClassIn 定位为面向教育机构的开箱即用在线教学产品；腾讯云实时互动 / TRTC 教育方案定位为供教育平台集成的云端实时互动能力；BigBlueButton 定位为开源自托管的虚拟教室方案。三者定位差异明显，分别对应“直接使用”“集成构建”和“自主运维”三种路径。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]\n\n### 功能能力\n\nClassIn 提供丰富的教学工具，强调课堂互动；腾讯云方案提供音视频连麦、互动白板、屏幕共享、云端录制等可集成能力，并支持多达 17 人同屏连麦互动以及百万人小于 1 秒的超低延时直播观看；BigBlueButton 提供文档上传、白板、分组讨论、共享笔记等协作功能。功能侧重不同，但缺少统一版本和真实采用效果资料，无法直接比较优劣。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]\n\n### 生态与集成\n\n腾讯云方案提供全平台客户端集成方案，生态覆盖较广；ClassIn 以完整产品形态交付，集成方式未在现有资料中明确；BigBlueButton 的生态与集成资料仅有较弱来源，需补充核验。生态差异是否构成客户价值仍需结合目标客户和场景验证。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n\n### 目标客户\n\n三者目标客户存在可观察差异，但现有资料未提供统一版本、真实采用效果或客户验证信息，差异的实际价值无法确认。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]\n\n## 成本、交付与采用条件\n\nClassIn 提供免费版与基础版，基础版按年购买，价格 ￥1800 起（原价 ￥3100/年），支持 300 人大班教学、云端录课、屏幕共享与个人后台；免费版每月限制 10 次课、累计 50 次免费课堂，单次课堂 40 分钟限制，支持 7 人音视频实时互动。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n\n腾讯云实时互动 / TRTC 教育方案按音视频时长计费，提供 0 元/月、1,499 元/月、3,599 元/月、6,999 元/月等档位，对应 50 小时/月、750 小时/月、2,000 小时/月、4,200 小时/月的音视频时长，课堂容量从无限到 1,000 人、2,000 人、无限不等，并提供轻量、标准、专属 VIP 等不同级别的 API（应用程序编程接口）对接服务。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n\nBigBlueButton 的定价与成本资料缺失，无法进行同口径比较。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n\n三条路径的交付方式不同：ClassIn 以完整产品交付，腾讯云方案以云服务、SDK（软件开发工具包）或 API（应用程序编程接口）接入，BigBlueButton 由采用方自行部署。这对应不同的实施责任和团队能力要求。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n\n## 风险、限制与不确定性\n\n腾讯云实时互动 / TRTC 教育方案与 BigBlueButton 在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]\n\n需要特别说明的是，ClassIn 缺少风险与限制资料，无法进行同口径横向比较；BigBlueButton 的生态与集成证据较弱，不能支撑高置信度判断；BigBlueButton 的定价资料缺失。这些缺口应作为选型前的补充重点，而非直接视为产品缺陷。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n\n## 后续研究缺口\n\n- 目标客户、核心任务场景和组织约束尚未明确，无法判断观察到的差异是否对目标客户形成真实价值。建议通过客户访谈、用户研究和内部战略资料补充。[gap_snapshot_step6c2d_writer_deepseek_v4_pil_brief]\n- ClassIn 缺少风险与限制资料，相关维度不能进行同口径横向比较。建议查找官方资料和可信第三方资料。[gap_classin_risk_coverage]\n- BigBlueButton 缺少定价与成本资料，相关维度不能进行同口径横向比较。建议查找官方资料和可信第三方资料。[gap_bigbluebutton_pricing_coverage]\n- BigBlueButton 的生态与集成资料存在较弱证据，需要补充核验。建议优先查找同版本、同地区的官方或独立直接资料。[gap_bigbluebutton_ecosystem_weak]\n\n## 决策建议\n\n1. **若团队需要快速上线、直接使用教学工具**：可优先评估 ClassIn，其完整产品形态和丰富教学工具能降低集成开发量；但需确认免费版限制（每月 10 次课、单次 40 分钟、7 人互动）是否满足业务需求，并补充其风险与限制资料。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n2. **若团队已有业务系统、需要集成实时互动能力**：可优先评估腾讯云实时互动 / TRTC 教育方案，其全平台 SDK（软件开发工具包）与 API（应用程序编程接口）接入方式适合构建自有教学平台；但需根据音视频时长用量评估成本，并确认课堂容量与 API 对接服务级别是否匹配。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n3. **若团队具备运维能力、追求自主可控**：可评估 BigBlueButton，其开源自托管模式可避免云服务依赖；但需自行承担基础设施、维护与升级责任，且需补充定价与生态资料，并验证其生态集成能力。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk][clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n4. **所有路径的最终选择**：都应在确认目标客户与核心场景后，结合真实采用效果和客户验证资料进行，当前资料不足以支撑绝对排名。[clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]\n\n## 结论引用索引\n\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing]\n- [clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk]",
+        "claim_ids": [
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+          "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk"
+        ],
+        "created_by_agent_run_id": "run_writer_deepseek_v4_pilot_v2"
+      },
+      "generated_by": "deepseek_v4_pilot_v2",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "report_snapshot_step6c2d_writer_deepseek_v4_pilot_v2"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-14T10:21:33.099285Z"
+  }
+]

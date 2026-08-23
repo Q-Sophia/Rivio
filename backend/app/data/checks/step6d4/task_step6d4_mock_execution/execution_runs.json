@@ -1,0 +1,24 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "pipeline_status": "completed",
+      "approved": true,
+      "report_title": "Step6D.4 用户任务执行验收报告"
+    },
+    "id": "execrun_fba66d48592b",
+    "task_id": "task_step6d4_mock_execution",
+    "plan_id": "execplan_d8a3c0e7aab8",
+    "authorization_id": "authorization_7ba74edb32f6",
+    "mode": "mock",
+    "status": "completed",
+    "current_step": "review_report",
+    "progress_percent": 100,
+    "message": "竞品分析工作流执行完成。",
+    "error": "",
+    "result_task_id": "task_step6d4_mock_execution",
+    "created_at": "2026-08-23T13:54:45.835661Z",
+    "started_at": "2026-08-23T13:54:45.844663Z",
+    "completed_at": "2026-08-23T13:54:47.828564Z"
+  }
+]

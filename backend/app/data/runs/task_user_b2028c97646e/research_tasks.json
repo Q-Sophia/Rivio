@@ -1,0 +1,302 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_2afeacee26e3",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_56b958ccac0a",
+    "title": "核实 ClassIn 的产品能力信息",
+    "objective": "复核人工快照中 ClassIn 的产品能力证据",
+    "competitor": "ClassIn",
+    "dimension": "产品能力",
+    "query_hints": [
+      "ClassIn 产品能力 官方",
+      "ClassIn 产品能力 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_6d36efb39746",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_56b958ccac0a",
+    "title": "核实 腾讯会议 的产品能力信息",
+    "objective": "采集能够回答 腾讯会议 在产品能力方面表现的可靠资料",
+    "competitor": "腾讯会议",
+    "dimension": "产品能力",
+    "query_hints": [
+      "腾讯会议 产品能力 官方",
+      "腾讯会议 产品能力 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "waiting_for_collector",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_2fe30da1e3f8",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_56b958ccac0a",
+    "title": "核实 BigBlueButton 的产品能力信息",
+    "objective": "复核人工快照中 BigBlueButton 的产品能力证据",
+    "competitor": "BigBlueButton",
+    "dimension": "产品能力",
+    "query_hints": [
+      "BigBlueButton 产品能力 官方",
+      "BigBlueButton 产品能力 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_e9f357f8326a",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_9bd869fdc1f7",
+    "title": "核实 ClassIn 的价格信息",
+    "objective": "复核人工快照中 ClassIn 的价格证据",
+    "competitor": "ClassIn",
+    "dimension": "价格",
+    "query_hints": [
+      "ClassIn 价格 官方",
+      "ClassIn 价格 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_91eedfbc09f8",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_9bd869fdc1f7",
+    "title": "核实 腾讯会议 的价格信息",
+    "objective": "采集能够回答 腾讯会议 在价格方面表现的可靠资料",
+    "competitor": "腾讯会议",
+    "dimension": "价格",
+    "query_hints": [
+      "腾讯会议 价格 官方",
+      "腾讯会议 价格 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "waiting_for_collector",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_d0d92e1f75b1",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_9bd869fdc1f7",
+    "title": "核实 BigBlueButton 的价格信息",
+    "objective": "复核人工快照中 BigBlueButton 的价格证据",
+    "competitor": "BigBlueButton",
+    "dimension": "价格",
+    "query_hints": [
+      "BigBlueButton 价格 官方",
+      "BigBlueButton 价格 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_8c0ddeb30db4",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_81e71fd8ec4a",
+    "title": "核实 ClassIn 的部署责任信息",
+    "objective": "复核人工快照中 ClassIn 的部署责任证据",
+    "competitor": "ClassIn",
+    "dimension": "部署责任",
+    "query_hints": [
+      "ClassIn 部署责任 官方",
+      "ClassIn 部署责任 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_bf6295163e9e",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_81e71fd8ec4a",
+    "title": "核实 腾讯会议 的部署责任信息",
+    "objective": "采集能够回答 腾讯会议 在部署责任方面表现的可靠资料",
+    "competitor": "腾讯会议",
+    "dimension": "部署责任",
+    "query_hints": [
+      "腾讯会议 部署责任 官方",
+      "腾讯会议 部署责任 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "waiting_for_collector",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_d4e4e08b9a52",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_81e71fd8ec4a",
+    "title": "核实 BigBlueButton 的部署责任信息",
+    "objective": "复核人工快照中 BigBlueButton 的部署责任证据",
+    "competitor": "BigBlueButton",
+    "dimension": "部署责任",
+    "query_hints": [
+      "BigBlueButton 部署责任 官方",
+      "BigBlueButton 部署责任 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_ce23af09152e",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_04a76a5c1432",
+    "title": "核实 ClassIn 的生态集成信息",
+    "objective": "复核人工快照中 ClassIn 的生态集成证据",
+    "competitor": "ClassIn",
+    "dimension": "生态集成",
+    "query_hints": [
+      "ClassIn 生态集成 官方",
+      "ClassIn 生态集成 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_222dc3d6a336",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_04a76a5c1432",
+    "title": "核实 腾讯会议 的生态集成信息",
+    "objective": "采集能够回答 腾讯会议 在生态集成方面表现的可靠资料",
+    "competitor": "腾讯会议",
+    "dimension": "生态集成",
+    "query_hints": [
+      "腾讯会议 生态集成 官方",
+      "腾讯会议 生态集成 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "waiting_for_collector",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_4cfbc6e9c3df",
+    "task_id": "task_user_b2028c97646e",
+    "information_need_id": "need_04a76a5c1432",
+    "title": "核实 BigBlueButton 的生态集成信息",
+    "objective": "复核人工快照中 BigBlueButton 的生态集成证据",
+    "competitor": "BigBlueButton",
+    "dimension": "生态集成",
+    "query_hints": [
+      "BigBlueButton 生态集成 官方",
+      "BigBlueButton 生态集成 文档"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector"
+  }
+]

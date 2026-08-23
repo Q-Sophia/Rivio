@@ -1,0 +1,15 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "src_workspace_b",
+    "task_id": "task_workspace_b_v1",
+    "title": "Beta 官方资料",
+    "url": "https://example.test/beta",
+    "source_type": "other",
+    "competitor": "Beta",
+    "accessed_at": "2026-08-23T14:00:18.553272Z",
+    "content_excerpt": "",
+    "reliability_score": 0.5
+  }
+]

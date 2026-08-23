@@ -1,0 +1,121 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_001",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "customer",
+    "missing_information": "目标客户的具体类型、规模和决策场景未明确。",
+    "decision_blocked": "无法确定竞争集合的边界和评估标准。",
+    "why_existing_evidence_is_insufficient": "现有证据仅描述宽泛的教学场景，无具体客户案例或细分。",
+    "suggested_queries": [
+      "目标客户是教育机构还是技术开发者？",
+      "客户规模如何？",
+      "核心决策场景是什么？"
+    ],
+    "preferred_source_types": [
+      "客户案例",
+      "市场调研",
+      "行业报告"
+    ],
+    "priority": "high",
+    "stop_condition": "获得明确的客户画像和决策场景描述。",
+    "related_evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_002",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "pricing",
+    "missing_information": "BigBlueButton 的总拥有成本（TCO）未量化，包括服务器、运维、人力成本。",
+    "decision_blocked": "无法进行同口径的成本比较。",
+    "why_existing_evidence_is_insufficient": "BigBlueButton 无定价证据，仅知开源免费，但自托管成本未知。",
+    "suggested_queries": [
+      "BigBlueButton 自托管的服务器和运维成本是多少？",
+      "与SaaS订阅相比，长期成本如何？"
+    ],
+    "preferred_source_types": [
+      "成本分析报告",
+      "社区讨论",
+      "案例研究"
+    ],
+    "priority": "high",
+    "stop_condition": "获得BigBlueButton的TCO估算。",
+    "related_evidence_ids": [
+      "ev_bbb_open_source_self_hosted"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_003",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "risk",
+    "missing_information": "ClassIn 和 BigBlueButton 的数据隐私、合规和运维风险证据缺失。",
+    "decision_blocked": "无法进行全面的风险比较。",
+    "why_existing_evidence_is_insufficient": "ClassIn 无风险证据，BigBlueButton 仅有运维风险，腾讯云仅有安全审核。",
+    "suggested_queries": [
+      "ClassIn 的数据隐私政策是什么？",
+      "BigBlueButton 的合规认证有哪些？",
+      "各方案的安全漏洞历史？"
+    ],
+    "preferred_source_types": [
+      "安全白皮书",
+      "合规报告",
+      "漏洞数据库"
+    ],
+    "priority": "medium",
+    "stop_condition": "获得各方案的风险评估报告。",
+    "related_evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_004",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "dimension": "feature",
+    "missing_information": "腾讯云LCIC 声称的性能指标（如百万人观看、超低延时）未独立验证。",
+    "decision_blocked": "无法确认其性能是否满足大规模场景需求。",
+    "why_existing_evidence_is_insufficient": "性能指标来自官方宣传，无第三方测试数据。",
+    "suggested_queries": [
+      "腾讯云LCIC 的第三方性能测试报告？",
+      "实际客户的大规模使用案例？"
+    ],
+    "preferred_source_types": [
+      "第三方评测",
+      "客户案例",
+      "技术白皮书"
+    ],
+    "priority": "medium",
+    "stop_condition": "获得独立性能验证或客户案例。",
+    "related_evidence_ids": [
+      "ev_tencent_scale_latency"
+    ]
+  }
+]

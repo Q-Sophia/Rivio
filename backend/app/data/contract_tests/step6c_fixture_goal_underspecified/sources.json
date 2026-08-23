@@ -1,0 +1,92 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_1_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "甲产品positioning资料",
+    "url": "https://fixture.invalid/goal_underspecified/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "甲产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "甲产品公开了基础定位。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_1_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "甲产品feature资料",
+    "url": "https://fixture.invalid/goal_underspecified/1/feature/1",
+    "source_type": "official_site",
+    "competitor": "甲产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "甲产品公开了基础能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_2_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "乙产品positioning资料",
+    "url": "https://fixture.invalid/goal_underspecified/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "乙产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "乙产品公开了基础定位。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_2_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "乙产品feature资料",
+    "url": "https://fixture.invalid/goal_underspecified/2/feature/1",
+    "source_type": "official_site",
+    "competitor": "乙产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "乙产品公开了基础能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_3_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "丙产品positioning资料",
+    "url": "https://fixture.invalid/goal_underspecified/3/positioning/1",
+    "source_type": "official_site",
+    "competitor": "丙产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "丙产品公开了基础定位。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "src_goal_underspecified_3_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "title": "丙产品feature资料",
+    "url": "https://fixture.invalid/goal_underspecified/3/feature/1",
+    "source_type": "official_site",
+    "competitor": "丙产品",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "丙产品公开了基础能力。",
+    "reliability_score": 0.85
+  }
+]

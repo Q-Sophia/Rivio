@@ -1,0 +1,22 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "collection_method": "search_then_web_collector_v1",
+      "research_task_id": "researchtask_tencent_meeting",
+      "search_result_id": "searchresult_1d82f795305f",
+      "content_hash": "3ee6e52f0d599508cf2b176d4a1a8da4162bbe5d7fb2649412210c0d5b0ad517",
+      "render_mode": "http",
+      "browser_engine": ""
+    },
+    "id": "src_e3c25e7ab1e8",
+    "task_id": "task_step6e2_search_discovery",
+    "title": "腾讯会议官方产品页",
+    "url": "https://meeting.tencent.com/product",
+    "source_type": "official_site",
+    "competitor": "腾讯会议",
+    "accessed_at": "2026-08-21T07:24:17.502971Z",
+    "content_excerpt": "腾讯会议官方产品页\n腾讯会议面向企业与个人提供在线会议、屏幕共享、会议录制、实时字幕和多终端协作能力，适用于远程办公和在线教学。",
+    "reliability_score": 0.7
+  }
+]

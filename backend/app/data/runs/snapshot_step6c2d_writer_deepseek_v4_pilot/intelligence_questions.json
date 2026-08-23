@@ -1,0 +1,47 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+    "dimensions": [
+      "customer",
+      "positioning"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_tradeoff",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+    "dimensions": [
+      "feature",
+      "pricing",
+      "ecosystem",
+      "risk"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_snapshot_step6c2d_writer_deepseek_v4_pil_evidence",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。",
+    "dimensions": [
+      "customer",
+      "ecosystem",
+      "feature",
+      "positioning",
+      "pricing",
+      "risk"
+    ],
+    "priority": "medium"
+  }
+]

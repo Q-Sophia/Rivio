@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_甲方案_pricing_conflicting",
+    "task_id": "step6c_fixture_conflicting_price",
+    "competitors": [
+      "甲方案"
+    ],
+    "dimension": "pricing",
+    "missing_information": "甲方案 的定价与成本资料存在冲突证据，需要补充核验。",
+    "decision_blocked": "当前证据强度不足以支持高置信度判断。",
+    "why_existing_evidence_is_insufficient": "现有资料存在口径、时间或数值冲突，需要优先核实。",
+    "suggested_queries": [
+      "优先查找同版本、同地区的官方或独立直接资料"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "high",
+    "stop_condition": "冲突已解释或获得至少一条适用的强直接证据。",
+    "related_evidence_ids": [
+      "ev_conflicting_price_1_pricing_1",
+      "ev_conflicting_price_1_pricing_2"
+    ]
+  }
+]

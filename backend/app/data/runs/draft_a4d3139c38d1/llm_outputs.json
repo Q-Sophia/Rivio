@@ -1,0 +1,49 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_parse_draft_a4d3139c38d1",
+    "task_id": "draft_a4d3139c38d1",
+    "llm_call_id": "llmcall_parse_draft_a4d3139c38d1",
+    "agent_role": "intent",
+    "output_schema": "AnalysisTaskDraft",
+    "raw_output": {
+      "item": {
+        "id": "draft_a4d3139c38d1",
+        "task_id": "draft_a4d3139c38d1",
+        "request_text": "调研一下classin的竞品分析",
+        "decision_question": "帮助用户了解ClassIn的竞争格局，以支持市场定位或产品决策",
+        "industry": "在线教育",
+        "competitors": [
+          "ClassIn"
+        ],
+        "target_customers": [],
+        "core_scenarios": [],
+        "focus_areas": [],
+        "constraints": [],
+        "report_subject": "ClassIn在线教育竞品分析",
+        "preferred_title": "",
+        "missing_fields": [
+          "决策问题",
+          "行业",
+          "至少两个比较对象"
+        ],
+        "clarification_questions": [
+          "您希望通过这份分析做出什么具体决策？",
+          "您所在的行业是什么？",
+          "除了ClassIn，您还想对比哪些竞品？"
+        ],
+        "ready_for_confirmation": false,
+        "status": "needs_clarification"
+      },
+      "generated_by": "AgentRole.INTENT",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "draft_a4d3139c38d1"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-21T07:27:33.114708Z"
+  }
+]

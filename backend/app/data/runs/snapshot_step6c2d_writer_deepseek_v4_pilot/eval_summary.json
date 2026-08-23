@@ -1,0 +1,336 @@
+{
+  "id": "eval_snapshot_step6c2d_writer_deepseek_v4_pilot",
+  "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+  "passed": true,
+  "artifact_dir": "C:\\Users\\qyn\\Desktop\\北工大-课程材料结集\\多Agent竞品分析助手\\competitive-intel-agents\\backend\\app\\data\\runs\\snapshot_step6c2d_writer_deepseek_v4_pilot",
+  "metrics": {
+    "artifact_completeness": {
+      "name": "artifact_completeness",
+      "value": 1.0,
+      "passed": true,
+      "details": "all required artifacts present"
+    },
+    "evidence_ref_valid_rate": {
+      "name": "evidence_ref_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=32; total=32"
+    },
+    "product_card_ref_valid_rate": {
+      "name": "product_card_ref_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=41; total=41"
+    },
+    "claim_evidence_valid_rate": {
+      "name": "claim_evidence_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=24; total=24"
+    },
+    "report_claim_coverage": {
+      "name": "report_claim_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=6; total=6"
+    },
+    "citation_supported_rate": {
+      "name": "citation_supported_rate",
+      "value": 0.8333,
+      "passed": true,
+      "details": "supported=5; total=6"
+    },
+    "weak_citation_count": {
+      "name": "weak_citation_count",
+      "value": 1,
+      "passed": true,
+      "details": "weak citations are allowed when review_feedback explains them"
+    },
+    "dag_completed_rate": {
+      "name": "dag_completed_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=6; total=6"
+    },
+    "agent_success_rate": {
+      "name": "agent_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=6; total=6"
+    },
+    "tool_call_success_rate": {
+      "name": "tool_call_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=32; total=32"
+    },
+    "review_approved": {
+      "name": "review_approved",
+      "value": true,
+      "passed": true,
+      "details": "latest review_feedback.approved"
+    },
+    "review_score": {
+      "name": "review_score",
+      "value": 8.0,
+      "passed": true,
+      "details": "latest review_feedback.overall_score"
+    },
+    "quality_gate_passed": {
+      "name": "quality_gate_passed",
+      "value": true,
+      "passed": true,
+      "details": "status=passed_with_warnings; blocking=False"
+    },
+    "feedback_task_linked_rate": {
+      "name": "feedback_task_linked_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "linked=1; total=1"
+    },
+    "context_bundle_role_coverage": {
+      "name": "context_bundle_role_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "roles=analyst,citation,collector,extractor,reviewer,writer"
+    },
+    "memory_item_traceability_rate": {
+      "name": "memory_item_traceability_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=53; total=53"
+    },
+    "guardrail_failed_count": {
+      "name": "guardrail_failed_count",
+      "value": 0,
+      "passed": true,
+      "details": "failed=0; warnings=1; total=7"
+    },
+    "llm_call_success_rate": {
+      "name": "llm_call_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=3; total=3"
+    },
+    "llm_output_validation_rate": {
+      "name": "llm_output_validation_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "validated=3; total=3"
+    },
+    "llm_output_language_consistency_rate": {
+      "name": "llm_output_language_consistency_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "zh_cn_valid=3; total=3"
+    },
+    "llm_fallback_count": {
+      "name": "llm_fallback_count",
+      "value": 0,
+      "passed": true,
+      "details": "fallback=0; total=3"
+    },
+    "step6c_schema_validation_rate": {
+      "name": "step6c_schema_validation_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "portfolio 已通过 Pydantic Schema 校验"
+    },
+    "step6c_known_evidence_ref_rate": {
+      "name": "step6c_known_evidence_ref_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "known=89; total=89"
+    },
+    "step6c_claim_evidence_non_empty_rate": {
+      "name": "step6c_claim_evidence_non_empty_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "non_empty=6; total=6"
+    },
+    "step6c_comparison_party_coverage_rate": {
+      "name": "step6c_comparison_party_coverage_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "balanced=5; total=5"
+    },
+    "step6c_competitor_role_valid_rate": {
+      "name": "step6c_competitor_role_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=3; total=3"
+    },
+    "step6c_comparability_gate_coverage_rate": {
+      "name": "step6c_comparability_gate_coverage_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "gated=6; total=6"
+    },
+    "step6c_unsupported_product_fact_count": {
+      "name": "step6c_unsupported_product_fact_count",
+      "value": 0,
+      "passed": true,
+      "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+    },
+    "step6c_prompt_injection_follow_count": {
+      "name": "step6c_prompt_injection_follow_count",
+      "value": 0,
+      "passed": true,
+      "details": "followed="
+    },
+    "step6c_zh_cn_language_rate": {
+      "name": "step6c_zh_cn_language_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "全部业务文本通过中文检查"
+    },
+    "step6c_domain_template_leak_count": {
+      "name": "step6c_domain_template_leak_count",
+      "value": 0,
+      "passed": true,
+      "details": "leaked="
+    },
+    "step6c_dimension_selection_accuracy": {
+      "name": "step6c_dimension_selection_accuracy",
+      "value": 1.0,
+      "passed": true,
+      "details": "selected=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']; allowed=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']"
+    },
+    "step6c_competitive_set_rationale_coverage": {
+      "name": "step6c_competitive_set_rationale_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=3; total=3"
+    },
+    "step6c_key_intelligence_question_relevance": {
+      "name": "step6c_key_intelligence_question_relevance",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=3; total=3"
+    },
+    "step6c_cross_competitor_comparison_rate": {
+      "name": "step6c_cross_competitor_comparison_rate",
+      "value": 0.8333,
+      "passed": true,
+      "details": "cross=5; non_fact=6"
+    },
+    "step6c_evidence_balanced_comparison_rate": {
+      "name": "step6c_evidence_balanced_comparison_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "balanced=5; total=5"
+    },
+    "step6c_multi_competitor_evidence_balance_rate": {
+      "name": "step6c_multi_competitor_evidence_balance_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "balanced=6; total=6"
+    },
+    "step6c_decision_impact_coverage": {
+      "name": "step6c_decision_impact_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "specific=6; non_fact=6"
+    },
+    "step6c_uncertainty_disclosure_rate": {
+      "name": "step6c_uncertainty_disclosure_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "disclosed=1; total=1"
+    },
+    "step6c_claim_redundancy_rate": {
+      "name": "step6c_claim_redundancy_rate",
+      "value": 0.0,
+      "passed": true,
+      "details": "redundant_pairs=0; total_pairs=15"
+    },
+    "step6c_claim_type_distribution": {
+      "name": "step6c_claim_type_distribution",
+      "value": {
+        "comparison": 5,
+        "risk": 1
+      },
+      "passed": true,
+      "details": "仅记录分布，不以类型越多作为通过条件"
+    },
+    "step6c_writer_title_task_specific": {
+      "name": "step6c_writer_title_task_specific",
+      "value": true,
+      "passed": true,
+      "details": "title=在线教育实时互动与虚拟教室解决方案竞品分析报告; heading_aligned=True"
+    },
+    "step6c_writer_required_section_coverage": {
+      "name": "step6c_writer_required_section_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=9; total=9"
+    },
+    "step6c_writer_claim_reference_coverage": {
+      "name": "step6c_writer_claim_reference_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=6; total=6"
+    },
+    "step6c_writer_research_gap_disclosure_rate": {
+      "name": "step6c_writer_research_gap_disclosure_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=4; total=4"
+    },
+    "step6c_writer_repeated_claim_copy_rate": {
+      "name": "step6c_writer_repeated_claim_copy_rate",
+      "value": 0.0,
+      "passed": true,
+      "details": "duplicated_claim_ids=[]"
+    },
+    "step6c_writer_report_statement_mapping_rate": {
+      "name": "step6c_writer_report_statement_mapping_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "referenced_lines=22; mapped_lines=22"
+    },
+    "step6c_writer_report_statement_evidence_valid_rate": {
+      "name": "step6c_writer_report_statement_evidence_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=22; total=22"
+    },
+    "step6c_writer_claim_statement_evidence_coverage": {
+      "name": "step6c_writer_claim_statement_evidence_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=16; total=16"
+    },
+    "step6c_writer_reader_claim_trace_coverage": {
+      "name": "step6c_writer_reader_claim_trace_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "traced=6; total=6"
+    },
+    "step6c_writer_reader_gap_trace_coverage": {
+      "name": "step6c_writer_reader_gap_trace_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "traced=4; total=4"
+    },
+    "step6c_writer_audit_phrase_count": {
+      "name": "step6c_writer_audit_phrase_count",
+      "value": 0,
+      "passed": true,
+      "details": "count=0; phrases=['现有证据表明', '根据现有资料', '根据现有证据']"
+    },
+    "step6c_writer_coursework_phrase_count": {
+      "name": "step6c_writer_coursework_phrase_count",
+      "value": 0,
+      "passed": true,
+      "details": "count=0; phrases=['本文首先', '本文将', '综上所述', '本次作业']"
+    },
+    "step6c_writer_reader_body_char_count": {
+      "name": "step6c_writer_reader_body_char_count",
+      "value": 2616,
+      "passed": true,
+      "details": "chars=2616; minimum=1200"
+    }
+  },
+  "errors": []
+}

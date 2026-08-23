@@ -1,0 +1,137 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "competitors": [
+      "ClassIn"
+    ],
+    "dimension": "risk",
+    "missing_information": "ClassIn 在内容安全、数据隐私、运维责任等方面的风险控制措施和客户责任边界。",
+    "decision_blocked": "无法评估 ClassIn 的风险水平，影响风险管理决策。",
+    "why_existing_evidence_is_insufficient": "现有证据中无 ClassIn 风险维度资料。",
+    "suggested_queries": [
+      "ClassIn 安全合规",
+      "ClassIn 数据隐私政策",
+      "ClassIn 运维责任"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "security_docs",
+      "terms_of_service"
+    ],
+    "priority": "high",
+    "stop_condition": "获取官方安全文档或隐私政策。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "pricing",
+    "missing_information": "BigBlueButton 的总体拥有成本，包括基础设施、运维、升级等成本。",
+    "decision_blocked": "无法进行成本比较，影响预算决策。",
+    "why_existing_evidence_is_insufficient": "现有证据仅提及自托管，无具体成本数据。",
+    "suggested_queries": [
+      "BigBlueButton 部署成本",
+      "BigBlueButton 运维成本",
+      "BigBlueButton 硬件要求"
+    ],
+    "preferred_source_types": [
+      "community_docs",
+      "case_studies",
+      "cost_analysis"
+    ],
+    "priority": "high",
+    "stop_condition": "获取典型部署规模下的成本估算。",
+    "related_evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "customer",
+    "missing_information": "目标客户的具体需求、核心场景和决策标准。",
+    "decision_blocked": "无法确定客户任务，影响方案选择。",
+    "why_existing_evidence_is_insufficient": "研究简报未提供目标客户和核心场景。",
+    "suggested_queries": [
+      "在线教育机构需求调研",
+      "实时互动场景优先级"
+    ],
+    "preferred_source_types": [
+      "customer_interviews",
+      "surveys",
+      "market_research"
+    ],
+    "priority": "critical",
+    "stop_condition": "获取客户需求验证数据。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "dimension": "pricing",
+    "missing_information": "腾讯云 LCIC 官方定价页和详细计费规则。",
+    "decision_blocked": "影响成本评估的准确性。",
+    "why_existing_evidence_is_insufficient": "现有定价证据来自第三方开发者文章，可靠性较低。",
+    "suggested_queries": [
+      "腾讯云实时互动教育版官方定价",
+      "LCIC 计费规则"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "获取官方定价页。",
+    "related_evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "rg_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "ecosystem",
+    "missing_information": "BigBlueButton 与 LMS 集成的官方文档和实际集成案例。",
+    "decision_blocked": "影响生态兼容性评估。",
+    "why_existing_evidence_is_insufficient": "现有证据来自第三方文章，可靠性低。",
+    "suggested_queries": [
+      "BigBlueButton Moodle 集成",
+      "BigBlueButton Canvas 集成",
+      "BigBlueButton API 文档"
+    ],
+    "preferred_source_types": [
+      "official_docs",
+      "developer_docs"
+    ],
+    "priority": "medium",
+    "stop_condition": "获取官方集成文档。",
+    "related_evidence_ids": [
+      "ev_bbb_lms_integration"
+    ]
+  }
+]

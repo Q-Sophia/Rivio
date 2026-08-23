@@ -1,0 +1,258 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "positioning",
+    "claim_type": "comparison",
+    "claim_text": "ClassIn 定位为一体化教学平台，腾讯云 LCIC 定位为低代码开发产品，BigBlueButton 定位为开源自托管虚拟教室，三者交付模式不同。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "基于官方定位声明：ClassIn 客户端强调在线直播教学和多人互动；腾讯云 LCIC 明确为低代码开发产品；BigBlueButton 为开源虚拟教室。",
+    "uncertainty": "定位声明来自不同来源，可能受营销影响。",
+    "decision_impact": "影响客户选择路径：一体化 vs 开发集成 vs 自托管。",
+    "confidence": 0.8,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "feature",
+    "claim_type": "comparison",
+    "claim_text": "ClassIn 和腾讯云 LCIC 均支持多人音视频互动、白板、课件和屏幕共享，但 ClassIn 明确支持 16 人同步互动，腾讯云支持 17 人连麦和百万级直播，BigBlueButton 未提及具体人数限制。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "ClassIn 官方介绍支持 16 人同步教学；腾讯云官方声称支持 17 人连麦和百万级直播；BigBlueButton 功能页未提及人数限制。",
+    "uncertainty": "腾讯云百万级直播声明未独立验证；BigBlueButton 未提及不代表不支持。",
+    "decision_impact": "影响对实时互动规模需求的评估。",
+    "confidence": 0.75,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "pricing",
+    "claim_type": "comparison",
+    "claim_text": "ClassIn 提供按年订阅的免费版、基础版、商业版和臻享版，腾讯云 LCIC 提供按月订阅的免费试用和付费套餐，BigBlueButton 无定价证据，但开源自托管意味着需承担基础设施和运维成本。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_bbb_deployment_risk"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "ClassIn 定价页显示免费版和基础版价格；腾讯云定价文章显示按月套餐；BigBlueButton 无定价证据，但自托管部署暗示成本。",
+    "uncertainty": "腾讯云定价来自第三方文章，可能不准确；BigBlueButton 自托管成本未量化。",
+    "decision_impact": "影响预算和成本模型评估。",
+    "confidence": 0.6,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "ecosystem",
+    "claim_type": "comparison",
+    "claim_text": "ClassIn 提供硬件终端和 AI 学习管理系统，腾讯云 LCIC 提供 Open API 和跨平台 SDK，BigBlueButton 可与 LMS 集成，三者生态集成路径不同。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_open_api",
+      "ev_tencent_cross_platform",
+      "ev_bbb_lms_integration"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "ClassIn 官方介绍硬件和 AI 学习管理；腾讯云官方介绍 Open API 和跨平台 SDK；BigBlueButton 第三方文章提到 LMS 集成。",
+    "uncertainty": "BigBlueButton 的 LMS 集成证据可靠性低；ClassIn 硬件生态深度未验证。",
+    "decision_impact": "影响生态适配和集成决策。",
+    "confidence": 0.7,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "customer",
+    "claim_type": "comparison",
+    "claim_text": "ClassIn 覆盖广泛教育科目和多种教学模式，腾讯云 LCIC 面向需要开发集成的在线教育平台，BigBlueButton 面向自托管教育机构，目标客户细分不同。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "ClassIn 官方介绍支持多种科目和教学模式；腾讯云官方介绍多种直播教学场景；BigBlueButton GitHub 列出教育用例。",
+    "uncertainty": "客户信息来自官方，缺乏实际客户案例。",
+    "decision_impact": "影响目标客户匹配度评估。",
+    "confidence": 0.7,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_006",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "risk",
+    "claim_type": "inference",
+    "claim_text": "BigBlueButton 的自托管模式意味着客户需承担服务器运维责任，可能带来运维成本和稳定性风险；腾讯云 LCIC 提供内容审核和 AI 降噪，可能降低内容安全风险；ClassIn 风险证据缺失。",
+    "competitors": [
+      "BigBlueButton",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk",
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "BigBlueButton 需自行安装部署，推断有运维责任；腾讯云官方介绍消息安全审核和 AI 降噪；ClassIn 无风险证据。",
+    "uncertainty": "ClassIn 风险未知，不能推断其无风险；腾讯云审核功能效果未验证。",
+    "decision_impact": "影响风险管理和合规决策。",
+    "confidence": 0.5,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_007",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "positioning",
+    "claim_type": "baseline",
+    "claim_text": "ClassIn、腾讯云 LCIC 和 BigBlueButton 均可作为在线教育实时互动和虚拟教室的基线候选，但需根据客户技术能力和预算进一步筛选。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "三者均提供实时互动和虚拟教室核心能力，但交付模式不同，可作为不同路径的基线候选。",
+    "uncertainty": "基线候选仍需客户需求验证。",
+    "decision_impact": "为后续筛选提供起点。",
+    "confidence": 0.7,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_008",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "ecosystem",
+    "claim_type": "opportunity",
+    "claim_text": "腾讯云 LCIC 的 Open API 和跨平台 SDK 可能为需要深度集成的教育平台提供灵活的开发路径，但需验证其实际集成效率和稳定性。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_open_api",
+      "ev_tencent_cross_platform"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "腾讯云官方介绍 Open API 和跨平台 SDK，暗示集成能力，但未提供实际案例。",
+    "uncertainty": "集成效率未验证，可能受开发资源影响。",
+    "decision_impact": "为技术团队提供潜在选择。",
+    "confidence": 0.6,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_009",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "risk",
+    "claim_type": "risk",
+    "claim_text": "BigBlueButton 的自托管模式可能带来运维复杂性和稳定性风险，尤其对于缺乏技术团队的教育机构。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "BigBlueButton 需自行安装部署，推断运维责任。",
+    "uncertainty": "运维风险程度取决于机构技术能力。",
+    "decision_impact": "影响自托管方案的可行性评估。",
+    "confidence": 0.6,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_010",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "dimension": "pricing",
+    "claim_type": "recommendation",
+    "claim_text": "建议在比较定价时，将 BigBlueButton 的自托管基础设施和运维成本纳入总拥有成本（TCO）计算，而非仅比较订阅价格。",
+    "competitors": [
+      "BigBlueButton",
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "BigBlueButton 无订阅价格但需自托管，ClassIn 和腾讯云有订阅价格，直接比较不公平。",
+    "uncertainty": "自托管成本未量化，需进一步调研。",
+    "decision_impact": "帮助客户做出成本更全面的决策。",
+    "confidence": 0.6,
+    "produced_by_agent_run_id": "run_v2_candidate",
+    "citation_status": "pending"
+  }
+]

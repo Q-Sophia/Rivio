@@ -1,0 +1,59 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_need_1",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question_id": "kiq_1",
+    "dimension": "产品能力",
+    "required_facts": [
+      "各版本功能矩阵",
+      "版本间功能差异说明"
+    ],
+    "preferred_source_types": [
+      "官方定价页",
+      "官方版本对比页",
+      "帮助中心"
+    ],
+    "comparability_basis": "版本维度",
+    "decision_link": "确定功能核实的适用范围"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_need_2",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question_id": "kiq_2",
+    "dimension": "产品能力",
+    "required_facts": [
+      "功能使用条件",
+      "功能限制",
+      "操作路径"
+    ],
+    "preferred_source_types": [
+      "官方帮助中心",
+      "官方功能指南"
+    ],
+    "comparability_basis": "功能维度",
+    "decision_link": "形成可操作的功能证据"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_need_3",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "question_id": "kiq_3",
+    "dimension": "产品能力",
+    "required_facts": [
+      "目标客户画像",
+      "核心场景列表",
+      "功能与场景映射"
+    ],
+    "preferred_source_types": [
+      "官方解决方案页",
+      "客户案例"
+    ],
+    "comparability_basis": "场景维度",
+    "decision_link": "评估功能核实是否覆盖决策需求"
+  }
+]

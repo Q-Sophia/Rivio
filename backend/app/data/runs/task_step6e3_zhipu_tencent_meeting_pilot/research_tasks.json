@@ -1,0 +1,33 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_tencent_meeting_official_features",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "information_need_id": "need_tencent_meeting_official_features",
+    "title": "核实腾讯会议官方产品能力",
+    "objective": "搜索、采集并抽取腾讯会议官方产品功能资料",
+    "competitor": "腾讯会议",
+    "dimension": "产品能力",
+    "query_hints": [
+      "腾讯会议 官方 产品功能 在线会议 屏幕共享 录制 字幕"
+    ],
+    "seed_urls": [
+      "https://meeting.tencent.com/news/8yuechanpinshangxin.html",
+      "https://meeting.tencent.com/news/zhinengluzhi.html",
+      "https://meeting.tencent.com/support/topic/440/index.html"
+    ],
+    "preferred_domains": [
+      "meeting.tencent.com"
+    ],
+    "snapshot_source_ids": [],
+    "preferred_source_types": [
+      "official_site"
+    ],
+    "priority": "high",
+    "status": "evidence_extracted",
+    "stop_condition": "获得至少一条能逐字追溯到腾讯会议官方网页的产品能力证据",
+    "depends_on": [],
+    "assigned_role": "collector"
+  }
+]

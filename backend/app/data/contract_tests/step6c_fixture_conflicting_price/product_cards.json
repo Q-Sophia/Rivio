@@ -1,0 +1,84 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price",
+      "competitor_role": "direct",
+      "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_conflicting_price_1",
+    "task_id": "step6c_fixture_conflicting_price",
+    "name": "甲方案",
+    "company": "甲方案",
+    "positioning": "面向标准采购场景。",
+    "target_users": [
+      "采购团队"
+    ],
+    "pricing_summary": "甲方案官方页面显示年度价格为一万元。；第三方资料称甲方案年度价格为一万五千元。",
+    "core_features": [
+      "当前供给属性需要继续核验。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_conflicting_price_1_positioning_1",
+      "src_conflicting_price_1_pricing_1",
+      "src_conflicting_price_1_pricing_2"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_1_positioning_1",
+      "ev_conflicting_price_1_pricing_1",
+      "ev_conflicting_price_1_pricing_2"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "conflicting_price",
+      "competitor_role": "direct",
+      "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_conflicting_price_2",
+    "task_id": "step6c_fixture_conflicting_price",
+    "name": "乙方案",
+    "company": "乙方案",
+    "positioning": "面向标准采购场景。",
+    "target_users": [
+      "采购团队"
+    ],
+    "pricing_summary": "乙方案官方页面显示年度价格为一万二千元。",
+    "core_features": [
+      "当前供给属性需要继续核验。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_conflicting_price_2_positioning_1",
+      "src_conflicting_price_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_2_positioning_1",
+      "ev_conflicting_price_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

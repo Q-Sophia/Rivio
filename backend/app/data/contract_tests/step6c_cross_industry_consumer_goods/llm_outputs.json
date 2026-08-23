@@ -1,0 +1,482 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_build_claims",
+    "task_id": "step6c_cross_industry_consumer_goods",
+    "llm_call_id": "llmcall_build_claims",
+    "agent_role": "analyst",
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "raw_output": {
+      "item": {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm",
+          "industry": "实体消费品与饮具",
+          "source_count": 2
+        },
+        "id": "portfolio_step6c_cross_industry_consumer_goods",
+        "task_id": "step6c_cross_industry_consumer_goods",
+        "prompt_id": "competitive_analyst",
+        "prompt_version": "2.2.1-candidate",
+        "brief_assessment": {
+          "schema_version": "v1",
+          "metadata": {
+            "generation_mode": "mock_llm"
+          },
+          "id": "brief_step6c_cross_industry_consumer_goods",
+          "task_id": "step6c_cross_industry_consumer_goods",
+          "decision_question": "为通勤人群选择下一代保温杯产品定位与渠道方案",
+          "industry": "实体消费品与饮具",
+          "target_customers": [],
+          "core_scenarios": [],
+          "selected_dimensions": [
+            "feature",
+            "positioning",
+            "pricing"
+          ],
+          "missing_fields": [
+            "目标客户",
+            "核心场景"
+          ],
+          "sufficient_for_analysis": false
+        },
+        "competitor_profiles": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_暖行杯",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "name": "暖行杯",
+            "role": "direct",
+            "selection_reason": "暖行杯 是任务预选研究对象，现有资料覆盖3 个证据维度。",
+            "represented_path": "面向教育机构的开箱即用在线教学产品",
+            "comparable_dimensions": [
+              "feature",
+              "positioning",
+              "pricing"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "城市通勤人群"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "面向城市通勤人群的轻量便携保温杯。",
+            "offering_scope": "轻量杯身；六小时保温",
+            "delivery_model": "以完整产品和客户端能力交付，具体服务责任仍需结合合同确认",
+            "business_model": "公开建议零售价为一百九十九元。",
+            "source_ids": [
+              "src_warm_official"
+            ],
+            "evidence_ids": [
+              "ev_warm_positioning",
+              "ev_warm_feature",
+              "ev_warm_pricing"
+            ],
+            "confidence": 0.85
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "competitor_山川杯",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "name": "山川杯",
+            "role": "direct",
+            "selection_reason": "山川杯 是任务预选研究对象，现有资料覆盖3 个证据维度。",
+            "represented_path": "面向教育机构的开箱即用在线教学产品",
+            "comparable_dimensions": [
+              "feature",
+              "positioning",
+              "pricing"
+            ],
+            "non_comparable_dimensions": [],
+            "target_customers": [
+              "户外与长途使用人群"
+            ],
+            "core_scenarios": [],
+            "value_proposition": "面向户外与长途场景的耐用大容量保温杯。",
+            "offering_scope": "耐磨涂层；大容量杯型",
+            "delivery_model": "以完整产品和客户端能力交付，具体服务责任仍需结合合同确认",
+            "business_model": "公开建议零售价为二百三十九元。",
+            "source_ids": [
+              "src_mountain_official"
+            ],
+            "evidence_ids": [
+              "ev_mountain_positioning",
+              "ev_mountain_feature",
+              "ev_mountain_pricing"
+            ],
+            "confidence": 0.85
+          }
+        ],
+        "key_intelligence_questions": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_cross_industry_consumer_goods_customer",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案",
+            "dimensions": [
+              "customer",
+              "positioning"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_cross_industry_consumer_goods_tradeoff",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案",
+            "dimensions": [
+              "feature",
+              "pricing",
+              "ecosystem",
+              "risk"
+            ],
+            "priority": "high"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "kiq_step6c_cross_industry_consumer_goods_evidence",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案",
+            "dimensions": [
+              "feature",
+              "positioning",
+              "pricing"
+            ],
+            "priority": "medium"
+          }
+        ],
+        "information_needs": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_cross_industry_consumer_goods_1",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question_id": "kiq_step6c_cross_industry_consumer_goods_customer",
+            "dimension": "customer",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_cross_industry_consumer_goods_2",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question_id": "kiq_step6c_cross_industry_consumer_goods_tradeoff",
+            "dimension": "feature",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "need_step6c_cross_industry_consumer_goods_3",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "question_id": "kiq_step6c_cross_industry_consumer_goods_evidence",
+            "dimension": "feature",
+            "required_facts": [
+              "客户与场景",
+              "责任边界",
+              "可比口径与限制"
+            ],
+            "preferred_source_types": [
+              "官方资料",
+              "客户资料",
+              "可信第三方资料"
+            ],
+            "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+            "decision_link": "为通勤人群选择下一代保温杯产品定位与渠道方案"
+          }
+        ],
+        "evidence_coverage": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_暖行杯_feature",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "暖行杯",
+            "dimension": "feature",
+            "status": "partial",
+            "source_ids": [
+              "src_warm_official"
+            ],
+            "evidence_ids": [
+              "ev_warm_feature"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_暖行杯_positioning",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "暖行杯",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_warm_official"
+            ],
+            "evidence_ids": [
+              "ev_warm_positioning"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_暖行杯_pricing",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "暖行杯",
+            "dimension": "pricing",
+            "status": "partial",
+            "source_ids": [
+              "src_warm_official"
+            ],
+            "evidence_ids": [
+              "ev_warm_pricing"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_山川杯_feature",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "山川杯",
+            "dimension": "feature",
+            "status": "partial",
+            "source_ids": [
+              "src_mountain_official"
+            ],
+            "evidence_ids": [
+              "ev_mountain_feature"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_山川杯_positioning",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "山川杯",
+            "dimension": "positioning",
+            "status": "partial",
+            "source_ids": [
+              "src_mountain_official"
+            ],
+            "evidence_ids": [
+              "ev_mountain_positioning"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "coverage_山川杯_pricing",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitor": "山川杯",
+            "dimension": "pricing",
+            "status": "partial",
+            "source_ids": [
+              "src_mountain_official"
+            ],
+            "evidence_ids": [
+              "ev_mountain_pricing"
+            ],
+            "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+          }
+        ],
+        "comparability_notes": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_step6c_cross_industry_consumer_goods_feature",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "dimension": "feature",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_step6c_cross_industry_consumer_goods_positioning",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "dimension": "positioning",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "compare_step6c_cross_industry_consumer_goods_pricing",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "dimension": "pricing",
+            "comparable": true,
+            "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+            "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+          }
+        ],
+        "items": [
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_step6c_cross_industry_consumer_goods_feature",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "dimension": "feature",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，暖行杯、山川杯在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "evidence_ids": [
+              "ev_warm_feature",
+              "ev_mountain_feature"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+            "confidence": 0.85,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_step6c_cross_industry_consumer_goods_positioning",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "dimension": "positioning",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，暖行杯、山川杯在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "evidence_ids": [
+              "ev_warm_positioning",
+              "ev_mountain_positioning"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+            "confidence": 0.9,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          },
+          {
+            "schema_version": "v1",
+            "metadata": {
+              "generation_mode": "mock_llm"
+            },
+            "id": "clv2_step6c_cross_industry_consumer_goods_pricing",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "dimension": "pricing",
+            "claim_type": "comparison",
+            "claim_text": "现有证据表明，暖行杯、山川杯在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "evidence_ids": [
+              "ev_warm_pricing",
+              "ev_mountain_pricing"
+            ],
+            "counter_evidence_ids": [],
+            "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+            "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+            "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+            "confidence": 0.9,
+            "produced_by_agent_run_id": "mock_llm_analyst_v2",
+            "citation_status": "pending"
+          }
+        ],
+        "research_gaps": [
+          {
+            "schema_version": "v1",
+            "metadata": {},
+            "id": "gap_step6c_cross_industry_consumer_goods_brief",
+            "task_id": "step6c_cross_industry_consumer_goods",
+            "competitors": [
+              "暖行杯",
+              "山川杯"
+            ],
+            "dimension": "research_brief",
+            "missing_information": "目标客户、核心任务场景和组织约束尚未明确。",
+            "decision_blocked": "无法判断观察到的差异是否对目标客户形成真实价值。",
+            "why_existing_evidence_is_insufficient": "当前证据主要描述竞品自身，不能代替目标客户研究。",
+            "suggested_queries": [
+              "访谈目标客户的任务、痛点、替代做法和购买约束"
+            ],
+            "preferred_source_types": [
+              "客户访谈",
+              "用户研究",
+              "内部战略资料"
+            ],
+            "priority": "high",
+            "stop_condition": "目标客户与核心场景已由任务负责人确认并形成研究简报。",
+            "related_evidence_ids": []
+          }
+        ]
+      },
+      "generated_by": "AgentRole.ANALYST",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "portfolio_step6c_cross_industry_consumer_goods"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-14T09:24:09.691186Z"
+  }
+]

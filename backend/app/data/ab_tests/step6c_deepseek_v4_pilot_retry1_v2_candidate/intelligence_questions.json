@@ -1,0 +1,54 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_001",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question": "目标客户是教育机构还是技术开发者？这决定了选择一体化平台还是低代码/开源方案。",
+    "decision_link": "影响竞争集合的界定和评估标准",
+    "dimensions": [
+      "customer",
+      "positioning"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_002",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question": "客户的核心场景是实时互动教学还是大规模直播？不同场景对并发、延时和互动深度的要求不同。",
+    "decision_link": "影响功能优先级和性能评估",
+    "dimensions": [
+      "feature",
+      "customer"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_003",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question": "客户对数据自主可控和定制化的需求程度如何？这决定了自托管开源方案与SaaS/云方案的取舍。",
+    "decision_link": "影响部署模式和风险偏好",
+    "dimensions": [
+      "risk",
+      "ecosystem"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_004",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "question": "客户的总拥有成本（TCO）如何比较？包括订阅费、开发集成成本、运维成本等。",
+    "decision_link": "影响预算和投资决策",
+    "dimensions": [
+      "pricing",
+      "risk"
+    ],
+    "priority": "medium"
+  }
+]

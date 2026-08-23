@@ -1,0 +1,71 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "extractattempt_c95c6cf9697c",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "research_task_id": "researchtask_tencent_meeting_official_features",
+    "source_id": "src_465e3ce798e1",
+    "web_page_id": "webpage_f42326d5e7a4",
+    "status": "completed",
+    "extraction_method": "deterministic_quote_extractor_v1",
+    "evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf"
+    ],
+    "extracted_count": 8,
+    "error": "",
+    "created_at": "2026-08-14T16:21:45.621618Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "extractattempt_27a8a505546c",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "research_task_id": "researchtask_tencent_meeting_official_features",
+    "source_id": "src_2a869265fdb9",
+    "web_page_id": "webpage_b8c51c4c1feb",
+    "status": "completed",
+    "extraction_method": "deterministic_quote_extractor_v1",
+    "evidence_ids": [
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569"
+    ],
+    "extracted_count": 5,
+    "error": "",
+    "created_at": "2026-08-14T16:21:45.622626Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "extractattempt_6f727d64a2cb",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "research_task_id": "researchtask_tencent_meeting_official_features",
+    "source_id": "src_6c911642d8e2",
+    "web_page_id": "webpage_9ac2223b9d8e",
+    "status": "completed",
+    "extraction_method": "deterministic_quote_extractor_v1",
+    "evidence_ids": [
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241",
+      "ev_cc10a9b41e95"
+    ],
+    "extracted_count": 8,
+    "error": "",
+    "created_at": "2026-08-14T16:21:45.622626Z"
+  }
+]

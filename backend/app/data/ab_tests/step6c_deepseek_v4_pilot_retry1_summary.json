@@ -1,0 +1,162 @@
+{
+  "experiment_id": "step6c_deepseek_v4_pilot_retry1",
+  "status": "failed",
+  "real_llm_called": true,
+  "provider": "compatible",
+  "model": "deepseek-v4-flash",
+  "api_style": "chat_completions",
+  "structured_output_mode": "json_object",
+  "thinking_mode": "disabled",
+  "temperature": 0.0,
+  "max_tokens": 16000,
+  "source_task_id": "snapshot_step6c_professional_mock",
+  "same_input_and_schema": true,
+  "call_budget": 2,
+  "preferred_variant_for_next_pilot": "v2_candidate",
+  "results": [
+    {
+      "variant": "v1_baseline",
+      "task_id": "step6c_deepseek_v4_pilot_retry1_v1_baseline",
+      "prompt_id": "competitive_analyst_baseline",
+      "prompt_version": "1.0.0-ab-baseline",
+      "prompt_hash": "b26b4087f2d474e20eb7188694f8f9b20b2c77214a0713c83336bd3d755c7ee7",
+      "request_id": "f320381c-3f04-4edf-ad07-2906d9570633",
+      "duration_ms": 58853,
+      "input_tokens": 12677,
+      "output_tokens": 10553,
+      "used_fallback": false,
+      "status": "failed",
+      "error": "ValueError: AnalysisClaimV2 缺少 evidence_ids: claim_014"
+    },
+    {
+      "variant": "v2_candidate",
+      "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.0-candidate",
+      "prompt_hash": "c918c8ffc3cf97b453d35c5f528687d92c5338298720e806a60f912d37b6cf16",
+      "request_id": "3f098ae9-29f3-4a1f-8003-e187b38fda77",
+      "duration_ms": 58153,
+      "input_tokens": 14219,
+      "output_tokens": 11226,
+      "used_fallback": false,
+      "status": "quality_gate_failed",
+      "competitor_profiles_count": 3,
+      "claims_v2_count": 15,
+      "research_gaps_count": 4,
+      "metric_pass_rate": 0.9474,
+      "quality_gate_failures": [
+        "multi_competitor_evidence_balance_rate"
+      ],
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=106; total=106"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=15; total=15"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=15; total=15"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']; allowed=['customer', 'ecosystem', 'feature', 'positioning', 'pricing', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=3; total=3"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=4; total=4"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.4167,
+          "passed": true,
+          "details": "cross=5; non_fact=12"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 0.7143,
+          "passed": false,
+          "details": "balanced=5; total=7"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=12; non_fact=12"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=7; total=7"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=105"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "fact": 3,
+            "comparison": 4,
+            "inference": 4,
+            "baseline": 1,
+            "risk": 1,
+            "opportunity": 1,
+            "recommendation": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,149 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_collect_sources",
+      "task_key": "collect_sources"
+    },
+    "id": "collect_sources",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "collect_sources",
+    "agent_role": "collector",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "snapshot:online_education"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "started_at": "2026-08-12T11:04:21.812087Z",
+    "completed_at": "2026-08-12T11:04:21.822088Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_product_cards",
+      "task_key": "build_product_cards"
+    },
+    "id": "build_product_cards",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "build_product_cards",
+    "agent_role": "extractor",
+    "status": "completed",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence"
+    ],
+    "output_refs": [
+      "product_cards"
+    ],
+    "started_at": "2026-08-12T11:04:21.894104Z",
+    "completed_at": "2026-08-12T11:04:22.005131Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_claims",
+      "task_key": "build_claims"
+    },
+    "id": "build_claims",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "build_claims",
+    "agent_role": "analyst",
+    "status": "completed",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "input_refs": [
+      "product_cards",
+      "evidence"
+    ],
+    "output_refs": [
+      "claims"
+    ],
+    "started_at": "2026-08-12T11:04:22.079145Z",
+    "completed_at": "2026-08-12T11:04:22.204031Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_check_citations",
+      "task_key": "check_citations"
+    },
+    "id": "check_citations",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "check_citations",
+    "agent_role": "citation",
+    "status": "completed",
+    "depends_on": [
+      "build_claims"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "started_at": "2026-08-12T11:04:22.282635Z",
+    "completed_at": "2026-08-12T11:04:22.311640Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_report",
+      "task_key": "build_report"
+    },
+    "id": "build_report",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "build_report",
+    "agent_role": "writer",
+    "status": "completed",
+    "depends_on": [
+      "check_citations"
+    ],
+    "input_refs": [
+      "product_cards",
+      "claims",
+      "citation_checks"
+    ],
+    "output_refs": [
+      "reports"
+    ],
+    "started_at": "2026-08-12T11:04:22.382655Z",
+    "completed_at": "2026-08-12T11:04:22.532144Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_review_report",
+      "task_key": "review_report"
+    },
+    "id": "review_report",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "label": "review_report",
+    "agent_role": "reviewer",
+    "status": "completed",
+    "depends_on": [
+      "build_report"
+    ],
+    "input_refs": [
+      "reports",
+      "claims",
+      "citation_checks",
+      "product_cards"
+    ],
+    "output_refs": [
+      "review_feedback"
+    ],
+    "started_at": "2026-08-12T11:04:22.626692Z",
+    "completed_at": "2026-08-12T11:04:22.649693Z"
+  }
+]

@@ -1,0 +1,73 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "memory_scope": "task_run",
+      "dimension_counts": {
+        "feature": 21
+      },
+      "approved": false,
+      "review_score": 0.0
+    },
+    "id": "wm_snapshot_online_education",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+    "task_summary": "Loaded 3 sources, 21 evidence items, 1 product cards, 0 claims, 0 citation checks, and 0 feedback tasks.",
+    "active_competitors": [
+      "腾讯会议"
+    ],
+    "focus_areas": [
+      "feature"
+    ],
+    "current_task_key": "review_report",
+    "completed_task_keys": [
+      "researchtask_tencent_meeting_official_features",
+      "extract_evidence_researchtask_tencent_meeting_official_features"
+    ],
+    "pending_task_keys": [],
+    "blocked_task_keys": [],
+    "skipped_task_keys": [],
+    "selected_source_ids": [
+      "src_465e3ce798e1",
+      "src_2a869265fdb9",
+      "src_6c911642d8e2"
+    ],
+    "selected_evidence_ids": [
+      "ev_ae4f59361b6b",
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9",
+      "ev_a7eb4b68c09e",
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193",
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf",
+      "ev_2594fba7bb74",
+      "ev_53701da105dd",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9",
+      "ev_664f24d75569",
+      "ev_61d68ec6120d",
+      "ev_959600cea190",
+      "ev_e8fe9591b139",
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241",
+      "ev_cc10a9b41e95"
+    ],
+    "selected_product_card_ids": [
+      "prod_腾讯会议"
+    ],
+    "selected_claim_ids": [],
+    "weak_claim_ids": [],
+    "invalid_claim_ids": [],
+    "review_issue_ids": [],
+    "feedback_task_ids": [],
+    "quality_gate_ids": [],
+    "notes": [
+      "Short-term memory is scoped to this task_id and should not be reused as a current market fact in another run.",
+      "Long-term memory can store frameworks, preferences, and source policies; volatile product facts must keep evidence_ids and verification timestamps."
+    ],
+    "updated_at": "2026-08-21T06:55:13.165465Z"
+  }
+]

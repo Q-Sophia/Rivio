@@ -1,0 +1,162 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_researchtask_tencent_meeting_official_features",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_key": "researchtask_tencent_meeting_official_features",
+    "parent_task_id": "",
+    "task_type": "supplement_collection",
+    "target_agent_role": "collector",
+    "status": "completed",
+    "priority": "high",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [],
+    "output_refs": [
+      "sources",
+      "web_pages",
+      "collection_attempts",
+      "search_attempts",
+      "web_search_results"
+    ],
+    "reason": "搜索、采集并抽取腾讯会议官方产品功能资料",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "web_collector_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-14T16:21:44.130985Z",
+    "updated_at": "2026-08-14T16:21:45.443177Z",
+    "started_at": "2026-08-14T16:21:45.082319Z",
+    "completed_at": "2026-08-14T16:21:45.443177Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "research_task_id": "researchtask_tencent_meeting_official_features",
+      "source_ids": [
+        "src_465e3ce798e1",
+        "src_2a869265fdb9",
+        "src_6c911642d8e2"
+      ],
+      "max_evidence_per_page": 8
+    },
+    "id": "queue_extract_evidence_researchtask_tencent_meeting_official_features",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_key": "extract_evidence_researchtask_tencent_meeting_official_features",
+    "parent_task_id": "",
+    "task_type": "extract_source_evidence",
+    "target_agent_role": "extractor",
+    "status": "completed",
+    "priority": "high",
+    "depends_on": [
+      "researchtask_tencent_meeting_official_features"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "web_pages",
+      "research_tasks"
+    ],
+    "output_refs": [
+      "evidence",
+      "evidence_extraction_attempts"
+    ],
+    "reason": "把 腾讯会议 网页正文转换为可追溯证据",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "web_evidence_extractor_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-14T16:21:45.448180Z",
+    "updated_at": "2026-08-14T16:21:45.646637Z",
+    "started_at": "2026-08-14T16:21:45.565144Z",
+    "completed_at": "2026-08-14T16:21:45.646637Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6f_research_analysis",
+      "real_llm_calls_authorized": 1
+    },
+    "id": "queue_analyze_research_evidence",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_key": "analyze_research_evidence",
+    "parent_task_id": "",
+    "task_type": "build_claims",
+    "target_agent_role": "analyst",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [
+      "analysis_tasks",
+      "research_plans",
+      "sources",
+      "evidence",
+      "product_cards",
+      "evidence_coverage",
+      "research_gaps"
+    ],
+    "output_refs": [
+      "analysis_portfolios",
+      "competitor_profiles",
+      "claims_v2",
+      "claims",
+      "analysis_evidence_coverage",
+      "analysis_research_gaps"
+    ],
+    "reason": "基于 Step6E 结构化研究产物生成当前任务专属分析结论。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "professional_research_analyst_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-21T06:55:13.040437Z",
+    "updated_at": "2026-08-21T06:55:42.816686Z",
+    "started_at": "2026-08-21T06:55:13.070443Z",
+    "completed_at": "2026-08-21T06:55:42.816686Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6f_research_analysis"
+    },
+    "id": "queue_check_research_claim_citations",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_key": "check_research_claim_citations",
+    "parent_task_id": "",
+    "task_type": "check_citations",
+    "target_agent_role": "citation",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "analyze_research_evidence"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "reason": "校验 Step6F 新分析结论的 evidence_ids 与来源链。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "citation_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-21T06:55:42.822687Z",
+    "updated_at": "2026-08-21T06:55:42.935548Z",
+    "started_at": "2026-08-21T06:55:42.860241Z",
+    "completed_at": "2026-08-21T06:55:42.935548Z",
+    "error": ""
+  }
+]

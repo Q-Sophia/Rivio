@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_001",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "question": "各方案在实时互动与虚拟教室场景中的核心能力边界是什么？",
+    "decision_link": "决定选型时需明确各方案提供的功能范围，避免因能力缺失导致项目延期。",
+    "dimensions": [
+      "feature"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_002",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "question": "各方案的定价模式、成本构成和总体拥有成本如何？",
+    "decision_link": "影响预算规划和长期成本评估，需比较不同方案的订阅费用、容量限制和额外成本。",
+    "dimensions": [
+      "pricing"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_003",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "question": "各方案的生态集成能力如何，能否与现有系统（如 LMS、排课系统）对接？",
+    "decision_link": "决定方案能否融入现有技术栈，影响集成成本和实施周期。",
+    "dimensions": [
+      "ecosystem"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_004",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "question": "各方案的目标客户和适用场景有何差异？",
+    "decision_link": "帮助判断方案是否匹配自身业务模式和目标用户群体。",
+    "dimensions": [
+      "customer"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_005",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "question": "各方案在部署、运维、内容安全等方面存在哪些风险？",
+    "decision_link": "影响实施风险、合规要求和运维成本，需提前评估。",
+    "dimensions": [
+      "risk"
+    ],
+    "priority": "medium"
+  }
+]

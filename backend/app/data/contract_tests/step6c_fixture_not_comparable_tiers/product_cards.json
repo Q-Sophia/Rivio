@@ -1,0 +1,86 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers",
+      "competitor_role": "direct",
+      "selection_reason": "免费版本代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "free",
+      "service_boundary": "self_service",
+      "non_comparable_dimensions": [
+        "pricing"
+      ]
+    },
+    "id": "prod_not_comparable_tiers_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "name": "免费版本",
+    "company": "免费版本",
+    "positioning": "面向个人试用场景。",
+    "target_users": [
+      "个人用户"
+    ],
+    "pricing_summary": "免费版本不收取授权费用。",
+    "core_features": [
+      "当前供给属性需要继续核验。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_not_comparable_tiers_1_positioning_1",
+      "src_not_comparable_tiers_1_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_1_positioning_1",
+      "ev_not_comparable_tiers_1_pricing_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers",
+      "competitor_role": "direct",
+      "selection_reason": "企业版本代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "enterprise",
+      "service_boundary": "managed_service",
+      "non_comparable_dimensions": [
+        "pricing"
+      ]
+    },
+    "id": "prod_not_comparable_tiers_2",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "name": "企业版本",
+    "company": "企业版本",
+    "positioning": "面向大型组织采购场景。",
+    "target_users": [
+      "大型组织"
+    ],
+    "pricing_summary": "企业版本按合同提供服务与支持。",
+    "core_features": [
+      "当前供给属性需要继续核验。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_not_comparable_tiers_2_positioning_1",
+      "src_not_comparable_tiers_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_not_comparable_tiers_2_positioning_1",
+      "ev_not_comparable_tiers_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

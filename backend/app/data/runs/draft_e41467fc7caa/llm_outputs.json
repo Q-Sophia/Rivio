@@ -1,0 +1,51 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_parse_draft_e41467fc7caa",
+    "task_id": "draft_e41467fc7caa",
+    "llm_call_id": "llmcall_parse_draft_e41467fc7caa",
+    "agent_role": "intent",
+    "output_schema": "AnalysisTaskDraft",
+    "raw_output": {
+      "item": {
+        "id": "draft_e41467fc7caa",
+        "task_id": "draft_e41467fc7caa",
+        "request_text": "调研一下classin的竞品分析，与腾讯云平台和BigBlueButton对比",
+        "decision_question": "这份分析要帮助用户决定是否选择ClassIn作为在线教学或会议解决方案，以及如何与腾讯云平台和BigBlueButton进行对比评估。",
+        "industry": "在线教育/远程会议",
+        "competitors": [
+          "ClassIn",
+          "腾讯云平台",
+          "BigBlueButton"
+        ],
+        "target_customers": [],
+        "core_scenarios": [],
+        "focus_areas": [],
+        "constraints": [],
+        "report_subject": "ClassIn与腾讯云平台、BigBlueButton的竞品对比分析",
+        "preferred_title": "",
+        "missing_fields": [
+          "决策问题",
+          "所属行业",
+          "比较对象"
+        ],
+        "clarification_questions": [
+          "您希望这份分析帮助您做出什么具体决策？",
+          "您所在的行业或应用场景是什么？",
+          "您希望重点比较哪些维度，例如功能、价格、易用性等？"
+        ],
+        "ready_for_confirmation": false,
+        "status": "needs_clarification"
+      },
+      "generated_by": "AgentRole.INTENT",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "draft_e41467fc7caa"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-21T07:30:27.853270Z"
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_1_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "暖行杯positioning资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "暖行杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "暖行杯面向城市通勤人群。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_1_customer_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "暖行杯customer资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/1/customer/1",
+    "source_type": "official_site",
+    "competitor": "暖行杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "主要场景为通勤携带与办公室饮水。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_1_feature_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "暖行杯feature资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/1/feature/1",
+    "source_type": "official_site",
+    "competitor": "暖行杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "采用轻量杯身与六小时保温设计。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_1_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "暖行杯pricing资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/1/pricing/1",
+    "source_type": "official_site",
+    "competitor": "暖行杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "公开建议零售价为一百九十九元。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_2_positioning_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "山川杯positioning资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "山川杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "山川杯面向户外与长途使用人群。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_2_customer_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "山川杯customer资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/2/customer/1",
+    "source_type": "official_site",
+    "competitor": "山川杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "主要场景为户外活动与长途旅行。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_2_feature_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "山川杯feature资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/2/feature/1",
+    "source_type": "official_site",
+    "competitor": "山川杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "采用耐磨涂层与大容量杯型。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods"
+    },
+    "id": "src_cross_industry_consumer_goods_2_pricing_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "title": "山川杯pricing资料",
+    "url": "https://fixture.invalid/cross_industry_consumer_goods/2/pricing/1",
+    "source_type": "official_site",
+    "competitor": "山川杯",
+    "accessed_at": "2026-08-14T09:24:09.765332Z",
+    "content_excerpt": "公开建议零售价为二百三十九元。",
+    "reliability_score": 0.85
+  }
+]

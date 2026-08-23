@@ -1,0 +1,58 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "ev_not_comparable_tiers_1_positioning_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "source_id": "src_not_comparable_tiers_1_positioning_1",
+    "competitor": "免费版本",
+    "dimension": "positioning",
+    "snippet": "免费版本面向个人试用场景。",
+    "normalized_fact": "免费版本面向个人试用场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "ev_not_comparable_tiers_1_pricing_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "source_id": "src_not_comparable_tiers_1_pricing_1",
+    "competitor": "免费版本",
+    "dimension": "pricing",
+    "snippet": "免费版本不收取授权费用。",
+    "normalized_fact": "免费版本不收取授权费用。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "ev_not_comparable_tiers_2_positioning_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "source_id": "src_not_comparable_tiers_2_positioning_1",
+    "competitor": "企业版本",
+    "dimension": "positioning",
+    "snippet": "企业版本面向大型组织采购场景。",
+    "normalized_fact": "企业版本面向大型组织采购场景。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "not_comparable_tiers"
+    },
+    "id": "ev_not_comparable_tiers_2_pricing_1",
+    "task_id": "step6c_fixture_not_comparable_tiers",
+    "source_id": "src_not_comparable_tiers_2_pricing_1",
+    "competitor": "企业版本",
+    "dimension": "pricing",
+    "snippet": "企业版本按合同提供服务与支持。",
+    "normalized_fact": "企业版本按合同提供服务与支持。",
+    "confidence": 0.85
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent",
+      "competitor_role": "direct",
+      "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_missing_not_absent_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "name": "甲方案",
+    "company": "甲方案",
+    "positioning": "面向目标客户。",
+    "target_users": [
+      "目标客户"
+    ],
+    "pricing_summary": "当前缺少定价资料。",
+    "core_features": [
+      "甲方案公开确认提供某项核心能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_missing_not_absent_1_positioning_1",
+      "src_missing_not_absent_1_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_missing_not_absent_1_positioning_1",
+      "ev_missing_not_absent_1_feature_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent",
+      "competitor_role": "direct",
+      "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_missing_not_absent_2",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "name": "乙方案",
+    "company": "乙方案",
+    "positioning": "面向目标客户。",
+    "target_users": [
+      "目标客户"
+    ],
+    "pricing_summary": "当前缺少定价资料。",
+    "core_features": [
+      "当前供给属性需要继续核验。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_missing_not_absent_2_positioning_1"
+    ],
+    "evidence_ids": [
+      "ev_missing_not_absent_2_positioning_1"
+    ],
+    "confidence": 0.8
+  }
+]

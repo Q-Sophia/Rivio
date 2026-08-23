@@ -1,0 +1,159 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_collect_sources",
+      "task_key": "collect_sources"
+    },
+    "id": "collect_sources",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "collect_sources",
+    "agent_role": "collector",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "snapshot:online_education"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "started_at": "2026-08-14T10:05:06.315186Z",
+    "completed_at": "2026-08-14T10:05:06.329188Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_product_cards",
+      "task_key": "build_product_cards"
+    },
+    "id": "build_product_cards",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "build_product_cards",
+    "agent_role": "extractor",
+    "status": "completed",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence"
+    ],
+    "output_refs": [
+      "product_cards"
+    ],
+    "started_at": "2026-08-14T10:05:06.402215Z",
+    "completed_at": "2026-08-14T10:05:06.506517Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_claims",
+      "task_key": "build_claims"
+    },
+    "id": "build_claims",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "build_claims",
+    "agent_role": "analyst",
+    "status": "completed",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "input_refs": [
+      "product_cards",
+      "evidence"
+    ],
+    "output_refs": [
+      "analysis_portfolios",
+      "brief_assessments",
+      "competitor_profiles",
+      "intelligence_questions",
+      "information_needs",
+      "evidence_coverage",
+      "comparability_notes",
+      "claims_v2",
+      "research_gaps",
+      "claims"
+    ],
+    "started_at": "2026-08-14T10:05:06.576531Z",
+    "completed_at": "2026-08-14T10:05:06.774160Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_check_citations",
+      "task_key": "check_citations"
+    },
+    "id": "check_citations",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "check_citations",
+    "agent_role": "citation",
+    "status": "completed",
+    "depends_on": [
+      "build_claims"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "started_at": "2026-08-14T10:05:06.853177Z",
+    "completed_at": "2026-08-14T10:05:06.874183Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_build_report",
+      "task_key": "build_report"
+    },
+    "id": "build_report",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "build_report",
+    "agent_role": "writer",
+    "status": "completed",
+    "depends_on": [
+      "check_citations"
+    ],
+    "input_refs": [
+      "product_cards",
+      "claims",
+      "citation_checks"
+    ],
+    "output_refs": [
+      "reports",
+      "report_statements"
+    ],
+    "started_at": "2026-08-14T10:05:06.952203Z",
+    "completed_at": "2026-08-14T10:05:24.469148Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "tb_review_report",
+      "task_key": "review_report"
+    },
+    "id": "review_report",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot",
+    "label": "review_report",
+    "agent_role": "reviewer",
+    "status": "completed",
+    "depends_on": [
+      "build_report"
+    ],
+    "input_refs": [
+      "reports",
+      "claims",
+      "citation_checks",
+      "product_cards"
+    ],
+    "output_refs": [
+      "review_feedback"
+    ],
+    "started_at": "2026-08-14T10:05:24.540164Z",
+    "completed_at": "2026-08-14T10:05:24.561169Z"
+  }
+]

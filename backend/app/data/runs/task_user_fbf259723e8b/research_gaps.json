@@ -1,0 +1,170 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_bigbluebutton_ecosystem"
+    },
+    "id": "gap_bigbluebutton_ecosystem_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "ecosystem",
+    "missing_information": "BigBlueButton 在 ecosystem 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 BigBlueButton 在 ecosystem 维度的官方资料与同版本说明",
+      "补充 BigBlueButton 在 ecosystem 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_bigbluebutton_positioning"
+    },
+    "id": "gap_bigbluebutton_positioning_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "positioning",
+    "missing_information": "BigBlueButton 在 positioning 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 BigBlueButton 在 positioning 维度的官方资料与同版本说明",
+      "补充 BigBlueButton 在 positioning 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_bigbluebutton_pricing"
+    },
+    "id": "gap_bigbluebutton_pricing_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "pricing",
+    "missing_information": "BigBlueButton 在 pricing 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 BigBlueButton 在 pricing 维度的官方资料与同版本说明",
+      "补充 BigBlueButton 在 pricing 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_classin_ecosystem"
+    },
+    "id": "gap_classin_ecosystem_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "ClassIn"
+    ],
+    "dimension": "ecosystem",
+    "missing_information": "ClassIn 在 ecosystem 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 ClassIn 在 ecosystem 维度的官方资料与同版本说明",
+      "补充 ClassIn 在 ecosystem 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_classin_pricing"
+    },
+    "id": "gap_classin_pricing_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "ClassIn"
+    ],
+    "dimension": "pricing",
+    "missing_information": "ClassIn 在 pricing 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 ClassIn 在 pricing 维度的官方资料与同版本说明",
+      "补充 ClassIn 在 pricing 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "source": "step6e4_coverage_gap_v1",
+      "coverage_id": "coverage_腾讯云实时互动_trtc_教育方案_ecosystem"
+    },
+    "id": "gap_腾讯云实时互动_trtc_教育方案_ecosystem_缺失",
+    "task_id": "task_user_fbf259723e8b",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "dimension": "ecosystem",
+    "missing_information": "腾讯云实时互动 / TRTC 教育方案 在 ecosystem 维度的证据处于缺失状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "尚未获得该维度的可靠直接证据。",
+    "suggested_queries": [
+      "查找 腾讯云实时互动 / TRTC 教育方案 在 ecosystem 维度的官方资料与同版本说明",
+      "补充 腾讯云实时互动 / TRTC 教育方案 在 ecosystem 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": []
+  }
+]

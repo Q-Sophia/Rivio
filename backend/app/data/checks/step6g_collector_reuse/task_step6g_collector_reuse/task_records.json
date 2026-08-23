@@ -1,0 +1,144 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "taskrec_a20a56a28011",
+    "task_id": "task_step6g_collector_reuse",
+    "task_key": "research_reuse_1",
+    "parent_task_id": "",
+    "task_type": "supplement_collection",
+    "target_agent_role": "collector",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [],
+    "output_refs": [
+      "sources",
+      "web_pages",
+      "collection_attempts"
+    ],
+    "reason": "",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "web_collector_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-23T13:54:52.960758Z",
+    "updated_at": "2026-08-23T13:54:53.048778Z",
+    "started_at": "2026-08-23T13:54:53.007768Z",
+    "completed_at": "2026-08-23T13:54:53.048778Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "taskrec_6f398e814e48",
+    "task_id": "task_step6g_collector_reuse",
+    "task_key": "research_reuse_2",
+    "parent_task_id": "",
+    "task_type": "supplement_collection",
+    "target_agent_role": "collector",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [],
+    "output_refs": [
+      "sources",
+      "web_pages",
+      "collection_attempts"
+    ],
+    "reason": "",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "web_collector_agent",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-23T13:54:52.960758Z",
+    "updated_at": "2026-08-23T13:54:53.185959Z",
+    "started_at": "2026-08-23T13:54:53.115793Z",
+    "completed_at": "2026-08-23T13:54:53.185959Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "research_task_id": "research_reuse_1",
+      "source_ids": [
+        "src_531f47e48204"
+      ],
+      "max_evidence_per_page": 8,
+      "reused_source_count": 0
+    },
+    "id": "queue_extract_evidence_research_reuse_1",
+    "task_id": "task_step6g_collector_reuse",
+    "task_key": "extract_evidence_research_reuse_1",
+    "parent_task_id": "",
+    "task_type": "extract_source_evidence",
+    "target_agent_role": "extractor",
+    "status": "ready",
+    "priority": "medium",
+    "depends_on": [
+      "research_reuse_1"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "web_pages",
+      "research_tasks"
+    ],
+    "output_refs": [],
+    "reason": "把 ClassIn 网页正文转换为可追溯证据",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-23T13:54:53.054779Z",
+    "updated_at": "2026-08-23T13:54:53.078785Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "research_task_id": "research_reuse_2",
+      "source_ids": [
+        "src_531f47e48204"
+      ],
+      "max_evidence_per_page": 8,
+      "reused_source_count": 1
+    },
+    "id": "queue_extract_evidence_research_reuse_2",
+    "task_id": "task_step6g_collector_reuse",
+    "task_key": "extract_evidence_research_reuse_2",
+    "parent_task_id": "",
+    "task_type": "extract_source_evidence",
+    "target_agent_role": "extractor",
+    "status": "ready",
+    "priority": "medium",
+    "depends_on": [
+      "research_reuse_2"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "sources",
+      "web_pages",
+      "research_tasks"
+    ],
+    "output_refs": [],
+    "reason": "把 ClassIn 网页正文转换为可追溯证据",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-23T13:54:53.190961Z",
+    "updated_at": "2026-08-23T13:54:53.213965Z",
+    "started_at": null,
+    "completed_at": null,
+    "error": ""
+  }
+]

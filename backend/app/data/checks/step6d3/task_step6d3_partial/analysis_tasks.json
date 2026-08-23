@@ -1,0 +1,32 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "execution_started": false,
+      "dataset_compatibility": "partial",
+      "compatibility_assessment_id": "compat_7f6becfcdb9b",
+      "execution_plan_id": "execplan_c11ba7b09753",
+      "execution_status": "blocked"
+    },
+    "id": "task_step6d3_partial",
+    "task_id": "task_step6d3_partial",
+    "query": "比较在线教学工具，为高校选型提供依据。",
+    "competitors": [
+      "ClassIn",
+      "腾讯会议",
+      "BigBlueButton"
+    ],
+    "industry": "教育",
+    "focus_areas": [
+      "产品能力",
+      "价格",
+      "生态"
+    ],
+    "report_subject": "高校在线教学工具竞品分析",
+    "preferred_title": "",
+    "mode": "snapshot",
+    "status": "pending",
+    "created_at": "2026-08-14T12:07:51.272265Z",
+    "updated_at": "2026-08-14T12:07:51.411050Z"
+  }
+]

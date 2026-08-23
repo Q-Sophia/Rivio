@@ -1,0 +1,92 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_001",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "positioning",
+    "comparable": true,
+    "basis": "三者均定位为在线教育实时互动/虚拟教室解决方案",
+    "limitations": "ClassIn 和腾讯云为商业产品，BigBlueButton 为开源项目，定位侧重不同"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_002",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "feature",
+    "comparable": true,
+    "basis": "均提供音视频互动、白板、课件支持等核心功能",
+    "limitations": "功能深度和性能指标可能不同，需同口径比较"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_003",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "pricing",
+    "comparable": false,
+    "basis": "ClassIn 和腾讯云有明确订阅价格，BigBlueButton 为开源免费但需自担运维成本",
+    "limitations": "BigBlueButton 的定价证据缺失，无法直接比较总拥有成本"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_004",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "ecosystem",
+    "comparable": true,
+    "basis": "均提供生态集成能力，如API、SDK、LMS集成",
+    "limitations": "集成深度和广度可能不同，BigBlueButton 的LMS集成证据较弱"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_005",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "customer",
+    "comparable": true,
+    "basis": "均面向教育机构和教学场景",
+    "limitations": "目标客户细分可能不同，ClassIn 和腾讯云面向机构，BigBlueButton 面向自托管组织"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "cn_006",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v2_candidate",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "risk",
+    "comparable": false,
+    "basis": "风险维度证据覆盖不均，ClassIn 无风险证据，腾讯云和BigBlueButton 各有部分",
+    "limitations": "无法进行同口径风险比较"
+  }
+]

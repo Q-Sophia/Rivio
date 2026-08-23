@@ -1,0 +1,29 @@
+cases:
+  - id: snapshot_online_education_demo
+    task_id: snapshot_online_education_demo
+    artifact_root: app/data/runs
+    expected:
+      dag_nodes: 6
+      agent_runs: 6
+      reports: 1
+      review_feedback: 1
+      approved: true
+
+step6c_suite:
+  runner: harness/run_step6c_eval.py
+  provider: mock
+  real_calls_enabled: false
+  fixture_count: 12
+  cases:
+    - normal_full
+    - different_solution_paths
+    - missing_pricing
+    - conflicting_price
+    - weak_social_only
+    - single_competitor
+    - missing_not_absent
+    - noisy_content
+    - goal_underspecified
+    - not_comparable_tiers
+    - cross_industry_consumer_goods
+    - cross_industry_professional_service

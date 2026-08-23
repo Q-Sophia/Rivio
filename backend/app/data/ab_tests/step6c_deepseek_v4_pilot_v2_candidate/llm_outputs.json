@@ -1,0 +1,18 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_node_v2_candidate",
+    "task_id": "step6c_deepseek_v4_pilot_v2_candidate",
+    "llm_call_id": "llmcall_node_v2_candidate",
+    "agent_role": "analyst",
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "raw_output": {},
+    "parsed_object_ids": [],
+    "validation_status": "failed",
+    "validation_errors": [
+      "LLMProviderResponseError: 模型输出文本不是有效 JSON"
+    ],
+    "created_at": "2026-08-14T07:27:50.657597Z"
+  }
+]

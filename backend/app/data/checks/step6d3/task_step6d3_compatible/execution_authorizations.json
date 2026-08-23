@@ -1,0 +1,16 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_board_id": "board_3ed13f88b452"
+    },
+    "id": "authorization_7737eb12fabe",
+    "task_id": "task_step6d3_compatible",
+    "plan_id": "execplan_c03427aa05cd",
+    "authorized": true,
+    "queue_status": "queued",
+    "requested_by": "user_ui",
+    "execution_started": false,
+    "authorized_at": "2026-08-14T12:07:51.390048Z"
+  }
+]

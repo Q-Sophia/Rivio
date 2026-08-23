@@ -1,0 +1,82 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_暖行杯",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "name": "暖行杯",
+    "role": "direct",
+    "selection_reason": "暖行杯代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "customer",
+      "feature",
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "城市通勤人群"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向城市通勤的轻量保温杯。",
+    "offering_scope": "采用轻量杯身与六小时保温设计。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "公开建议零售价为一百九十九元。",
+    "source_ids": [
+      "src_cross_industry_consumer_goods_1_positioning_1",
+      "src_cross_industry_consumer_goods_1_customer_1",
+      "src_cross_industry_consumer_goods_1_feature_1",
+      "src_cross_industry_consumer_goods_1_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_positioning_1",
+      "ev_cross_industry_consumer_goods_1_customer_1",
+      "ev_cross_industry_consumer_goods_1_feature_1",
+      "ev_cross_industry_consumer_goods_1_pricing_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_山川杯",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "name": "山川杯",
+    "role": "direct",
+    "selection_reason": "山川杯代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "customer",
+      "feature",
+      "positioning",
+      "pricing"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "户外人群"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向户外与长途场景的大容量保温杯。",
+    "offering_scope": "采用耐磨涂层与大容量杯型。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "公开建议零售价为二百三十九元。",
+    "source_ids": [
+      "src_cross_industry_consumer_goods_2_positioning_1",
+      "src_cross_industry_consumer_goods_2_customer_1",
+      "src_cross_industry_consumer_goods_2_feature_1",
+      "src_cross_industry_consumer_goods_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_2_positioning_1",
+      "ev_cross_industry_consumer_goods_2_customer_1",
+      "ev_cross_industry_consumer_goods_2_feature_1",
+      "ev_cross_industry_consumer_goods_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

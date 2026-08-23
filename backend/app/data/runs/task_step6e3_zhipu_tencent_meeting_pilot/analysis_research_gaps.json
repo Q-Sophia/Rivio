@@ -1,0 +1,57 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_001",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "competitors": [
+      "腾讯会议"
+    ],
+    "dimension": "产品能力",
+    "missing_information": "腾讯会议各版本（免费版、专业版、商业版、企业版、教育版）的完整功能矩阵及版本间差异。",
+    "decision_blocked": "无法确定功能核实的适用范围，可能将特定版本功能误认为全版本通用。",
+    "why_existing_evidence_is_insufficient": "现有证据仅提及部分功能（如会议质量监控）标注为企业版/教育版，云录制空间随版本不同，但未提供完整版本对比。",
+    "suggested_queries": [
+      "腾讯会议版本功能对比",
+      "腾讯会议各版本功能列表",
+      "腾讯会议企业版功能"
+    ],
+    "preferred_source_types": [
+      "官方定价页",
+      "官方版本对比页",
+      "帮助中心"
+    ],
+    "priority": "high",
+    "stop_condition": "获得官方版本功能对比表或各版本功能列表。",
+    "related_evidence_ids": [
+      "ev_53701da105dd",
+      "ev_adb6e7a2871f"
+    ]
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_002",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "competitors": [
+      "腾讯会议"
+    ],
+    "dimension": "产品能力",
+    "missing_information": "腾讯会议的目标客户画像和核心使用场景。",
+    "decision_blocked": "无法判断功能核实是否覆盖决策需求，无法评估功能对目标客户的价值。",
+    "why_existing_evidence_is_insufficient": "研究简报未提供目标客户和核心场景，现有证据仅提及通用场景（如培训、营销），但未明确目标客户。",
+    "suggested_queries": [
+      "腾讯会议目标客户",
+      "腾讯会议典型使用场景",
+      "腾讯会议行业解决方案"
+    ],
+    "preferred_source_types": [
+      "官方解决方案页",
+      "客户案例",
+      "行业报告"
+    ],
+    "priority": "medium",
+    "stop_condition": "获得官方目标客户描述或典型场景列表。",
+    "related_evidence_ids": []
+  }
+]

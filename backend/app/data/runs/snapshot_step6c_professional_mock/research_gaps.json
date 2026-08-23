@@ -1,0 +1,99 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_snapshot_step6c_professional_mock_brief",
+    "task_id": "snapshot_step6c_professional_mock",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "dimension": "research_brief",
+    "missing_information": "目标客户、核心任务场景和组织约束尚未明确。",
+    "decision_blocked": "无法判断观察到的差异是否对目标客户形成真实价值。",
+    "why_existing_evidence_is_insufficient": "当前证据主要描述竞品自身，不能代替目标客户研究。",
+    "suggested_queries": [
+      "访谈目标客户的任务、痛点、替代做法和购买约束"
+    ],
+    "preferred_source_types": [
+      "客户访谈",
+      "用户研究",
+      "内部战略资料"
+    ],
+    "priority": "high",
+    "stop_condition": "目标客户与核心场景已由任务负责人确认并形成研究简报。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_classin_risk_coverage",
+    "task_id": "snapshot_step6c_professional_mock",
+    "competitors": [
+      "ClassIn"
+    ],
+    "dimension": "risk",
+    "missing_information": "ClassIn 缺少风险与限制资料。",
+    "decision_blocked": "相关维度不能进行同口径横向比较。",
+    "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+    "suggested_queries": [
+      "查找 ClassIn 的官方资料和可信第三方资料"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "medium",
+    "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_bigbluebutton_pricing_coverage",
+    "task_id": "snapshot_step6c_professional_mock",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "pricing",
+    "missing_information": "BigBlueButton 缺少定价与成本资料。",
+    "decision_blocked": "相关维度不能进行同口径横向比较。",
+    "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+    "suggested_queries": [
+      "查找 BigBlueButton 的官方资料和可信第三方资料"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "medium",
+    "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+    "related_evidence_ids": []
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_bigbluebutton_ecosystem_weak",
+    "task_id": "snapshot_step6c_professional_mock",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "dimension": "ecosystem",
+    "missing_information": "BigBlueButton 的生态与集成资料存在较弱证据，需要补充核验。",
+    "decision_blocked": "当前证据强度不足以支持高置信度判断。",
+    "why_existing_evidence_is_insufficient": "当前只有较弱来源，不能支撑高置信度决策。",
+    "suggested_queries": [
+      "优先查找同版本、同地区的官方或独立直接资料"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "可信第三方资料"
+    ],
+    "priority": "high",
+    "stop_condition": "冲突已解释或获得至少一条适用的强直接证据。",
+    "related_evidence_ids": [
+      "ev_bbb_lms_integration"
+    ]
+  }
+]

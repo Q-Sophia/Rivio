@@ -1,0 +1,105 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question_id": "kiq_001",
+    "dimension": "customer",
+    "required_facts": [
+      "目标客户类型（教育机构 vs 技术团队）",
+      "客户的技术能力",
+      "客户对上线速度的要求"
+    ],
+    "preferred_source_types": [
+      "客户访谈",
+      "行业报告",
+      "案例研究"
+    ],
+    "comparability_basis": "客户画像和需求",
+    "decision_link": "决定产品选择路径"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question_id": "kiq_002",
+    "dimension": "risk",
+    "required_facts": [
+      "数据主权要求",
+      "部署位置偏好",
+      "运维能力",
+      "合规要求"
+    ],
+    "preferred_source_types": [
+      "客户访谈",
+      "合规文档",
+      "技术文档"
+    ],
+    "comparability_basis": "部署模式和运维责任",
+    "decision_link": "评估自托管 vs 云服务风险"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question_id": "kiq_003",
+    "dimension": "feature",
+    "required_facts": [
+      "最大并发互动人数",
+      "音视频质量要求",
+      "延迟容忍度",
+      "直播观看规模"
+    ],
+    "preferred_source_types": [
+      "技术规格",
+      "性能测试",
+      "客户需求文档"
+    ],
+    "comparability_basis": "实时互动规模和性能指标",
+    "decision_link": "评估功能是否满足需求"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question_id": "kiq_004",
+    "dimension": "ecosystem",
+    "required_facts": [
+      "现有 LMS 系统",
+      "集成需求（排课、用户、课件）",
+      "API 可用性",
+      "SDK 支持平台"
+    ],
+    "preferred_source_types": [
+      "技术文档",
+      "API 文档",
+      "集成案例"
+    ],
+    "comparability_basis": "集成能力和生态兼容性",
+    "decision_link": "评估生态适配性"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "inf_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_1_pilot_v2_candidate",
+    "question_id": "kiq_005",
+    "dimension": "pricing",
+    "required_facts": [
+      "预算范围",
+      "订阅 vs 一次性投入偏好",
+      "长期成本（运维、升级）"
+    ],
+    "preferred_source_types": [
+      "定价页面",
+      "成本分析",
+      "客户预算信息"
+    ],
+    "comparability_basis": "总拥有成本（TCO）",
+    "decision_link": "评估成本可行性"
+  }
+]

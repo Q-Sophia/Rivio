@@ -1,0 +1,512 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_d468030c5f37",
+      "research_task_id": "researchtask_effb596f5ac9",
+      "source_url": "https://www.eeo.cn/cn/download",
+      "content_hash": "e6c886464eedb5df39fcd555397d2b37b6b209de3dc81390dc51677102babddb",
+      "quote_verified": true,
+      "keyword_score": 5,
+      "intent_keywords": [
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_0531e44beac2",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_d090b29a5ed7",
+    "competitor": "ClassIn",
+    "dimension": "positioning",
+    "snippet": "下载\n常见问题\n快速定位常见问题，提供有效解决方案",
+    "normalized_fact": "下载 常见问题 快速定位常见问题，提供有效解决方案",
+    "confidence": 0.8799999999999999,
+    "source_text_start": 776,
+    "source_text_end": 801,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_d468030c5f37",
+      "research_task_id": "researchtask_effb596f5ac9",
+      "source_url": "https://www.eeo.cn/cn/download",
+      "content_hash": "e6c886464eedb5df39fcd555397d2b37b6b209de3dc81390dc51677102babddb",
+      "quote_verified": true,
+      "keyword_score": 5,
+      "intent_keywords": [
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_8f2ae701d0a2",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_d090b29a5ed7",
+    "competitor": "ClassIn",
+    "dimension": "positioning",
+    "snippet": "常见问题\n快速定位常见问题，提供有效解决方案\n了解更多",
+    "normalized_fact": "常见问题 快速定位常见问题，提供有效解决方案 了解更多",
+    "confidence": 0.8799999999999999,
+    "source_text_start": 779,
+    "source_text_end": 806,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_d468030c5f37",
+      "research_task_id": "researchtask_effb596f5ac9",
+      "source_url": "https://www.eeo.cn/cn/download",
+      "content_hash": "e6c886464eedb5df39fcd555397d2b37b6b209de3dc81390dc51677102babddb",
+      "quote_verified": true,
+      "keyword_score": 5,
+      "intent_keywords": [
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_7733cf7e1a3d",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_d090b29a5ed7",
+    "competitor": "ClassIn",
+    "dimension": "positioning",
+    "snippet": "快速定位常见问题，提供有效解决方案\n了解更多\n使用帮助",
+    "normalized_fact": "快速定位常见问题，提供有效解决方案 了解更多 使用帮助",
+    "confidence": 0.8799999999999999,
+    "source_text_start": 784,
+    "source_text_end": 811,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 7,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_fb7700f8991a",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台互通的客户端集成方案。\n超低延时互动教学\n支持多达17人同屏连麦互动以及百万人小于1秒的超低延时直播观看体验。",
+    "normalized_fact": "提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台互通的客户端集成方案。 超低延时互动教学 支持多达17人同屏连麦互动以及百万人小于1秒的超低延时直播观看体验。",
+    "confidence": 0.9,
+    "source_text_start": 2886,
+    "source_text_end": 3000,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 7,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_1bc8e699e2d3",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "结合互动白板、教学课件、多人连麦、屏幕共享、消息互动、云端录制、低延时直播等，满足线上教学多样化需求。\n全终端互通\n提供Web/H5、Windows、MacOS、Android、iOS、小程序全终端、全平台低代码开发方案。",
+    "normalized_fact": "结合互动白板、教学课件、多人连麦、屏幕共享、消息互动、云端录制、低延时直播等，满足线上教学多样化需求。 全终端互通 提供Web/H5、Windows、MacOS、Android、iOS、小程序全终端、全平台低代码开发方案。",
+    "confidence": 0.9,
+    "source_text_start": 4160,
+    "source_text_end": 4271,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_dcf265cb5b29",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "提供强大的互动白板与课件功能，支持提前绑定课件，方便学生预习；画笔涂鸦可用于数学解题和语文标注，同时支持保存板书并生成课件，方便课后复习巩固。\n配备全面的教学工具，涵盖K12学科专用工具（如电子词典、四线三格书写板）及多样化互动组件（如抢答器、计时器），不仅提升教学的专业性，还增加了课堂趣味性。\n当前浏览器不能支持此视频播放",
+    "normalized_fact": "提供强大的互动白板与课件功能，支持提前绑定课件，方便学生预习；画笔涂鸦可用于数学解题和语文标注，同时支持保存板书并生成课件，方便课后复习巩固。 配备全面的教学工具，涵盖K12学科专用工具（如电子词典、四线三格书写板）及多样化互动组件（如抢答器、计时器），不仅提升教学的专业性，还增加了课堂趣味性。 当前浏览器不能支持此视频播放",
+    "confidence": 0.9,
+    "source_text_start": 1629,
+    "source_text_end": 1792,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_60a66748f12e",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "互动小班课\nhot\n支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。",
+    "normalized_fact": "互动小班课 hot 支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。",
+    "confidence": 0.9,
+    "source_text_start": 2243,
+    "source_text_end": 2318,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_c46ec81df841",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "hot\n支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。",
+    "normalized_fact": "hot 支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。",
+    "confidence": 0.9,
+    "source_text_start": 2249,
+    "source_text_end": 2318,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_e3b727a6ec17",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "hot\n支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。\n直播大班（公开课）",
+    "normalized_fact": "hot 支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。 直播大班（公开课）",
+    "confidence": 0.9,
+    "source_text_start": 2249,
+    "source_text_end": 2328,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_cac74eaeb349",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。\n直播大班（公开课）",
+    "normalized_fact": "支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。 直播大班（公开课）",
+    "confidence": 0.9,
+    "source_text_start": 2253,
+    "source_text_end": 2328,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_a5901f4f5164",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "content_hash": "82e7c3e56b4a7b042bfeb74fdd7ba3a81af8e0776db8db20cf911b2290c697a0",
+      "quote_verified": true,
+      "keyword_score": 6,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_3852dbdd0ec3",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_aba8872ecbaa",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。\n直播大班（公开课）\nhot",
+    "normalized_fact": "支持17人上台互动。实时互动延时小于300ms。场景化组件，如互动白板、 H5课件、生成板书、屏幕分享、录制回放等，满足各类场景。 直播大班（公开课） hot",
+    "confidence": 0.9,
+    "source_text_start": 2253,
+    "source_text_end": 2332,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 10,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_9f82327f908c",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。\n本文聚焦以下五款在教育领域具有代表性的产品：\n腾讯云实时互动-教育版",
+    "normalized_fact": "然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。 本文聚焦以下五款在教育领域具有代表性的产品： 腾讯云实时互动-教育版",
+    "confidence": 0.9,
+    "source_text_start": 858,
+    "source_text_end": 1014,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 9,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_8ac84815a2a9",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "工具\n权限\n摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白",
+    "normalized_fact": "工具 权限 摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白",
+    "confidence": 0.9,
+    "source_text_start": 7863,
+    "source_text_end": 7969,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 9,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_8029919af83b",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "权限\n摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白",
+    "normalized_fact": "权限 摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白",
+    "confidence": 0.9,
+    "source_text_start": 7866,
+    "source_text_end": 7969,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 9,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_a0dcc75455dc",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "权限\n摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白\ngavin1024",
+    "normalized_fact": "权限 摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白 gavin1024",
+    "confidence": 0.9,
+    "source_text_start": 7866,
+    "source_text_end": 7979,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 9,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_47d4bafd4f01",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白\ngavin1024",
+    "normalized_fact": "摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白 gavin1024",
+    "confidence": 0.9,
+    "source_text_start": 7869,
+    "source_text_end": 7979,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 9,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_519b0f12681a",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白\ngavin1024\n2026/05/26",
+    "normalized_fact": "摘要 互动白板是在线教学的核心工具，但市面方案定位差异巨大：有的为教学专设，有的是办公协作延伸。本文对比腾讯云教育版、Miro和微软白板三种方案的设计理念与功能差异，帮助教育机构选出最匹配教学场景的白 gavin1024 2026/05/26",
+    "confidence": 0.9,
+    "source_text_start": 7869,
+    "source_text_end": 7990,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 8,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_4cdf174cee8e",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "一、为什么需要一份客观的横评？\n2026年，在线教育已经从疫情时期的\"应急方案\"转变为教培行业的\"标准配置\"。无论是K12课外辅导、成人职业培训、语言教学还是企业内训，都需要稳定、高效的在线课堂平台作为底层支撑。\n然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。",
+    "normalized_fact": "一、为什么需要一份客观的横评？ 2026年，在线教育已经从疫情时期的\"应急方案\"转变为教培行业的\"标准配置\"。无论是K12课外辅导、成人职业培训、语言教学还是企业内训，都需要稳定、高效的在线课堂平台作为底层支撑。 然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。",
+    "confidence": 0.9,
+    "source_text_start": 751,
+    "source_text_end": 979,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "web_page_id": "webpage_87eba7a25799",
+      "research_task_id": "researchtask_630fb717fc76",
+      "source_url": "https://cloud.tencent.com/developer/article/2674656",
+      "content_hash": "51ced8cb843e17789153b20a5addca0d68448a4ed91adc123933edc54122460d",
+      "quote_verified": true,
+      "keyword_score": 8,
+      "intent_keywords": [
+        "互动",
+        "定位"
+      ],
+      "normalization_policy": "whitespace_only_no_new_facts"
+    },
+    "id": "ev_97dbca1d7c19",
+    "task_id": "task_user_105009557443",
+    "source_id": "src_c41a014de8d0",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "positioning",
+    "snippet": "2026年，在线教育已经从疫情时期的\"应急方案\"转变为教培行业的\"标准配置\"。无论是K12课外辅导、成人职业培训、语言教学还是企业内训，都需要稳定、高效的在线课堂平台作为底层支撑。\n然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。\n本文聚焦以下五款在教育领域具有代表性的产品：",
+    "normalized_fact": "2026年，在线教育已经从疫情时期的\"应急方案\"转变为教培行业的\"标准配置\"。无论是K12课外辅导、成人职业培训、语言教学还是企业内训，都需要稳定、高效的在线课堂平台作为底层支撑。 然而，不同平台的产品定位差异巨大：有的是SaaS开箱即用的教学工具，有的是面向开发者的低代码SDK，有的是通用视频会议软件的教育衍生版本，还有的是开源社区方案。如果在业务初期选型不当，后续迁移将面临数据迁移、接口重写、用户习惯切换等高昂成本。 本文聚焦以下五款在教育领域具有代表性的产品：",
+    "confidence": 0.9,
+    "source_text_start": 767,
+    "source_text_end": 1002,
+    "extraction_method": "deterministic_quote_extractor_v1"
+  }
+]

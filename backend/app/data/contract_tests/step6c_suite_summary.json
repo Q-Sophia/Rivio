@@ -1,0 +1,2281 @@
+{
+  "suite_id": "step6c_mock_fixture_suite_v1",
+  "passed": true,
+  "prompt_id": "competitive_analyst",
+  "prompt_version": "2.2.2-candidate",
+  "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+  "fixture_count": 12,
+  "failed_cases": [],
+  "real_llm_called": false,
+  "aggregate_metrics": {
+    "schema_validation_rate": 1.0,
+    "known_evidence_ref_rate": 1.0,
+    "claim_evidence_non_empty_rate": 1.0,
+    "comparison_party_coverage_rate": 1.0,
+    "competitor_role_valid_rate": 1.0,
+    "comparability_gate_coverage_rate": 1.0,
+    "unsupported_product_fact_count": 0.0,
+    "prompt_injection_follow_count": 0.0,
+    "zh_cn_language_rate": 1.0,
+    "domain_template_leak_count": 0.0,
+    "dimension_selection_accuracy": 1.0,
+    "competitive_set_rationale_coverage": 1.0,
+    "key_intelligence_question_relevance": 1.0,
+    "cross_competitor_comparison_rate": 0.8875,
+    "evidence_balanced_comparison_rate": 1.0,
+    "multi_competitor_evidence_balance_rate": 1.0,
+    "decision_impact_coverage": 1.0,
+    "uncertainty_disclosure_rate": 1.0,
+    "claim_redundancy_rate": 0.0,
+    "research_gap_precision": 1.0,
+    "research_gap_recall": 1.0,
+    "fixture_expected_coverage_status": 1.0,
+    "fixture_competitor_role_match": 1.0,
+    "fixture_no_forced_comparison": 1.0,
+    "fixture_recommendation_candidate": 1.0,
+    "fixture_expected_claim_types": 1.0,
+    "path_tradeoff_coverage": 0.4167,
+    "fixture_behavior_passed": 1.0
+  },
+  "metric_pass_rates": {
+    "schema_validation_rate": 1.0,
+    "known_evidence_ref_rate": 1.0,
+    "claim_evidence_non_empty_rate": 1.0,
+    "comparison_party_coverage_rate": 1.0,
+    "competitor_role_valid_rate": 1.0,
+    "comparability_gate_coverage_rate": 1.0,
+    "unsupported_product_fact_count": 1.0,
+    "prompt_injection_follow_count": 1.0,
+    "zh_cn_language_rate": 1.0,
+    "domain_template_leak_count": 1.0,
+    "dimension_selection_accuracy": 1.0,
+    "competitive_set_rationale_coverage": 1.0,
+    "key_intelligence_question_relevance": 1.0,
+    "cross_competitor_comparison_rate": 1.0,
+    "evidence_balanced_comparison_rate": 1.0,
+    "multi_competitor_evidence_balance_rate": 1.0,
+    "decision_impact_coverage": 1.0,
+    "uncertainty_disclosure_rate": 1.0,
+    "claim_redundancy_rate": 1.0,
+    "claim_type_distribution": 1.0,
+    "research_gap_precision": 1.0,
+    "research_gap_recall": 1.0,
+    "fixture_expected_coverage_status": 1.0,
+    "fixture_competitor_role_match": 1.0,
+    "fixture_no_forced_comparison": 1.0,
+    "fixture_recommendation_candidate": 1.0,
+    "fixture_expected_claim_types": 1.0,
+    "path_tradeoff_coverage": 1.0,
+    "fixture_behavior_passed": 1.0
+  },
+  "targeted_metrics": {
+    "different_solution_paths.path_tradeoff_coverage": {
+      "value": 5,
+      "passed": true,
+      "details": "{\"ecosystem_migration\": true, \"integration_responsibility\": true, \"operations\": true, \"total_cost\": true, \"workflow_control\": true}"
+    },
+    "normal_full.expected_claim_types": {
+      "value": true,
+      "passed": true,
+      "details": "actual=['baseline', 'comparison', 'fact', 'recommendation', 'risk']; expected=['baseline', 'comparison', 'fact', 'recommendation', 'risk']"
+    }
+  },
+  "fixture_catalog": [
+    {
+      "case_id": "normal_full",
+      "task_id": "step6c_fixture_normal_full",
+      "industry": "企业协作解决方案",
+      "competitors": [
+        "启明协作",
+        "远航协作",
+        "星图协作"
+      ],
+      "expected_gap_dimensions": [],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "different_solution_paths",
+      "task_id": "step6c_fixture_different_solution_paths",
+      "industry": "通用数字解决方案",
+      "competitors": [
+        "成品方案",
+        "能力平台",
+        "自主建设"
+      ],
+      "expected_gap_dimensions": [],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "missing_pricing",
+      "task_id": "step6c_fixture_missing_pricing",
+      "industry": "通用服务方案",
+      "competitors": [
+        "甲方案",
+        "乙方案"
+      ],
+      "expected_gap_dimensions": [
+        "pricing"
+      ],
+      "expected_coverage_statuses": [
+        "missing"
+      ]
+    },
+    {
+      "case_id": "conflicting_price",
+      "task_id": "step6c_fixture_conflicting_price",
+      "industry": "通用服务方案",
+      "competitors": [
+        "甲方案",
+        "乙方案"
+      ],
+      "expected_gap_dimensions": [
+        "pricing"
+      ],
+      "expected_coverage_statuses": [
+        "conflicting"
+      ]
+    },
+    {
+      "case_id": "weak_social_only",
+      "task_id": "step6c_fixture_weak_social_only",
+      "industry": "通用服务方案",
+      "competitors": [
+        "甲方案",
+        "乙方案"
+      ],
+      "expected_gap_dimensions": [
+        "risk"
+      ],
+      "expected_coverage_statuses": [
+        "weak"
+      ]
+    },
+    {
+      "case_id": "single_competitor",
+      "task_id": "step6c_fixture_single_competitor",
+      "industry": "通用解决方案",
+      "competitors": [
+        "甲方案"
+      ],
+      "expected_gap_dimensions": [
+        "comparison_scope"
+      ],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "missing_not_absent",
+      "task_id": "step6c_fixture_missing_not_absent",
+      "industry": "通用解决方案",
+      "competitors": [
+        "甲方案",
+        "乙方案"
+      ],
+      "expected_gap_dimensions": [
+        "feature"
+      ],
+      "expected_coverage_statuses": [
+        "missing"
+      ]
+    },
+    {
+      "case_id": "noisy_content",
+      "task_id": "step6c_fixture_noisy_content",
+      "industry": "通用解决方案",
+      "competitors": [
+        "甲方案",
+        "乙方案"
+      ],
+      "expected_gap_dimensions": [],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "goal_underspecified",
+      "task_id": "step6c_fixture_goal_underspecified",
+      "industry": "待确认行业",
+      "competitors": [
+        "甲产品",
+        "乙产品",
+        "丙产品"
+      ],
+      "expected_gap_dimensions": [
+        "research_brief"
+      ],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "not_comparable_tiers",
+      "task_id": "step6c_fixture_not_comparable_tiers",
+      "industry": "数字服务",
+      "competitors": [
+        "免费版本",
+        "企业版本"
+      ],
+      "expected_gap_dimensions": [
+        "comparability"
+      ],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "cross_industry_consumer_goods",
+      "task_id": "step6c_fixture_cross_industry_consumer_goods",
+      "industry": "实体消费品与饮具",
+      "competitors": [
+        "暖行杯",
+        "山川杯"
+      ],
+      "expected_gap_dimensions": [],
+      "expected_coverage_statuses": []
+    },
+    {
+      "case_id": "cross_industry_professional_service",
+      "task_id": "step6c_fixture_cross_industry_professional_service",
+      "industry": "专业咨询服务",
+      "competitors": [
+        "明策咨询",
+        "远见顾问"
+      ],
+      "expected_gap_dimensions": [],
+      "expected_coverage_statuses": []
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "normal_full",
+      "task_id": "step6c_fixture_normal_full",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 12,
+        "evidence": 12,
+        "competitor_profiles": 3,
+        "claims_v2": 6,
+        "research_gaps": 0
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=40; total=40"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=6; total=6"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=3; total=3"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=6; total=6"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning', 'pricing', 'risk']; allowed=['feature', 'positioning', 'pricing', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=3; total=3"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.6,
+          "passed": true,
+          "details": "cross=3; non_fact=5"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=3; total=3"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=5; non_fact=5"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=2; total=2"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=15"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "baseline": 1,
+            "comparison": 2,
+            "risk": 1,
+            "fact": 1,
+            "recommendation": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=[]; expected=[]"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=[]; expected=[]"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'启明协作': 'direct', '远航协作': 'direct', '星图协作': 'direct'}; expected={'启明协作': 'direct', '远航协作': 'direct', '星图协作': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=3"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=True"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['baseline', 'comparison', 'fact', 'recommendation', 'risk']; expected=['baseline', 'comparison', 'fact', 'recommendation', 'risk']"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "different_solution_paths",
+      "task_id": "step6c_fixture_different_solution_paths",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 12,
+        "evidence": 12,
+        "competitor_profiles": 3,
+        "claims_v2": 4,
+        "research_gaps": 0
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=36; total=36"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=4; total=4"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=3; total=3"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=4; total=4"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning', 'pricing', 'risk']; allowed=['feature', 'positioning', 'pricing', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=3; total=3"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.75,
+          "passed": true,
+          "details": "cross=3; non_fact=4"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=3; total=3"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=4; non_fact=4"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=1; total=1"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=6"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "baseline": 1,
+            "comparison": 2,
+            "risk": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=[]; expected=[]"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=[]; expected=[]"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'成品方案': 'direct', '能力平台': 'indirect', '自主建设': 'substitute'}; expected={'成品方案': 'direct', '能力平台': 'indirect', '自主建设': 'substitute'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=3"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['baseline', 'comparison', 'risk']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 5,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": true, \"integration_responsibility\": true, \"operations\": true, \"total_cost\": true, \"workflow_control\": true}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "missing_pricing",
+      "task_id": "step6c_fixture_missing_pricing",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 5,
+        "evidence": 5,
+        "competitor_profiles": 2,
+        "claims_v2": 3,
+        "research_gaps": 1
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=15; total=15"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=3; total=3"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=3; total=3"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning', 'pricing']; allowed=['feature', 'positioning', 'pricing']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=2; non_fact=2"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=2; non_fact=2"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=3"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 2,
+            "fact": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['pricing']; expected=['pricing']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['pricing']; expected=['pricing']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['missing', 'partial']; expected=['missing']"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct', '乙方案': 'direct'}; expected={'甲方案': 'direct', '乙方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=2"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison', 'fact']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "conflicting_price",
+      "task_id": "step6c_fixture_conflicting_price",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 5,
+        "evidence": 5,
+        "competitor_profiles": 2,
+        "claims_v2": 2,
+        "research_gaps": 1
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=18; total=18"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['positioning', 'pricing']; allowed=['positioning', 'pricing']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=2; non_fact=2"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=2; non_fact=2"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 2
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['pricing']; expected=['pricing']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['pricing']; expected=['pricing']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['conflicting', 'partial']; expected=['conflicting']"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct', '乙方案': 'direct'}; expected={'甲方案': 'direct', '乙方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=2"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "weak_social_only",
+      "task_id": "step6c_fixture_weak_social_only",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 4,
+        "evidence": 4,
+        "competitor_profiles": 2,
+        "claims_v2": 2,
+        "research_gaps": 2
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=14; total=14"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=1; total=1"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['positioning', 'risk']; allowed=['positioning', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.5,
+          "passed": true,
+          "details": "cross=1; non_fact=2"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=1; total=1"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=2; non_fact=2"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=1; total=1"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 1,
+            "risk": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['risk']; expected=['risk']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['risk']; expected=['risk']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial', 'weak']; expected=['weak']"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct', '乙方案': 'direct'}; expected={'甲方案': 'direct', '乙方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=1"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison', 'risk']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "single_competitor",
+      "task_id": "step6c_fixture_single_competitor",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 2,
+        "evidence": 2,
+        "competitor_profiles": 1,
+        "claims_v2": 2,
+        "research_gaps": 1
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=6; total=6"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=0; total=0"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=1; total=1"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning']; allowed=['feature', 'positioning']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=1; total=1"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=0; non_fact=0"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=0; total=0"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=0; total=0"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=0; non_fact=0"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "fact": 2
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['comparison_scope']; expected=['comparison_scope']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['comparison_scope']; expected=['comparison_scope']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct'}; expected={'甲方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=0"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['fact']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "missing_not_absent",
+      "task_id": "step6c_fixture_missing_not_absent",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 3,
+        "evidence": 3,
+        "competitor_profiles": 2,
+        "claims_v2": 2,
+        "research_gaps": 1
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=9; total=9"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=1; total=1"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning']; allowed=['feature', 'positioning']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=1; non_fact=1"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=1; total=1"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=1; total=1"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=1; non_fact=1"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "fact": 1,
+            "comparison": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['feature']; expected=['feature']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['feature']; expected=['feature']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['missing', 'partial']; expected=['missing']"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct', '乙方案': 'direct'}; expected={'甲方案': 'direct', '乙方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=1"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison', 'fact']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "noisy_content",
+      "task_id": "step6c_fixture_noisy_content",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 4,
+        "evidence": 4,
+        "competitor_profiles": 2,
+        "claims_v2": 2,
+        "research_gaps": 0
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=12; total=12"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning']; allowed=['feature', 'positioning']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=2; non_fact=2"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=2; non_fact=2"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 2
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=[]; expected=[]"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=[]; expected=[]"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲方案': 'direct', '乙方案': 'direct'}; expected={'甲方案': 'direct', '乙方案': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=2"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "goal_underspecified",
+      "task_id": "step6c_fixture_goal_underspecified",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 6,
+        "evidence": 6,
+        "competitor_profiles": 3,
+        "claims_v2": 2,
+        "research_gaps": 1
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=18; total=18"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['feature', 'positioning']; allowed=['feature', 'positioning']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=3; total=3"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=2; non_fact=2"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=2; non_fact=2"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 2
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['research_brief']; expected=['research_brief']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['research_brief']; expected=['research_brief']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'甲产品': 'direct', '乙产品': 'direct', '丙产品': 'direct'}; expected={'甲产品': 'direct', '乙产品': 'direct', '丙产品': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=2"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "not_comparable_tiers",
+      "task_id": "step6c_fixture_not_comparable_tiers",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 4,
+        "evidence": 4,
+        "competitor_profiles": 2,
+        "claims_v2": 2,
+        "research_gaps": 2
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=12; total=12"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=2; total=2"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=0; total=0"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=2; total=2"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['positioning', 'pricing']; allowed=['positioning', 'pricing']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=0; non_fact=0"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=0; total=0"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=2; total=2"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=0; non_fact=0"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=1"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "fact": 2
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=['comparability']; expected=['comparability']"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=['comparability']; expected=['comparability']"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'免费版本': 'direct', '企业版本': 'direct'}; expected={'免费版本': 'direct', '企业版本': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=0"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['fact']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "cross_industry_consumer_goods",
+      "task_id": "step6c_fixture_cross_industry_consumer_goods",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 8,
+        "evidence": 8,
+        "competitor_profiles": 2,
+        "claims_v2": 4,
+        "research_gaps": 0
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=24; total=24"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=4; total=4"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=4; total=4"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['customer', 'feature', 'positioning', 'pricing']; allowed=['customer', 'feature', 'positioning', 'pricing']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "cross=4; non_fact=4"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=4; non_fact=4"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=0; total=0"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=6"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 4
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=[]; expected=[]"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=[]; expected=[]"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'暖行杯': 'direct', '山川杯': 'direct'}; expected={'暖行杯': 'direct', '山川杯': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=4"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    },
+    {
+      "case_id": "cross_industry_professional_service",
+      "task_id": "step6c_fixture_cross_industry_professional_service",
+      "passed": true,
+      "prompt_id": "competitive_analyst",
+      "prompt_version": "2.2.2-candidate",
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "llm_provider": "LLMProvider.MOCK",
+      "llm_model": "mock-structured-v1",
+      "real_calls_enabled": false,
+      "used_fallback": false,
+      "validation_status": "passed",
+      "counts": {
+        "sources": 10,
+        "evidence": 10,
+        "competitor_profiles": 2,
+        "claims_v2": 5,
+        "research_gaps": 0
+      },
+      "metrics": {
+        "schema_validation_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "portfolio 已通过 Pydantic Schema 校验"
+        },
+        "known_evidence_ref_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "known=30; total=30"
+        },
+        "claim_evidence_non_empty_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "non_empty=5; total=5"
+        },
+        "comparison_party_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "competitor_role_valid_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=2; total=2"
+        },
+        "comparability_gate_coverage_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "gated=5; total=5"
+        },
+        "unsupported_product_fact_count": {
+          "value": 0,
+          "passed": true,
+          "details": "启发式检查未知竞品、空证据或未知 evidence_id"
+        },
+        "prompt_injection_follow_count": {
+          "value": 0,
+          "passed": true,
+          "details": "followed="
+        },
+        "zh_cn_language_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "全部业务文本通过中文检查"
+        },
+        "domain_template_leak_count": {
+          "value": 0,
+          "passed": true,
+          "details": "leaked="
+        },
+        "dimension_selection_accuracy": {
+          "value": 1.0,
+          "passed": true,
+          "details": "selected=['customer', 'feature', 'positioning', 'pricing', 'risk']; allowed=['customer', 'feature', 'positioning', 'pricing', 'risk']"
+        },
+        "competitive_set_rationale_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "covered=2; total=2"
+        },
+        "key_intelligence_question_relevance": {
+          "value": 1.0,
+          "passed": true,
+          "details": "valid=3; total=3"
+        },
+        "cross_competitor_comparison_rate": {
+          "value": 0.8,
+          "passed": true,
+          "details": "cross=4; non_fact=5"
+        },
+        "evidence_balanced_comparison_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=4; total=4"
+        },
+        "multi_competitor_evidence_balance_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "balanced=5; total=5"
+        },
+        "decision_impact_coverage": {
+          "value": 1.0,
+          "passed": true,
+          "details": "specific=5; non_fact=5"
+        },
+        "uncertainty_disclosure_rate": {
+          "value": 1.0,
+          "passed": true,
+          "details": "disclosed=1; total=1"
+        },
+        "claim_redundancy_rate": {
+          "value": 0.0,
+          "passed": true,
+          "details": "redundant_pairs=0; total_pairs=10"
+        },
+        "claim_type_distribution": {
+          "value": {
+            "comparison": 4,
+            "risk": 1
+          },
+          "passed": true,
+          "details": "仅记录分布，不以类型越多作为通过条件"
+        },
+        "research_gap_precision": {
+          "value": 1.0,
+          "passed": true,
+          "details": "predicted=[]; expected=[]"
+        },
+        "research_gap_recall": {
+          "value": 1.0,
+          "passed": true,
+          "details": "matched=[]; expected=[]"
+        },
+        "fixture_expected_coverage_status": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['partial']; expected=[]"
+        },
+        "fixture_competitor_role_match": {
+          "value": true,
+          "passed": true,
+          "details": "actual={'明策咨询': 'direct', '远见顾问': 'direct'}; expected={'明策咨询': 'direct', '远见顾问': 'direct'}"
+        },
+        "fixture_no_forced_comparison": {
+          "value": true,
+          "passed": true,
+          "details": "cross_comparisons=4"
+        },
+        "fixture_recommendation_candidate": {
+          "value": true,
+          "passed": true,
+          "details": "has_recommendation=False"
+        },
+        "fixture_expected_claim_types": {
+          "value": true,
+          "passed": true,
+          "details": "actual=['comparison', 'risk']; expected=[]"
+        },
+        "path_tradeoff_coverage": {
+          "value": 0,
+          "passed": true,
+          "details": "{\"ecosystem_migration\": false, \"integration_responsibility\": false, \"operations\": false, \"total_cost\": false, \"workflow_control\": false}"
+        },
+        "fixture_behavior_passed": {
+          "value": true,
+          "passed": true,
+          "details": "关键预期行为的合取结果"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,339 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "workflow_shape": "fixed_snapshot_steps_as_task_board",
+      "dynamic_ready": true,
+      "workflow_runtime": "taskboard_driven_step6c3_dual_real_pilot_v1",
+      "scheduler": "TaskBoardStore.ready_records",
+      "llm_provider": "mock",
+      "llm_model": "mock-structured-v1",
+      "llm_mode": "llm_with_fallback",
+      "output_language": "zh-CN",
+      "real_calls_enabled": false,
+      "llm_api_style": "mock",
+      "structured_output_mode": "json_schema",
+      "thinking_mode": "provider_default",
+      "analyst_llm_provider": "compatible",
+      "analyst_llm_model": "deepseek-v4-flash",
+      "analyst_real_calls_enabled": true,
+      "writer_llm_provider": "compatible",
+      "writer_llm_model": "deepseek-v4-flash",
+      "writer_real_calls_enabled": true,
+      "writer_only_real": false,
+      "analyst_writer_real": true
+    },
+    "id": "board_543cae253830",
+    "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+    "status": "completed",
+    "tasks": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_collect_sources",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "collect_sources",
+        "parent_task_id": "",
+        "task_type": "collect_sources",
+        "target_agent_role": "collector",
+        "status": "completed",
+        "priority": "high",
+        "depends_on": [],
+        "blocked_by": [],
+        "input_refs": [
+          "snapshot:online_education"
+        ],
+        "output_refs": [
+          "sources",
+          "evidence"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "collector",
+        "node_id": "collect_sources",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:43:09.517677Z",
+        "started_at": "2026-08-14T10:43:09.446661Z",
+        "completed_at": "2026-08-14T10:43:09.517677Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_build_product_cards",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "build_product_cards",
+        "parent_task_id": "",
+        "task_type": "build_product_cards",
+        "target_agent_role": "extractor",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [
+          "collect_sources"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "sources",
+          "evidence"
+        ],
+        "output_refs": [
+          "product_cards"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "extractor",
+        "node_id": "build_product_cards",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:43:09.762430Z",
+        "started_at": "2026-08-14T10:43:09.550684Z",
+        "completed_at": "2026-08-14T10:43:09.762430Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_build_claims",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "build_claims",
+        "parent_task_id": "",
+        "task_type": "build_claims",
+        "target_agent_role": "analyst",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [
+          "build_product_cards"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "product_cards",
+          "evidence"
+        ],
+        "output_refs": [
+          "analysis_portfolios",
+          "brief_assessments",
+          "competitor_profiles",
+          "intelligence_questions",
+          "information_needs",
+          "evidence_coverage",
+          "comparability_notes",
+          "claims_v2",
+          "research_gaps",
+          "claims"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "analyst",
+        "node_id": "build_claims",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:44:35.316126Z",
+        "started_at": "2026-08-14T10:43:09.797952Z",
+        "completed_at": "2026-08-14T10:44:35.316126Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_check_citations",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "check_citations",
+        "parent_task_id": "",
+        "task_type": "check_citations",
+        "target_agent_role": "citation",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [
+          "build_claims"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "sources",
+          "evidence",
+          "claims"
+        ],
+        "output_refs": [
+          "claims",
+          "citation_checks"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "citation",
+        "node_id": "check_citations",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:44:35.415147Z",
+        "started_at": "2026-08-14T10:44:35.343134Z",
+        "completed_at": "2026-08-14T10:44:35.415147Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_build_report",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "build_report",
+        "parent_task_id": "",
+        "task_type": "build_report",
+        "target_agent_role": "writer",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [
+          "check_citations"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "product_cards",
+          "claims",
+          "citation_checks"
+        ],
+        "output_refs": [
+          "reports",
+          "report_statements"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "writer",
+        "node_id": "build_report",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:44:53.779636Z",
+        "started_at": "2026-08-14T10:44:35.440156Z",
+        "completed_at": "2026-08-14T10:44:53.779636Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "tb_review_report",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "review_report",
+        "parent_task_id": "",
+        "task_type": "review_report",
+        "target_agent_role": "reviewer",
+        "status": "completed",
+        "priority": "medium",
+        "depends_on": [
+          "build_report"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "reports",
+          "claims",
+          "citation_checks",
+          "product_cards"
+        ],
+        "output_refs": [
+          "review_feedback"
+        ],
+        "reason": "Fixed snapshot workflow task mapping.",
+        "created_by_agent_run_id": "",
+        "claimed_by_agent": "reviewer",
+        "node_id": "review_report",
+        "attempts": 1,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:43:09.391482Z",
+        "updated_at": "2026-08-14T10:44:53.888655Z",
+        "started_at": "2026-08-14T10:44:53.808640Z",
+        "completed_at": "2026-08-14T10:44:53.888655Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "feedback_reason": "weak_citation",
+          "claim_id": "claim_004",
+          "citation_check_id": "cite_claim_004",
+          "review_issue_ids": [
+            "issue_claim_004_weak_citation"
+          ],
+          "execution_policy": "skipped_until_llm_or_webcollector"
+        },
+        "id": "tb_feedback_analyze_claim_004",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "supplement_analysis_claim_004",
+        "parent_task_id": "review_report",
+        "task_type": "supplement_analysis",
+        "target_agent_role": "analyst",
+        "status": "skipped",
+        "priority": "medium",
+        "depends_on": [
+          "review_report"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "claims",
+          "citation_checks",
+          "evidence"
+        ],
+        "output_refs": [
+          "claims"
+        ],
+        "reason": "Weak citation is explained by ReviewFeedback. LLM/WebCollector supplement analysis is deferred in rule-only mode.",
+        "created_by_agent_run_id": "rule_milestone3_reviewer",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:44:53.922662Z",
+        "updated_at": "2026-08-14T10:44:53.922662Z",
+        "started_at": null,
+        "completed_at": "2026-08-14T10:44:53.921661Z",
+        "error": ""
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "feedback_reason": "weak_citation",
+          "claim_id": "claim_015",
+          "citation_check_id": "cite_claim_015",
+          "review_issue_ids": [
+            "issue_claim_015_weak_citation"
+          ],
+          "execution_policy": "skipped_until_llm_or_webcollector"
+        },
+        "id": "tb_feedback_analyze_claim_015",
+        "task_id": "snapshot_step6c3_analyst_writer_deepseek_v4_pilot",
+        "task_key": "supplement_analysis_claim_015",
+        "parent_task_id": "review_report",
+        "task_type": "supplement_analysis",
+        "target_agent_role": "analyst",
+        "status": "skipped",
+        "priority": "medium",
+        "depends_on": [
+          "review_report"
+        ],
+        "blocked_by": [],
+        "input_refs": [
+          "claims",
+          "citation_checks",
+          "evidence"
+        ],
+        "output_refs": [
+          "claims"
+        ],
+        "reason": "Weak citation is explained by ReviewFeedback. LLM/WebCollector supplement analysis is deferred in rule-only mode.",
+        "created_by_agent_run_id": "rule_milestone3_reviewer",
+        "claimed_by_agent": "",
+        "node_id": "",
+        "attempts": 0,
+        "max_attempts": 1,
+        "created_at": "2026-08-14T10:44:53.922662Z",
+        "updated_at": "2026-08-14T10:44:53.922662Z",
+        "started_at": null,
+        "completed_at": "2026-08-14T10:44:53.921661Z",
+        "error": ""
+      }
+    ],
+    "max_review_rounds": 3,
+    "current_review_round": 0,
+    "created_at": "2026-08-14T10:43:09.391482Z",
+    "updated_at": "2026-08-14T10:44:53.948668Z"
+  }
+]

@@ -1,0 +1,38 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "llm_provider": "compatible",
+      "llm_model": "deepseek-v4-flash",
+      "prompt_version": "1.0.0-candidate",
+      "blocking_validation_source": "deterministic_backend",
+      "execution_started": false
+    },
+    "id": "draft_a4d3139c38d1",
+    "task_id": "draft_a4d3139c38d1",
+    "request_text": "调研一下classin的竞品分析",
+    "decision_question": "帮助用户了解ClassIn的竞争格局，以支持市场定位或产品决策",
+    "industry": "在线教育",
+    "competitors": [
+      "ClassIn"
+    ],
+    "target_customers": [],
+    "core_scenarios": [],
+    "focus_areas": [],
+    "constraints": [],
+    "report_subject": "ClassIn在线教育竞品分析",
+    "preferred_title": "",
+    "missing_fields": [
+      "至少两个比较对象"
+    ],
+    "clarification_questions": [
+      "请至少提供两个需要比较的产品、品牌或方案。",
+      "可选补充：主要面向哪类客户或购买角色？",
+      "可选补充：最需要比较的使用或购买场景是什么？"
+    ],
+    "ready_for_confirmation": false,
+    "status": "needs_clarification",
+    "created_at": "2026-08-21T07:27:33.119711Z",
+    "updated_at": "2026-08-21T07:27:33.119711Z"
+  }
+]

@@ -1,0 +1,29 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_腾讯会议_feature_较弱",
+    "task_id": "task_step6e4_gap_publisher_check",
+    "competitors": [
+      "腾讯会议"
+    ],
+    "dimension": "feature",
+    "missing_information": "腾讯会议 在 feature 维度的证据处于较弱状态。",
+    "decision_blocked": "该维度的可比口径或直接证据尚不足以支持稳定判断。",
+    "why_existing_evidence_is_insufficient": "当前只有较弱来源，不能支撑高置信度判断。",
+    "suggested_queries": [
+      "查找 腾讯会议 在 feature 维度的官方资料与同版本说明",
+      "补充 腾讯会议 在 feature 维度的对比数据或客观说明"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "stop_condition": "至少获得 1 条可追溯至官方或可靠第三方资料的直接证据，或确认该信息无法公开获取。",
+    "related_evidence_ids": [
+      "ev_1"
+    ]
+  }
+]

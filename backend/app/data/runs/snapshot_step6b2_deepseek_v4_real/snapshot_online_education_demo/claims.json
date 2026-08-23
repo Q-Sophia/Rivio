@@ -1,0 +1,310 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_001",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "ClassIn 定位为面向教育机构的在线直播教学平台，支持多种教学场景和软硬件一体化。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_002",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "ClassIn 提供免费版、基础版（1800元/年起）、商业版（9600元/年起）和臻享版（预充值模式）等版本，满足不同规模用户需求。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api"
+    ],
+    "confidence": 0.84,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_003",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "ClassIn 提供16人同步面对面教学、互动式电子白板、课堂工具（小黑板、答题器、计时器等）、多课件支持、课堂控制、实时学习报告等核心功能。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report"
+    ],
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_004",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "ClassIn 拥有软硬件一体化生态，并集成 AI 学习管理系统，覆盖作业、测评、录播课等全过程数据管理。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms"
+    ],
+    "confidence": 0.8,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_005",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "customer",
+    "claim_text": "ClassIn 覆盖广泛的教学场景和科目，包括一对一、小班、大班、直播、双师教学，以及少儿英语、职业培训、STEAM 等特殊科目。",
+    "competitors": [
+      "ClassIn"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes"
+    ],
+    "confidence": 0.83,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_006",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "腾讯云实时互动-教育版定位为低代码教育实时互动产品，帮助在线教育平台快速集成音视频、白板等能力。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code"
+    ],
+    "confidence": 0.88,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_007",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "腾讯云实时互动-教育版提供免费试用版及付费套餐（1499元/月、3599元/月、6999元/月），包含不同音视频时长和课堂容量。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_008",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "腾讯云实时互动-教育版集成音视频连麦、互动白板、屏幕共享、云端录制、直播等核心功能，并支持多平台SDK和Open API对接。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_core_features",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api"
+    ],
+    "confidence": 0.87,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_009",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "腾讯云实时互动-教育版提供跨平台客户端集成方案，覆盖小程序、Android、iOS、Windows、macOS、Web/H5、uni-app、Flutter，并通过Open API与业务系统无缝对接。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api"
+    ],
+    "confidence": 0.88,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_010",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "market",
+    "claim_text": "腾讯云实时互动-教育版声称可降低在线教育平台90%的开发工作，并支持1v1教学、小班互动、直播大班课、AI课堂等丰富场景。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_scenarios_dev_reduction"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_011",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "risk",
+    "claim_text": "腾讯云实时互动-教育版内置安全审核和噪声抑制功能，以降低内容风险并提升课堂质量。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise"
+    ],
+    "confidence": 0.78,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_012",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "positioning",
+    "claim_text": "BigBlueButton 定位为开源的虚拟教室软件，支持自托管，适用于在线教学和协作学习。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_013",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "pricing",
+    "claim_text": "BigBlueButton 开源免费，但需自行承担服务器部署和运维成本。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.79,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_014",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "feature",
+    "claim_text": "BigBlueButton 提供文档上传、虚拟白板、分组讨论、公共/私人聊天、共享笔记、屏幕共享、虚拟举手、表情符号、网络摄像头视频和自定义背景等功能。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video"
+    ],
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_015",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "ecosystem",
+    "claim_text": "BigBlueButton 可与 LMS（如 Moodle、Canvas）集成，方便教学资源管理。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.55,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "weak"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_016",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "customer",
+    "claim_text": "BigBlueButton 的教育用例包括在线辅导（一对一）、翻转课堂、群体协作（多对多）和在线课程（一对多）。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_education_use_cases"
+    ],
+    "confidence": 0.84,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "claim_017",
+    "task_id": "snapshot_online_education_demo",
+    "dimension": "risk",
+    "claim_text": "BigBlueButton 采用自托管模式，需要自行部署和维护，存在一定的运维风险。",
+    "competitors": [
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  }
+]

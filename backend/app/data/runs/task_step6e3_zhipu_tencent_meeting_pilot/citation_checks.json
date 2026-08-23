@@ -1,0 +1,232 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_001",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_001",
+    "evidence_ids": [
+      "ev_72051f57f735",
+      "ev_50f96d84eeb9"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_002",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_002",
+    "evidence_ids": [
+      "ev_a7eb4b68c09e"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_003",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_003",
+    "evidence_ids": [
+      "ev_adb6e7a2871f",
+      "ev_37f065adf193"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_004",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_004",
+    "evidence_ids": [
+      "ev_d26887b451b1",
+      "ev_277c3bcce6bf"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_005",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_005",
+    "evidence_ids": [
+      "ev_2594fba7bb74",
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_006",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_006",
+    "evidence_ids": [
+      "ev_53701da105dd"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_007",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_007",
+    "evidence_ids": [
+      "ev_61d68ec6120d",
+      "ev_fd97a18ea86b",
+      "ev_508d04279241"
+    ],
+    "status": "supported",
+    "message": "All 3 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_008",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_008",
+    "evidence_ids": [
+      "ev_394c24698cef",
+      "ev_7fc585e65cf8"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_009",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_009",
+    "evidence_ids": [
+      "ev_cc10a9b41e95"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_010",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_010",
+    "evidence_ids": [
+      "ev_959600cea190"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_011",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_011",
+    "evidence_ids": [
+      "ev_e8fe9591b139"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_012",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_012",
+    "evidence_ids": [
+      "ev_2d06aaf0fc28",
+      "ev_e9daa5ae1cc9"
+    ],
+    "status": "supported",
+    "message": "All 2 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "checker": "run_citation_check_demo.py",
+      "rule": "evidence_ids_exist_and_source_ids_resolve"
+    },
+    "id": "cite_claim_013",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "claim_id": "claim_013",
+    "evidence_ids": [
+      "ev_664f24d75569"
+    ],
+    "status": "supported",
+    "message": "All 1 evidence_ids exist and resolve to source documents.",
+    "checked_by_agent_run_id": "rule_milestone2_citation_checker",
+    "created_at": "2026-08-21T06:55:42.897250Z"
+  }
+]

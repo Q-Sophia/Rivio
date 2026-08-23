@@ -1,0 +1,64 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_001",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question": "客户的核心任务是什么：是需要开箱即用的完整教学产品，还是需要可集成的平台能力，或是需要自托管的开源方案？",
+    "decision_link": "决定选择哪类解决路径，影响后续评估重点。",
+    "dimensions": [
+      "positioning",
+      "customer"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_002",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question": "各方案在实时互动规模（如同时在线人数、音视频互动人数）和延迟上的实际能力如何，是否满足客户场景？",
+    "decision_link": "影响对功能和技术能力的评估。",
+    "dimensions": [
+      "feature"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_003",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question": "各方案的总体拥有成本（包括订阅费、基础设施、运维、集成开发）如何比较？",
+    "decision_link": "影响成本预算和方案选择。",
+    "dimensions": [
+      "pricing",
+      "risk"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_004",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question": "各方案与现有教学系统（如 LMS、排课、用户管理）的集成能力和生态兼容性如何？",
+    "decision_link": "影响部署和迁移成本。",
+    "dimensions": [
+      "ecosystem"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_005",
+    "task_id": "step6c_deepseek_v4_candidate_2_2_2_pilot_v2_candidate",
+    "question": "各方案在内容安全、数据隐私、运维责任等方面的风险控制措施和客户责任边界是什么？",
+    "decision_link": "影响风险管理和合规决策。",
+    "dimensions": [
+      "risk"
+    ],
+    "priority": "medium"
+  }
+]

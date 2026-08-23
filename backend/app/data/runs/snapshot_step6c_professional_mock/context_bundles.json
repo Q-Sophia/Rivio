@@ -1,0 +1,1618 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_collector",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "collector",
+    "node_id": "collect_sources",
+    "task_key": "collect_sources",
+    "system_context": [
+      "Agent role（智能体角色）：collector。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "source_count": 9,
+      "evidence_count": 32,
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "source_types": [
+        "docs",
+        "official_site",
+        "pricing_page",
+        "report",
+        "social"
+      ],
+      "next_expected_output": [
+        "SourceDocument",
+        "SourceEvidence"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article",
+        "src_bbb_features",
+        "src_bbb_github",
+        "src_bbb_juejin_lms"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article",
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "raw_web_results_must_be_structured"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 1402,
+    "token_budget": 4000,
+    "created_at": "2026-08-14T10:42:29.550320Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_extractor",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "extractor",
+    "node_id": "build_product_cards",
+    "task_key": "build_product_cards",
+    "system_context": [
+      "Agent role（智能体角色）：extractor。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "evidence_by_competitor": {
+        "ClassIn": 15,
+        "腾讯云实时互动 / TRTC 教育方案": 10,
+        "BigBlueButton": 7
+      },
+      "product_card_contract": "ProductCard fields must keep source_ids and evidence_ids.",
+      "next_expected_output": [
+        "ProductCard"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article",
+        "src_bbb_features",
+        "src_bbb_github",
+        "src_bbb_juejin_lms"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api",
+        "ev_classin_hardware_ecosystem",
+        "ev_classin_client_positioning",
+        "ev_classin_ai_lms",
+        "ev_tencent_lcic_low_code",
+        "ev_tencent_core_features",
+        "ev_tencent_scenarios_dev_reduction",
+        "ev_tencent_cross_platform",
+        "ev_tencent_scale_latency",
+        "ev_tencent_courseware_recording",
+        "ev_tencent_open_api",
+        "ev_tencent_moderation_ai_noise",
+        "ev_tencent_pricing_tiers",
+        "ev_tencent_pricing_capacity_api",
+        "ev_bbb_feature_set",
+        "ev_bbb_collaboration_tools",
+        "ev_bbb_engagement_video",
+        "ev_bbb_open_source_self_hosted",
+        "ev_bbb_deployment_risk",
+        "ev_bbb_education_use_cases",
+        "ev_bbb_lms_integration"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article",
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 1682,
+    "token_budget": 4000,
+    "created_at": "2026-08-14T10:42:29.559319Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_analyst",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "analyst",
+    "node_id": "build_claims",
+    "task_key": "build_claims",
+    "system_context": [
+      "Agent role（智能体角色）：analyst。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "product_cards": [
+        {
+          "id": "prod_llm_classin",
+          "name": "ClassIn",
+          "positioning": "ClassIn 的产品卡片基于 15 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本。",
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_16_way_interaction",
+            "ev_classin_teaching_modes",
+            "ev_classin_whiteboard_tools",
+            "ev_classin_classroom_toolkit",
+            "ev_classin_courseware_support",
+            "ev_classin_classroom_control",
+            "ev_classin_learning_report",
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_classin_business_api",
+            "ev_classin_premium_prepaid_api",
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_client_positioning",
+            "ev_classin_ai_lms"
+          ]
+        },
+        {
+          "id": "prod_llm_腾讯云实时互动___trtc_教育方案",
+          "name": "腾讯云实时互动 / TRTC 教育方案",
+          "positioning": "腾讯云实时互动 / TRTC 教育方案 的产品卡片基于 10 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本、风险与限制。",
+          "evidence_ids": [
+            "ev_tencent_lcic_low_code",
+            "ev_tencent_core_features",
+            "ev_tencent_scenarios_dev_reduction",
+            "ev_tencent_cross_platform",
+            "ev_tencent_scale_latency",
+            "ev_tencent_courseware_recording",
+            "ev_tencent_open_api",
+            "ev_tencent_moderation_ai_noise",
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ]
+        },
+        {
+          "id": "prod_llm_bigbluebutton",
+          "name": "BigBlueButton",
+          "positioning": "BigBlueButton 的产品卡片基于 7 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、风险与限制。",
+          "evidence_ids": [
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools",
+            "ev_bbb_engagement_video",
+            "ev_bbb_open_source_self_hosted",
+            "ev_bbb_deployment_risk",
+            "ev_bbb_education_use_cases",
+            "ev_bbb_lms_integration"
+          ]
+        }
+      ],
+      "evidence_by_dimension": {
+        "customer": 4,
+        "feature": 12,
+        "pricing": 6,
+        "ecosystem": 5,
+        "positioning": 3,
+        "risk": 2
+      },
+      "weak_claim_ids": [
+        "clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "next_expected_output": [
+        "AnalysisClaim"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api",
+        "ev_classin_hardware_ecosystem",
+        "ev_classin_client_positioning",
+        "ev_classin_ai_lms",
+        "ev_tencent_lcic_low_code",
+        "ev_tencent_core_features",
+        "ev_tencent_scenarios_dev_reduction",
+        "ev_tencent_cross_platform",
+        "ev_tencent_scale_latency",
+        "ev_tencent_courseware_recording",
+        "ev_tencent_open_api",
+        "ev_tencent_moderation_ai_noise",
+        "ev_tencent_pricing_tiers",
+        "ev_tencent_pricing_capacity_api",
+        "ev_bbb_feature_set",
+        "ev_bbb_collaboration_tools",
+        "ev_bbb_engagement_video",
+        "ev_bbb_open_source_self_hosted",
+        "ev_bbb_deployment_risk",
+        "ev_bbb_education_use_cases",
+        "ev_bbb_lms_integration"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "claims_require_evidence_ids"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 2023,
+    "token_budget": 6000,
+    "created_at": "2026-08-14T10:42:29.568321Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_citation",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "citation",
+    "node_id": "check_citations",
+    "task_key": "check_citations",
+    "system_context": [
+      "Agent role（智能体角色）：citation。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "claims": [
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_customer",
+          "dimension": "customer",
+          "citation_status": "supported",
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_teaching_modes",
+            "ev_tencent_scenarios_dev_reduction",
+            "ev_bbb_education_use_cases"
+          ]
+        },
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_ecosystem",
+          "dimension": "ecosystem",
+          "citation_status": "weak",
+          "evidence_ids": [
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_ai_lms",
+            "ev_tencent_cross_platform",
+            "ev_tencent_open_api",
+            "ev_bbb_lms_integration"
+          ]
+        },
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_feature",
+          "dimension": "feature",
+          "citation_status": "supported",
+          "evidence_ids": [
+            "ev_classin_16_way_interaction",
+            "ev_classin_whiteboard_tools",
+            "ev_tencent_core_features",
+            "ev_tencent_scale_latency",
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools"
+          ]
+        },
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_positioning",
+          "dimension": "positioning",
+          "citation_status": "supported",
+          "evidence_ids": [
+            "ev_classin_client_positioning",
+            "ev_tencent_lcic_low_code",
+            "ev_bbb_open_source_self_hosted"
+          ]
+        },
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_pricing",
+          "dimension": "pricing",
+          "citation_status": "supported",
+          "evidence_ids": [
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ]
+        },
+        {
+          "id": "clv2_snapshot_step6c_professional_mock_risk",
+          "dimension": "risk",
+          "citation_status": "supported",
+          "evidence_ids": [
+            "ev_tencent_moderation_ai_noise",
+            "ev_bbb_deployment_risk"
+          ]
+        }
+      ],
+      "citation_policy": "Every claim.evidence_ids item must resolve to SourceEvidence and SourceDocument.",
+      "next_expected_output": [
+        "CitationCheck"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article",
+        "src_bbb_features",
+        "src_bbb_github",
+        "src_bbb_juejin_lms"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api",
+        "ev_classin_hardware_ecosystem",
+        "ev_classin_client_positioning",
+        "ev_classin_ai_lms",
+        "ev_tencent_lcic_low_code",
+        "ev_tencent_core_features",
+        "ev_tencent_scenarios_dev_reduction",
+        "ev_tencent_cross_platform",
+        "ev_tencent_scale_latency",
+        "ev_tencent_courseware_recording",
+        "ev_tencent_open_api",
+        "ev_tencent_moderation_ai_noise",
+        "ev_tencent_pricing_tiers",
+        "ev_tencent_pricing_capacity_api",
+        "ev_bbb_feature_set",
+        "ev_bbb_collaboration_tools",
+        "ev_bbb_engagement_video",
+        "ev_bbb_open_source_self_hosted",
+        "ev_bbb_deployment_risk",
+        "ev_bbb_education_use_cases",
+        "ev_bbb_lms_integration"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article",
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 2039,
+    "token_budget": 4000,
+    "created_at": "2026-08-14T10:42:29.577323Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_writer",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "writer",
+    "node_id": "build_report",
+    "task_key": "build_report",
+    "system_context": [
+      "Agent role（智能体角色）：writer。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "supported_claim_ids": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "weak_claim_ids": [
+        "clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "citation_checks": [
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_customer",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_customer",
+          "status": "supported",
+          "evidence_ids": [
+            "ev_classin_scene_breadth",
+            "ev_classin_teaching_modes",
+            "ev_tencent_scenarios_dev_reduction",
+            "ev_bbb_education_use_cases"
+          ]
+        },
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_ecosystem",
+          "status": "weak",
+          "evidence_ids": [
+            "ev_classin_hardware_ecosystem",
+            "ev_classin_ai_lms",
+            "ev_tencent_cross_platform",
+            "ev_tencent_open_api",
+            "ev_bbb_lms_integration"
+          ]
+        },
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_feature",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_feature",
+          "status": "supported",
+          "evidence_ids": [
+            "ev_classin_16_way_interaction",
+            "ev_classin_whiteboard_tools",
+            "ev_tencent_core_features",
+            "ev_tencent_scale_latency",
+            "ev_bbb_feature_set",
+            "ev_bbb_collaboration_tools"
+          ]
+        },
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_positioning",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_positioning",
+          "status": "supported",
+          "evidence_ids": [
+            "ev_classin_client_positioning",
+            "ev_tencent_lcic_low_code",
+            "ev_bbb_open_source_self_hosted"
+          ]
+        },
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_pricing",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_pricing",
+          "status": "supported",
+          "evidence_ids": [
+            "ev_classin_free_limits",
+            "ev_classin_basic_price_capacity",
+            "ev_tencent_pricing_tiers",
+            "ev_tencent_pricing_capacity_api"
+          ]
+        },
+        {
+          "id": "cite_clv2_snapshot_step6c_professional_mock_risk",
+          "claim_id": "clv2_snapshot_step6c_professional_mock_risk",
+          "status": "supported",
+          "evidence_ids": [
+            "ev_tencent_moderation_ai_noise",
+            "ev_bbb_deployment_risk"
+          ]
+        }
+      ],
+      "writer_rule": "Do not introduce strong conclusions without claim_id references.",
+      "next_expected_output": [
+        "CompetitiveReport"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api",
+        "ev_classin_hardware_ecosystem",
+        "ev_classin_client_positioning",
+        "ev_classin_ai_lms",
+        "ev_tencent_lcic_low_code",
+        "ev_tencent_core_features",
+        "ev_tencent_scenarios_dev_reduction",
+        "ev_tencent_cross_platform",
+        "ev_tencent_scale_latency"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_framework_competitive_analysis",
+      "mem_run_snapshot_summary",
+      "mem_run_supported_claims"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks",
+      "report_conclusions_require_claim_ids"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 1985,
+    "token_budget": 6000,
+    "created_at": "2026-08-14T10:42:29.587326Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "context_builder": "deterministic_artifact_context_builder_v1",
+      "context_layers": [
+        "system",
+        "task",
+        "working"
+      ],
+      "id_preservation_required": true
+    },
+    "id": "ctxbundle_reviewer",
+    "task_id": "snapshot_step6c_professional_mock",
+    "agent_role": "reviewer",
+    "node_id": "review_report",
+    "task_key": "review_report",
+    "system_context": [
+      "Agent role（智能体角色）：reviewer。",
+      "默认使用简体中文（zh-CN）生成业务产物；英文术语首次出现时补充中文注释。",
+      "只能使用 ContextBundle（上下文包）提供的结构化产物。",
+      "必须保留 source_id、evidence_id、claim_id、citation_check_id 和 task_record_id。",
+      "不得生成缺少证据支持的产品事实或报告结论。",
+      "LLM（大模型）输出必须通过 Pydantic（数据校验模型）结构校验和语言一致性校验。"
+    ],
+    "task_context": {
+      "task_id": "snapshot_step6c_professional_mock",
+      "current_goal": "Generate an evidence-first competitive analysis report for online classroom real-time interaction solutions.",
+      "task_summary": "Loaded 9 sources, 32 evidence items, 3 product cards, 6 claims, 6 citation checks, and 1 feedback tasks.",
+      "competitors": [
+        "ClassIn",
+        "腾讯云实时互动 / TRTC 教育方案",
+        "BigBlueButton"
+      ],
+      "focus_areas": [
+        "customer",
+        "ecosystem",
+        "feature",
+        "positioning",
+        "pricing",
+        "risk"
+      ],
+      "completed_task_keys": [
+        "collect_sources",
+        "build_product_cards",
+        "build_claims",
+        "check_citations",
+        "build_report",
+        "review_report"
+      ],
+      "skipped_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "quality_gate_ids": [
+        "gate_review_citation_feedback"
+      ],
+      "artifact_counts": {
+        "sources": 9,
+        "evidence": 32,
+        "product_cards": 3,
+        "claims": 6,
+        "citation_checks": 6,
+        "review_feedback": 1,
+        "quality_gates": 1,
+        "task_records": 7,
+        "feedback_tasks": 1
+      }
+    },
+    "working_context": {
+      "report_ids": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "review_issue_ids": [
+        "issue_clv2_snapshot_step6c_professional_mock_ecosystem_weak_citation",
+        "issue_report_missing_rd_keywords"
+      ],
+      "quality_gate_status": "passed_with_warnings",
+      "feedback_task_keys": [
+        "supplement_analysis_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ],
+      "next_expected_output": [
+        "ReviewFeedback",
+        "QualityGateDecision",
+        "Feedback TaskRecord"
+      ]
+    },
+    "artifact_refs": {
+      "sources": [
+        "src_classin_intro",
+        "src_classin_pricing_tools",
+        "src_classin_hardware",
+        "src_classin_download",
+        "src_tencent_lcic_product",
+        "src_tencent_lcic_pricing_article"
+      ],
+      "evidence": [
+        "ev_classin_scene_breadth",
+        "ev_classin_16_way_interaction",
+        "ev_classin_teaching_modes",
+        "ev_classin_whiteboard_tools",
+        "ev_classin_classroom_toolkit",
+        "ev_classin_courseware_support",
+        "ev_classin_classroom_control",
+        "ev_classin_learning_report",
+        "ev_classin_free_limits",
+        "ev_classin_basic_price_capacity",
+        "ev_classin_business_api",
+        "ev_classin_premium_prepaid_api",
+        "ev_classin_hardware_ecosystem",
+        "ev_classin_client_positioning",
+        "ev_classin_ai_lms",
+        "ev_tencent_lcic_low_code",
+        "ev_tencent_core_features",
+        "ev_tencent_scenarios_dev_reduction",
+        "ev_tencent_cross_platform",
+        "ev_tencent_scale_latency"
+      ],
+      "product_cards": [
+        "prod_llm_classin",
+        "prod_llm_腾讯云实时互动___trtc_教育方案",
+        "prod_llm_bigbluebutton"
+      ],
+      "claims": [
+        "clv2_snapshot_step6c_professional_mock_customer",
+        "clv2_snapshot_step6c_professional_mock_ecosystem",
+        "clv2_snapshot_step6c_professional_mock_feature",
+        "clv2_snapshot_step6c_professional_mock_positioning",
+        "clv2_snapshot_step6c_professional_mock_pricing",
+        "clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "citation_checks": [
+        "cite_clv2_snapshot_step6c_professional_mock_customer",
+        "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+        "cite_clv2_snapshot_step6c_professional_mock_feature",
+        "cite_clv2_snapshot_step6c_professional_mock_positioning",
+        "cite_clv2_snapshot_step6c_professional_mock_pricing",
+        "cite_clv2_snapshot_step6c_professional_mock_risk"
+      ],
+      "reports": [
+        "report_professional_snapshot_step6c_professional_mock"
+      ],
+      "task_records": [
+        "tb_collect_sources",
+        "tb_build_product_cards",
+        "tb_build_claims",
+        "tb_check_citations",
+        "tb_build_report",
+        "tb_review_report",
+        "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+      ]
+    },
+    "source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download",
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms",
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency"
+    ],
+    "product_card_ids": [
+      "prod_llm_classin",
+      "prod_llm_腾讯云实时互动___trtc_教育方案",
+      "prod_llm_bigbluebutton"
+    ],
+    "claim_ids": [
+      "clv2_snapshot_step6c_professional_mock_customer",
+      "clv2_snapshot_step6c_professional_mock_ecosystem",
+      "clv2_snapshot_step6c_professional_mock_feature",
+      "clv2_snapshot_step6c_professional_mock_positioning",
+      "clv2_snapshot_step6c_professional_mock_pricing",
+      "clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "citation_check_ids": [
+      "cite_clv2_snapshot_step6c_professional_mock_customer",
+      "cite_clv2_snapshot_step6c_professional_mock_ecosystem",
+      "cite_clv2_snapshot_step6c_professional_mock_feature",
+      "cite_clv2_snapshot_step6c_professional_mock_positioning",
+      "cite_clv2_snapshot_step6c_professional_mock_pricing",
+      "cite_clv2_snapshot_step6c_professional_mock_risk"
+    ],
+    "report_ids": [
+      "report_professional_snapshot_step6c_professional_mock"
+    ],
+    "task_record_ids": [
+      "tb_collect_sources",
+      "tb_build_product_cards",
+      "tb_build_claims",
+      "tb_check_citations",
+      "tb_build_report",
+      "tb_review_report",
+      "tb_feedback_analyze_clv2_snapshot_step6c_professional_mock_ecosystem"
+    ],
+    "memory_item_ids": [
+      "mem_user_pref_evidence_first",
+      "mem_policy_source_traceability",
+      "mem_run_snapshot_summary"
+    ],
+    "guardrail_policy": [
+      "preserve_artifact_ids",
+      "schema_validate_outputs",
+      "do_not_bypass_citation_checks"
+    ],
+    "compression_level": 1,
+    "estimated_tokens": 1527,
+    "token_budget": 5000,
+    "created_at": "2026-08-14T10:42:29.596327Z"
+  }
+]

@@ -1,0 +1,106 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_cross_industry_consumer_g_customer",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "dimension": "customer",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，暖行杯、山川杯在目标客户方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "暖行杯",
+      "山川杯"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_customer_1",
+      "ev_cross_industry_consumer_goods_2_customer_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条目标客户结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_cross_industry_consumer_g_feature",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "dimension": "feature",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，暖行杯、山川杯在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "暖行杯",
+      "山川杯"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_feature_1",
+      "ev_cross_industry_consumer_goods_2_feature_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_cross_industry_consumer_g_positioning",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "dimension": "positioning",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，暖行杯、山川杯在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "暖行杯",
+      "山川杯"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_positioning_1",
+      "ev_cross_industry_consumer_goods_2_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_cross_industry_consumer_g_pricing",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "dimension": "pricing",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，暖行杯、山川杯在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "暖行杯",
+      "山川杯"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_pricing_1",
+      "ev_cross_industry_consumer_goods_2_pricing_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  }
+]

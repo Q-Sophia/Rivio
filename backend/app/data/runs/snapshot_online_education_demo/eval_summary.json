@@ -1,0 +1,135 @@
+{
+  "id": "eval_snapshot_online_education_demo",
+  "task_id": "snapshot_online_education_demo",
+  "passed": true,
+  "artifact_dir": "C:\\Users\\qyn\\Desktop\\北工大-课程材料结集\\多Agent竞品分析助手\\competitive-intel-agents\\backend\\app\\data\\runs\\snapshot_online_education_demo",
+  "metrics": {
+    "artifact_completeness": {
+      "name": "artifact_completeness",
+      "value": 1.0,
+      "passed": true,
+      "details": "all required artifacts present"
+    },
+    "evidence_ref_valid_rate": {
+      "name": "evidence_ref_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=32; total=32"
+    },
+    "product_card_ref_valid_rate": {
+      "name": "product_card_ref_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=41; total=41"
+    },
+    "claim_evidence_valid_rate": {
+      "name": "claim_evidence_valid_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=22; total=22"
+    },
+    "report_claim_coverage": {
+      "name": "report_claim_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "covered=5; total=5"
+    },
+    "citation_supported_rate": {
+      "name": "citation_supported_rate",
+      "value": 0.8,
+      "passed": true,
+      "details": "supported=4; total=5"
+    },
+    "weak_citation_count": {
+      "name": "weak_citation_count",
+      "value": 1,
+      "passed": true,
+      "details": "weak citations are allowed when review_feedback explains them"
+    },
+    "dag_completed_rate": {
+      "name": "dag_completed_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=6; total=6"
+    },
+    "agent_success_rate": {
+      "name": "agent_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=6; total=6"
+    },
+    "tool_call_success_rate": {
+      "name": "tool_call_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=22; total=22"
+    },
+    "review_approved": {
+      "name": "review_approved",
+      "value": true,
+      "passed": true,
+      "details": "latest review_feedback.approved"
+    },
+    "review_score": {
+      "name": "review_score",
+      "value": 9.0,
+      "passed": true,
+      "details": "latest review_feedback.overall_score"
+    },
+    "quality_gate_passed": {
+      "name": "quality_gate_passed",
+      "value": true,
+      "passed": true,
+      "details": "status=passed_with_warnings; blocking=False"
+    },
+    "feedback_task_linked_rate": {
+      "name": "feedback_task_linked_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "linked=1; total=1"
+    },
+    "context_bundle_role_coverage": {
+      "name": "context_bundle_role_coverage",
+      "value": 1.0,
+      "passed": true,
+      "details": "roles=analyst,citation,collector,extractor,reviewer,writer"
+    },
+    "memory_item_traceability_rate": {
+      "name": "memory_item_traceability_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "valid=51; total=51"
+    },
+    "guardrail_failed_count": {
+      "name": "guardrail_failed_count",
+      "value": 0,
+      "passed": true,
+      "details": "failed=0; warnings=1; total=7"
+    },
+    "llm_call_success_rate": {
+      "name": "llm_call_success_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "completed=3; total=3"
+    },
+    "llm_output_validation_rate": {
+      "name": "llm_output_validation_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "validated=3; total=3"
+    },
+    "llm_output_language_consistency_rate": {
+      "name": "llm_output_language_consistency_rate",
+      "value": 1.0,
+      "passed": true,
+      "details": "zh_cn_valid=3; total=3"
+    },
+    "llm_fallback_count": {
+      "name": "llm_fallback_count",
+      "value": 0,
+      "passed": true,
+      "details": "fallback=0; total=3"
+    }
+  },
+  "errors": []
+}

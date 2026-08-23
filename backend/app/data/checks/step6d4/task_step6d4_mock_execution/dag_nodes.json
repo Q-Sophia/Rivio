@@ -1,0 +1,150 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_collect_sources",
+      "task_key": "collect_sources"
+    },
+    "id": "collect_sources",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "collect_sources",
+    "agent_role": "collector",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "started_at": "2026-08-23T13:54:46.045814Z",
+    "completed_at": "2026-08-23T13:54:46.072819Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_build_product_cards",
+      "task_key": "build_product_cards"
+    },
+    "id": "build_product_cards",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "build_product_cards",
+    "agent_role": "extractor",
+    "status": "completed",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "product_cards"
+    ],
+    "started_at": "2026-08-23T13:54:46.220941Z",
+    "completed_at": "2026-08-23T13:54:46.463557Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_build_claims",
+      "task_key": "build_claims"
+    },
+    "id": "build_claims",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "build_claims",
+    "agent_role": "analyst",
+    "status": "completed",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "analysis_portfolios",
+      "brief_assessments",
+      "competitor_profiles",
+      "intelligence_questions",
+      "information_needs",
+      "comparability_notes",
+      "claims_v2",
+      "claims",
+      "evidence_coverage",
+      "research_gaps"
+    ],
+    "started_at": "2026-08-23T13:54:46.604227Z",
+    "completed_at": "2026-08-23T13:54:46.831756Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_check_citations",
+      "task_key": "check_citations"
+    },
+    "id": "check_citations",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "check_citations",
+    "agent_role": "citation",
+    "status": "completed",
+    "depends_on": [
+      "build_claims"
+    ],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "started_at": "2026-08-23T13:54:46.964851Z",
+    "completed_at": "2026-08-23T13:54:47.002847Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_build_report",
+      "task_key": "build_report"
+    },
+    "id": "build_report",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "build_report",
+    "agent_role": "writer",
+    "status": "completed",
+    "depends_on": [
+      "check_citations"
+    ],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "reports",
+      "report_statements"
+    ],
+    "started_at": "2026-08-23T13:54:47.148648Z",
+    "completed_at": "2026-08-23T13:54:47.380963Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "task_record_id": "queue_review_report",
+      "task_key": "review_report"
+    },
+    "id": "review_report",
+    "task_id": "task_step6d4_mock_execution",
+    "label": "review_report",
+    "agent_role": "reviewer",
+    "status": "completed",
+    "depends_on": [
+      "build_report"
+    ],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "review_feedback"
+    ],
+    "started_at": "2026-08-23T13:54:47.511993Z",
+    "completed_at": "2026-08-23T13:54:47.542450Z"
+  }
+]

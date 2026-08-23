@@ -1,0 +1,122 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified",
+      "competitor_role": "direct",
+      "selection_reason": "甲产品代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_goal_underspecified_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "name": "甲产品",
+    "company": "甲产品",
+    "positioning": "甲产品公开了基础定位。",
+    "target_users": [
+      "待确认客户"
+    ],
+    "pricing_summary": "当前缺少定价资料。",
+    "core_features": [
+      "甲产品公开了基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_goal_underspecified_1_positioning_1",
+      "src_goal_underspecified_1_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_goal_underspecified_1_positioning_1",
+      "ev_goal_underspecified_1_feature_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified",
+      "competitor_role": "direct",
+      "selection_reason": "乙产品代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_goal_underspecified_2",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "name": "乙产品",
+    "company": "乙产品",
+    "positioning": "乙产品公开了基础定位。",
+    "target_users": [
+      "待确认客户"
+    ],
+    "pricing_summary": "当前缺少定价资料。",
+    "core_features": [
+      "乙产品公开了基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_goal_underspecified_2_positioning_1",
+      "src_goal_underspecified_2_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_goal_underspecified_2_positioning_1",
+      "ev_goal_underspecified_2_feature_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified",
+      "competitor_role": "direct",
+      "selection_reason": "丙产品代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_goal_underspecified_3",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "name": "丙产品",
+    "company": "丙产品",
+    "positioning": "丙产品公开了基础定位。",
+    "target_users": [
+      "待确认客户"
+    ],
+    "pricing_summary": "当前缺少定价资料。",
+    "core_features": [
+      "丙产品公开了基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_goal_underspecified_3_positioning_1",
+      "src_goal_underspecified_3_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_goal_underspecified_3_positioning_1",
+      "ev_goal_underspecified_3_feature_1"
+    ],
+    "confidence": 0.8
+  }
+]

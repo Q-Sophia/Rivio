@@ -1,0 +1,81 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "extract_researchtask_tencent_meeting_official_features",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "label": "extract_source_evidence",
+    "agent_role": "extractor",
+    "status": "completed",
+    "depends_on": [
+      "researchtask_tencent_meeting_official_features"
+    ],
+    "input_refs": [
+      "sources",
+      "web_pages",
+      "research_tasks"
+    ],
+    "output_refs": [
+      "evidence",
+      "evidence_extraction_attempts"
+    ],
+    "started_at": null,
+    "completed_at": null
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "step6f_analyze_research_evidence",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "label": "analyze_research_evidence",
+    "agent_role": "analyst",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "analysis_tasks",
+      "research_plans",
+      "sources",
+      "evidence",
+      "product_cards",
+      "evidence_coverage",
+      "research_gaps"
+    ],
+    "output_refs": [
+      "analysis_portfolios",
+      "brief_assessments",
+      "competitor_profiles",
+      "intelligence_questions",
+      "information_needs",
+      "comparability_notes",
+      "claims_v2",
+      "claims",
+      "analysis_evidence_coverage",
+      "analysis_research_gaps"
+    ],
+    "started_at": null,
+    "completed_at": null
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "step6f_check_research_citations",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "label": "check_research_claim_citations",
+    "agent_role": "citation",
+    "status": "completed",
+    "depends_on": [
+      "step6f_analyze_research_evidence"
+    ],
+    "input_refs": [
+      "sources",
+      "evidence",
+      "claims"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "started_at": null,
+    "completed_at": null
+  }
+]

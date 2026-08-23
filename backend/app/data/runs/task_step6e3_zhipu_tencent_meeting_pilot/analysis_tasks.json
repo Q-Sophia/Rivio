@@ -1,0 +1,22 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "query": "核实腾讯会议的产品功能并形成可引用证据",
+    "competitors": [
+      "腾讯会议"
+    ],
+    "industry": "在线会议与协作",
+    "focus_areas": [
+      "产品能力"
+    ],
+    "report_subject": "腾讯会议产品能力核实",
+    "preferred_title": "",
+    "mode": "snapshot",
+    "status": "pending",
+    "created_at": "2026-08-14T16:21:44.130985Z",
+    "updated_at": "2026-08-14T16:21:44.130985Z"
+  }
+]

@@ -1,0 +1,589 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "prompt_status": "candidate_not_runtime_enabled",
+      "source": "step6f_research_analysis"
+    },
+    "id": "portfolio_task_step6e3_zhipu_tencent_meeting_pilot",
+    "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.2-candidate",
+    "brief_assessment": {
+      "schema_version": "v1",
+      "metadata": {},
+      "id": "brief_task_step6e3_zhipu_tencent_meeting_pilot",
+      "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+      "decision_question": "核实腾讯会议的产品功能并形成可引用证据",
+      "industry": "在线会议与协作",
+      "target_customers": [],
+      "core_scenarios": [],
+      "selected_dimensions": [
+        "产品能力"
+      ],
+      "missing_fields": [
+        "target_customers",
+        "core_scenarios"
+      ],
+      "sufficient_for_analysis": false
+    },
+    "competitor_profiles": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "comp_tencent_meeting",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "name": "腾讯会议",
+        "role": "direct",
+        "selection_reason": "决策问题明确要求核实腾讯会议的产品功能，腾讯会议是唯一被研究对象，属于直接竞争对象。",
+        "represented_path": "腾讯会议作为在线会议与协作平台，提供视频会议、云录制、屏幕共享、聊天、会议质量监控等功能，覆盖会议全流程。",
+        "comparable_dimensions": [
+          "产品能力"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [],
+        "core_scenarios": [],
+        "value_proposition": "提供高清流畅的音视频会议、云录制与智能纪要、屏幕共享与互动批注、会议质量监控等能力，提升会议效率与回顾体验。",
+        "offering_scope": "视频会议、云录制、屏幕共享、聊天、会议质量监控、Outlook插件、会议室连接器等。",
+        "delivery_model": "软件即服务（SaaS，软件即服务）模式，提供桌面端、移动端客户端及云端服务。",
+        "business_model": "免费版、会员、商业版/企业版等分级订阅模式，云录制空间随版本不同。",
+        "source_ids": [
+          "src_465e3ce798e1",
+          "src_2a869265fdb9",
+          "src_6c911642d8e2"
+        ],
+        "evidence_ids": [
+          "ev_ae4f59361b6b",
+          "ev_72051f57f735",
+          "ev_50f96d84eeb9",
+          "ev_a7eb4b68c09e",
+          "ev_adb6e7a2871f",
+          "ev_37f065adf193",
+          "ev_d26887b451b1",
+          "ev_277c3bcce6bf",
+          "ev_2594fba7bb74",
+          "ev_53701da105dd",
+          "ev_2d06aaf0fc28",
+          "ev_e9daa5ae1cc9",
+          "ev_664f24d75569",
+          "ev_61d68ec6120d",
+          "ev_959600cea190",
+          "ev_e8fe9591b139",
+          "ev_394c24698cef",
+          "ev_7fc585e65cf8",
+          "ev_fd97a18ea86b",
+          "ev_508d04279241",
+          "ev_cc10a9b41e95"
+        ],
+        "confidence": 0.71
+      }
+    ],
+    "key_intelligence_questions": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_1",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question": "腾讯会议的产品功能在哪些版本（免费版、专业版、商业版、企业版）中可用，版本间功能差异如何？",
+        "decision_link": "影响功能核实结论的适用范围，避免将特定版本功能误认为全版本通用。",
+        "dimensions": [
+          "产品能力"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_2",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question": "腾讯会议各功能（如云录制、屏幕共享、会议质量监控）的详细使用条件、限制和操作路径是什么？",
+        "decision_link": "为功能核实提供可操作、可验证的细节，支持形成可引用证据。",
+        "dimensions": [
+          "产品能力"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_3",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question": "腾讯会议的产品功能是否覆盖目标客户的核心场景（如培训、营销、招聘等）？",
+        "decision_link": "帮助判断功能核实是否满足决策需求，若场景缺失则需补充研究。",
+        "dimensions": [
+          "产品能力"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "information_needs": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "inf_need_1",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question_id": "kiq_1",
+        "dimension": "产品能力",
+        "required_facts": [
+          "各版本功能矩阵",
+          "版本间功能差异说明"
+        ],
+        "preferred_source_types": [
+          "官方定价页",
+          "官方版本对比页",
+          "帮助中心"
+        ],
+        "comparability_basis": "版本维度",
+        "decision_link": "确定功能核实的适用范围"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "inf_need_2",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question_id": "kiq_2",
+        "dimension": "产品能力",
+        "required_facts": [
+          "功能使用条件",
+          "功能限制",
+          "操作路径"
+        ],
+        "preferred_source_types": [
+          "官方帮助中心",
+          "官方功能指南"
+        ],
+        "comparability_basis": "功能维度",
+        "decision_link": "形成可操作的功能证据"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "inf_need_3",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "question_id": "kiq_3",
+        "dimension": "产品能力",
+        "required_facts": [
+          "目标客户画像",
+          "核心场景列表",
+          "功能与场景映射"
+        ],
+        "preferred_source_types": [
+          "官方解决方案页",
+          "客户案例"
+        ],
+        "comparability_basis": "场景维度",
+        "decision_link": "评估功能核实是否覆盖决策需求"
+      }
+    ],
+    "evidence_coverage": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_腾讯会议_feature",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "competitor": "腾讯会议",
+        "dimension": "产品能力",
+        "status": "sufficient",
+        "source_ids": [
+          "src_465e3ce798e1",
+          "src_2a869265fdb9",
+          "src_6c911642d8e2"
+        ],
+        "evidence_ids": [
+          "ev_ae4f59361b6b",
+          "ev_72051f57f735",
+          "ev_50f96d84eeb9",
+          "ev_a7eb4b68c09e",
+          "ev_adb6e7a2871f",
+          "ev_37f065adf193",
+          "ev_d26887b451b1",
+          "ev_277c3bcce6bf",
+          "ev_2594fba7bb74",
+          "ev_53701da105dd",
+          "ev_2d06aaf0fc28",
+          "ev_e9daa5ae1cc9",
+          "ev_664f24d75569",
+          "ev_61d68ec6120d",
+          "ev_959600cea190",
+          "ev_e8fe9591b139",
+          "ev_394c24698cef",
+          "ev_7fc585e65cf8",
+          "ev_fd97a18ea86b",
+          "ev_508d04279241",
+          "ev_cc10a9b41e95"
+        ],
+        "limitations": "证据覆盖了云录制、屏幕共享、聊天、会议质量监控等主要功能，但版本差异和场景覆盖信息不足。"
+      }
+    ],
+    "comparability_notes": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "comp_note_1",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "dimension": "产品能力",
+        "comparable": true,
+        "basis": "所有证据均来自腾讯会议官方渠道，功能描述口径一致，可进行内部一致性比较。",
+        "limitations": "证据未覆盖所有版本和所有功能，部分功能（如会议质量监控）仅提及企业版/教育版，版本差异需进一步核实。"
+      }
+    ],
+    "items": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_001",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议提供云录制功能，支持开启字幕，将文本内容融入录制视频，并可通过播放进度条旁的【CC】按钮开启字幕。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_72051f57f735",
+          "ev_50f96d84eeb9"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "依据官方新闻稿，云录制字幕功能可将文本融入录制视频，操作指引明确点击【CC】按钮。",
+        "uncertainty": "证据来自官方宣传，未提供实际使用效果或兼容性细节。",
+        "decision_impact": "可作为腾讯会议云录制字幕功能的可引用证据，但需注意版本和平台限制。",
+        "confidence": 0.76,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_002",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议移动端支持同时展示聊天框和视频界面，并可通过点击会中弹幕跳转到聊天框。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_a7eb4b68c09e"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿明确移动端支持聊天框和视频界面同屏显示，弹幕可跳转聊天框。",
+        "uncertainty": "未说明具体移动端版本或系统要求。",
+        "decision_impact": "可作为移动端参会体验的功能证据。",
+        "confidence": 0.7,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_003",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议提供会议质量监控功能，通过质量mos指标反映音频、视频、共享屏幕效果，并给出好、较好、中、差四级标准，当任一指标差时提示会议告警。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_adb6e7a2871f",
+          "ev_37f065adf193"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿说明会议质量监控功能及mos指标四级标准，并提示告警。",
+        "uncertainty": "该功能标注为【企业版/教育版】，其他版本是否可用未知。",
+        "decision_impact": "可作为企业版/教育版会议质量监控功能的证据，但需注意版本限制。",
+        "confidence": 0.7,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_004",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议提供Outlook插件，支持在Outlook或腾讯会议中预定、修改会议，修改周期性会议时客户端自动同步。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_d26887b451b1",
+          "ev_277c3bcce6bf"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿介绍Outlook插件功能，支持预定、修改和同步。",
+        "uncertainty": "插件仅支持Windows版客户端3.19以上版本，其他平台未知。",
+        "decision_impact": "可作为Outlook集成功能的证据，但需注意平台和版本限制。",
+        "confidence": 0.7,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_005",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议云录制支持搭配共享屏幕、虚拟背景、美颜、人像画中画等功能，并支持智能录制，录制结束后可获取智能纪要、章节、话题。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_2594fba7bb74",
+          "ev_2d06aaf0fc28",
+          "ev_e9daa5ae1cc9"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿说明云录制可搭配多种功能，智能录制可生成纪要、章节、话题。",
+        "uncertainty": "智能纪要、章节、话题的具体生成质量和准确性未提供证据。",
+        "decision_impact": "可作为云录制及智能录制功能的证据，但效果需进一步验证。",
+        "confidence": 0.76,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_006",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议云录制空间根据版本不同：免费版享2G，会员享20G，商业版/企业版享有更大空间。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_53701da105dd"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿明确不同版本的云录制空间配额。",
+        "uncertainty": "商业版/企业版的具体空间大小未说明。",
+        "decision_impact": "可作为云录制容量限制的证据，影响存储规划。",
+        "confidence": 0.76,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_007",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议提供屏幕共享功能，支持选择共享内容，并支持共享屏幕时进行互动批注、远程控制、幻灯片控制等操作。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_61d68ec6120d",
+          "ev_fd97a18ea86b",
+          "ev_508d04279241"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方帮助中心说明屏幕共享功能及工具栏中的互动批注、远程控制、幻灯片控制等选项。",
+        "uncertainty": "部分功能（如远程控制）的具体权限和限制未详细说明。",
+        "decision_impact": "可作为屏幕共享及协作功能的证据。",
+        "confidence": 0.82,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_008",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议屏幕共享支持多应用窗口同时共享（3.30及以上版本），并支持共享排队（3.28及以上版本桌面端）。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_394c24698cef",
+          "ev_7fc585e65cf8"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方帮助中心说明多应用窗口共享和共享排队功能及版本要求。",
+        "uncertainty": "移动端不支持共享排队，具体版本限制需注意。",
+        "decision_impact": "可作为屏幕共享高级功能的证据，但需注意版本和平台限制。",
+        "confidence": 0.7,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_009",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议屏幕共享权限可设置为“全体成员可共享”或“仅主持人可共享”，并支持设置会议水印。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_cc10a9b41e95"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方帮助中心说明屏幕共享权限设置选项。",
+        "uncertainty": "水印设置的具体细节未在证据中体现。",
+        "decision_impact": "可作为屏幕共享权限控制功能的证据。",
+        "confidence": 0.7,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_010",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议移动端App进行屏幕共享时，共享的是手机当前正在观看的内容（不包括主窗口）。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_959600cea190"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方帮助中心说明移动端屏幕共享的行为。",
+        "uncertainty": "未说明具体系统版本差异。",
+        "decision_impact": "可作为移动端屏幕共享行为的功能证据。",
+        "confidence": 0.76,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_011",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议屏幕共享时，幻灯片控制功能支持设置成员协助控制翻页，免费版/专业版支持1位，商业版/企业版最多支持10位。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_e8fe9591b139"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方帮助中心说明幻灯片控制功能的版本差异。",
+        "uncertainty": "未说明其他版本（如教育版）的支持情况。",
+        "decision_impact": "可作为幻灯片控制功能的版本差异证据。",
+        "confidence": 0.76,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_012",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议云录制支持录制音频文件、开启录制转写和智能录制，录制结束后可生成智能纪要。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_2d06aaf0fc28",
+          "ev_e9daa5ae1cc9"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿说明云录制设置选项及智能纪要功能。",
+        "uncertainty": "智能纪要的生成质量和准确性未提供证据。",
+        "decision_impact": "可作为云录制及智能纪要功能的证据。",
+        "confidence": 0.64,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "claim_013",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "dimension": "产品能力",
+        "claim_type": "fact",
+        "claim_text": "腾讯会议云录制可用于制作视频演示、线上教程，一个人即可完成。",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "evidence_ids": [
+          "ev_664f24d75569"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "官方新闻稿说明云录制的应用场景。",
+        "uncertainty": "未提供实际使用效果或教程质量证据。",
+        "decision_impact": "可作为云录制应用场景的证据。",
+        "confidence": 0.64,
+        "produced_by_agent_run_id": "run_step6f_analyze_research_evidence",
+        "citation_status": "supported"
+      }
+    ],
+    "research_gaps": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_001",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "dimension": "产品能力",
+        "missing_information": "腾讯会议各版本（免费版、专业版、商业版、企业版、教育版）的完整功能矩阵及版本间差异。",
+        "decision_blocked": "无法确定功能核实的适用范围，可能将特定版本功能误认为全版本通用。",
+        "why_existing_evidence_is_insufficient": "现有证据仅提及部分功能（如会议质量监控）标注为企业版/教育版，云录制空间随版本不同，但未提供完整版本对比。",
+        "suggested_queries": [
+          "腾讯会议版本功能对比",
+          "腾讯会议各版本功能列表",
+          "腾讯会议企业版功能"
+        ],
+        "preferred_source_types": [
+          "官方定价页",
+          "官方版本对比页",
+          "帮助中心"
+        ],
+        "priority": "high",
+        "stop_condition": "获得官方版本功能对比表或各版本功能列表。",
+        "related_evidence_ids": [
+          "ev_53701da105dd",
+          "ev_adb6e7a2871f"
+        ]
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_002",
+        "task_id": "task_step6e3_zhipu_tencent_meeting_pilot",
+        "competitors": [
+          "腾讯会议"
+        ],
+        "dimension": "产品能力",
+        "missing_information": "腾讯会议的目标客户画像和核心使用场景。",
+        "decision_blocked": "无法判断功能核实是否覆盖决策需求，无法评估功能对目标客户的价值。",
+        "why_existing_evidence_is_insufficient": "研究简报未提供目标客户和核心场景，现有证据仅提及通用场景（如培训、营销），但未明确目标客户。",
+        "suggested_queries": [
+          "腾讯会议目标客户",
+          "腾讯会议典型使用场景",
+          "腾讯会议行业解决方案"
+        ],
+        "preferred_source_types": [
+          "官方解决方案页",
+          "客户案例",
+          "行业报告"
+        ],
+        "priority": "medium",
+        "stop_condition": "获得官方目标客户描述或典型场景列表。",
+        "related_evidence_ids": []
+      }
+    ]
+  }
+]

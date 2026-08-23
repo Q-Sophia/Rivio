@@ -1,0 +1,47 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "llmout_parse_draft_1d20723cad3a",
+    "task_id": "draft_1d20723cad3a",
+    "llm_call_id": "llmcall_parse_draft_1d20723cad3a",
+    "agent_role": "intent",
+    "output_schema": "AnalysisTaskDraft",
+    "raw_output": {
+      "item": {
+        "id": "draft_1d20723cad3a",
+        "task_id": "draft_1d20723cad3a",
+        "request_text": "请调研 ClassIn 的竞品分析",
+        "decision_question": "这份分析要帮助用户决定如何选择或评估ClassIn的替代方案",
+        "industry": "",
+        "competitors": [
+          "ClassIn"
+        ],
+        "target_customers": [],
+        "core_scenarios": [],
+        "focus_areas": [],
+        "constraints": [],
+        "report_subject": "ClassIn竞品分析",
+        "preferred_title": "",
+        "missing_fields": [
+          "决策问题",
+          "至少一个研究对象"
+        ],
+        "clarification_questions": [
+          "您希望这份分析帮助您做出什么具体决策？",
+          "除了ClassIn，您还希望对比哪些具体的竞品？"
+        ],
+        "ready_for_confirmation": false,
+        "status": "needs_clarification"
+      },
+      "generated_by": "AgentRole.INTENT",
+      "output_language": "zh-CN"
+    },
+    "parsed_object_ids": [
+      "draft_1d20723cad3a"
+    ],
+    "validation_status": "passed",
+    "validation_errors": [],
+    "created_at": "2026-08-21T08:09:52.327557Z"
+  }
+]

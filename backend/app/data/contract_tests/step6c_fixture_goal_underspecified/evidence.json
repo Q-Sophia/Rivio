@@ -1,0 +1,86 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_1_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_1_positioning_1",
+    "competitor": "甲产品",
+    "dimension": "positioning",
+    "snippet": "甲产品公开了基础定位。",
+    "normalized_fact": "甲产品公开了基础定位。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_1_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_1_feature_1",
+    "competitor": "甲产品",
+    "dimension": "feature",
+    "snippet": "甲产品公开了基础能力。",
+    "normalized_fact": "甲产品公开了基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_2_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_2_positioning_1",
+    "competitor": "乙产品",
+    "dimension": "positioning",
+    "snippet": "乙产品公开了基础定位。",
+    "normalized_fact": "乙产品公开了基础定位。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_2_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_2_feature_1",
+    "competitor": "乙产品",
+    "dimension": "feature",
+    "snippet": "乙产品公开了基础能力。",
+    "normalized_fact": "乙产品公开了基础能力。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_3_positioning_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_3_positioning_1",
+    "competitor": "丙产品",
+    "dimension": "positioning",
+    "snippet": "丙产品公开了基础定位。",
+    "normalized_fact": "丙产品公开了基础定位。",
+    "confidence": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "goal_underspecified"
+    },
+    "id": "ev_goal_underspecified_3_feature_1",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "source_id": "src_goal_underspecified_3_feature_1",
+    "competitor": "丙产品",
+    "dimension": "feature",
+    "snippet": "丙产品公开了基础能力。",
+    "normalized_fact": "丙产品公开了基础能力。",
+    "confidence": 0.85
+  }
+]

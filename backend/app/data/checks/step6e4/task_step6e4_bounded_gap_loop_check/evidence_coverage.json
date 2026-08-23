@@ -1,0 +1,58 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_zoom_feature",
+    "task_id": "task_step6e4_bounded_gap_loop_check",
+    "competitor": "Zoom",
+    "dimension": "feature",
+    "status": "partial",
+    "source_ids": [
+      "src_zoom"
+    ],
+    "evidence_ids": [
+      "ev_zoom"
+    ],
+    "limitations": "当前只有单条直接资料，覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_zoom_pricing",
+    "task_id": "task_step6e4_bounded_gap_loop_check",
+    "competitor": "Zoom",
+    "dimension": "pricing",
+    "status": "missing",
+    "source_ids": [],
+    "evidence_ids": [],
+    "limitations": "尚未获得该维度的可靠直接证据。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯会议_feature",
+    "task_id": "task_step6e4_bounded_gap_loop_check",
+    "competitor": "腾讯会议",
+    "dimension": "feature",
+    "status": "weak",
+    "source_ids": [
+      "src_tencent"
+    ],
+    "evidence_ids": [
+      "ev_tencent"
+    ],
+    "limitations": "当前只有较弱来源，不能支撑高置信度判断。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯会议_pricing",
+    "task_id": "task_step6e4_bounded_gap_loop_check",
+    "competitor": "腾讯会议",
+    "dimension": "pricing",
+    "status": "missing",
+    "source_ids": [],
+    "evidence_ids": [],
+    "limitations": "尚未获得该维度的可靠直接证据。"
+  }
+]

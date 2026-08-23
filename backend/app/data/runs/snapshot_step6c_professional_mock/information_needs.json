@@ -1,0 +1,62 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_snapshot_step6c_professional_mock_1",
+    "task_id": "snapshot_step6c_professional_mock",
+    "question_id": "kiq_snapshot_step6c_professional_mock_customer",
+    "dimension": "customer",
+    "required_facts": [
+      "客户与场景",
+      "责任边界",
+      "可比口径与限制"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "客户资料",
+      "可信第三方资料"
+    ],
+    "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_snapshot_step6c_professional_mock_2",
+    "task_id": "snapshot_step6c_professional_mock",
+    "question_id": "kiq_snapshot_step6c_professional_mock_tradeoff",
+    "dimension": "feature",
+    "required_facts": [
+      "客户与场景",
+      "责任边界",
+      "可比口径与限制"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "客户资料",
+      "可信第三方资料"
+    ],
+    "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_snapshot_step6c_professional_mock_3",
+    "task_id": "snapshot_step6c_professional_mock",
+    "question_id": "kiq_snapshot_step6c_professional_mock_evidence",
+    "dimension": "customer",
+    "required_facts": [
+      "客户与场景",
+      "责任边界",
+      "可比口径与限制"
+    ],
+    "preferred_source_types": [
+      "官方资料",
+      "客户资料",
+      "可信第三方资料"
+    ],
+    "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+    "decision_link": "比较 ClassIn、腾讯云实时互动 / TRTC 教育方案与 BigBlueButton，分析在线教育实时互动与虚拟教室方案的产品定位、核心能力、成本、生态、适用场景和风险，为产品研发选型提供依据。"
+  }
+]

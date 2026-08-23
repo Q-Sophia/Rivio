@@ -1,0 +1,458 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "industry": "通用服务方案",
+      "source_count": 5,
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "fixture_case_id": "missing_pricing"
+    },
+    "id": "portfolio_step6c_fixture_missing_pricing",
+    "task_id": "step6c_fixture_missing_pricing",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.2-candidate",
+    "brief_assessment": {
+      "schema_version": "v1",
+      "metadata": {
+        "generation_mode": "mock_llm"
+      },
+      "id": "brief_step6c_fixture_missing_pricing",
+      "task_id": "step6c_fixture_missing_pricing",
+      "decision_question": "比较两个方案的适配性与总体成本",
+      "industry": "通用服务方案",
+      "target_customers": [
+        "目标客户群体"
+      ],
+      "core_scenarios": [
+        "核心使用或采购场景"
+      ],
+      "selected_dimensions": [
+        "feature",
+        "positioning",
+        "pricing"
+      ],
+      "missing_fields": [],
+      "sufficient_for_analysis": true
+    },
+    "competitor_profiles": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_甲方案",
+        "task_id": "step6c_fixture_missing_pricing",
+        "name": "甲方案",
+        "role": "direct",
+        "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "feature",
+          "positioning",
+          "pricing"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [
+          "目标客户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向目标客户的标准方案。",
+        "offering_scope": "甲方案覆盖核心任务。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "甲方案公开标准价格。",
+        "source_ids": [
+          "src_missing_pricing_1_positioning_1",
+          "src_missing_pricing_1_feature_1",
+          "src_missing_pricing_1_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_positioning_1",
+          "ev_missing_pricing_1_feature_1",
+          "ev_missing_pricing_1_pricing_1"
+        ],
+        "confidence": 0.8
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_乙方案",
+        "task_id": "step6c_fixture_missing_pricing",
+        "name": "乙方案",
+        "role": "direct",
+        "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "feature",
+          "positioning"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [
+          "目标客户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向目标客户的灵活方案。",
+        "offering_scope": "乙方案覆盖核心任务。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "当前缺少定价资料。",
+        "source_ids": [
+          "src_missing_pricing_2_positioning_1",
+          "src_missing_pricing_2_feature_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_2_positioning_1",
+          "ev_missing_pricing_2_feature_1"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "key_intelligence_questions": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_missing_pricing_customer",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+        "decision_link": "比较两个方案的适配性与总体成本",
+        "dimensions": [
+          "customer",
+          "positioning"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_missing_pricing_tradeoff",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+        "decision_link": "比较两个方案的适配性与总体成本",
+        "dimensions": [
+          "feature",
+          "pricing",
+          "ecosystem",
+          "risk"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_missing_pricing_evidence",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+        "decision_link": "比较两个方案的适配性与总体成本",
+        "dimensions": [
+          "feature",
+          "positioning",
+          "pricing"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "information_needs": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_missing_pricing_1",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question_id": "kiq_step6c_fixture_missing_pricing_customer",
+        "dimension": "customer",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的适配性与总体成本"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_missing_pricing_2",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question_id": "kiq_step6c_fixture_missing_pricing_tradeoff",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的适配性与总体成本"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_missing_pricing_3",
+        "task_id": "step6c_fixture_missing_pricing",
+        "question_id": "kiq_step6c_fixture_missing_pricing_evidence",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的适配性与总体成本"
+      }
+    ],
+    "evidence_coverage": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_feature",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "甲方案",
+        "dimension": "feature",
+        "status": "partial",
+        "source_ids": [
+          "src_missing_pricing_1_feature_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_feature_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_positioning",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "甲方案",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_missing_pricing_1_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_pricing",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "甲方案",
+        "dimension": "pricing",
+        "status": "partial",
+        "source_ids": [
+          "src_missing_pricing_1_pricing_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_pricing_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_乙方案_feature",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "乙方案",
+        "dimension": "feature",
+        "status": "partial",
+        "source_ids": [
+          "src_missing_pricing_2_feature_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_2_feature_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_乙方案_positioning",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "乙方案",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_missing_pricing_2_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_2_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_乙方案_pricing",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitor": "乙方案",
+        "dimension": "pricing",
+        "status": "missing",
+        "source_ids": [],
+        "evidence_ids": [],
+        "limitations": "当前输入没有该维度证据。"
+      }
+    ],
+    "comparability_notes": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_missing_pricing_feature",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "dimension": "feature",
+        "comparable": true,
+        "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_missing_pricing_positioning",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "dimension": "positioning",
+        "comparable": true,
+        "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_missing_pricing_pricing",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitors": [
+          "甲方案"
+        ],
+        "dimension": "pricing",
+        "comparable": false,
+        "basis": "只有一个对象具备该维度证据，不能横向比较。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      }
+    ],
+    "items": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_missing_pricing_feature",
+        "task_id": "step6c_fixture_missing_pricing",
+        "dimension": "feature",
+        "claim_type": "comparison",
+        "claim_text": "现有证据表明，甲方案、乙方案在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_feature_1",
+          "ev_missing_pricing_2_feature_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_missing_pricing_positioning",
+        "task_id": "step6c_fixture_missing_pricing",
+        "dimension": "positioning",
+        "claim_type": "comparison",
+        "claim_text": "现有证据表明，甲方案、乙方案在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_positioning_1",
+          "ev_missing_pricing_2_positioning_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_missing_pricing_pricing",
+        "task_id": "step6c_fixture_missing_pricing",
+        "dimension": "pricing",
+        "claim_type": "fact",
+        "claim_text": "现有输入可确认 甲方案 的定价与成本信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+        "competitors": [
+          "甲方案"
+        ],
+        "evidence_ids": [
+          "ev_missing_pricing_1_pricing_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      }
+    ],
+    "research_gaps": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_乙方案_pricing_coverage",
+        "task_id": "step6c_fixture_missing_pricing",
+        "competitors": [
+          "乙方案"
+        ],
+        "dimension": "pricing",
+        "missing_information": "乙方案 缺少定价与成本资料。",
+        "decision_blocked": "相关维度不能进行同口径横向比较。",
+        "why_existing_evidence_is_insufficient": "当前输入没有该对象对应维度的结构化证据。",
+        "suggested_queries": [
+          "查找 乙方案 的官方资料和可信第三方资料"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "可信第三方资料"
+        ],
+        "priority": "medium",
+        "stop_condition": "已找到直接资料，或明确记录该维度无法公开确认。",
+        "related_evidence_ids": []
+      }
+    ]
+  }
+]

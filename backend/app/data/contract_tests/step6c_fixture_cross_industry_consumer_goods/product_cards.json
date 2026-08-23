@@ -1,0 +1,90 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods",
+      "competitor_role": "direct",
+      "selection_reason": "暖行杯代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_cross_industry_consumer_goods_1",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "name": "暖行杯",
+    "company": "暖行杯",
+    "positioning": "面向城市通勤的轻量保温杯。",
+    "target_users": [
+      "城市通勤人群"
+    ],
+    "pricing_summary": "公开建议零售价为一百九十九元。",
+    "core_features": [
+      "采用轻量杯身与六小时保温设计。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_cross_industry_consumer_goods_1_positioning_1",
+      "src_cross_industry_consumer_goods_1_customer_1",
+      "src_cross_industry_consumer_goods_1_feature_1",
+      "src_cross_industry_consumer_goods_1_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_1_positioning_1",
+      "ev_cross_industry_consumer_goods_1_customer_1",
+      "ev_cross_industry_consumer_goods_1_feature_1",
+      "ev_cross_industry_consumer_goods_1_pricing_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "cross_industry_consumer_goods",
+      "competitor_role": "direct",
+      "selection_reason": "山川杯代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_cross_industry_consumer_goods_2",
+    "task_id": "step6c_fixture_cross_industry_consumer_goods",
+    "name": "山川杯",
+    "company": "山川杯",
+    "positioning": "面向户外与长途场景的大容量保温杯。",
+    "target_users": [
+      "户外人群"
+    ],
+    "pricing_summary": "公开建议零售价为二百三十九元。",
+    "core_features": [
+      "采用耐磨涂层与大容量杯型。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_cross_industry_consumer_goods_2_positioning_1",
+      "src_cross_industry_consumer_goods_2_customer_1",
+      "src_cross_industry_consumer_goods_2_feature_1",
+      "src_cross_industry_consumer_goods_2_pricing_1"
+    ],
+    "evidence_ids": [
+      "ev_cross_industry_consumer_goods_2_positioning_1",
+      "ev_cross_industry_consumer_goods_2_customer_1",
+      "ev_cross_industry_consumer_goods_2_feature_1",
+      "ev_cross_industry_consumer_goods_2_pricing_1"
+    ],
+    "confidence": 0.8
+  }
+]

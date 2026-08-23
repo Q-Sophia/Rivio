@@ -1,0 +1,50 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_single_competitor_feature",
+    "task_id": "step6c_fixture_single_competitor",
+    "dimension": "feature",
+    "claim_type": "fact",
+    "claim_text": "现有输入可确认 甲方案 的功能能力信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+    "competitors": [
+      "甲方案"
+    ],
+    "evidence_ids": [
+      "ev_single_competitor_1_feature_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_single_competitor_positioning",
+    "task_id": "step6c_fixture_single_competitor",
+    "dimension": "positioning",
+    "claim_type": "fact",
+    "claim_text": "现有输入可确认 甲方案 的产品定位信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+    "competitors": [
+      "甲方案"
+    ],
+    "evidence_ids": [
+      "ev_single_competitor_1_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  }
+]

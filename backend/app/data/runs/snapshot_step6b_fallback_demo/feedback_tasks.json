@@ -1,0 +1,45 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "feedback_reason": "weak_citation",
+      "claim_id": "cl_llm_online_education_ecosystem",
+      "citation_check_id": "cite_cl_llm_online_education_ecosystem",
+      "review_issue_ids": [
+        "issue_cl_llm_online_education_ecosystem_weak_citation"
+      ],
+      "execution_policy": "skipped_until_llm_or_webcollector"
+    },
+    "id": "tb_feedback_analyze_cl_llm_online_education_ecosystem",
+    "task_id": "snapshot_step6b_fallback_demo",
+    "task_key": "supplement_analysis_cl_llm_online_education_ecosystem",
+    "parent_task_id": "review_report",
+    "task_type": "supplement_analysis",
+    "target_agent_role": "analyst",
+    "status": "skipped",
+    "priority": "medium",
+    "depends_on": [
+      "review_report"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "claims",
+      "citation_checks",
+      "evidence"
+    ],
+    "output_refs": [
+      "claims"
+    ],
+    "reason": "Weak citation is explained by ReviewFeedback. LLM/WebCollector supplement analysis is deferred in rule-only mode.",
+    "created_by_agent_run_id": "rule_milestone3_reviewer",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-12T10:59:07.127716Z",
+    "updated_at": "2026-08-12T10:59:07.127716Z",
+    "started_at": null,
+    "completed_at": "2026-08-12T10:59:07.127716Z",
+    "error": ""
+  }
+]

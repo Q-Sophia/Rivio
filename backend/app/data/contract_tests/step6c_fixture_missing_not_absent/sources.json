@@ -1,0 +1,47 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "src_missing_not_absent_1_positioning_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "title": "甲方案positioning资料",
+    "url": "https://fixture.invalid/missing_not_absent/1/positioning/1",
+    "source_type": "official_site",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "甲方案面向目标客户。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "src_missing_not_absent_1_feature_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "title": "甲方案feature资料",
+    "url": "https://fixture.invalid/missing_not_absent/1/feature/1",
+    "source_type": "official_site",
+    "competitor": "甲方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "甲方案公开确认提供某项核心能力。",
+    "reliability_score": 0.85
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "missing_not_absent"
+    },
+    "id": "src_missing_not_absent_2_positioning_1",
+    "task_id": "step6c_fixture_missing_not_absent",
+    "title": "乙方案positioning资料",
+    "url": "https://fixture.invalid/missing_not_absent/2/positioning/1",
+    "source_type": "official_site",
+    "competitor": "乙方案",
+    "accessed_at": "2026-08-14T09:24:09.764331Z",
+    "content_excerpt": "乙方案面向目标客户。",
+    "reliability_score": 0.85
+  }
+]

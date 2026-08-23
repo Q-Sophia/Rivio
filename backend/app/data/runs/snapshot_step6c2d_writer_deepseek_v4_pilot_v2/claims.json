@@ -1,0 +1,180 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "comparison",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条目标客户结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+      "decision_impact": "该发现可用于确定下一轮目标客户验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_customer",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "customer",
+    "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在目标客户方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_teaching_modes",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_bbb_education_use_cases"
+    ],
+    "confidence": 0.82,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "comparison",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条生态与集成结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "当前仅有较弱来源，该发现只能作为检索线索。",
+      "decision_impact": "该发现可用于确定下一轮生态与集成验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_ecosystem",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "ecosystem",
+    "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在生态与集成方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.45,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "weak"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "comparison",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+      "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_feature",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "feature",
+    "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在功能能力方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_tencent_core_features",
+      "ev_tencent_scale_latency",
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools"
+    ],
+    "confidence": 0.84,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "comparison",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+      "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_positioning",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "positioning",
+    "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "confidence": 0.86,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "comparison",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+      "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_pricing",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "pricing",
+    "claim_text": "现有证据表明，ClassIn、腾讯云实时互动 / TRTC 教育方案在定价与成本方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "claim_type": "risk",
+      "counter_evidence_ids": [],
+      "reasoning_summary": "按对象各选取一条风险与限制结构化证据，并先检查证据覆盖范围。",
+      "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+      "decision_impact": "该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图。",
+      "source_schema": "AnalysisClaimV2"
+    },
+    "id": "clv2_snapshot_step6c2d_writer_deepseek_v4_pil_risk",
+    "task_id": "snapshot_step6c2d_writer_deepseek_v4_pilot_v2",
+    "dimension": "risk",
+    "claim_text": "现有证据表明，腾讯云实时互动 / TRTC 教育方案、BigBlueButton在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "腾讯云实时互动 / TRTC 教育方案",
+      "BigBlueButton"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.72,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  }
+]

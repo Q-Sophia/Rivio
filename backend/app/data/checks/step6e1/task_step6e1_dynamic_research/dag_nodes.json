@@ -1,0 +1,24 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "research_planning",
+    "task_id": "task_step6e1_dynamic_research",
+    "label": "research_planning",
+    "agent_role": "orchestrator",
+    "status": "completed",
+    "depends_on": [],
+    "input_refs": [
+      "analysis_tasks",
+      "dataset_profile"
+    ],
+    "output_refs": [
+      "research_plans",
+      "research_kiqs",
+      "research_information_needs",
+      "research_tasks"
+    ],
+    "started_at": null,
+    "completed_at": null
+  }
+]

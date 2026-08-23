@@ -1,0 +1,316 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "industry": "通用解决方案",
+      "source_count": 2,
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "fixture_case_id": "single_competitor"
+    },
+    "id": "portfolio_step6c_fixture_single_competitor",
+    "task_id": "step6c_fixture_single_competitor",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.2-candidate",
+    "brief_assessment": {
+      "schema_version": "v1",
+      "metadata": {
+        "generation_mode": "mock_llm"
+      },
+      "id": "brief_step6c_fixture_single_competitor",
+      "task_id": "step6c_fixture_single_competitor",
+      "decision_question": "了解甲方案并判断其相对市场位置",
+      "industry": "通用解决方案",
+      "target_customers": [
+        "目标客户群体"
+      ],
+      "core_scenarios": [
+        "核心使用或采购场景"
+      ],
+      "selected_dimensions": [
+        "feature",
+        "positioning"
+      ],
+      "missing_fields": [],
+      "sufficient_for_analysis": true
+    },
+    "competitor_profiles": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_甲方案",
+        "task_id": "step6c_fixture_single_competitor",
+        "name": "甲方案",
+        "role": "direct",
+        "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "feature",
+          "positioning"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [
+          "目标客户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向目标客户。",
+        "offering_scope": "甲方案覆盖核心任务。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "当前缺少定价资料。",
+        "source_ids": [
+          "src_single_competitor_1_positioning_1",
+          "src_single_competitor_1_feature_1"
+        ],
+        "evidence_ids": [
+          "ev_single_competitor_1_positioning_1",
+          "ev_single_competitor_1_feature_1"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "key_intelligence_questions": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_single_competitor_customer",
+        "task_id": "step6c_fixture_single_competitor",
+        "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+        "decision_link": "了解甲方案并判断其相对市场位置",
+        "dimensions": [
+          "customer",
+          "positioning"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_single_competitor_tradeoff",
+        "task_id": "step6c_fixture_single_competitor",
+        "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+        "decision_link": "了解甲方案并判断其相对市场位置",
+        "dimensions": [
+          "feature",
+          "pricing",
+          "ecosystem",
+          "risk"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_single_competitor_evidence",
+        "task_id": "step6c_fixture_single_competitor",
+        "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+        "decision_link": "了解甲方案并判断其相对市场位置",
+        "dimensions": [
+          "feature",
+          "positioning"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "information_needs": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_single_competitor_1",
+        "task_id": "step6c_fixture_single_competitor",
+        "question_id": "kiq_step6c_fixture_single_competitor_customer",
+        "dimension": "customer",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "了解甲方案并判断其相对市场位置"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_single_competitor_2",
+        "task_id": "step6c_fixture_single_competitor",
+        "question_id": "kiq_step6c_fixture_single_competitor_tradeoff",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "了解甲方案并判断其相对市场位置"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_single_competitor_3",
+        "task_id": "step6c_fixture_single_competitor",
+        "question_id": "kiq_step6c_fixture_single_competitor_evidence",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "了解甲方案并判断其相对市场位置"
+      }
+    ],
+    "evidence_coverage": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_feature",
+        "task_id": "step6c_fixture_single_competitor",
+        "competitor": "甲方案",
+        "dimension": "feature",
+        "status": "partial",
+        "source_ids": [
+          "src_single_competitor_1_feature_1"
+        ],
+        "evidence_ids": [
+          "ev_single_competitor_1_feature_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_positioning",
+        "task_id": "step6c_fixture_single_competitor",
+        "competitor": "甲方案",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_single_competitor_1_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_single_competitor_1_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      }
+    ],
+    "comparability_notes": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_single_competitor_feature",
+        "task_id": "step6c_fixture_single_competitor",
+        "competitors": [
+          "甲方案"
+        ],
+        "dimension": "feature",
+        "comparable": false,
+        "basis": "只有一个对象具备该维度证据，不能横向比较。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_single_competitor_positioning",
+        "task_id": "step6c_fixture_single_competitor",
+        "competitors": [
+          "甲方案"
+        ],
+        "dimension": "positioning",
+        "comparable": false,
+        "basis": "只有一个对象具备该维度证据，不能横向比较。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      }
+    ],
+    "items": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_single_competitor_feature",
+        "task_id": "step6c_fixture_single_competitor",
+        "dimension": "feature",
+        "claim_type": "fact",
+        "claim_text": "现有输入可确认 甲方案 的功能能力信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+        "competitors": [
+          "甲方案"
+        ],
+        "evidence_ids": [
+          "ev_single_competitor_1_feature_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条功能能力结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮功能能力验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_single_competitor_positioning",
+        "task_id": "step6c_fixture_single_competitor",
+        "dimension": "positioning",
+        "claim_type": "fact",
+        "claim_text": "现有输入可确认 甲方案 的产品定位信息，但因证据覆盖或可比口径限制，暂不支持直接排名。",
+        "competitors": [
+          "甲方案"
+        ],
+        "evidence_ids": [
+          "ev_single_competitor_1_positioning_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      }
+    ],
+    "research_gaps": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_step6c_fixture_single_competitor_comparison_scope",
+        "task_id": "step6c_fixture_single_competitor",
+        "competitors": [
+          "甲方案"
+        ],
+        "dimension": "comparison_scope",
+        "missing_information": "当前只有一个竞争对象，缺少横向比较基准。",
+        "decision_blocked": "不能判断观察结果是对象特征还是行业共性。",
+        "why_existing_evidence_is_insufficient": "单对象资料不能支撑跨竞品比较。",
+        "suggested_queries": [
+          "补充至少一个直接竞品或替代方案"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "可信第三方资料"
+        ],
+        "priority": "high",
+        "stop_condition": "已补充一个与决策问题相关且可说明选择理由的比较对象。",
+        "related_evidence_ids": []
+      }
+    ]
+  }
+]

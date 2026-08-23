@@ -1,0 +1,36 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "competitor_甲方案",
+    "task_id": "step6c_fixture_single_competitor",
+    "name": "甲方案",
+    "role": "direct",
+    "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+    "represented_path": "一体化成品路径",
+    "comparable_dimensions": [
+      "feature",
+      "positioning"
+    ],
+    "non_comparable_dimensions": [],
+    "target_customers": [
+      "目标客户"
+    ],
+    "core_scenarios": [],
+    "value_proposition": "面向目标客户。",
+    "offering_scope": "甲方案覆盖核心任务。",
+    "delivery_model": "由供应方承担主要交付与持续服务责任。",
+    "business_model": "当前缺少定价资料。",
+    "source_ids": [
+      "src_single_competitor_1_positioning_1",
+      "src_single_competitor_1_feature_1"
+    ],
+    "evidence_ids": [
+      "ev_single_competitor_1_positioning_1",
+      "ev_single_competitor_1_feature_1"
+    ],
+    "confidence": 0.8
+  }
+]

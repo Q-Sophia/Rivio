@@ -1,0 +1,57 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_conflicting_price_positioning",
+    "task_id": "step6c_fixture_conflicting_price",
+    "dimension": "positioning",
+    "claim_type": "comparison",
+    "claim_text": "现有证据表明，甲方案、乙方案在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+    "competitors": [
+      "甲方案",
+      "乙方案"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_1_positioning_1",
+      "ev_conflicting_price_2_positioning_1"
+    ],
+    "counter_evidence_ids": [],
+    "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+    "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+    "confidence": 0.85,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm"
+    },
+    "id": "clv2_step6c_fixture_conflicting_price_pricing",
+    "task_id": "step6c_fixture_conflicting_price",
+    "dimension": "pricing",
+    "claim_type": "comparison",
+    "claim_text": "现有定价与成本资料存在冲突，暂时不能形成稳定比较结论。",
+    "competitors": [
+      "甲方案",
+      "乙方案"
+    ],
+    "evidence_ids": [
+      "ev_conflicting_price_1_pricing_1",
+      "ev_conflicting_price_1_pricing_2",
+      "ev_conflicting_price_2_pricing_1"
+    ],
+    "counter_evidence_ids": [
+      "ev_conflicting_price_1_pricing_2"
+    ],
+    "reasoning_summary": "按对象各选取一条定价与成本结构化证据，并先检查证据覆盖范围。",
+    "uncertainty": "现有资料存在冲突，必须统一时间、版本和计量口径后再判断。",
+    "decision_impact": "该发现可用于确定下一轮定价与成本验证重点，不能单独形成正式路线图。",
+    "confidence": 0.55,
+    "produced_by_agent_run_id": "mock_llm_analyst_v2",
+    "citation_status": "pending"
+  }
+]

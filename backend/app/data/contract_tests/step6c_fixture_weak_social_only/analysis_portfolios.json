@@ -1,0 +1,415 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "industry": "通用服务方案",
+      "source_count": 4,
+      "prompt_hash": "fada24c3ec2ffae3ed53de7e431a760c4fdd4d4e7f60c265c9b765cee7032bb4",
+      "fixture_case_id": "weak_social_only"
+    },
+    "id": "portfolio_step6c_fixture_weak_social_only",
+    "task_id": "step6c_fixture_weak_social_only",
+    "prompt_id": "competitive_analyst",
+    "prompt_version": "2.2.2-candidate",
+    "brief_assessment": {
+      "schema_version": "v1",
+      "metadata": {
+        "generation_mode": "mock_llm"
+      },
+      "id": "brief_step6c_fixture_weak_social_only",
+      "task_id": "step6c_fixture_weak_social_only",
+      "decision_question": "比较两个方案的可靠性风险",
+      "industry": "通用服务方案",
+      "target_customers": [
+        "目标客户群体"
+      ],
+      "core_scenarios": [
+        "核心使用或采购场景"
+      ],
+      "selected_dimensions": [
+        "positioning",
+        "risk"
+      ],
+      "missing_fields": [],
+      "sufficient_for_analysis": true
+    },
+    "competitor_profiles": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_甲方案",
+        "task_id": "step6c_fixture_weak_social_only",
+        "name": "甲方案",
+        "role": "direct",
+        "selection_reason": "甲方案代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "positioning",
+          "risk"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [
+          "目标客户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向目标客户。",
+        "offering_scope": "当前供给属性需要继续核验。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "当前缺少定价资料。",
+        "source_ids": [
+          "src_weak_social_only_1_positioning_1",
+          "src_weak_social_only_1_risk_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_1_positioning_1",
+          "ev_weak_social_only_1_risk_1"
+        ],
+        "confidence": 0.8
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "competitor_乙方案",
+        "task_id": "step6c_fixture_weak_social_only",
+        "name": "乙方案",
+        "role": "direct",
+        "selection_reason": "乙方案代表与当前决策相关的一体化成品路径。",
+        "represented_path": "一体化成品路径",
+        "comparable_dimensions": [
+          "positioning",
+          "risk"
+        ],
+        "non_comparable_dimensions": [],
+        "target_customers": [
+          "目标客户"
+        ],
+        "core_scenarios": [],
+        "value_proposition": "面向目标客户。",
+        "offering_scope": "当前供给属性需要继续核验。",
+        "delivery_model": "由供应方承担主要交付与持续服务责任。",
+        "business_model": "当前缺少定价资料。",
+        "source_ids": [
+          "src_weak_social_only_2_positioning_1",
+          "src_weak_social_only_2_risk_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_2_positioning_1",
+          "ev_weak_social_only_2_risk_1"
+        ],
+        "confidence": 0.8
+      }
+    ],
+    "key_intelligence_questions": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_weak_social_only_customer",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question": "不同解决路径分别适合哪些目标客户、任务场景与组织约束？",
+        "decision_link": "比较两个方案的可靠性风险",
+        "dimensions": [
+          "customer",
+          "positioning"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_weak_social_only_tradeoff",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question": "各方案在供给范围、交付速度、控制权、总体成本与持续责任上如何取舍？",
+        "decision_link": "比较两个方案的可靠性风险",
+        "dimensions": [
+          "feature",
+          "pricing",
+          "ecosystem",
+          "risk"
+        ],
+        "priority": "high"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "kiq_step6c_fixture_weak_social_only_evidence",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question": "哪些重要判断已有同口径证据，哪些仍会阻塞当前决策？",
+        "decision_link": "比较两个方案的可靠性风险",
+        "dimensions": [
+          "positioning",
+          "risk"
+        ],
+        "priority": "medium"
+      }
+    ],
+    "information_needs": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_weak_social_only_1",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question_id": "kiq_step6c_fixture_weak_social_only_customer",
+        "dimension": "customer",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的可靠性风险"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_weak_social_only_2",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question_id": "kiq_step6c_fixture_weak_social_only_tradeoff",
+        "dimension": "feature",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的可靠性风险"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "need_step6c_fixture_weak_social_only_3",
+        "task_id": "step6c_fixture_weak_social_only",
+        "question_id": "kiq_step6c_fixture_weak_social_only_evidence",
+        "dimension": "positioning",
+        "required_facts": [
+          "客户与场景",
+          "责任边界",
+          "可比口径与限制"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "客户资料",
+          "可信第三方资料"
+        ],
+        "comparability_basis": "采用相同客户任务、时间范围和责任边界进行比较。",
+        "decision_link": "比较两个方案的可靠性风险"
+      }
+    ],
+    "evidence_coverage": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_positioning",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitor": "甲方案",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_weak_social_only_1_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_1_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_甲方案_risk",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitor": "甲方案",
+        "dimension": "risk",
+        "status": "weak",
+        "source_ids": [
+          "src_weak_social_only_1_risk_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_1_risk_1"
+        ],
+        "limitations": "当前只有较弱来源，不能支撑高置信度决策。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_乙方案_positioning",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitor": "乙方案",
+        "dimension": "positioning",
+        "status": "partial",
+        "source_ids": [
+          "src_weak_social_only_2_positioning_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_2_positioning_1"
+        ],
+        "limitations": "当前只有单条直接资料，证据覆盖仍不完整。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "coverage_乙方案_risk",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitor": "乙方案",
+        "dimension": "risk",
+        "status": "weak",
+        "source_ids": [
+          "src_weak_social_only_2_risk_1"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_2_risk_1"
+        ],
+        "limitations": "当前只有较弱来源，不能支撑高置信度决策。"
+      }
+    ],
+    "comparability_notes": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_weak_social_only_positioning",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "dimension": "positioning",
+        "comparable": true,
+        "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "compare_step6c_fixture_weak_social_only_risk",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "dimension": "risk",
+        "comparable": true,
+        "basis": "各参与对象均有该维度的结构化证据，可进行初步横向观察。",
+        "limitations": "版本、地区、规模和服务边界仍需在正式决策前统一。"
+      }
+    ],
+    "items": [
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_weak_social_only_positioning",
+        "task_id": "step6c_fixture_weak_social_only",
+        "dimension": "positioning",
+        "claim_type": "comparison",
+        "claim_text": "现有证据表明，甲方案、乙方案在产品定位方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_1_positioning_1",
+          "ev_weak_social_only_2_positioning_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条产品定位结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "缺少统一版本、真实采用效果或客户验证资料。",
+        "decision_impact": "该发现可用于确定下一轮产品定位验证重点，不能单独形成正式路线图。",
+        "confidence": 0.85,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {
+          "generation_mode": "mock_llm"
+        },
+        "id": "clv2_step6c_fixture_weak_social_only_risk",
+        "task_id": "step6c_fixture_weak_social_only",
+        "dimension": "risk",
+        "claim_type": "risk",
+        "claim_text": "现有证据表明，甲方案、乙方案在风险与限制方面存在可观察差异，但差异是否构成客户价值仍需结合目标客户和场景验证。",
+        "competitors": [
+          "甲方案",
+          "乙方案"
+        ],
+        "evidence_ids": [
+          "ev_weak_social_only_1_risk_1",
+          "ev_weak_social_only_2_risk_1"
+        ],
+        "counter_evidence_ids": [],
+        "reasoning_summary": "按对象各选取一条风险与限制结构化证据，并先检查证据覆盖范围。",
+        "uncertainty": "当前仅有较弱来源，该发现只能作为检索线索。",
+        "decision_impact": "该发现可用于确定下一轮风险与限制验证重点，不能单独形成正式路线图。",
+        "confidence": 0.35,
+        "produced_by_agent_run_id": "mock_llm_analyst_v2",
+        "citation_status": "pending"
+      }
+    ],
+    "research_gaps": [
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_甲方案_risk_weak",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitors": [
+          "甲方案"
+        ],
+        "dimension": "risk",
+        "missing_information": "甲方案 的风险与限制资料存在较弱证据，需要补充核验。",
+        "decision_blocked": "当前证据强度不足以支持高置信度判断。",
+        "why_existing_evidence_is_insufficient": "当前只有较弱来源，不能支撑高置信度决策。",
+        "suggested_queries": [
+          "优先查找同版本、同地区的官方或独立直接资料"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "可信第三方资料"
+        ],
+        "priority": "high",
+        "stop_condition": "冲突已解释或获得至少一条适用的强直接证据。",
+        "related_evidence_ids": [
+          "ev_weak_social_only_1_risk_1"
+        ]
+      },
+      {
+        "schema_version": "v1",
+        "metadata": {},
+        "id": "gap_乙方案_risk_weak",
+        "task_id": "step6c_fixture_weak_social_only",
+        "competitors": [
+          "乙方案"
+        ],
+        "dimension": "risk",
+        "missing_information": "乙方案 的风险与限制资料存在较弱证据，需要补充核验。",
+        "decision_blocked": "当前证据强度不足以支持高置信度判断。",
+        "why_existing_evidence_is_insufficient": "当前只有较弱来源，不能支撑高置信度决策。",
+        "suggested_queries": [
+          "优先查找同版本、同地区的官方或独立直接资料"
+        ],
+        "preferred_source_types": [
+          "官方资料",
+          "可信第三方资料"
+        ],
+        "priority": "high",
+        "stop_condition": "冲突已解释或获得至少一条适用的强直接证据。",
+        "related_evidence_ids": [
+          "ev_weak_social_only_2_risk_1"
+        ]
+      }
+    ]
+  }
+]

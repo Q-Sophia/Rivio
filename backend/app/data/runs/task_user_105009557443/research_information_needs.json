@@ -1,0 +1,82 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_97ca2da038ac",
+    "task_id": "task_user_105009557443",
+    "question_id": "kiq_c5e3adeb0b9a",
+    "dimension": "产品定位",
+    "required_facts": [
+      "每个竞品关于产品定位的当前事实",
+      "事实对应的来源、发布时间与适用范围",
+      "能够支持横向比较的统一口径"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "comparability_basis": "使用相同的产品定位口径比较全部候选对象",
+    "decision_link": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_ea3ebf832436",
+    "task_id": "task_user_105009557443",
+    "question_id": "kiq_3430bc8b77ba",
+    "dimension": "产品能力",
+    "required_facts": [
+      "每个竞品关于产品能力的当前事实",
+      "事实对应的来源、发布时间与适用范围",
+      "能够支持横向比较的统一口径"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "comparability_basis": "使用相同的产品能力口径比较全部候选对象",
+    "decision_link": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_556bdd7b2f3a",
+    "task_id": "task_user_105009557443",
+    "question_id": "kiq_079ea7a3f266",
+    "dimension": "定价与成本",
+    "required_facts": [
+      "每个竞品关于定价与成本的当前事实",
+      "事实对应的来源、发布时间与适用范围",
+      "能够支持横向比较的统一口径"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "comparability_basis": "使用相同的定价与成本口径比较全部候选对象",
+    "decision_link": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "need_c229885c326e",
+    "task_id": "task_user_105009557443",
+    "question_id": "kiq_408bc624ab50",
+    "dimension": "生态与集成",
+    "required_facts": [
+      "每个竞品关于生态与集成的当前事实",
+      "事实对应的来源、发布时间与适用范围",
+      "能够支持横向比较的统一口径"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "comparability_basis": "使用相同的生态与集成口径比较全部候选对象",
+    "decision_link": "这份分析要帮助用户了解ClassIn的竞争格局，以便制定市场或产品策略。"
+  }
+]

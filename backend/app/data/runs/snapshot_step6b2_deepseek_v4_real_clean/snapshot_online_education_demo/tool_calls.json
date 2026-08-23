@@ -1,0 +1,438 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.589882+00:00",
+      "completed_at": "2026-08-12T11:33:51.591880+00:00"
+    },
+    "id": "tool_run_collect_sources_001",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "snapshot_collector.collect",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "snapshot_id": "online_education",
+      "snapshot_root": null
+    },
+    "output_summary": "Returned tuple with 2 items",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.589882Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.592881+00:00",
+      "completed_at": "2026-08-12T11:33:51.594881+00:00"
+    },
+    "id": "tool_run_collect_sources_002",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "sources",
+      "items": {
+        "type": "list",
+        "count": 9,
+        "item_type": "SourceDocument"
+      }
+    },
+    "output_summary": "Saved 9 sources",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.592881Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.595881+00:00",
+      "completed_at": "2026-08-12T11:33:51.597881+00:00"
+    },
+    "id": "tool_run_collect_sources_003",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_collect_sources",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "evidence",
+      "items": {
+        "type": "list",
+        "count": 32,
+        "item_type": "SourceEvidence"
+      }
+    },
+    "output_summary": "Saved 32 evidence items",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.595881Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.678899+00:00",
+      "completed_at": "2026-08-12T11:33:51.689904+00:00"
+    },
+    "id": "tool_run_build_product_cards_004",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 2,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 2 artifact groups, total_items=41",
+    "status": "completed",
+    "duration_ms": 11,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.678899Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.692904+00:00",
+      "completed_at": "2026-08-12T11:33:51.692904+00:00"
+    },
+    "id": "tool_run_build_product_cards_005",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "node_id": "build_product_cards",
+      "message": "已验证 evidence.source_id（证据来源编号）引用"
+    },
+    "output_summary": "已验证 evidence.source_id（证据来源编号）引用",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.692904Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:33:51.755918+00:00",
+      "completed_at": "2026-08-12T11:33:51.768501+00:00"
+    },
+    "id": "tool_run_build_product_cards_006",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 13,
+    "error": "",
+    "created_at": "2026-08-12T11:33:51.755918Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:02.902653+00:00",
+      "completed_at": "2026-08-12T11:34:02.903653+00:00"
+    },
+    "id": "tool_run_build_product_cards_007",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_product_cards",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "product_cards",
+      "items": {
+        "type": "list",
+        "count": 3,
+        "item_type": "ProductCard"
+      }
+    },
+    "output_summary": "已保存 3 个 mock LLM（模拟大模型）产品卡片",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:34:02.902653Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:02.970669+00:00",
+      "completed_at": "2026-08-12T11:34:02.983671+00:00"
+    },
+    "id": "tool_run_build_claims_008",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 2,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 2 artifact groups, total_items=35",
+    "status": "completed",
+    "duration_ms": 12,
+    "error": "",
+    "created_at": "2026-08-12T11:34:02.970669Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:02.984681+00:00",
+      "completed_at": "2026-08-12T11:34:02.984681+00:00"
+    },
+    "id": "tool_run_build_claims_009",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "node_id": "build_claims",
+      "message": "已验证 product_cards.evidence_ids（产品卡片证据编号）引用"
+    },
+    "output_summary": "已验证 product_cards.evidence_ids（产品卡片证据编号）引用",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:34:02.984681Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:03.048702+00:00",
+      "completed_at": "2026-08-12T11:34:03.059717+00:00"
+    },
+    "id": "tool_run_build_claims_010",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 11,
+    "error": "",
+    "created_at": "2026-08-12T11:34:03.048702Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.130908+00:00",
+      "completed_at": "2026-08-12T11:34:17.132909+00:00"
+    },
+    "id": "tool_run_build_claims_011",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_claims",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "claims",
+      "items": {
+        "type": "list",
+        "count": 18,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "已保存 18 个 mock LLM（模拟大模型）分析结论",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.130908Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.208455+00:00",
+      "completed_at": "2026-08-12T11:34:17.220078+00:00"
+    },
+    "id": "tool_run_check_citations_012",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 3,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 3 artifact groups, total_items=59",
+    "status": "completed",
+    "duration_ms": 11,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.208455Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.225082+00:00",
+      "completed_at": "2026-08-12T11:34:17.226081+00:00"
+    },
+    "id": "tool_run_check_citations_013",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "citation_checker.check_claims",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "sources": {
+        "type": "list",
+        "count": 9,
+        "item_type": "SourceDocument"
+      },
+      "evidence": {
+        "type": "list",
+        "count": 32,
+        "item_type": "SourceEvidence"
+      },
+      "claims": {
+        "type": "list",
+        "count": 18,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "Returned tuple with 2 items",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.225082Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.227081+00:00",
+      "completed_at": "2026-08-12T11:34:17.227081+00:00"
+    },
+    "id": "tool_run_check_citations_014",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_validator.check_refs",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "node_id": "check_citations",
+      "message": "Checked 18 claim citation links, supported=17, weak=1"
+    },
+    "output_summary": "Checked 18 claim citation links, supported=17, weak=1",
+    "status": "completed",
+    "duration_ms": 0,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.227081Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.229091+00:00",
+      "completed_at": "2026-08-12T11:34:17.231082+00:00"
+    },
+    "id": "tool_run_check_citations_015",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "claims",
+      "items": {
+        "type": "list",
+        "count": 18,
+        "item_type": "AnalysisClaim"
+      }
+    },
+    "output_summary": "Saved 18 claims with citation status",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.229091Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.232082+00:00",
+      "completed_at": "2026-08-12T11:34:17.234082+00:00"
+    },
+    "id": "tool_run_check_citations_016",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_check_citations",
+    "tool_name": "artifact_store.save_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_type": "citation_checks",
+      "items": {
+        "type": "list",
+        "count": 18,
+        "item_type": "CitationCheck"
+      }
+    },
+    "output_summary": "Saved 18 citation checks",
+    "status": "completed",
+    "duration_ms": 1,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.232082Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.313475+00:00",
+      "completed_at": "2026-08-12T11:34:17.338335+00:00"
+    },
+    "id": "tool_run_build_report_017",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_report",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 5,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 5 artifact groups, total_items=80",
+    "status": "completed",
+    "duration_ms": 24,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.313475Z"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "started_at": "2026-08-12T11:34:17.409718+00:00",
+      "completed_at": "2026-08-12T11:34:17.422715+00:00"
+    },
+    "id": "tool_run_build_report_018",
+    "task_id": "snapshot_online_education_demo",
+    "agent_run_id": "run_build_report",
+    "tool_name": "artifact_store.load_many",
+    "input": {
+      "task_id": "snapshot_online_education_demo",
+      "artifact_types": {
+        "type": "list",
+        "count": 1,
+        "item_type": "str"
+      }
+    },
+    "output_summary": "Returned 1 artifact groups, total_items=6",
+    "status": "completed",
+    "duration_ms": 12,
+    "error": "",
+    "created_at": "2026-08-12T11:34:17.409718Z"
+  }
+]

@@ -1,0 +1,253 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_collect_sources",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "collect_sources",
+    "parent_task_id": "",
+    "task_type": "collect_sources",
+    "target_agent_role": "collector",
+    "status": "completed",
+    "priority": "high",
+    "depends_on": [],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "sources",
+      "evidence"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "collector",
+    "node_id": "collect_sources",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:46.094822Z",
+    "started_at": "2026-08-23T13:54:45.972274Z",
+    "completed_at": "2026-08-23T13:54:46.094822Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_build_product_cards",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "build_product_cards",
+    "parent_task_id": "",
+    "task_type": "build_product_cards",
+    "target_agent_role": "extractor",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "collect_sources"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "product_cards"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "extractor",
+    "node_id": "build_product_cards",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:46.484563Z",
+    "started_at": "2026-08-23T13:54:46.159927Z",
+    "completed_at": "2026-08-23T13:54:46.484563Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_build_claims",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "build_claims",
+    "parent_task_id": "",
+    "task_type": "build_claims",
+    "target_agent_role": "analyst",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_product_cards"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "analysis_portfolios",
+      "brief_assessments",
+      "competitor_profiles",
+      "intelligence_questions",
+      "information_needs",
+      "comparability_notes",
+      "claims_v2",
+      "claims",
+      "evidence_coverage",
+      "research_gaps"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "analyst",
+    "node_id": "build_claims",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:46.851254Z",
+    "started_at": "2026-08-23T13:54:46.546212Z",
+    "completed_at": "2026-08-23T13:54:46.851254Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_check_citations",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "check_citations",
+    "parent_task_id": "",
+    "task_type": "check_citations",
+    "target_agent_role": "citation",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_claims"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "claims",
+      "citation_checks"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "citation",
+    "node_id": "check_citations",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:47.021866Z",
+    "started_at": "2026-08-23T13:54:46.905471Z",
+    "completed_at": "2026-08-23T13:54:47.021866Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_build_report",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "build_report",
+    "parent_task_id": "",
+    "task_type": "build_report",
+    "target_agent_role": "writer",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "check_citations"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "reports",
+      "report_statements"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "writer",
+    "node_id": "build_report",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:47.398966Z",
+    "started_at": "2026-08-23T13:54:47.083476Z",
+    "completed_at": "2026-08-23T13:54:47.398966Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "queue_review_report",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "review_report",
+    "parent_task_id": "",
+    "task_type": "review_report",
+    "target_agent_role": "reviewer",
+    "status": "completed",
+    "priority": "medium",
+    "depends_on": [
+      "build_report"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "execution_plan:execplan_d8a3c0e7aab8"
+    ],
+    "output_refs": [
+      "review_feedback"
+    ],
+    "reason": "用户已授权 Step6D.3 执行计划；等待后台执行器领取。",
+    "created_by_agent_run_id": "",
+    "claimed_by_agent": "reviewer",
+    "node_id": "review_report",
+    "attempts": 1,
+    "max_attempts": 2,
+    "created_at": "2026-08-23T13:54:45.767704Z",
+    "updated_at": "2026-08-23T13:54:47.564464Z",
+    "started_at": "2026-08-23T13:54:47.451980Z",
+    "completed_at": "2026-08-23T13:54:47.564464Z",
+    "error": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "feedback_reason": "weak_citation",
+      "claim_id": "clv2_task_step6d4_mock_execution_ecosystem",
+      "citation_check_id": "cite_clv2_task_step6d4_mock_execution_ecosystem",
+      "review_issue_ids": [
+        "issue_clv2_task_step6d4_mock_execution_ecosystem_weak_citation"
+      ],
+      "execution_policy": "skipped_until_llm_or_webcollector"
+    },
+    "id": "tb_feedback_analyze_clv2_task_step6d4_mock_execution_ecosystem",
+    "task_id": "task_step6d4_mock_execution",
+    "task_key": "supplement_analysis_clv2_task_step6d4_mock_execution_ecosystem",
+    "parent_task_id": "review_report",
+    "task_type": "supplement_analysis",
+    "target_agent_role": "analyst",
+    "status": "skipped",
+    "priority": "medium",
+    "depends_on": [
+      "review_report"
+    ],
+    "blocked_by": [],
+    "input_refs": [
+      "claims",
+      "citation_checks",
+      "evidence"
+    ],
+    "output_refs": [
+      "claims"
+    ],
+    "reason": "Weak citation is explained by ReviewFeedback. LLM/WebCollector supplement analysis is deferred in rule-only mode.",
+    "created_by_agent_run_id": "rule_milestone3_reviewer",
+    "claimed_by_agent": "",
+    "node_id": "",
+    "attempts": 0,
+    "max_attempts": 1,
+    "created_at": "2026-08-23T13:54:47.629468Z",
+    "updated_at": "2026-08-23T13:54:47.629468Z",
+    "started_at": null,
+    "completed_at": "2026-08-23T13:54:47.629468Z",
+    "error": ""
+  }
+]

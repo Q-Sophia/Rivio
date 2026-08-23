@@ -1,0 +1,34 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_zoom_feature",
+    "task_id": "task_step6e4_gap_publisher_check_74c40634",
+    "competitor": "Zoom",
+    "dimension": "feature",
+    "status": "partial",
+    "source_ids": [
+      "src_2"
+    ],
+    "evidence_ids": [
+      "ev_2"
+    ],
+    "limitations": "当前只有单条直接资料，覆盖仍不完整。"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "coverage_腾讯会议_feature",
+    "task_id": "task_step6e4_gap_publisher_check_74c40634",
+    "competitor": "腾讯会议",
+    "dimension": "feature",
+    "status": "weak",
+    "source_ids": [
+      "src_1"
+    ],
+    "evidence_ids": [
+      "ev_1"
+    ],
+    "limitations": "当前只有较弱来源，不能支撑高置信度判断。"
+  }
+]

@@ -1,0 +1,150 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_product_card",
+      "output_language": "zh-CN"
+    },
+    "id": "prod_llm_classin",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "name": "ClassIn",
+    "company": "ClassIn",
+    "positioning": "ClassIn 的产品卡片基于 15 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本。",
+    "target_users": [
+      "在线教育产品团队",
+      "产品研发与战略评估人员"
+    ],
+    "pricing_summary": "免费版 | 免费 | 老师备课与学生自学 | ... 每月限制 10 次课，累计 50 次免费课堂；单次课堂 40 分钟限制；7 人音视频实时互动。；基础版 | ￥1800 起；原价 ￥3100/年，按年购买开通版本 | 个人教师 / 小团队 ... 300 人大班教学；云端录课；屏幕共享；个人后台。",
+    "core_features": [
+      "支持多达 16 人的同步面对面教学，教师和学生都可以使用视频窗口、音频并进行交互。",
+      "拥有互动式电子黑板，具有预编辑、多页滚动和无限使用功能，支持授权人员同时操作和使用。",
+      "配备了互动式小黑板、答题器、计时器、教师屏幕共享、视频墙、随机选人答题等几十种教学工具。",
+      "支持多种交互式教学课件，如动画效果 PPT、视频、音频、Word、pdf 等，同时支持多课件组合教学。",
+      "具有举手、抢答、授奖、上下讲台等课堂控制功能，能够营造竞争激烈的课堂氛围。"
+    ],
+    "strengths": [
+      "现有证据覆盖 5 个分析维度，具备基础可追溯性。"
+    ],
+    "weaknesses": [
+      "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+    ],
+    "source_ids": [
+      "src_classin_download",
+      "src_classin_hardware",
+      "src_classin_intro",
+      "src_classin_pricing_tools"
+    ],
+    "evidence_ids": [
+      "ev_classin_scene_breadth",
+      "ev_classin_16_way_interaction",
+      "ev_classin_teaching_modes",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report",
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_client_positioning",
+      "ev_classin_ai_lms"
+    ],
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_product_card",
+      "output_language": "zh-CN"
+    },
+    "id": "prod_llm_腾讯云实时互动___trtc_教育方案",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "name": "腾讯云实时互动 / TRTC 教育方案",
+    "company": "腾讯云实时互动 / TRTC 教育方案",
+    "positioning": "腾讯云实时互动 / TRTC 教育方案 的产品卡片基于 10 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、定价与成本、风险与限制。",
+    "target_users": [
+      "在线教育产品团队",
+      "产品研发与战略评估人员"
+    ],
+    "pricing_summary": "价格 | 0元/月 | 1,499元/月 | 3,599元/月 | 6,999元/月 ... 音视频时长 | 50小时/月 | 750小时/月 | 2,000小时/月 | 4,200小时/月。；课堂容量 | 无限 | 1,000人 | 2,000人 | 无限 ... API对接服务 | — | 轻量API对接服务 | 标准API对接服务 | 专属VIP对接服务。",
+    "core_features": [
+      "集成音视频连麦、互动白板、屏幕共享、云端录制和直播等核心功能。",
+      "提供小程序插件、Android、iOS、Windows、MacOS、Web/H5、uni-app、Flutter全平台互通的客户端集成方案。",
+      "支持多达17人同屏连麦互动以及百万人小于1秒的超低延时直播观看体验。",
+      "支持动态 / 静态课件、H5课件、PPT、Word、Excel、PDF 文档、JPG、PNG 图片等教学课件演示... 支持手动/自动录制，老师和学生音视频流、白板内容、课件内容同步录制。",
+      "通过调用Open API即可实现与业务侧教学平台中的排课系统、用户管理系统与课件系统完成无缝对接。"
+    ],
+    "strengths": [
+      "现有证据覆盖 6 个分析维度，具备基础可追溯性。"
+    ],
+    "weaknesses": [
+      "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+    ],
+    "source_ids": [
+      "src_tencent_lcic_pricing_article",
+      "src_tencent_lcic_product"
+    ],
+    "evidence_ids": [
+      "ev_tencent_lcic_low_code",
+      "ev_tencent_core_features",
+      "ev_tencent_scenarios_dev_reduction",
+      "ev_tencent_cross_platform",
+      "ev_tencent_scale_latency",
+      "ev_tencent_courseware_recording",
+      "ev_tencent_open_api",
+      "ev_tencent_moderation_ai_noise",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.72
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_product_card",
+      "output_language": "zh-CN"
+    },
+    "id": "prod_llm_bigbluebutton",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "name": "BigBlueButton",
+    "company": "BigBlueButton",
+    "positioning": "BigBlueButton 的产品卡片基于 7 条结构化证据整理，覆盖目标客户、生态与集成、功能能力、产品定位、风险与限制。",
+    "target_users": [
+      "在线教育产品团队",
+      "产品研发与战略评估人员"
+    ],
+    "pricing_summary": "当前快照中的定价证据有限，需要后续调研补充。",
+    "core_features": [
+      "上传PowerPoint、Word、PDF和图片等文档。使用虚拟白板来突出内容。让学生参与分组讨论，参与协作学习。",
+      "通过公开和私下聊天与你的班级交流。用多用户白板鼓励创造性思维。使用共享笔记，方便团队协作。直观的屏幕共享，让学生保持参与。",
+      "在课堂上通过虚拟举手提供反馈。通过我们丰富的表情符号表达自我。上课时分享你的摄像头视频，并使用自定义背景。",
+      "工具集成：可以与 LMS（学习管理系统）如 Moodle、Canvas 等系统集成，方便教学资源管理。"
+    ],
+    "strengths": [
+      "现有证据覆盖 5 个分析维度，具备基础可追溯性。"
+    ],
+    "weaknesses": [
+      "当前为 mock LLM（模拟大模型）输出，保留证据编号，但未增加实时市场调研。"
+    ],
+    "source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "evidence_ids": [
+      "ev_bbb_feature_set",
+      "ev_bbb_collaboration_tools",
+      "ev_bbb_engagement_video",
+      "ev_bbb_open_source_self_hosted",
+      "ev_bbb_deployment_risk",
+      "ev_bbb_education_use_cases",
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.72
+  }
+]

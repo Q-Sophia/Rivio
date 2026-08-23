@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "execution_started": false
+    },
+    "id": "task_step6e1_dynamic_research",
+    "task_id": "task_step6e1_dynamic_research",
+    "query": "比较三种在线教学工具，为高校平台选型提供依据。",
+    "competitors": [
+      "ClassIn",
+      "腾讯会议",
+      "BigBlueButton"
+    ],
+    "industry": "在线教育",
+    "focus_areas": [
+      "产品能力",
+      "价格",
+      "生态"
+    ],
+    "report_subject": "高校在线教学工具竞品分析",
+    "preferred_title": "",
+    "mode": "snapshot",
+    "status": "pending",
+    "created_at": "2026-08-23T13:54:49.419402Z",
+    "updated_at": "2026-08-23T13:54:49.419402Z"
+  }
+]

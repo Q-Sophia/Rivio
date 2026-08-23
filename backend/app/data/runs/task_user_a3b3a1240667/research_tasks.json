@@ -1,0 +1,470 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_89c05cba4592",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_fbcb5dec8630",
+    "title": "核实 ClassIn 的产品定位信息",
+    "objective": "复核人工快照中 ClassIn 的产品定位证据",
+    "competitor": "ClassIn",
+    "dimension": "产品定位",
+    "query_hints": [
+      "ClassIn 产品定位 官方",
+      "ClassIn 产品定位 文档"
+    ],
+    "seed_urls": [
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/2a550c3ec6c947c4848bb101aa512a97",
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/eb38c823cee641709d2288cffe8ef75c",
+      "https://www.eeo.cn/cn/hardware",
+      "https://www.eeo.cn/cn/download"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_987dee2fba3d",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_fbcb5dec8630",
+    "title": "核实 腾讯云实时互动 / TRTC 教育方案 的产品定位信息",
+    "objective": "复核人工快照中 腾讯云实时互动 / TRTC 教育方案 的产品定位证据",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "产品定位",
+    "query_hints": [
+      "腾讯云实时互动 / TRTC 教育方案 产品定位 官方",
+      "腾讯云实时互动 / TRTC 教育方案 产品定位 文档"
+    ],
+    "seed_urls": [
+      "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "https://cloud.tencent.com/developer/article/2674656"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_5109cee3f61d",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_fbcb5dec8630",
+    "title": "核实 BigBlueButton 的产品定位信息",
+    "objective": "复核人工快照中 BigBlueButton 的产品定位证据",
+    "competitor": "BigBlueButton",
+    "dimension": "产品定位",
+    "query_hints": [
+      "BigBlueButton 产品定位 官方",
+      "BigBlueButton 产品定位 文档"
+    ],
+    "seed_urls": [
+      "https://bigbluebutton.org/features/",
+      "https://github.com/bigbluebutton/bigbluebutton",
+      "https://juejin.cn/post/7416560533439676454"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_e6590641c069",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_d070f3dac907",
+    "title": "核实 ClassIn 的产品能力信息",
+    "objective": "复核人工快照中 ClassIn 的产品能力证据",
+    "competitor": "ClassIn",
+    "dimension": "产品能力",
+    "query_hints": [
+      "ClassIn 产品能力 官方",
+      "ClassIn 产品能力 文档"
+    ],
+    "seed_urls": [
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/2a550c3ec6c947c4848bb101aa512a97",
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/eb38c823cee641709d2288cffe8ef75c",
+      "https://www.eeo.cn/cn/hardware",
+      "https://www.eeo.cn/cn/download"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_772f92a6e7ca",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_d070f3dac907",
+    "title": "核实 腾讯云实时互动 / TRTC 教育方案 的产品能力信息",
+    "objective": "复核人工快照中 腾讯云实时互动 / TRTC 教育方案 的产品能力证据",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "产品能力",
+    "query_hints": [
+      "腾讯云实时互动 / TRTC 教育方案 产品能力 官方",
+      "腾讯云实时互动 / TRTC 教育方案 产品能力 文档"
+    ],
+    "seed_urls": [
+      "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "https://cloud.tencent.com/developer/article/2674656"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_1e0e7697513c",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_d070f3dac907",
+    "title": "核实 BigBlueButton 的产品能力信息",
+    "objective": "复核人工快照中 BigBlueButton 的产品能力证据",
+    "competitor": "BigBlueButton",
+    "dimension": "产品能力",
+    "query_hints": [
+      "BigBlueButton 产品能力 官方",
+      "BigBlueButton 产品能力 文档"
+    ],
+    "seed_urls": [
+      "https://bigbluebutton.org/features/",
+      "https://github.com/bigbluebutton/bigbluebutton",
+      "https://juejin.cn/post/7416560533439676454"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "high",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_7aa21d9656b1",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_c550217c50b8",
+    "title": "核实 ClassIn 的定价与成本信息",
+    "objective": "复核人工快照中 ClassIn 的定价与成本证据",
+    "competitor": "ClassIn",
+    "dimension": "定价与成本",
+    "query_hints": [
+      "ClassIn 定价与成本 官方",
+      "ClassIn 定价与成本 文档"
+    ],
+    "seed_urls": [
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/2a550c3ec6c947c4848bb101aa512a97",
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/eb38c823cee641709d2288cffe8ef75c",
+      "https://www.eeo.cn/cn/hardware",
+      "https://www.eeo.cn/cn/download"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_d64ad8133741",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_c550217c50b8",
+    "title": "核实 腾讯云实时互动 / TRTC 教育方案 的定价与成本信息",
+    "objective": "复核人工快照中 腾讯云实时互动 / TRTC 教育方案 的定价与成本证据",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "定价与成本",
+    "query_hints": [
+      "腾讯云实时互动 / TRTC 教育方案 定价与成本 官方",
+      "腾讯云实时互动 / TRTC 教育方案 定价与成本 文档"
+    ],
+    "seed_urls": [
+      "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "https://cloud.tencent.com/developer/article/2674656"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_0befa6dad81e",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_c550217c50b8",
+    "title": "核实 BigBlueButton 的定价与成本信息",
+    "objective": "复核人工快照中 BigBlueButton 的定价与成本证据",
+    "competitor": "BigBlueButton",
+    "dimension": "定价与成本",
+    "query_hints": [
+      "BigBlueButton 定价与成本 官方",
+      "BigBlueButton 定价与成本 文档"
+    ],
+    "seed_urls": [
+      "https://bigbluebutton.org/features/",
+      "https://github.com/bigbluebutton/bigbluebutton",
+      "https://juejin.cn/post/7416560533439676454"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_d56ae17be4e2",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_b1c1e61852d0",
+    "title": "核实 ClassIn 的生态与集成信息",
+    "objective": "复核人工快照中 ClassIn 的生态与集成证据",
+    "competitor": "ClassIn",
+    "dimension": "生态与集成",
+    "query_hints": [
+      "ClassIn 生态与集成 官方",
+      "ClassIn 生态与集成 文档"
+    ],
+    "seed_urls": [
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/2a550c3ec6c947c4848bb101aa512a97",
+      "https://flowin.cn/publish/c3ab35aafc9442a08cd78f700c6a02f3/eb38c823cee641709d2288cffe8ef75c",
+      "https://www.eeo.cn/cn/hardware",
+      "https://www.eeo.cn/cn/download"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_classin_intro",
+      "src_classin_pricing_tools",
+      "src_classin_hardware",
+      "src_classin_download"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_28721d56b964",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_b1c1e61852d0",
+    "title": "核实 腾讯云实时互动 / TRTC 教育方案 的生态与集成信息",
+    "objective": "复核人工快照中 腾讯云实时互动 / TRTC 教育方案 的生态与集成证据",
+    "competitor": "腾讯云实时互动 / TRTC 教育方案",
+    "dimension": "生态与集成",
+    "query_hints": [
+      "腾讯云实时互动 / TRTC 教育方案 生态与集成 官方",
+      "腾讯云实时互动 / TRTC 教育方案 生态与集成 文档"
+    ],
+    "seed_urls": [
+      "https://cloud.tencent.com/product/lcic?from_column=20421&from=20421",
+      "https://cloud.tencent.com/developer/article/2674656"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_tencent_lcic_product",
+      "src_tencent_lcic_pricing_article"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "researchtask_239140e3a46a",
+    "task_id": "task_user_a3b3a1240667",
+    "information_need_id": "need_b1c1e61852d0",
+    "title": "核实 BigBlueButton 的生态与集成信息",
+    "objective": "复核人工快照中 BigBlueButton 的生态与集成证据",
+    "competitor": "BigBlueButton",
+    "dimension": "生态与集成",
+    "query_hints": [
+      "BigBlueButton 生态与集成 官方",
+      "BigBlueButton 生态与集成 文档"
+    ],
+    "seed_urls": [
+      "https://bigbluebutton.org/features/",
+      "https://github.com/bigbluebutton/bigbluebutton",
+      "https://juejin.cn/post/7416560533439676454"
+    ],
+    "preferred_domains": [],
+    "snapshot_source_ids": [
+      "src_bbb_features",
+      "src_bbb_github",
+      "src_bbb_juejin_lms"
+    ],
+    "preferred_source_types": [
+      "official_site",
+      "docs",
+      "pricing_page"
+    ],
+    "priority": "medium",
+    "status": "covered_by_snapshot",
+    "stop_condition": "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。",
+    "depends_on": [],
+    "assigned_role": "collector",
+    "collection_round": 1,
+    "parent_research_task_id": "",
+    "research_gap_id": ""
+  }
+]

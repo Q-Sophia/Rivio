@@ -1,0 +1,43 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "mock_provider": false,
+      "temperature": 0.0,
+      "max_tokens": 16000,
+      "output_language": "zh-CN",
+      "real_calls_enabled": true,
+      "api_surface": "chat_completions",
+      "structured_output_mode": "json_object",
+      "thinking_mode": "disabled",
+      "report_claim_refs_added": [],
+      "request_id": "f320381c-3f04-4edf-ad07-2906d9570633",
+      "attempts": 1,
+      "input_tokens": 12677,
+      "output_tokens": 10553
+    },
+    "id": "llmcall_node_v1_baseline",
+    "task_id": "step6c_deepseek_v4_pilot_retry1_v1_baseline",
+    "agent_run_id": "run_v1_baseline",
+    "node_id": "node_v1_baseline",
+    "agent_role": "analyst",
+    "provider": "compatible",
+    "model": "deepseek-v4-flash",
+    "mode": "llm",
+    "prompt_id": "competitive_analyst_baseline",
+    "prompt_version": "1.0.0-ab-baseline",
+    "prompt_hash": "b26b4087f2d474e20eb7188694f8f9b20b2c77214a0713c83336bd3d755c7ee7",
+    "prompt_summary": "根据给定的 AnalysisTask（分析任务）、SourceDocument（来源文档）、 SourceEvidence（来源证据）和 ProductCard（产品卡片），生成一份结构化竞品分析。\n\n你是一名通用竞品分析助手。请比较输入中的竞品，并输出简体中文结果。\n只能使用输入资料中的产品事实，不得虚构价格、功能、客户或市场表现。\n所有 source_id 和 evidence_id 必须逐字复用输入值。\n输出必须符合给定的 JSON Schema（JSON 数据结构）。\n\n请围绕以下任务生成 CompetitiveAnalysisPortfolioV2（竞品分析组合第二版）：\n\n决策问题：Analyze online education real-time interaction and virtual classroom competitors from local snapshot evidence.\n行业：online education\n竞品：ClassIn、腾讯云实时互动 / TRTC 教育方案、BigBlueButton\n分析维度：positioning、feature、pricing、ecosystem、customer、risk\n\n比较各对象的定位、客户、功能、定价、生态和风险。填写竞品画像、关键问题、\n信息需求、证据覆盖、可比性说明、分析结论和研究缺口。结论必须包含 evidence_id，\n无法确认的信息应说明不确定性。\n\nanalysis_method:\n- step: 1\n  name: 整理竞品资料\n  instruction: 按竞品归纳输入资料中的定位、客户、功能、定价、生态和风险。\n- step: 2\n  name: 比较主要差异\n  instruction: 比较主要属性并形成简洁结论。\n- step: 3\n  name: 输出结构化结果\n  instruction: 按 JSON Schema 填写所有必需字段并保留证据编号。\nclaim_policy:\n  evidence_required: 每条结论至少引用一个输入中的 evidence_id\n  uncertainty: 资料不足时说明不确定性\nnegative_constraints:\n- 不得虚构输入中不存在的产品事实\n- 不得创造或改写 source_id 和 evidence_id\n- 不得输出空 evidence_id 的结论\nquality_self_check: 检查输出是否为合法 JSON、是否使用简体中文、是否只引用输入中的证据编号。",
+    "context_bundle_id": "",
+    "input_artifact_refs": {},
+    "output_schema": "CompetitiveAnalysisPortfolioV2",
+    "output_summary": "已生成 CompetitiveAnalysisPortfolioV2，对象编号=",
+    "status": "failed",
+    "used_fallback": false,
+    "fallback_reason": "",
+    "duration_ms": 58853,
+    "error": "ValueError: AnalysisClaimV2 缺少 evidence_ids: claim_014",
+    "created_at": "2026-08-14T07:30:44.324163Z",
+    "completed_at": "2026-08-14T07:31:43.178381Z"
+  }
+]

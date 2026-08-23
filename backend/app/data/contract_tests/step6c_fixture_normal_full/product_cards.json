@@ -1,0 +1,134 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "competitor_role": "direct",
+      "selection_reason": "启明协作代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_normal_full_1",
+    "task_id": "step6c_fixture_normal_full",
+    "name": "启明协作",
+    "company": "启明协作",
+    "positioning": "面向中型组织的一体化协作方案。",
+    "target_users": [
+      "中型组织"
+    ],
+    "pricing_summary": "启明协作公开了标准方案的价格与计费边界。",
+    "core_features": [
+      "启明协作提供完成核心任务所需的共同基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_normal_full_1_positioning_1",
+      "src_normal_full_1_feature_1",
+      "src_normal_full_1_pricing_1",
+      "src_normal_full_1_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_1_positioning_1",
+      "ev_normal_full_1_feature_1",
+      "ev_normal_full_1_pricing_1",
+      "ev_normal_full_1_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "competitor_role": "direct",
+      "selection_reason": "远航协作代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_normal_full_2",
+    "task_id": "step6c_fixture_normal_full",
+    "name": "远航协作",
+    "company": "远航协作",
+    "positioning": "面向中型组织的模块化协作方案。",
+    "target_users": [
+      "中型组织"
+    ],
+    "pricing_summary": "远航协作公开了标准方案的价格与计费边界。",
+    "core_features": [
+      "远航协作提供完成核心任务所需的共同基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_normal_full_2_positioning_1",
+      "src_normal_full_2_feature_1",
+      "src_normal_full_2_pricing_1",
+      "src_normal_full_2_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_2_positioning_1",
+      "ev_normal_full_2_feature_1",
+      "ev_normal_full_2_pricing_1",
+      "ev_normal_full_2_risk_1"
+    ],
+    "confidence": 0.8
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "fixture_case_id": "normal_full",
+      "competitor_role": "direct",
+      "selection_reason": "星图协作代表与当前决策相关的一体化成品路径。",
+      "represented_path": "一体化成品路径",
+      "delivery_model": "由供应方承担主要交付与持续服务责任。",
+      "comparison_tier": "standard",
+      "service_boundary": "standard",
+      "non_comparable_dimensions": []
+    },
+    "id": "prod_normal_full_3",
+    "task_id": "step6c_fixture_normal_full",
+    "name": "星图协作",
+    "company": "星图协作",
+    "positioning": "面向中型组织的可配置协作方案。",
+    "target_users": [
+      "中型组织"
+    ],
+    "pricing_summary": "星图协作公开了标准方案的价格与计费边界。",
+    "core_features": [
+      "星图协作提供完成核心任务所需的共同基础能力。"
+    ],
+    "strengths": [
+      "现有信息能够形成初步、可追溯的对象画像。"
+    ],
+    "weaknesses": [
+      "仍需结合目标客户和独立资料验证。"
+    ],
+    "source_ids": [
+      "src_normal_full_3_positioning_1",
+      "src_normal_full_3_feature_1",
+      "src_normal_full_3_pricing_1",
+      "src_normal_full_3_risk_1"
+    ],
+    "evidence_ids": [
+      "ev_normal_full_3_positioning_1",
+      "ev_normal_full_3_feature_1",
+      "ev_normal_full_3_pricing_1",
+      "ev_normal_full_3_risk_1"
+    ],
+    "confidence": 0.8
+  }
+]

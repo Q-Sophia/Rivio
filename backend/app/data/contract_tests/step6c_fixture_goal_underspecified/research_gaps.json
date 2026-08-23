@@ -1,0 +1,28 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "gap_step6c_fixture_goal_underspecified_brief",
+    "task_id": "step6c_fixture_goal_underspecified",
+    "competitors": [
+      "甲产品",
+      "乙产品",
+      "丙产品"
+    ],
+    "dimension": "research_brief",
+    "missing_information": "目标客户、核心任务场景和组织约束尚未明确。",
+    "decision_blocked": "无法判断观察到的差异是否对目标客户形成真实价值。",
+    "why_existing_evidence_is_insufficient": "当前证据主要描述竞品自身，不能代替目标客户研究。",
+    "suggested_queries": [
+      "访谈目标客户的任务、痛点、替代做法和购买约束"
+    ],
+    "preferred_source_types": [
+      "客户访谈",
+      "用户研究",
+      "内部战略资料"
+    ],
+    "priority": "high",
+    "stop_condition": "目标客户与核心场景已由任务负责人确认并形成研究简报。",
+    "related_evidence_ids": []
+  }
+]

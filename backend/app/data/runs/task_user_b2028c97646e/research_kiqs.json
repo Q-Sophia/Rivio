@@ -1,0 +1,50 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_f06a77b24962",
+    "task_id": "task_user_b2028c97646e",
+    "question": "各候选产品在产品能力上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "帮助学校信息化负责人判断下一学年应优先试用哪条在线教学方案",
+    "dimensions": [
+      "产品能力"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_c9e1af2f0e4d",
+    "task_id": "task_user_b2028c97646e",
+    "question": "各候选产品在价格上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "帮助学校信息化负责人判断下一学年应优先试用哪条在线教学方案",
+    "dimensions": [
+      "价格"
+    ],
+    "priority": "high"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_fc020795ee82",
+    "task_id": "task_user_b2028c97646e",
+    "question": "各候选产品在部署责任上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "帮助学校信息化负责人判断下一学年应优先试用哪条在线教学方案",
+    "dimensions": [
+      "部署责任"
+    ],
+    "priority": "medium"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {},
+    "id": "kiq_d8da2ca7ee3d",
+    "task_id": "task_user_b2028c97646e",
+    "question": "各候选产品在生态集成上有哪些可验证差异，这些差异如何影响用户决策？",
+    "decision_link": "帮助学校信息化负责人判断下一学年应优先试用哪条在线教学方案",
+    "dimensions": [
+      "生态集成"
+    ],
+    "priority": "medium"
+  }
+]

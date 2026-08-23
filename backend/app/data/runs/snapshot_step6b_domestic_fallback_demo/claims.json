@@ -1,0 +1,132 @@
+[
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_claims",
+      "output_language": "zh-CN"
+    },
+    "id": "cl_llm_online_education_positioning",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "dimension": "positioning",
+    "claim_text": "现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在产品定位上采用不同路线；产品研发选型应结合目标用户、交付方式和可控性要求进行权衡。",
+    "competitors": [
+      "BigBlueButton",
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_classin_client_positioning",
+      "ev_tencent_lcic_low_code",
+      "ev_bbb_open_source_self_hosted"
+    ],
+    "confidence": 0.74,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_claims",
+      "output_language": "zh-CN"
+    },
+    "id": "cl_llm_online_education_feature",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "dimension": "feature",
+    "claim_text": "现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案均提供在线课堂相关能力，但在功能完整度、课堂互动工具和可定制方式上存在差异。",
+    "competitors": [
+      "BigBlueButton",
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_classin_16_way_interaction",
+      "ev_classin_whiteboard_tools",
+      "ev_classin_classroom_toolkit",
+      "ev_classin_courseware_support",
+      "ev_classin_classroom_control",
+      "ev_classin_learning_report"
+    ],
+    "confidence": 0.74,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_claims",
+      "output_language": "zh-CN"
+    },
+    "id": "cl_llm_online_education_pricing",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "dimension": "pricing",
+    "claim_text": "现有定价证据显示，ClassIn、腾讯云实时互动 / TRTC 教育方案的计费方式和成本边界不同，比较时需要同时考虑软件费用、使用规模与部署运维成本。",
+    "competitors": [
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_classin_free_limits",
+      "ev_classin_basic_price_capacity",
+      "ev_classin_business_api",
+      "ev_classin_premium_prepaid_api",
+      "ev_tencent_pricing_tiers",
+      "ev_tencent_pricing_capacity_api"
+    ],
+    "confidence": 0.74,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_claims",
+      "output_language": "zh-CN"
+    },
+    "id": "cl_llm_online_education_ecosystem",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "dimension": "ecosystem",
+    "claim_text": "现有证据显示，BigBlueButton、ClassIn、腾讯云实时互动 / TRTC 教育方案在 API（应用程序编程接口）、LMS（学习管理系统）、硬件或开源集成能力上各有侧重，接入成本应单独评估。",
+    "competitors": [
+      "BigBlueButton",
+      "ClassIn",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_classin_hardware_ecosystem",
+      "ev_classin_ai_lms",
+      "ev_tencent_cross_platform",
+      "ev_tencent_open_api",
+      "ev_bbb_lms_integration"
+    ],
+    "confidence": 0.74,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "weak"
+  },
+  {
+    "schema_version": "v1",
+    "metadata": {
+      "generation_mode": "mock_llm",
+      "source": "LLMClient._mock_claims",
+      "output_language": "zh-CN"
+    },
+    "id": "cl_llm_online_education_risk",
+    "task_id": "snapshot_step6b_domestic_fallback_demo",
+    "dimension": "risk",
+    "claim_text": "现有风险证据显示，BigBlueButton、腾讯云实时互动 / TRTC 教育方案在服务依赖、部署维护或证据充分性方面存在不同限制，关键结论仍需结合引用强度审慎使用。",
+    "competitors": [
+      "BigBlueButton",
+      "腾讯云实时互动 / TRTC 教育方案"
+    ],
+    "evidence_ids": [
+      "ev_tencent_moderation_ai_noise",
+      "ev_bbb_deployment_risk"
+    ],
+    "confidence": 0.74,
+    "produced_by_agent_run_id": "run_build_claims",
+    "citation_status": "supported"
+  }
+]
