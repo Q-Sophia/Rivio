@@ -201,8 +201,8 @@
                 <div id="research-loop-event-list" class="execution-event-list"></div>
                 <div id="research-loop-result" class="confirmed-task hidden"></div>
                 <div class="planning-boundary">
-                  <p id="research-analysis-copy">只要已有可引用证据和 ProductCard，就可以显式调用一次 DeepSeek Analyst（分析智能体）形成阶段性结论；未覆盖内容会保留为 ResearchGap，不必等所有资料齐全。</p>
-                  <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>调用 DeepSeek 生成分析结论（1 次）</button>
+                  <p id="research-analysis-copy">只要已有可引用证据和 ProductCard，就可以显式调用两阶段 DeepSeek Analyst（分析智能体）形成阶段性结论；通常 2 次调用，只有长度截断时才有限重试，最多 4 次。未覆盖内容会保留为 ResearchGap。</p>
+                  <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>调用 DeepSeek 生成分析结论（通常 2 次）</button>
                 </div>
                 <div id="research-analysis-result" class="confirmed-task hidden"></div>
               </section>

@@ -33,6 +33,10 @@ ANALYSIS_TASK_KEY = "analyze_research_evidence"
 CITATION_TASK_KEY = "check_research_claim_citations"
 
 
+class ResearchAnalysisOutputTruncatedError(RuntimeError):
+    """All bounded retries for a named Analyst stage were exhausted."""
+
+
 class ResearchAnalysisService:
     """Run one explicitly authorized DeepSeek Analyst over Step6E research artifacts."""
 
@@ -80,7 +84,9 @@ class ResearchAnalysisService:
         if selected_mode != ExecutionMode.DEEPSEEK:
             raise ValueError("Step6F 当前只接受显式 DeepSeek（真实）分析模式。")
         if not acknowledge_real_llm_call:
-            raise ValueError("必须明确确认本次将产生 1 次真实 DeepSeek Analyst 调用。")
+            raise ValueError(
+                "必须明确确认本次通常产生 2 次、仅截断时最多 4 次真实 DeepSeek Analyst 调用。"
+            )
 
         with self._lock:
             existing = self.get_payload(task_id)
@@ -112,6 +118,8 @@ class ResearchAnalysisService:
                     input_refs=[
                         "analysis_tasks",
                         "research_plans",
+                        "research_kiqs",
+                        "research_information_needs",
                         "sources",
                         "evidence",
                         "product_cards",
@@ -176,11 +184,21 @@ class ResearchAnalysisService:
                     error=analyst_result.error,
                     claimed_by_agent="professional_research_analyst_agent",
                 )
+                if (
+                    "LLM 输出被截断" in analyst_result.error
+                    or "finish_reason=length" in analyst_result.error
+                ):
+                    raise ResearchAnalysisOutputTruncatedError(
+                        analyst_result.error
+                    )
                 raise RuntimeError(analyst_result.error or "DeepSeek Analyst 执行失败。")
 
             after_call_count = len(self.store.load_many(task_id, "llm_calls"))
-            if after_call_count - before_call_count != 1:
-                raise RuntimeError("Step6F 必须且只能记录 1 次 Analyst LLM 调用。")
+            call_count = after_call_count - before_call_count
+            if not 2 <= call_count <= 4:
+                raise RuntimeError(
+                    "Step6F 两阶段 Analyst 必须记录 2 至 4 次有限 LLM 调用。"
+                )
             if self.store.load_many(task_id, "evidence_coverage") != deterministic_coverage:
                 raise RuntimeError("确定性 EvidenceCoverage 被 Analyst 覆盖。")
             if self.store.load_many(task_id, "research_gaps") != deterministic_gaps:
@@ -205,7 +223,7 @@ class ResearchAnalysisService:
             return {
                 **payload,
                 "status": "completed",
-                "real_llm_calls_this_run": 1,
+                "real_llm_calls_this_run": call_count,
                 "analyst_summary": analyst_result.output_summary,
                 "citation_summary": citation_result.output_summary,
                 "message": "DeepSeek Analyst 已基于当前结构化研究产物生成并校验分析结论。",
@@ -308,6 +326,8 @@ class ResearchAnalysisService:
             input_refs=[
                 "analysis_tasks",
                 "research_plans",
+                "research_kiqs",
+                "research_information_needs",
                 "sources",
                 "evidence",
                 "product_cards",
@@ -317,7 +337,8 @@ class ResearchAnalysisService:
             reason="基于 Step6E 结构化研究产物生成当前任务专属分析结论。",
             metadata={
                 "source": "step6f_research_analysis",
-                "real_llm_calls_authorized": 1,
+                "real_llm_calls_authorized": 4,
+                "normal_llm_calls_expected": 2,
             },
         )
         self.board_store.upsert_record(task_id, record)
@@ -374,7 +395,7 @@ class ResearchAnalysisService:
             base_url=os.environ.get("STEP6F_LLM_BASE_URL", "https://api.deepseek.com/v1"),
             api_key_env=os.environ.get("STEP6F_LLM_API_KEY_ENV", "DEEPSEEK_API_KEY"),
             timeout_seconds=int(os.environ.get("STEP6F_LLM_TIMEOUT_SECONDS", "120")),
-            max_tokens=int(os.environ.get("STEP6F_LLM_MAX_TOKENS", "16000")),
+            max_tokens=int(os.environ.get("STEP6F_LLM_MAX_TOKENS", "8000")),
             temperature=0.2,
             output_language="zh-CN",
             max_retries=0,

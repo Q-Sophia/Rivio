@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.harness.artifacts import ArtifactStore
 from app.execution import (
+    ResearchAnalysisOutputTruncatedError,
     get_execution_runner,
     get_research_analysis_service,
     get_research_loop_runner,
@@ -830,15 +831,13 @@ def run_research_analysis(
 ) -> dict[str, Any]:
     validate_path_segment(task_id, "task_id")
     try:
-        return get_research_analysis_service().run_once(
-            task_id,
-            mode=request.mode,
-            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
-        )
+        return get_research_analysis_service().run_once(...)
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except ResearchAnalysisOutputTruncatedError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 

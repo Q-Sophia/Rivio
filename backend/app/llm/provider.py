@@ -27,6 +27,14 @@ class LLMProviderResponseError(LLMProviderError):
     pass
 
 
+class LLMProviderOutputTruncatedError(LLMProviderResponseError):
+    """Provider returned an incomplete structured response due to its token cap."""
+
+    def __init__(self, message: str, *, finish_reason: str = "length"):
+        super().__init__(message)
+        self.finish_reason = finish_reason
+
+
 class LLMProviderTransientError(LLMProviderError):
     pass
 
@@ -118,6 +126,13 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             metadata={
                 "api_surface": "responses",
                 "base_url": self.config.base_url,
+                "finish_reason": str(
+                    ((response_data.get("choices") or [{}])[0]).get(
+                        "finish_reason"
+                    )
+                    or response_data.get("status")
+                    or "unknown"
+                ),
             },
         )
 
@@ -335,7 +350,16 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "不得补造用户没有点名的比较对象、客户、场景或约束。",
                 "id 与 task_id 必须逐字等于输入 task_id。",
             ]
-        if output_schema != "CompetitiveAnalysisPortfolioV2":
+        if output_schema == "AnalystBriefProfilesStage":
+            return [
+                "本阶段只生成 brief_assessment 与 competitor_profiles，不生成结论、覆盖度或研究缺口。",
+                "竞品画像中的 source_ids 与 evidence_ids 只能复用输入编号。",
+                "每个竞品画像应简洁，避免逐条复述证据。",
+            ]
+        if output_schema not in {
+            "CompetitiveAnalysisPortfolioV2",
+            "AnalystClaimsStage",
+        }:
             return []
         return [
             (
@@ -364,6 +388,8 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "AnalysisClaim[]": "analysis_claims",
             "CompetitiveReport": "competitive_report",
             "CompetitiveAnalysisPortfolioV2": "competitive_analysis_portfolio_v2",
+            "AnalystBriefProfilesStage": "analyst_brief_profiles_stage",
+            "AnalystClaimsStage": "analyst_claims_stage",
             "AnalysisTaskDraft": "analysis_task_draft",
         }.get(output_schema, "structured_output")
 
@@ -501,6 +527,24 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "generated_by": {"type": "string"},
                 "output_language": {"type": "string"},
             }
+        elif output_schema in {
+            "AnalystBriefProfilesStage",
+            "AnalystClaimsStage",
+        }:
+            from app.schemas import AnalystBriefProfilesStage, AnalystClaimsStage
+
+            stage_model = (
+                AnalystBriefProfilesStage
+                if output_schema == "AnalystBriefProfilesStage"
+                else AnalystClaimsStage
+            )
+            stage_schema = stage_model.model_json_schema()
+            definitions = stage_schema.pop("$defs", {})
+            properties = {
+                "item": stage_schema,
+                "generated_by": {"type": "string"},
+                "output_language": {"type": "string"},
+            }
         elif output_schema == "AnalysisTaskDraft":
             properties = {
                 "item": task_draft,
@@ -515,7 +559,11 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "properties": properties,
             "required": list(properties),
         }
-        if output_schema == "CompetitiveAnalysisPortfolioV2":
+        if output_schema in {
+            "CompetitiveAnalysisPortfolioV2",
+            "AnalystBriefProfilesStage",
+            "AnalystClaimsStage",
+        }:
             schema["$defs"] = definitions
         return schema
 
@@ -653,18 +701,25 @@ class OpenAIChatCompletionsProvider(OpenAIResponsesProvider):
         if not choices:
             raise LLMProviderResponseError("聊天补全响应中没有 choices")
         choice = choices[0]
+        finish_reason = str(choice.get("finish_reason") or "unknown")
         message = choice.get("message") or {}
         refusal = message.get("refusal")
         if refusal:
             raise LLMProviderResponseError(f"模型拒绝生成结构化输出：{refusal}")
         content = message.get("content")
         if isinstance(content, str) and content.strip():
+            if finish_reason == "length":
+                raise OpenAIChatCompletionsProvider._content_decode_error(
+                    content=content,
+                    finish_reason=finish_reason,
+                    cause=LLMProviderResponseError("模型输出被长度上限截断"),
+                )
             try:
                 return OpenAIResponsesProvider._decode_json_text(content)
             except LLMProviderResponseError as exc:
                 raise OpenAIChatCompletionsProvider._content_decode_error(
                     content=content,
-                    finish_reason=str(choice.get("finish_reason") or "unknown"),
+                    finish_reason=finish_reason,
                     cause=exc,
                 ) from exc
         if isinstance(content, list):
@@ -674,14 +729,24 @@ class OpenAIChatCompletionsProvider(OpenAIResponsesProvider):
                 if isinstance(item, dict)
             )
             if text.strip():
+                if finish_reason == "length":
+                    raise OpenAIChatCompletionsProvider._content_decode_error(
+                        content=text,
+                        finish_reason=finish_reason,
+                        cause=LLMProviderResponseError("模型输出被长度上限截断"),
+                    )
                 try:
                     return OpenAIResponsesProvider._decode_json_text(text)
                 except LLMProviderResponseError as exc:
                     raise OpenAIChatCompletionsProvider._content_decode_error(
                         content=text,
-                        finish_reason=str(choice.get("finish_reason") or "unknown"),
+                        finish_reason=finish_reason,
                         cause=exc,
                     ) from exc
+        if finish_reason == "length":
+            raise LLMProviderOutputTruncatedError(
+                "模型输出为空且被长度上限截断；finish_reason=length；content_chars=0",
+            )
         raise LLMProviderResponseError("聊天补全响应中没有可解析的 JSON 内容")
 
     @staticmethod
@@ -697,12 +762,18 @@ class OpenAIChatCompletionsProvider(OpenAIResponsesProvider):
             if finish_reason == "length"
             else ""
         )
-        return LLMProviderResponseError(
+        error_message = (
             f"{cause}；finish_reason={finish_reason}；"
             f"content_chars={len(content)}；"
             f"starts_with_object={stripped.startswith('{')}；"
             f"ends_with_object={stripped.endswith('}')}{truncation_hint}"
         )
+        if finish_reason == "length":
+            return LLMProviderOutputTruncatedError(
+                error_message,
+                finish_reason=finish_reason,
+            )
+        return LLMProviderResponseError(error_message)
 
 
 def build_provider(

@@ -56,10 +56,14 @@ def validate_structured_output_language(
             errors.append(f"{report_id}.title 不是简体中文业务文本")
         if not contains_chinese(item.get("markdown", "")):
             errors.append(f"{report_id}.markdown 不是简体中文业务文本")
-    elif output_schema == "CompetitiveAnalysisPortfolioV2":
+    elif output_schema in {
+        "CompetitiveAnalysisPortfolioV2",
+        "AnalystBriefProfilesStage",
+        "AnalystClaimsStage",
+    }:
         item = raw_output.get("item", {})
         if not item:
-            return ["CompetitiveAnalysisPortfolioV2 没有可检查的对象"]
+            return [f"{output_schema} 没有可检查的对象"]
         for profile in item.get("competitor_profiles", []):
             profile_id = profile.get("id", "competitor_profile")
             for field in ("selection_reason", "represented_path", "value_proposition"):

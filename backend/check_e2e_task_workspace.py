@@ -37,16 +37,39 @@ def main() -> None:
         Path(__file__).resolve().parent
         / "app"
         / "data"
-        / "checks"
+        / "tmp"
         / "e2e_task_workspace"
     )
     store = ArtifactStore(check_root)
     task_a = make_task("task_workspace_a_v1", "Alpha")
     task_b = make_task("task_workspace_b_v1", "Beta")
+    reset_list_artifacts = [
+        "sources",
+        "evidence",
+        "product_cards",
+        "claims",
+        "citation_checks",
+        "research_plans",
+        "research_tasks",
+        "evidence_coverage",
+        "research_gaps",
+        "analysis_portfolios",
+        "brief_assessments",
+        "competitor_profiles",
+        "intelligence_questions",
+        "information_needs",
+        "comparability_notes",
+        "claims_v2",
+        "analysis_evidence_coverage",
+        "analysis_research_gaps",
+        "dag_nodes",
+        "agent_runs",
+        "tool_calls",
+    ]
     for task in (task_a, task_b):
         store.save_many(task.id, "analysis_tasks", [task])
-        store.save_many(task.id, "sources", [])
-        store.save_many(task.id, "evidence", [])
+        for artifact_type in reset_list_artifacts:
+            store.save_many(task.id, artifact_type, [])
 
     original_get_store = api_main.get_store
     api_main.get_store = lambda: store

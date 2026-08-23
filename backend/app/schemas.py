@@ -912,6 +912,35 @@ class AnalysisClaimV2(SchemaModel):
     citation_status: CitationStatus = CitationStatus.PENDING
 
 
+class AnalystBriefProfilesStage(SchemaModel):
+    """Bounded Analyst stage for the decision brief and competitor profiles."""
+
+    id: str = Field(default_factory=lambda: new_id("analyststage"))
+    task_id: str
+    brief_assessment: BriefAssessment
+    competitor_profiles: list[CompetitorProfile] = Field(
+        default_factory=list,
+        min_length=1,
+        max_length=8,
+    )
+
+
+class AnalystClaimsStage(SchemaModel):
+    """Bounded Analyst stage for comparability decisions and evidence-led claims."""
+
+    id: str = Field(default_factory=lambda: new_id("analyststage"))
+    task_id: str
+    comparability_notes: list[ComparabilityNote] = Field(
+        default_factory=list,
+        max_length=16,
+    )
+    items: list[AnalysisClaimV2] = Field(
+        default_factory=list,
+        min_length=1,
+        max_length=18,
+    )
+
+
 class ResearchGap(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("gap"))
     task_id: str

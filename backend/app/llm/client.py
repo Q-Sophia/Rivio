@@ -8,6 +8,7 @@ from app.harness.artifacts import ArtifactStore
 from app.llm.config import LLMConfig
 from app.llm.language import contains_chinese, validate_structured_output_language
 from app.llm.provider import (
+    LLMProviderOutputTruncatedError,
     MockStructuredProvider,
     ProviderResult,
     StructuredLLMProvider,
@@ -15,11 +16,14 @@ from app.llm.provider import (
 )
 from app.llm.structured import (
     normalize_report_claim_references,
+    reject_unaligned_claims_v2,
     reject_unaligned_portfolio_v2_claims,
 )
 from app.reporting import build_professional_mock_report
 from app.schemas import (
     AgentRole,
+    AnalystBriefProfilesStage,
+    AnalystClaimsStage,
     AnalysisClaim,
     AnalysisClaimV2,
     AnalysisTask,
@@ -57,6 +61,15 @@ _INTERNAL_REFERENCE_FIELD_NAMES = {
     "related_evidence_ids",
     "supporting_artifact_ids",
 }
+
+
+class LLMOutputTruncatedError(ValueError):
+    """A named LLM sub-stage exhausted its output-token budget."""
+
+    def __init__(self, stage: str, message: str):
+        super().__init__(f"LLM 输出被截断；stage={stage}；{message}")
+        self.stage = stage
+        self.finish_reason = "length"
 
 
 def _find_internal_reference_fields(value: Any) -> set[str]:
@@ -149,6 +162,7 @@ class LLMClient:
         raw_output: dict[str, Any] = {}
         report_claim_refs_added: list[str] = []
         rejected_portfolio_claims: list[dict[str, Any]] = []
+        caught_exception: Exception | None = None
         try:
             if isinstance(self.provider, MockStructuredProvider):
                 raw_output = self._mock_generate(
@@ -176,6 +190,13 @@ class LLMClient:
                         artifacts=artifacts,
                     )
                 )
+            if output_schema == "AnalystClaimsStage":
+                raw_output, rejected_portfolio_claims = (
+                    self._filter_unaligned_stage_claims(
+                        raw_output=raw_output,
+                        artifacts=artifacts,
+                    )
+                )
             if output_schema == "CompetitiveReport":
                 raw_output, report_claim_refs_added = normalize_report_claim_references(
                     raw_output,
@@ -192,6 +213,7 @@ class LLMClient:
             validation_status = "passed"
             validation_errors: list[str] = []
         except Exception as exc:
+            caught_exception = exc
             provider_error = f"{type(exc).__name__}: {exc}"
             if self.config.mode == LLMMode.LLM_WITH_FALLBACK:
                 used_fallback = True
@@ -279,6 +301,11 @@ class LLMClient:
                 "attempts": provider_result.attempts if provider_result else 0,
                 "input_tokens": provider_result.input_tokens if provider_result else 0,
                 "output_tokens": provider_result.output_tokens if provider_result else 0,
+                "finish_reason": (
+                    provider_result.metadata.get("finish_reason", "unknown")
+                    if provider_result
+                    else getattr(caught_exception, "finish_reason", "unknown")
+                ),
             },
         )
         output = LLMOutput(
@@ -295,6 +322,8 @@ class LLMClient:
         self.trace.append_call(task_id, call)
         self.trace.append_output(task_id, output)
         if status == RunStatus.FAILED:
+            if isinstance(caught_exception, LLMProviderOutputTruncatedError):
+                raise LLMOutputTruncatedError(node_id, error) from caught_exception
             raise ValueError(error)
         return raw_output, call, output
 
@@ -321,6 +350,33 @@ class LLMClient:
         return {
             **raw_output,
             "item": filtered.model_dump(mode="json"),
+        }, rejected
+
+    @staticmethod
+    def _filter_unaligned_stage_claims(
+        *,
+        raw_output: dict[str, Any],
+        artifacts: dict[str, list],
+    ) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+        stage = AnalystClaimsStage(**raw_output.get("item", {}))
+        filtered, rejected = reject_unaligned_claims_v2(
+            stage.items,
+            evidence_competitors={
+                str(item.get("id", "")): str(item.get("competitor", ""))
+                for item in artifacts.get("evidence", [])
+            },
+            known_competitors={
+                str(item.get("name", ""))
+                for item in artifacts.get("product_cards", [])
+            },
+        )
+        if not rejected:
+            return raw_output, []
+        return {
+            **raw_output,
+            "item": stage.model_copy(update={"items": filtered}).model_dump(
+                mode="json"
+            ),
         }, rejected
 
     def _mock_generate(
@@ -355,6 +411,28 @@ class LLMClient:
         if output_schema == "CompetitiveAnalysisPortfolioV2":
             return {
                 "item": self._mock_analysis_portfolio_v2(task_id, artifacts),
+                "generated_by": str(agent_role),
+                "output_language": self.config.output_language,
+            }
+        if output_schema in {
+            "AnalystBriefProfilesStage",
+            "AnalystClaimsStage",
+        }:
+            portfolio = self._mock_analysis_portfolio_v2(task_id, artifacts)
+            if output_schema == "AnalystBriefProfilesStage":
+                item = AnalystBriefProfilesStage(
+                    task_id=task_id,
+                    brief_assessment=portfolio["brief_assessment"],
+                    competitor_profiles=portfolio["competitor_profiles"],
+                )
+            else:
+                item = AnalystClaimsStage(
+                    task_id=task_id,
+                    comparability_notes=portfolio["comparability_notes"],
+                    items=portfolio["items"],
+                )
+            return {
+                "item": item.model_dump(mode="json"),
                 "generated_by": str(agent_role),
                 "output_language": self.config.output_language,
             }
@@ -459,6 +537,71 @@ class LLMClient:
                     for evidence in artifacts.get("evidence", [])
                 },
             )
+            return [item.id]
+        if output_schema == "AnalystBriefProfilesStage":
+            item = AnalystBriefProfilesStage(**raw_output.get("item", {}))
+            self._ensure_task_ids(
+                [item, item.brief_assessment, *item.competitor_profiles],
+                task_id,
+            )
+            known_competitors = {
+                str(card.get("name", ""))
+                for card in artifacts.get("product_cards", [])
+            }
+            invalid_competitors = sorted(
+                profile.name
+                for profile in item.competitor_profiles
+                if profile.name not in known_competitors
+            )
+            if invalid_competitors:
+                raise ValueError(
+                    "AnalystBriefProfilesStage contains unknown competitors: "
+                    + ", ".join(invalid_competitors)
+                )
+            self._ensure_known_refs(
+                item.competitor_profiles,
+                "source_ids",
+                {str(source.get("id", "")) for source in artifacts.get("sources", [])},
+            )
+            self._ensure_known_refs(
+                item.competitor_profiles,
+                "evidence_ids",
+                {str(ev.get("id", "")) for ev in artifacts.get("evidence", [])},
+            )
+            return [item.id]
+        if output_schema == "AnalystClaimsStage":
+            item = AnalystClaimsStage(**raw_output.get("item", {}))
+            self._ensure_task_ids(
+                [item, *item.comparability_notes, *item.items],
+                task_id,
+            )
+            self._ensure_non_empty_refs(item.items, "evidence_ids")
+            known_evidence_ids = {
+                str(ev.get("id", "")) for ev in artifacts.get("evidence", [])
+            }
+            self._ensure_known_refs(item.items, "evidence_ids", known_evidence_ids)
+            self._ensure_known_refs(
+                item.items,
+                "counter_evidence_ids",
+                known_evidence_ids,
+            )
+            known_competitors = {
+                str(card.get("name", ""))
+                for card in artifacts.get("product_cards", [])
+            }
+            invalid_competitors = sorted(
+                {
+                    competitor
+                    for claim in item.items
+                    for competitor in claim.competitors
+                    if competitor not in known_competitors
+                }
+            )
+            if invalid_competitors:
+                raise ValueError(
+                    "AnalystClaimsStage contains unknown competitors: "
+                    + ", ".join(invalid_competitors)
+                )
             return [item.id]
         if output_schema == "AnalysisTaskDraft":
             item = AnalysisTaskDraft(**raw_output.get("item", {}))

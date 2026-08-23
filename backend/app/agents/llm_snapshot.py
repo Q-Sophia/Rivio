@@ -8,6 +8,7 @@ from app.agents.snapshot import (
     WriterAgent,
 )
 from app.llm import LLMClient
+from app.llm.client import LLMOutputTruncatedError
 from app.llm.structured import (
     parse_analysis_claims,
     parse_competitive_analysis_portfolio_v2,
@@ -25,13 +26,18 @@ from app.schemas import (
     AnalysisClaim,
     AnalysisClaimV2,
     AnalysisTask,
+    AnalystBriefProfilesStage,
+    AnalystClaimsStage,
     BriefAssessment,
     CitationCheck,
     ComparabilityNote,
+    CompetitiveAnalysisPortfolioV2,
     CompetitiveReport,
     CompetitorProfile,
     ContextBundle,
     EvidenceCoverage,
+    InformationNeed,
+    KeyIntelligenceQuestion,
     LLMMode,
     ProductCard,
     ResearchGap,
@@ -245,7 +251,13 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         artifact_types = ["sources", "evidence", "product_cards"]
         if preserve_research_artifacts:
             artifact_types.extend(
-                ["research_plans", "evidence_coverage", "research_gaps"]
+                [
+                    "research_plans",
+                    "research_kiqs",
+                    "research_information_needs",
+                    "evidence_coverage",
+                    "research_gaps",
+                ]
             )
         raw = self.load_many(context, artifact_types)
         sources = [SourceDocument(**item) for item in raw["sources"]]
@@ -264,6 +276,16 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             allow_candidate=True,
         )
         task = AnalysisTask(**context.task.model_dump(mode="json"))
+        if preserve_research_artifacts:
+            return self._execute_research_stages(
+                context=context,
+                task=task,
+                prompt=prompt,
+                raw=raw,
+                sources=sources,
+                evidence=evidence,
+                product_cards=product_cards,
+            )
         runtime_prompt = prompt.build_runtime_prompt(task)
         llm_artifacts = {
             **raw,
@@ -369,6 +391,305 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                     + "（Step6C 专业分析失败后使用 V1 规则回退）"
                 }
             )
+
+    def _execute_research_stages(
+        self,
+        *,
+        context: AgentContext,
+        task: AnalysisTask,
+        prompt,
+        raw: dict[str, list],
+        sources: list[SourceDocument],
+        evidence: list[SourceEvidence],
+        product_cards: list[ProductCard],
+    ) -> AgentResult:
+        """Build Step6F Portfolio from two bounded LLM outputs plus upstream facts."""
+
+        deduped_evidence = self._dedupe_evidence(evidence)
+        source_by_id = {item.id: item for item in sources}
+        bundle = self.load_context_bundle(context)
+
+        brief_raw, brief_call_count, brief_input_count = self._run_analysis_stage(
+            context=context,
+            bundle=bundle,
+            prompt=prompt,
+            stage="brief_profiles",
+            output_schema="AnalystBriefProfilesStage",
+            prompt_summary=(
+                "阶段 A：只根据当前 AnalysisTask、精简 ProductCard 和可追溯 Evidence，"
+                "生成简洁的 BriefAssessment 与 CompetitorProfile。不要生成 Claims、"
+                "EvidenceCoverage、ResearchGap、KIQ 或 InformationNeed；不要逐条复述证据。"
+            ),
+            artifact_factory=lambda strict: self._stage_artifacts(
+                task=task,
+                evidence=self._select_stage_evidence(
+                    deduped_evidence,
+                    max_per_competitor=5 if strict else 8,
+                    max_total=20 if strict else 32,
+                ),
+                source_by_id=source_by_id,
+                product_cards=product_cards,
+            ),
+        )
+        brief_stage = AnalystBriefProfilesStage(**brief_raw.get("item", {}))
+
+        claims_raw, claims_call_count, claims_input_count = self._run_analysis_stage(
+            context=context,
+            bundle=bundle,
+            prompt=prompt,
+            stage="claims",
+            output_schema="AnalystClaimsStage",
+            prompt_summary=(
+                "阶段 B：只生成 ComparabilityNote 与当前证据能够支持的 AnalysisClaimV2。"
+                "每条 Claim 必须引用输入中真实 evidence_id；资料不足时降低结论范围并披露"
+                "不确定性，不得把资料缺失写成产品不具备。不要复制 Brief、Profile、"
+                "EvidenceCoverage、ResearchGap、KIQ 或 InformationNeed。最多生成 18 条结论。"
+            ),
+            artifact_factory=lambda strict: self._stage_artifacts(
+                task=task,
+                evidence=self._select_stage_evidence(
+                    deduped_evidence,
+                    max_per_competitor=8 if strict else 16,
+                    max_total=32 if strict else 60,
+                ),
+                source_by_id=source_by_id,
+                product_cards=product_cards,
+                competitor_profiles=brief_stage.competitor_profiles,
+            ),
+        )
+        claims_stage = AnalystClaimsStage(**claims_raw.get("item", {}))
+
+        coverage = [EvidenceCoverage(**item) for item in raw["evidence_coverage"]]
+        gaps = [ResearchGap(**item) for item in raw["research_gaps"]]
+        questions = [
+            KeyIntelligenceQuestion(**item) for item in raw["research_kiqs"]
+        ]
+        needs = [
+            InformationNeed(**item)
+            for item in raw["research_information_needs"]
+        ]
+        portfolio = CompetitiveAnalysisPortfolioV2(
+            id=f"portfolio_{context.task_id}_step6f",
+            task_id=context.task_id,
+            prompt_id=prompt.prompt_id,
+            prompt_version=prompt.version,
+            brief_assessment=brief_stage.brief_assessment,
+            competitor_profiles=brief_stage.competitor_profiles,
+            key_intelligence_questions=questions,
+            information_needs=needs,
+            evidence_coverage=coverage,
+            comparability_notes=claims_stage.comparability_notes,
+            items=[
+                item.model_copy(
+                    update={
+                        "produced_by_agent_run_id": self.agent_run_id(context)
+                    }
+                )
+                for item in claims_stage.items
+            ],
+            research_gaps=gaps,
+            metadata={
+                "source": "step6f_research_analysis",
+                "assembly": "python_deterministic_v1",
+                "llm_stage_count": 2,
+                "llm_call_count": brief_call_count + claims_call_count,
+                "stage_input_evidence_counts": {
+                    "brief_profiles": brief_input_count,
+                    "claims": claims_input_count,
+                },
+                "deduped_evidence_count": len(deduped_evidence),
+                "raw_evidence_count": len(evidence),
+                "upstream_coverage_preserved": True,
+                "upstream_research_gaps_preserved": True,
+                "prompt_hash": prompt.content_hash,
+                "prompt_status": prompt.status,
+            },
+        )
+        validate_portfolio_v2_refs(
+            portfolio,
+            known_source_ids={item.id for item in sources},
+            known_evidence_ids={item.id for item in deduped_evidence},
+            known_competitors={item.name for item in product_cards},
+            evidence_competitors={
+                item.id: item.competitor for item in deduped_evidence
+            },
+        )
+        claims = portfolio_v2_to_legacy_claims(portfolio)
+        validate_non_empty_evidence_ids(claims)
+
+        artifacts_to_save = {
+            "analysis_portfolios": [portfolio],
+            "brief_assessments": [portfolio.brief_assessment],
+            "competitor_profiles": portfolio.competitor_profiles,
+            "intelligence_questions": portfolio.key_intelligence_questions,
+            "information_needs": portfolio.information_needs,
+            "comparability_notes": portfolio.comparability_notes,
+            "claims_v2": portfolio.items,
+            "claims": claims,
+            "analysis_evidence_coverage": portfolio.evidence_coverage,
+            "analysis_research_gaps": portfolio.research_gaps,
+        }
+        for artifact_type, items in artifacts_to_save.items():
+            self.save_many(
+                context,
+                artifact_type,
+                items,
+                f"Step6F 已保存 {len(items)} 个 {artifact_type} 结构化产物",
+            )
+        return self.make_result(
+            context,
+            output_summary=(
+                f"通过 2 个有界结构化阶段组装专业分析："
+                f"{len(portfolio.competitor_profiles)} 个竞品画像、"
+                f"{len(portfolio.items)} 个 V2 结论；"
+                f"本次实际 LLM 调用 {brief_call_count + claims_call_count} 次"
+            ),
+            output_artifacts={
+                artifact_type: [item.id for item in items]
+                for artifact_type, items in artifacts_to_save.items()
+            },
+        )
+
+    def _run_analysis_stage(
+        self,
+        *,
+        context: AgentContext,
+        bundle: ContextBundle,
+        prompt,
+        stage: str,
+        output_schema: str,
+        prompt_summary: str,
+        artifact_factory,
+    ) -> tuple[dict, int, int]:
+        """Retry a stage once, and only when the provider explicitly reports length."""
+
+        for attempt in (1, 2):
+            strict = attempt == 2
+            artifacts = artifact_factory(strict)
+            node_id = f"{context.node_id}_{stage}_attempt_{attempt}"
+            try:
+                llm_raw, _call, _output = self.llm_client.generate_structured(
+                    task_id=context.task_id,
+                    agent_role=self.role,
+                    agent_run_id=self.agent_run_id(context),
+                    node_id=node_id,
+                    context_bundle=bundle,
+                    output_schema=output_schema,
+                    prompt_id=prompt.prompt_id,
+                    prompt_version=prompt.version,
+                    prompt_hash=prompt.content_hash,
+                    prompt_summary=(
+                        prompt_summary
+                        + (
+                            " 本次为被截断后的唯一重试：进一步压缩表达，只保留最高决策价值字段。"
+                            if strict
+                            else ""
+                        )
+                    ),
+                    artifacts=artifacts,
+                )
+                return llm_raw, attempt, len(artifacts["evidence"])
+            except LLMOutputTruncatedError as exc:
+                if attempt == 2:
+                    raise LLMOutputTruncatedError(
+                        stage,
+                        f"分析子阶段在 2 次有限尝试后仍因 finish_reason=length 截断；{exc}",
+                    ) from exc
+        raise AssertionError("unreachable")
+
+    @staticmethod
+    def _dedupe_evidence(
+        evidence: list[SourceEvidence],
+    ) -> list[SourceEvidence]:
+        deduped: dict[str, SourceEvidence] = {}
+        for item in evidence:
+            existing = deduped.get(item.id)
+            if existing is None or item.confidence > existing.confidence:
+                deduped[item.id] = item
+        return list(deduped.values())
+
+    @staticmethod
+    def _select_stage_evidence(
+        evidence: list[SourceEvidence],
+        *,
+        max_per_competitor: int,
+        max_total: int,
+    ) -> list[SourceEvidence]:
+        by_competitor: dict[str, list[SourceEvidence]] = {}
+        for item in evidence:
+            by_competitor.setdefault(item.competitor, []).append(item)
+
+        selected: list[SourceEvidence] = []
+        for competitor in sorted(by_competitor):
+            buckets: dict[str, list[SourceEvidence]] = {}
+            for item in by_competitor[competitor]:
+                buckets.setdefault(str(item.dimension), []).append(item)
+            for items in buckets.values():
+                items.sort(key=lambda item: (-item.confidence, item.id))
+            dimension_order = sorted(
+                buckets,
+                key=lambda dimension: (dimension == "other", dimension),
+            )
+            competitor_items: list[SourceEvidence] = []
+            round_index = 0
+            while len(competitor_items) < max_per_competitor:
+                added = False
+                for dimension in dimension_order:
+                    items = buckets[dimension]
+                    if round_index < len(items):
+                        competitor_items.append(items[round_index])
+                        added = True
+                        if len(competitor_items) >= max_per_competitor:
+                            break
+                if not added:
+                    break
+                round_index += 1
+            selected.extend(competitor_items)
+        return selected[:max_total]
+
+    @staticmethod
+    def _stage_artifacts(
+        *,
+        task: AnalysisTask,
+        evidence: list[SourceEvidence],
+        source_by_id: dict[str, SourceDocument],
+        product_cards: list[ProductCard],
+        competitor_profiles: list[CompetitorProfile] | None = None,
+    ) -> dict[str, list]:
+        evidence_ids = {item.id for item in evidence}
+        source_ids = {item.source_id for item in evidence}
+        cards = [
+            card.model_copy(
+                update={
+                    "source_ids": [
+                        item for item in card.source_ids if item in source_ids
+                    ],
+                    "evidence_ids": [
+                        item for item in card.evidence_ids if item in evidence_ids
+                    ],
+                    "target_users": card.target_users[:4],
+                    "core_features": card.core_features[:6],
+                    "strengths": card.strengths[:4],
+                    "weaknesses": card.weaknesses[:4],
+                }
+            ).model_dump(mode="json")
+            for card in product_cards
+        ]
+        result = {
+            "analysis_task": [task.model_dump(mode="json")],
+            "sources": [
+                source_by_id[source_id].model_dump(mode="json")
+                for source_id in sorted(source_ids)
+                if source_id in source_by_id
+            ],
+            "evidence": [item.model_dump(mode="json") for item in evidence],
+            "product_cards": cards,
+        }
+        if competitor_profiles is not None:
+            result["competitor_profiles"] = [
+                item.model_dump(mode="json") for item in competitor_profiles
+            ]
+        return result
 
 
 class LLMWriterAgent(LLMSnapshotAgent, WriterAgent):

@@ -832,12 +832,12 @@ async function loadResearchAnalysis(taskId) {
 async function runResearchAnalysis() {
   const taskId = qs("#research-planning").dataset.taskId;
   if (!taskId || !state.researchCanAnalyze) return;
-  const confirmed = window.confirm("本次将调用 1 次真实 DeepSeek Analyst，读取当前结构化研究产物并生成分析结论。是否继续？");
+  const confirmed = window.confirm("本次通常调用 2 次真实 DeepSeek Analyst；仅当某个结构化阶段因长度截断时允许重试 1 次，总计最多 4 次。不会重新搜索或采集网页。是否继续？");
   if (!confirmed) return;
   const button = qs("#run-research-analysis-btn");
   button.disabled = true;
   button.textContent = "DeepSeek 正在分析…";
-  qs("#research-analysis-copy").textContent = "正在进行 1 次真实 Analyst 调用；不会重新搜索、采集或调用 Writer。";
+  qs("#research-analysis-copy").textContent = "正在进行两阶段真实 Analyst 调用（通常 2 次，截断重试时最多 4 次）；不会重新搜索、采集或调用 Writer。";
   try {
     const payload = await fetchJson(endpoints.researchAnalysis(taskId), {
       method: "POST",

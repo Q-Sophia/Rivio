@@ -155,9 +155,38 @@ def reject_unaligned_portfolio_v2_claims(
     claims remain in audit metadata so the original model failure is visible.
     """
 
+    accepted, rejected = reject_unaligned_claims_v2(
+        portfolio.items,
+        evidence_competitors=evidence_competitors,
+        known_competitors=known_competitors,
+    )
+    if not rejected:
+        return portfolio, []
+
+    metadata = {
+        **portfolio.metadata,
+        "claim_alignment_filter": {
+            "policy_version": "v1",
+            "strategy": "reject_whole_claim_without_rewrite",
+            "original_claims_count": len(portfolio.items),
+            "accepted_claims_count": len(accepted),
+            "rejected_claim_ids": [item["claim_id"] for item in rejected],
+        },
+    }
+    return portfolio.model_copy(update={"items": accepted, "metadata": metadata}), rejected
+
+
+def reject_unaligned_claims_v2(
+    claims,
+    *,
+    evidence_competitors: dict[str, str],
+    known_competitors: set[str],
+) -> tuple[list, list[dict[str, Any]]]:
+    """Apply the evidence/competitor alignment rule to a bounded claim stage."""
+
     accepted = []
     rejected: list[dict[str, Any]] = []
-    for claim in portfolio.items:
+    for claim in claims:
         reasons: list[str] = []
         auditable_text = " ".join(
             [
@@ -203,20 +232,7 @@ def reject_unaligned_portfolio_v2_claims(
         else:
             accepted.append(claim)
 
-    if not rejected:
-        return portfolio, []
-
-    metadata = {
-        **portfolio.metadata,
-        "claim_alignment_filter": {
-            "policy_version": "v1",
-            "strategy": "reject_whole_claim_without_rewrite",
-            "original_claims_count": len(portfolio.items),
-            "accepted_claims_count": len(accepted),
-            "rejected_claim_ids": [item["claim_id"] for item in rejected],
-        },
-    }
-    return portfolio.model_copy(update={"items": accepted, "metadata": metadata}), rejected
+    return accepted, rejected
 
 
 def validate_portfolio_v2_refs(
