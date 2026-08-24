@@ -482,6 +482,29 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "core_scenarios": string_array,
                 "focus_areas": string_array,
                 "constraints": string_array,
+
+                # ResearchBrief V1
+                "research_mode": {
+                    "type": "string",
+                    "enum": [
+                        "TARGET_CENTRIC_COMPETITIVE_ANALYSIS",
+                        "EXPLICIT_COMPARISON",
+                        "MARKET_LANDSCAPE",
+                        "PRODUCT_DEVELOPMENT_RESEARCH",
+                        "TARGET_RESEARCH",
+                    ],
+                },
+                "primary_target": {"type": "string"},
+                "comparison_targets": string_array,
+                "reference_products": string_array,
+
+                "target_profiling": {"type": "boolean"},
+                "market_scoping": {"type": "boolean"},
+                "competitor_discovery": {"type": "boolean"},
+                "cross_competitor_comparison": {"type": "boolean"},
+                "decision_oriented_analysis": {"type": "boolean"},
+                "research_gap_tracking": {"type": "boolean"},
+
                 "report_subject": {"type": "string"},
                 "preferred_title": {"type": "string"},
                 "missing_fields": string_array,
@@ -493,10 +516,35 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 },
             },
             "required": [
-                "id", "task_id", "request_text", "decision_question", "industry",
-                "competitors", "target_customers", "core_scenarios", "focus_areas",
-                "constraints", "report_subject", "preferred_title", "missing_fields",
-                "clarification_questions", "ready_for_confirmation", "status",
+                "id",
+                "task_id",
+                "request_text",
+                "decision_question",
+                "industry",
+                "competitors",
+                "target_customers",
+                "core_scenarios",
+                "focus_areas",
+                "constraints",
+
+                "research_mode",
+                "primary_target",
+                "comparison_targets",
+                "reference_products",
+
+                "target_profiling",
+                "market_scoping",
+                "competitor_discovery",
+                "cross_competitor_comparison",
+                "decision_oriented_analysis",
+                "research_gap_tracking",
+
+                "report_subject",
+                "preferred_title",
+                "missing_fields",
+                "clarification_questions",
+                "ready_for_confirmation",
+                "status",
             ],
         }
         if output_schema == "ProductCard[]":

@@ -9,24 +9,21 @@ const state = {
   activeLegacyRun: null,
   data: {},
   runs: [],
+  recentTasks: [],
+  workspaceLoadSequence: 0,
   step6cExperiment: null,
   reportEvidenceCollapsed: false,
   intentDraft: null,
   intentCall: null,
   recentDrafts: [],
   analysisTask: null,
-  compatibilityAssessment: null,
-  executionPlan: null,
-  executionAuthorization: null,
-  executionRun: null,
-  executionEvents: [],
-  executionEventSource: null,
   researchPlan: null,
   researchTasks: [],
   researchLoopRun: null,
   researchLoopEvents: [],
   researchLoopEventSource: null,
   researchAnalysis: null,
+  researchReporting: null,
   researchCanAnalyze: false,
   integrationStatus: null,
 };
@@ -65,6 +62,7 @@ const roleLabels = {
   citation: "Citation（引用检查）",
   writer: "Writer（写作）",
   reviewer: "Reviewer（审查）",
+  orchestrator: "Orchestrator（编排）",
 };
 
 const taskLabels = {
@@ -74,6 +72,7 @@ const taskLabels = {
   check_citations: "检查结论引用",
   build_report: "生成竞品报告",
   review_report: "审查最终报告",
+  quality_gate_report: "执行报告质量闸门",
   supplement_analysis: "补充薄弱分析",
   evaluate_evidence_coverage: "更新证据覆盖并判断补采",
   supplement_collection: "按证据缺口补充采集",
@@ -81,16 +80,12 @@ const taskLabels = {
 
 const endpoints = {
   runs: "/api/runs",
+  analysisTasks: "/api/analysis-tasks?limit=20",
   taskDrafts: "/api/task-drafts",
   integrations: "/api/integrations/status",
   parseTaskDraft: "/api/task-drafts/parse",
   taskDraft: (draftId) => `/api/task-drafts/${encodeURIComponent(draftId)}`,
   confirmTaskDraft: (draftId) => `/api/task-drafts/${encodeURIComponent(draftId)}/confirm`,
-  executionPlan: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/plan`,
-  authorizeExecution: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/authorize`,
-  startExecution: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/execute`,
-  executionStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/execution`,
-  executionEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/events/stream?after=${after}`,
   researchPlan: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-plan`,
   runCollectorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/collector/run-once`,
   runExtractorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/extractor/run-once`,
@@ -99,6 +94,7 @@ const endpoints = {
   researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-loop`,
   researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-loop/events/stream?after=${after}`,
   researchAnalysis: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-analysis`,
+  researchReporting: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-reporting`,
   workspace: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/workspace`,
   latestStep6CExperiment: "/api/experiments/step6c/latest",
   dashboard: (runId, taskId) =>
@@ -126,7 +122,8 @@ const endpoints = {
   reportStatements: (taskId) => `/api/tasks/${taskId}/report-statements`,
 };
 
-const ACTIVE_TASK_STORAGE_KEY = "competitive-intel-agents.activeTaskId";
+const ACTIVE_TASK_STORAGE_KEY = "lastActiveTaskId";
+const LEGACY_ACTIVE_TASK_STORAGE_KEY = "competitive-intel-agents.activeTaskId";
 const EMPTY_STAGE_COPY = "当前任务尚未生成该阶段产物。";
 const TASK_WORKSPACE_VIEWS = new Set(["overview", "workflow", "llm", "claims", "report", "governance"]);
 
@@ -161,15 +158,54 @@ function normalizeWorkspaceData(payload = {}, taskId = "") {
   return normalized;
 }
 
-function setActiveTaskContext(taskId) {
+function getTaskIdFromUrl() {
+  return new URLSearchParams(window.location.search).get("task")?.trim() || "";
+}
+
+function getStoredActiveTaskId() {
+  return (
+    window.localStorage.getItem(ACTIVE_TASK_STORAGE_KEY)
+    || window.localStorage.getItem(LEGACY_ACTIVE_TASK_STORAGE_KEY)
+    || ""
+  ).trim();
+}
+
+function taskRestoreCandidates(urlTaskId, storedTaskId) {
+  return [urlTaskId, storedTaskId].filter(
+    (taskId, index, items) => taskId && items.indexOf(taskId) === index,
+  );
+}
+
+function syncTaskUrl(taskId, historyMode = "replace") {
+  if (historyMode === "none") return;
+  const url = new URL(window.location.href);
+  if (taskId) url.searchParams.set("task", taskId);
+  else url.searchParams.delete("task");
+  const nextUrl = `${url.pathname}${url.search}${url.hash}`;
+  if (historyMode === "push") window.history.pushState({ taskId }, "", nextUrl);
+  else window.history.replaceState({ taskId }, "", nextUrl);
+}
+
+function taskWorkspaceUrl(taskId) {
+  const url = new URL(window.location.href);
+  url.searchParams.set("task", taskId);
+  return `${url.pathname}${url.search}${url.hash}`;
+}
+
+function setActiveTaskContext(taskId, { historyMode = "replace" } = {}) {
   state.activeTaskId = taskId;
   state.activeLegacyRun = null;
   if (taskId) {
     window.localStorage.setItem(ACTIVE_TASK_STORAGE_KEY, taskId);
+    window.localStorage.removeItem(LEGACY_ACTIVE_TASK_STORAGE_KEY);
     qs("#task-id").value = taskId;
+    const planning = qs("#research-planning");
+    if (planning) planning.dataset.taskId = taskId;
   }
+  syncTaskUrl(taskId, historyMode);
   const selector = qs("#run-id");
   if (selector) selector.value = "";
+  renderRecentTasks();
 }
 
 function qs(selector) {
@@ -344,7 +380,7 @@ function renderIntentDraft(draft, call = null) {
     state.analysisTask = { id: confirmedTaskId };
     setActiveTaskContext(confirmedTaskId);
     showPlanningShell(confirmedTaskId);
-    loadExecutionPlanning(confirmedTaskId);
+    loadResearchPlan(confirmedTaskId);
   } else {
     resetExecutionPlanning();
   }
@@ -431,14 +467,15 @@ async function confirmDraft() {
       body: JSON.stringify(getDraftEdits()),
     });
     state.analysisTask = payload.analysis_task;
-    setActiveTaskContext(payload.analysis_task.id);
+    setActiveTaskContext(payload.analysis_task.id, { historyMode: "push" });
     renderIntentDraft(payload.draft);
     await loadTaskWorkspace(payload.analysis_task.id);
     const result = qs("#confirmed-task");
     result.innerHTML = `<strong>任务已确认，尚未开始分析。</strong><br />任务编号：${escapeHtml(payload.analysis_task.id)} · 状态：${escapeHtml(payload.analysis_task.status)} · execution_started=false（尚未启动执行）`;
     result.classList.remove("hidden");
-    setIntentStatus("任务已经保存。下一步会先检查当前资料是否适用于该需求，再由你决定是否启动。", "ok");
+    setIntentStatus("任务已经保存。下一步由 Research Planner 生成当前任务的研究计划。", "ok");
     await loadRecentDrafts();
+    await loadRecentTasks();
   } catch (error) {
     setIntentStatus(`确认失败：${error.message}`, "error");
     updateDraftReadiness();
@@ -448,25 +485,16 @@ async function confirmDraft() {
 }
 
 function resetExecutionPlanning() {
-  closeExecutionEventStream();
   closeResearchLoopEventStream();
   state.analysisTask = null;
-  state.compatibilityAssessment = null;
-  state.executionPlan = null;
-  state.executionAuthorization = null;
-  state.executionRun = null;
-  state.executionEvents = [];
   state.researchPlan = null;
   state.researchTasks = [];
   state.researchLoopRun = null;
   state.researchLoopEvents = [];
   state.researchAnalysis = null;
+  state.researchReporting = null;
   state.researchCanAnalyze = false;
   qs("#research-planning").classList.add("hidden");
-  qs("#execution-planning").classList.add("hidden");
-  qs("#compatibility-result").classList.add("hidden");
-  qs("#queue-result").classList.add("hidden");
-  qs("#execution-runner").classList.add("hidden");
 }
 
 function showPlanningShell(taskId) {
@@ -477,31 +505,6 @@ function showPlanningShell(taskId) {
   qs("#build-research-plan-btn").disabled = false;
   qs("#build-research-plan-btn").textContent = "生成研究计划";
   qs("#research-plan-copy").textContent = "第一版使用 Mock（模拟）规划，不调用 DeepSeek，也不访问网络。";
-  qs("#execution-planning").classList.remove("hidden");
-  qs("#execution-planning").dataset.taskId = taskId;
-  qs("#compatibility-status").textContent = "尚未检查";
-  qs("#compatibility-status").className = "count-label";
-  qs("#planning-status-copy").textContent = "任务已经确认。资料检查不会调用大模型，也不会启动分析。";
-  qs("#plan-generate-btn").disabled = false;
-  qs("#plan-generate-btn").textContent = "检查资料并生成计划";
-  qs("#compatibility-result").classList.add("hidden");
-}
-
-async function loadExecutionPlanning(taskId) {
-  showPlanningShell(taskId);
-  loadResearchPlan(taskId);
-  try {
-    const payload = await fetchJson(endpoints.executionPlan(taskId));
-    if (qs("#execution-planning").dataset.taskId !== taskId) return;
-    renderExecutionPlanning(payload);
-  } catch (error) {
-    if (qs("#execution-planning").dataset.taskId !== taskId) return;
-    if (String(error.message).startsWith("404")) {
-      qs("#planning-status-copy").textContent = "尚未生成计划。点击按钮后只做本地确定性资料检查，不调用 DeepSeek。";
-      return;
-    }
-    qs("#planning-status-copy").textContent = `读取执行计划失败：${error.message}`;
-  }
 }
 
 function renderResearchPlan(payload) {
@@ -820,12 +823,88 @@ function renderResearchAnalysis(payload) {
   }
 }
 
+function renderResearchReporting(payload) {
+  state.researchReporting = payload;
+  const completed = Boolean(payload?.completed);
+  const writerRequired = Boolean(payload?.writer_required);
+  const analysisCompleted = Boolean(state.researchAnalysis?.completed);
+  const button = qs("#run-research-reporting-btn");
+  button.disabled = completed || !analysisCompleted;
+  button.textContent = completed
+    ? "正式报告已生成"
+    : writerRequired
+      ? "生成竞品分析报告（额外 1 次 DeepSeek）"
+      : "继续审查与质量闸门（不调用 DeepSeek）";
+
+  const result = qs("#research-reporting-result");
+  const report = payload?.report;
+  const review = payload?.review;
+  const gate = payload?.quality_gate;
+  if (report) {
+    result.innerHTML = `<strong>${escapeHtml(report.title || "正式竞品分析报告")}</strong><br />报告论点映射：${escapeHtml((payload.report_statements || []).length)} 条 · Reviewer：${review ? escapeHtml(review.approved ? "通过" : "需修订") : "尚未生成"} · QualityGate：${gate ? escapeHtml(gate.status || "已生成") : "尚未生成"}<br />Writer 真实调用记录：${escapeHtml((payload.writer_llm_calls || []).length)} 次`;
+    result.classList.remove("hidden");
+  } else {
+    result.classList.add("hidden");
+  }
+
+  if (completed) {
+    qs("#research-reporting-copy").textContent = "正式报告、Reviewer 审查和 QualityGate 已生成；可在“分析报告”和“质量治理”页面查看当前任务产物。";
+  } else if (report) {
+    qs("#research-reporting-copy").textContent = "Writer 报告已保留，当前只需从 Reviewer 或 QualityGate 阶段恢复，不会重复调用 DeepSeek。";
+  } else if (analysisCompleted) {
+    qs("#research-reporting-copy").textContent = "将复用当前任务已有 Analyst/Citation 产物；Writer 额外调用 1 次真实 DeepSeek，不会重新搜索、采集、抽取或分析。";
+  }
+}
+
+async function loadResearchReporting(taskId) {
+  try {
+    const payload = await fetchJson(endpoints.researchReporting(taskId));
+    renderResearchReporting(payload);
+  } catch (error) {
+    qs("#research-reporting-copy").textContent = `报告链路状态读取失败：${error.message}`;
+  }
+}
+
 async function loadResearchAnalysis(taskId) {
   try {
     const payload = await fetchJson(endpoints.researchAnalysis(taskId));
     renderResearchAnalysis(payload);
+    await loadResearchReporting(taskId);
   } catch (error) {
     qs("#research-analysis-copy").textContent = `分析结论状态读取失败：${error.message}`;
+  }
+}
+
+async function runResearchReporting() {
+  const taskId = qs("#research-planning").dataset.taskId;
+  const current = state.researchReporting || {};
+  if (!taskId || !state.researchAnalysis?.completed || current.completed) return;
+  const writerRequired = Boolean(current.writer_required);
+  const message = writerRequired
+    ? "本次会额外调用 1 次真实 DeepSeek Writer。只读取当前任务已有的 Analyst/Citation 产物，不会重新搜索、采集、抽取、分析或重跑 Citation。是否继续？"
+    : "已有 Writer 报告。本次只恢复 Reviewer 与 QualityGate，不会调用 DeepSeek。是否继续？";
+  if (!window.confirm(message)) return;
+
+  const button = qs("#run-research-reporting-btn");
+  button.disabled = true;
+  button.textContent = writerRequired ? "DeepSeek 正在写报告…" : "正在恢复质量阶段…";
+  qs("#research-reporting-copy").textContent = writerRequired
+    ? "正在进行 1 次真实 DeepSeek Writer 调用；Writer 成功后会离线执行 Reviewer 与 QualityGate。"
+    : "正在从已有报告恢复 Reviewer 与 QualityGate；不会产生新的模型费用。";
+  try {
+    const payload = await fetchJson(endpoints.researchReporting(taskId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "deepseek",
+        acknowledge_real_llm_call: writerRequired,
+      }),
+    });
+    renderResearchReporting(payload);
+    await loadTaskWorkspace(taskId);
+  } catch (error) {
+    qs("#research-reporting-copy").textContent = `正式报告链路未完成：${error.message}。已成功保存的上游阶段产物会保留，可再次点击恢复。`;
+    await loadResearchReporting(taskId);
   }
 }
 
@@ -848,6 +927,7 @@ async function runResearchAnalysis() {
       }),
     });
     renderResearchAnalysis(payload);
+    await loadResearchReporting(taskId);
   } catch (error) {
     qs("#research-analysis-copy").textContent = `DeepSeek 分析未完成：${error.message}`;
     button.disabled = false;
@@ -888,293 +968,90 @@ async function buildResearchPlan() {
   }
 }
 
-function compatibilityStatusLabel(status) {
+function taskStatusLabel(status) {
   return {
-    compatible: "完全兼容",
-    partial: "部分兼容",
-    incompatible: "不兼容",
-  }[status] || status || "未知";
-}
-
-function renderExecutionPlanning(payload) {
-  const assessment = payload.compatibility_assessment;
-  const plan = payload.execution_plan;
-  const authorization = payload.execution_authorization;
-  state.analysisTask = payload.analysis_task;
-  state.compatibilityAssessment = assessment;
-  state.executionPlan = plan;
-  state.executionAuthorization = authorization;
-  const compatible = assessment.status === "compatible";
-  const authorized = plan.status === "authorized";
-
-  qs("#compatibility-result").classList.remove("hidden");
-  const status = qs("#compatibility-status");
-  status.textContent = compatibilityStatusLabel(assessment.status);
-  status.className = `count-label tag ${compatible ? "true" : "false"}`;
-  qs("#planning-status-copy").textContent = compatible
-    ? "当前人工快照可直接复用于旧版六步执行；研究流程仍会继续记录证据缺口。"
-    : "当前人工快照不能安全复用于旧版六步执行，但不会阻止研究规划、继续采集或基于已有证据形成阶段性分析。";
-  qs("#plan-generate-btn").textContent = authorized ? "计划已授权" : "重新检查资料";
-  qs("#plan-generate-btn").disabled = authorized;
-
-  qs("#compatibility-facts").innerHTML = [
-    ["资料集", assessment.dataset_label],
-    ["竞品覆盖", `${Math.round((assessment.competitor_coverage_ratio || 0) * 100)}%`],
-    ["来源文档", `${assessment.source_count} 个`],
-    ["结构化证据", `${assessment.evidence_count} 条`],
-  ].map(([label, value]) => `<div class="compatibility-fact"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
-
-  const matchedLines = Object.entries(assessment.matched_competitor_map || {}).map(
-    ([requested, datasetName]) => `<div class="ok-line">✓ ${escapeHtml(requested)} → ${escapeHtml(datasetName)}</div>`,
-  );
-  const missingLines = (assessment.missing_competitors || []).map(
-    (item) => `<div class="warning-line">待采集竞品资料：${escapeHtml(item)}</div>`,
-  );
-  const unsupportedLines = (assessment.unsupported_focus_areas || []).map(
-    (item) => `<div class="warning-line">待补充分析维度：${escapeHtml(item)}</div>`,
-  );
-  qs("#compatibility-coverage").innerHTML = [
-    `<div class="${assessment.industry_match ? "ok-line" : "blocked-line"}">${assessment.industry_match ? "✓ 行业场景匹配" : "行业场景不匹配"}</div>`,
-    ...matchedLines,
-    ...missingLines,
-    ...unsupportedLines,
-  ].join("");
-  const reasonLines = [
-    ...(assessment.blocking_reasons || []).map((item) => `<div class="blocked-line">${escapeHtml(item)}</div>`),
-    ...(assessment.warnings || []).map((item) => `<div class="warning-line">${escapeHtml(item)}</div>`),
-    `<div>${escapeHtml(assessment.recommended_action || "")}</div>`,
-  ];
-  qs("#compatibility-reasons").innerHTML = reasonLines.join("");
-
-  qs("#execution-plan-title").textContent = plan.title;
-  qs("#plan-call-estimate").textContent = `${plan.estimated_real_llm_calls} 次真实 + ${plan.estimated_mock_llm_calls} 次模拟`;
-  qs("#execution-plan-steps").innerHTML = (plan.steps || []).map(
-    (step, index) => `
-      <div class="execution-step ${step.status === "blocked" ? "blocked" : ""}">
-        <span class="execution-step-index">${String(index + 1).padStart(2, "0")}</span>
-        <div><strong>${escapeHtml(step.label)}</strong><small>${escapeHtml(step.note || `${step.agent_role} · ${step.status}`)}</small></div>
-        <span class="execution-step-provider">${escapeHtml(step.provider)}</span>
-      </div>
-    `,
-  ).join("");
-
-  const ack = qs("#dataset-scope-ack");
-  ack.checked = Boolean(authorization);
-  ack.disabled = !plan.authorization_available || authorized;
-  const authorizeButton = qs("#authorize-execution-btn");
-  authorizeButton.textContent = authorized
-    ? "已授权并加入队列"
-    : plan.authorization_available
-      ? "授权并加入执行队列"
-      : "旧快照不适用，请走研究流程";
-  authorizeButton.disabled = !plan.authorization_available || !ack.checked || authorized;
-  if (authorization) {
-    const queueResult = qs("#queue-result");
-    queueResult.innerHTML = `<strong>任务已加入执行队列，尚未开始后台执行。</strong><br />授权编号：${escapeHtml(authorization.id)} · queue_status=${escapeHtml(authorization.queue_status)} · execution_started=false（尚未执行）`;
-    queueResult.classList.remove("hidden");
-    qs("#execution-runner").classList.remove("hidden");
-    loadExecutionStatus(payload.analysis_task.id);
-  } else {
-    qs("#queue-result").classList.add("hidden");
-    qs("#execution-runner").classList.add("hidden");
-  }
-}
-
-function executionStatusLabel(status) {
-  return {
+    pending: "等待开始",
     queued: "排队中",
-    running: "执行中",
+    running: "运行中",
+    in_progress: "进行中",
+    analyzed: "已生成分析",
+    reported: "已生成报告",
+    requires_human: "需要人工处理",
+    failed: "失败",
     completed: "已完成",
-    failed: "执行失败",
-  }[status] || status || "等待启动";
+  }[status] || status || "未知状态";
 }
 
-function renderExecutionRuntime(run, events = state.executionEvents) {
-  state.executionRun = run;
-  state.executionEvents = events || [];
-  const status = run?.status || "pending";
-  const percent = Number(run?.progress_percent || 0);
-  const statusElement = qs("#execution-run-status");
-  statusElement.textContent = executionStatusLabel(status);
-  statusElement.className = `count-label tag ${status === "completed" ? "true" : status === "failed" ? "false" : "warning"}`;
-  qs("#execution-progress-bar").style.width = `${Math.min(Math.max(percent, 0), 100)}%`;
-  qs("#execution-progress-percent").textContent = `${percent}%`;
-  qs("#execution-progress-message").textContent = run?.message || "等待用户点击开始";
-  qs("#execution-mode").disabled = ["queued", "running", "completed"].includes(status);
-  const startButton = qs("#start-execution-btn");
-  startButton.disabled = ["queued", "running", "completed", "failed"].includes(status);
-  startButton.textContent = status === "queued"
-    ? "等待后台领取"
-    : status === "running"
-      ? "正在后台执行"
-      : status === "completed"
-        ? "执行已经完成"
-        : status === "failed"
-          ? "执行失败（请新建任务）"
-          : "开始后台执行";
-
-  qs("#execution-event-list").innerHTML = state.executionEvents.length
-    ? state.executionEvents.map((event) => `
-      <article class="execution-event ${escapeHtml(event.status)}">
-        <span class="execution-event-sequence">${String(event.sequence).padStart(2, "0")}</span>
-        <div>
-          <strong>${escapeHtml(event.step_key ? (taskLabels[event.step_key] || event.step_key) : executionStatusLabel(event.status))}</strong>
-          <small>${escapeHtml(event.message)}</small>
-        </div>
-        <span>${escapeHtml(event.progress_percent)}%</span>
-      </article>
-    `).join("")
-    : '<div class="small-text">启动后将实时显示 Collector → Extractor → Analyst → Citation → Writer → Reviewer（采集 → 抽取 → 分析 → 引用检查 → 写作 → 审查）。</div>';
-
-  const result = qs("#execution-result");
-  if (status === "completed") {
-    result.innerHTML = `<strong>用户任务已经生成完整报告。</strong><br />报告标题：${escapeHtml(run.metadata?.report_title || "已按任务主题生成")} · approved=${escapeHtml(run.metadata?.approved)}<br /><button id="open-execution-report" class="secondary-action" type="button">查看本次分析报告</button>`;
-    result.classList.remove("hidden");
-    qs("#open-execution-report")?.addEventListener("click", async () => {
-      await loadTaskWorkspace(run.task_id || state.activeTaskId);
-      navigateTo("report");
-    });
-  } else if (status === "failed") {
-    result.innerHTML = `<strong>后台执行失败，未伪装成成功。</strong><br />${escapeHtml(run.error || "请查看最后一条事件。")}`;
-    result.classList.remove("hidden");
-  } else {
-    result.classList.add("hidden");
+function renderRecentTasks() {
+  const container = qs("#recent-task-list");
+  if (!container) return;
+  if (!state.recentTasks.length) {
+    container.innerHTML = '<div class="recent-task-empty">暂无 task-centric 任务</div>';
+    return;
   }
+  container.innerHTML = state.recentTasks.map((task) => {
+    const active = task.task_id === state.activeTaskId;
+    const progress = Math.min(Math.max(Number(task.progress_percent || 0), 0), 100);
+    return `
+      <a class="recent-task-item ${active ? "active" : ""}" href="${escapeHtml(taskWorkspaceUrl(task.task_id))}" data-active-task-id="${escapeHtml(task.task_id)}" aria-current="${active ? "page" : "false"}">
+        <span class="recent-task-heading">
+          <strong>${escapeHtml(task.title || task.request_text || task.task_id)}</strong>
+          <em class="tag ${escapeHtml(task.status)}">${escapeHtml(taskStatusLabel(task.status))}</em>
+        </span>
+        <small>${escapeHtml(task.task_id)}</small>
+        <span class="recent-task-stage">${escapeHtml(task.current_stage || task.stage)} · ${progress}%</span>
+        <span class="recent-task-progress" aria-hidden="true"><i style="width: ${progress}%"></i></span>
+      </a>
+    `;
+  }).join("");
 }
 
-function closeExecutionEventStream() {
-  if (state.executionEventSource) {
-    state.executionEventSource.close();
-    state.executionEventSource = null;
-  }
-}
-
-function connectExecutionEventStream(taskId) {
-  closeExecutionEventStream();
-  const after = state.executionEvents.at(-1)?.sequence || 0;
-  const source = new EventSource(`${API_BASE}${endpoints.executionEvents(taskId, after)}`);
-  state.executionEventSource = source;
-  source.addEventListener("execution", (message) => {
-    const event = JSON.parse(message.data);
-    if (!state.executionEvents.some((item) => item.sequence === event.sequence)) {
-      state.executionEvents.push(event);
-    }
-    const current = state.executionRun || {};
-    const run = {
-      ...current,
-      status: event.status,
-      current_step: event.step_key || current.current_step,
-      progress_percent: event.progress_percent,
-      message: event.message,
-      error: event.event_type === "failed" ? event.message : current.error,
-    };
-    if (["completed", "failed"].includes(event.status)) {
-      closeExecutionEventStream();
-      loadExecutionStatus(taskId);
-    } else {
-      renderExecutionRuntime(run);
-    }
-  });
-  source.onerror = () => {
-    if (!["completed", "failed"].includes(state.executionRun?.status)) {
-      qs("#execution-progress-message").textContent = "实时连接暂时断开，正在读取最新持久化状态…";
-      closeExecutionEventStream();
-      window.setTimeout(() => loadExecutionStatus(taskId), 800);
-    }
-  };
-}
-
-async function loadExecutionStatus(taskId) {
+async function loadRecentTasks() {
   try {
-    const payload = await fetchJson(endpoints.executionStatus(taskId));
-    renderExecutionRuntime(payload.execution_run, payload.events || []);
-    if (!payload.terminal) connectExecutionEventStream(taskId);
+    const payload = await fetchJson(endpoints.analysisTasks);
+    state.recentTasks = payload.tasks || [];
+    renderRecentTasks();
   } catch (error) {
-    if (String(error.message).startsWith("404")) {
-      renderExecutionRuntime(null, []);
-      return;
+    const container = qs("#recent-task-list");
+    if (container) {
+      container.innerHTML = `<div class="recent-task-empty">最近任务读取失败：${escapeHtml(error.message)}</div>`;
     }
-    qs("#execution-progress-message").textContent = `执行状态读取失败：${error.message}`;
   }
 }
 
-async function startExecution() {
-  const taskId = qs("#execution-planning").dataset.taskId;
-  if (!taskId || !state.executionAuthorization) return;
-  const mode = qs("#execution-mode").value;
-  const button = qs("#start-execution-btn");
-  button.disabled = true;
-  button.textContent = "正在提交…";
-  qs("#execution-progress-message").textContent = mode === "deepseek"
-    ? "正在校验 DeepSeek 密钥并提交真实模型任务…"
-    : "正在提交 Mock（模拟）后台任务…";
-  try {
-    const payload = await fetchJson(endpoints.startExecution(taskId), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ mode }),
+function showNoActiveTask(message = "请选择最近任务，或在“新建分析”中确认一个任务。") {
+  state.activeTaskId = "";
+  state.activeLegacyRun = null;
+  qs("#task-id").value = "";
+  qs("#stage-name").textContent = "尚未选择任务";
+  qs("#stage-detail").textContent = message;
+  qs("#runtime-pill").textContent = "Task Workspace（任务工作区）";
+  setStatus("请选择任务");
+  renderRecentTasks();
+}
+
+async function restoreTaskContext() {
+  const urlTaskId = getTaskIdFromUrl();
+  const storedTaskId = getStoredActiveTaskId();
+  const candidates = taskRestoreCandidates(urlTaskId, storedTaskId);
+  for (const taskId of candidates) {
+    const restored = await loadTaskWorkspace(taskId, {
+      historyMode: taskId === urlTaskId ? "none" : "replace",
+      suppressError: true,
     });
-    renderExecutionRuntime(payload.execution_run, []);
-    connectExecutionEventStream(taskId);
-    setIntentStatus("后台执行已启动；关闭或刷新页面不会取消正在运行的任务。", "ok");
-  } catch (error) {
-    renderExecutionRuntime({ status: "failed", progress_percent: 0, message: "任务未能启动", error: error.message }, []);
+    if (restored) return true;
   }
-}
-
-function updateAuthorizationReadiness() {
-  const plan = state.executionPlan;
-  if (!plan) return;
-  const authorized = plan.status === "authorized";
-  qs("#authorize-execution-btn").disabled =
-    !plan.authorization_available || !qs("#dataset-scope-ack").checked || authorized;
-}
-
-async function generateExecutionPlan() {
-  const taskId = qs("#execution-planning").dataset.taskId;
-  if (!taskId) return;
-  const button = qs("#plan-generate-btn");
-  button.disabled = true;
-  button.textContent = "正在检查…";
-  qs("#planning-status-copy").textContent = "正在检查本地资料覆盖范围；不会调用大模型。";
-  try {
-    const payload = await fetchJson(endpoints.executionPlan(taskId), { method: "POST" });
-    renderExecutionPlanning(payload);
-  } catch (error) {
-    qs("#planning-status-copy").textContent = `资料检查失败：${error.message}`;
-    button.disabled = false;
-    button.textContent = "重新检查资料";
+  if (urlTaskId) syncTaskUrl("", "replace");
+  if (storedTaskId) {
+    window.localStorage.removeItem(ACTIVE_TASK_STORAGE_KEY);
+    window.localStorage.removeItem(LEGACY_ACTIVE_TASK_STORAGE_KEY);
   }
-}
-
-async function authorizeExecution() {
-  const taskId = qs("#execution-planning").dataset.taskId;
-  const plan = state.executionPlan;
-  if (!taskId || !plan || !qs("#dataset-scope-ack").checked) return;
-  const button = qs("#authorize-execution-btn");
-  button.disabled = true;
-  button.textContent = "正在入队…";
-  try {
-    const payload = await fetchJson(endpoints.authorizeExecution(taskId), {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        plan_id: plan.id,
-        acknowledge_dataset_scope: true,
-      }),
-    });
-    renderExecutionPlanning({
-      analysis_task: payload.analysis_task,
-      compatibility_assessment: state.compatibilityAssessment,
-      execution_plan: payload.execution_plan,
-      execution_authorization: payload.execution_authorization,
-      execution_started: false,
-    });
-    setIntentStatus("任务已获授权并进入 TaskBoard（任务板），后台执行器尚未启动。", "ok");
-  } catch (error) {
-    qs("#planning-status-copy").textContent = `执行授权失败：${error.message}`;
-    updateAuthorizationReadiness();
-  }
+  showNoActiveTask(
+    candidates.length
+      ? "URL 与本地保存的任务均不存在，请从最近任务重新选择。"
+      : undefined,
+  );
+  return false;
 }
 
 function runOptionLabel(run) {
@@ -1219,24 +1096,32 @@ async function loadRuns({ selectDefaultLegacy = false } = {}) {
   }
 }
 
-async function loadTaskWorkspace(taskId = state.activeTaskId) {
-  if (!taskId) return;
+async function loadTaskWorkspace(
+  taskId = state.activeTaskId,
+  { historyMode = "replace", suppressError = false } = {},
+) {
+  if (!taskId) return false;
+  const loadSequence = ++state.workspaceLoadSequence;
   clearError();
   setStatus("刷新任务工作区");
   try {
     const workspace = await fetchJson(endpoints.workspace(taskId));
-    if (state.activeTaskId && state.activeTaskId !== taskId) return;
-    setActiveTaskContext(taskId);
+    if (loadSequence !== state.workspaceLoadSequence) return false;
+    setActiveTaskContext(taskId, { historyMode });
     state.analysisTask = workspace.analysisTask || state.analysisTask;
     state.data = normalizeWorkspaceData(workspace, taskId);
     render();
     setStatus(`当前任务 · ${taskId}`, "ok");
+    return true;
   } catch (error) {
-    showError(`读取当前任务工作区失败：${error.message}`);
+    if (loadSequence === state.workspaceLoadSequence && !suppressError) {
+      showError(`读取当前任务工作区失败：${error.message}`);
+    }
+    return false;
   }
 }
 
-async function loadLegacyDashboard(run = state.activeLegacyRun) {
+async function loadLegacyDashboard(run = state.activeLegacyRun, { historyMode = "push" } = {}) {
   if (!run) {
     showError("请主动选择一个历史 Run（运行批次）。");
     return;
@@ -1250,8 +1135,9 @@ async function loadLegacyDashboard(run = state.activeLegacyRun) {
     ]);
     state.activeTaskId = "";
     state.activeLegacyRun = run;
-    window.localStorage.removeItem(ACTIVE_TASK_STORAGE_KEY);
+    syncTaskUrl("", historyMode);
     qs("#task-id").value = run.task_id;
+    renderRecentTasks();
     state.data = normalizeWorkspaceData(dashboard, run.task_id);
     state.step6cExperiment = experiment;
     render();
@@ -1264,9 +1150,10 @@ async function loadLegacyDashboard(run = state.activeLegacyRun) {
 async function loadTask() {
   if (state.activeTaskId) {
     await loadTaskWorkspace(state.activeTaskId);
-    return;
+  } else {
+    await restoreTaskContext();
   }
-  await loadLegacyDashboard();
+  await loadRecentTasks();
 }
 
 function render() {
@@ -2306,22 +2193,14 @@ function setup() {
   qs("#parse-intent-btn").addEventListener("click", parseIntent);
   qs("#load-draft-btn").addEventListener("click", loadSelectedDraft);
   qs("#confirm-draft-btn").addEventListener("click", confirmDraft);
-  qs("#plan-generate-btn").addEventListener("click", generateExecutionPlan);
-  qs("#dataset-scope-ack").addEventListener("change", updateAuthorizationReadiness);
-  qs("#authorize-execution-btn").addEventListener("click", authorizeExecution);
-  qs("#start-execution-btn").addEventListener("click", startExecution);
   qs("#build-research-plan-btn").addEventListener("click", buildResearchPlan);
   qs("#run-collector-once-btn").addEventListener("click", runCollectorOnce);
   qs("#run-extractor-once-btn").addEventListener("click", runExtractorOnce);
   qs("#run-coverage-once-btn").addEventListener("click", runCoverageOnce);
   qs("#start-research-loop-btn").addEventListener("click", startResearchLoop);
   qs("#run-research-analysis-btn").addEventListener("click", runResearchAnalysis);
+  qs("#run-research-reporting-btn").addEventListener("click", runResearchReporting);
   qs("#refresh-integrations-btn").addEventListener("click", loadIntegrationStatus);
-  qs("#execution-mode").addEventListener("change", () => {
-    qs("#execution-mode-note").textContent = qs("#execution-mode").value === "deepseek"
-      ? "真实模式会使用本机 DEEPSEEK_API_KEY，并由 Analyst + Writer（分析 + 写作智能体）各发起一次 API 调用。"
-      : "Mock（模拟）模式会完整执行六步证据链，但不会访问外部模型或产生费用。";
-  });
   qsa("#draft-editor input, #draft-editor textarea").forEach((input) => {
     input.addEventListener("input", updateDraftReadiness);
   });
@@ -2329,23 +2208,17 @@ function setup() {
     const selectedValue = qs("#run-id").value;
     const run = state.runs.find((item) => runSelectionValue(item) === selectedValue);
     if (run) {
-      state.activeTaskId = "";
-      state.activeLegacyRun = run;
-      window.localStorage.removeItem(ACTIVE_TASK_STORAGE_KEY);
-      qs("#task-id").value = run.task_id;
-      loadLegacyDashboard(run);
+      loadLegacyDashboard(run, { historyMode: "push" });
     }
+  });
+  window.addEventListener("popstate", () => {
+    restoreTaskContext();
   });
   loadRecentDrafts();
   loadIntegrationStatus();
-  const storedTaskId = window.localStorage.getItem(ACTIVE_TASK_STORAGE_KEY) || "";
-  if (storedTaskId) {
-    state.activeTaskId = storedTaskId;
-    qs("#task-id").value = storedTaskId;
-  }
-  loadRuns({ selectDefaultLegacy: !storedTaskId }).then(() => {
-    if (storedTaskId) loadTaskWorkspace(storedTaskId);
-  });
+  loadRecentTasks();
+  loadRuns({ selectDefaultLegacy: false });
+  restoreTaskContext();
 }
 
 setup();

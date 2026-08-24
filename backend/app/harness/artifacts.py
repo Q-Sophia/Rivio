@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import threading
+import time
 import uuid
 from pathlib import Path
 from typing import Iterable
@@ -67,6 +68,7 @@ DEFAULT_ARTIFACT_TYPES = {
 
 
 _ARTIFACT_IO_LOCK = threading.RLock()
+_WINDOWS_REPLACE_RETRY_DELAYS_SECONDS = (0.02, 0.05, 0.1, 0.2, 0.4)
 
 
 class ArtifactStore:
@@ -135,4 +137,13 @@ class ArtifactStore:
             json.dumps(payload, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )
-        temporary.replace(path)
+        for retry_index in range(len(_WINDOWS_REPLACE_RETRY_DELAYS_SECONDS) + 1):
+            try:
+                temporary.replace(path)
+                return
+            except PermissionError as error:
+                if getattr(error, "winerror", None) != 5:
+                    raise
+                if retry_index == len(_WINDOWS_REPLACE_RETRY_DELAYS_SECONDS):
+                    raise
+                time.sleep(_WINDOWS_REPLACE_RETRY_DELAYS_SECONDS[retry_index])

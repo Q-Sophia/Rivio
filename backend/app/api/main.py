@@ -16,6 +16,7 @@ from app.execution import (
     ResearchAnalysisOutputTruncatedError,
     get_execution_runner,
     get_research_analysis_service,
+    get_research_reporting_service,
     get_research_loop_runner,
 )
 from app.collection import CollectorQueueService
@@ -33,6 +34,7 @@ from app.schemas import (
     ConfirmAnalysisTaskRequest,
     IntentParseRequest,
     RunResearchAnalysisRequest,
+    RunResearchReportingRequest,
     StartExecutionRequest,
 )
 
@@ -316,6 +318,101 @@ def infer_workspace_stage(artifacts: dict[str, Any]) -> tuple[str, str]:
     return "confirmed", "AnalysisTask 已确认，等待后续研究产物"
 
 
+def build_task_navigation_item(task_dir: Path) -> dict[str, Any] | None:
+    analysis_tasks = optional_list_from_dir(task_dir, "analysis_tasks")
+    if not analysis_tasks:
+        return None
+    analysis_task = analysis_tasks[-1]
+    stage_artifacts = {
+        "review": optional_latest_from_dir(task_dir, "review_feedback"),
+        "report": optional_latest_from_dir(task_dir, "reports"),
+        "analysisPortfolios": optional_list_from_dir(task_dir, "analysis_portfolios"),
+        "claims": optional_list_from_dir(task_dir, "claims"),
+        "claimsV2": optional_list_from_dir(task_dir, "claims_v2"),
+        "citationChecks": optional_list_from_dir(task_dir, "citation_checks"),
+        "evidenceCoverage": optional_list_from_dir(task_dir, "evidence_coverage"),
+        "researchGaps": optional_list_from_dir(task_dir, "research_gaps"),
+        "productCards": optional_list_from_dir(task_dir, "product_cards"),
+        "evidence": optional_list_from_dir(task_dir, "evidence"),
+        "sources": optional_list_from_dir(task_dir, "sources"),
+        "webPages": optional_list_from_dir(task_dir, "web_pages"),
+        "researchPlan": optional_latest_from_dir(task_dir, "research_plans"),
+        "researchTasks": optional_list_from_dir(task_dir, "research_tasks"),
+    }
+    workspace_stage, stage_detail = infer_workspace_stage(stage_artifacts)
+    research_loop_run = optional_latest_from_dir(task_dir, "research_loop_runs")
+    loop_status = str((research_loop_run or {}).get("status") or "")
+    progress_by_stage = {
+        "confirmed": 0,
+        "research_planned": 10,
+        "sources_collected": 35,
+        "evidence_extracted": 55,
+        "coverage_evaluated": 70,
+        "analyzed": 85,
+        "reported": 95,
+        "reviewed": 100,
+    }
+    status = str(analysis_task.get("status") or "pending")
+    current_stage = workspace_stage
+    progress_percent = progress_by_stage.get(workspace_stage, 0)
+    if loop_status in {"queued", "running"}:
+        status = loop_status
+        current_stage = str(
+            (research_loop_run or {}).get("current_stage") or "research_loop"
+        )
+        stage_detail = str(
+            (research_loop_run or {}).get("message") or stage_detail
+        )
+        progress_percent = int(
+            (research_loop_run or {}).get("progress_percent") or 0
+        )
+    elif workspace_stage in {"reported", "reviewed"}:
+        status = "reported"
+    elif workspace_stage == "analyzed":
+        status = "analyzed"
+    elif loop_status in {"failed", "requires_human"}:
+        status = loop_status
+        current_stage = str(
+            (research_loop_run or {}).get("current_stage") or "research_loop"
+        )
+        stage_detail = str(
+            (research_loop_run or {}).get("message") or stage_detail
+        )
+        progress_percent = int(
+            (research_loop_run or {}).get("progress_percent") or 0
+        )
+    elif workspace_stage != "confirmed":
+        status = "in_progress"
+
+    modified_timestamps = [
+        path.stat().st_mtime
+        for path in task_dir.glob("*.json")
+        if path.is_file()
+    ]
+    modified_at = datetime.fromtimestamp(
+        max(modified_timestamps, default=task_dir.stat().st_mtime),
+        tz=timezone.utc,
+    ).isoformat()
+    title = str(
+        analysis_task.get("preferred_title")
+        or analysis_task.get("report_subject")
+        or analysis_task.get("query")
+        or task_dir.name
+    )
+    return {
+        "task_id": task_dir.name,
+        "title": title,
+        "request_text": str(analysis_task.get("query") or title),
+        "analysis_task_status": str(analysis_task.get("status") or "pending"),
+        "status": status,
+        "stage": workspace_stage,
+        "current_stage": current_stage,
+        "stage_detail": stage_detail,
+        "progress_percent": max(0, min(progress_percent, 100)),
+        "updated_at": modified_at,
+    }
+
+
 def build_task_workspace(task_id: str) -> dict[str, Any]:
     """Read the current artifacts for one task without requiring a completed run."""
     validate_path_segment(task_id, "task_id")
@@ -502,6 +599,24 @@ def list_tasks() -> dict[str, Any]:
     root_dir = get_store().root_dir
     tasks = sorted(path.name for path in root_dir.iterdir() if path.is_dir())
     return {"tasks": tasks}
+
+
+@app.get("/api/analysis-tasks")
+def list_analysis_tasks(limit: int = 20) -> dict[str, Any]:
+    root_dir = get_store().root_dir
+    tasks: list[dict[str, Any]] = []
+    for task_dir in root_dir.iterdir():
+        if not task_dir.is_dir() or not (task_dir / "analysis_tasks.json").exists():
+            continue
+        try:
+            item = build_task_navigation_item(task_dir)
+        except (HTTPException, OSError):
+            continue
+        if item is not None:
+            tasks.append(item)
+    tasks.sort(key=lambda item: item["updated_at"], reverse=True)
+    bounded_limit = max(1, min(limit, 100))
+    return {"tasks": tasks[:bounded_limit]}
 
 
 @app.get("/api/runs")
@@ -831,13 +946,46 @@ def run_research_analysis(
 ) -> dict[str, Any]:
     validate_path_segment(task_id, "task_id")
     try:
-        return get_research_analysis_service().run_once(...)
+        return get_research_analysis_service().run_once(
+            task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
+        )
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
     except ResearchAnalysisOutputTruncatedError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.get("/api/analysis-tasks/{task_id}/research-reporting")
+def get_research_reporting(task_id: str) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        return get_research_reporting_service().get_payload(task_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.post("/api/analysis-tasks/{task_id}/research-reporting")
+def run_research_reporting(
+    task_id: str,
+    request: RunResearchReportingRequest,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        return get_research_reporting_service().run(
+            task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
     except RuntimeError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
 

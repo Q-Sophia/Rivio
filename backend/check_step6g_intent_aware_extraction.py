@@ -41,6 +41,12 @@ def main() -> None:
         request_text="请调研 ClassIn 的竞品分析",
         decision_question="识别 ClassIn 的主要竞品并形成阶段性竞品分析。",
         competitors=["ClassIn"],
+        research_mode="TARGET_CENTRIC_COMPETITIVE_ANALYSIS",
+        primary_target="ClassIn",
+        target_profiling=True,
+        market_scoping=True,
+        competitor_discovery=True,
+        cross_competitor_comparison=True,
     )
     normalized = IntentDraftService._normalize_draft(
         draft,
@@ -65,7 +71,22 @@ def main() -> None:
         focus_areas=["产品能力"],
         report_subject="ClassIn 竞品分析",
         mode=TaskMode.LIVE,
-        metadata={"competitor_discovery_required": True},
+        metadata={
+            "research_brief": {
+                "research_mode": "TARGET_CENTRIC_COMPETITIVE_ANALYSIS",
+                "primary_target": "ClassIn",
+                "comparison_targets": [],
+                "reference_products": [],
+                "target_profiling": True,
+                "market_scoping": True,
+                "competitor_discovery": True,
+                "cross_competitor_comparison": True,
+                "decision_oriented_analysis": False,
+                "research_gap_tracking": True,
+            },
+            "competitor_discovery_required": True,
+            "competitor_discovery_strategy": "local_catalog_v1",
+        },
     )
     planning_store.save_many(analysis_task.id, "analysis_tasks", [analysis_task])
     planning_payload = ResearchPlanningService(store=planning_store).build(analysis_task.id)

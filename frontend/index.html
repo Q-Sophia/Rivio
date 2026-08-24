@@ -35,6 +35,16 @@
           <button id="refresh-btn" type="button" title="重新读取 artifacts">刷新</button>
         </div>
 
+        <section class="recent-tasks-panel" aria-labelledby="recent-tasks-title">
+          <div class="recent-tasks-heading">
+            <strong id="recent-tasks-title">最近任务</strong>
+            <small>仅切换 Workspace</small>
+          </div>
+          <div id="recent-task-list" class="recent-task-list" aria-live="polite">
+            <div class="recent-task-empty">正在读取任务……</div>
+          </div>
+        </section>
+
         <nav class="nav-list" aria-label="页面栏目">
           <button class="nav-item" type="button" data-view="intake"><span>01</span>新建分析</button>
           <button class="nav-item active" type="button" data-view="overview"><span>02</span>项目总览</button>
@@ -148,13 +158,13 @@
               </div>
             </div>
             <div class="confirm-row">
-              <p>确认后只会保存 AnalysisTask（分析任务）；随后由 Step6D.3 检查资料并展示执行计划。</p>
+              <p>确认后只会保存 AnalysisTask（分析任务）；随后进入 task-centric Research Planner，不会启动旧 Snapshot 六步流程。</p>
               <button id="confirm-draft-btn" class="primary-action" type="button" disabled>确认任务（不启动分析）</button>
             </div>
             <div id="confirmed-task" class="confirmed-task hidden"></div>
           </section>
 
-          <section id="research-planning" class="panel execution-planning hidden">
+          <section id="research-planning" class="panel research-planning-panel hidden">
             <div class="panel-heading">
               <div>
                 <p class="panel-kicker">Step6E.1 · Research Planner（研究规划智能体）</p>
@@ -178,7 +188,7 @@
                 <button id="run-extractor-once-btn" class="secondary-action" type="button" disabled>抽取下一项证据</button>
                 <button id="run-coverage-once-btn" class="secondary-action" type="button" disabled>更新覆盖并判断补采</button>
               </div>
-              <section id="research-loop-runtime" class="execution-runner">
+              <section id="research-loop-runtime" class="research-loop-runner">
                 <div class="panel-heading">
                   <div>
                     <p class="panel-kicker">Step6E.5 · Research Loop Runner（研究循环执行器）</p>
@@ -205,85 +215,15 @@
                   <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>调用 DeepSeek 生成分析结论（通常 2 次）</button>
                 </div>
                 <div id="research-analysis-result" class="confirmed-task hidden"></div>
+                <div class="planning-boundary">
+                  <p id="research-reporting-copy">Analyst 与 Citation 完成后，可独立生成正式报告；Writer 会额外调用 1 次真实 DeepSeek，Reviewer 与 QualityGate 不调用大模型。</p>
+                  <button id="run-research-reporting-btn" class="primary-action" type="button" disabled>生成竞品分析报告（额外 1 次 DeepSeek）</button>
+                </div>
+                <div id="research-reporting-result" class="confirmed-task hidden"></div>
               </section>
             </div>
           </section>
 
-          <section id="execution-planning" class="panel execution-planning hidden">
-            <div class="panel-heading">
-              <div>
-                <p class="panel-kicker">Step6D.3 · Dataset Gate（资料闸门）</p>
-                <h3>先确认资料能不能回答这个问题，再决定是否入队</h3>
-              </div>
-              <span id="compatibility-status" class="count-label">尚未检查</span>
-            </div>
-            <div class="planning-boundary">
-              <p id="planning-status-copy">当前任务已经确认，但尚未检查资料兼容性。</p>
-              <button id="plan-generate-btn" class="primary-action" type="button">检查资料并生成计划</button>
-            </div>
-
-            <div id="compatibility-result" class="hidden">
-              <div id="compatibility-facts" class="compatibility-facts"></div>
-              <div class="planning-grid">
-                <article class="planning-card">
-                  <strong>资料覆盖说明</strong>
-                  <div id="compatibility-coverage" class="planning-copy"></div>
-                </article>
-                <article class="planning-card">
-                  <strong>阻断原因与建议</strong>
-                  <div id="compatibility-reasons" class="planning-copy"></div>
-                </article>
-              </div>
-
-              <div class="execution-plan-block">
-                <div class="panel-heading">
-                  <div><p class="panel-kicker">Execution Plan（执行计划）</p><h3 id="execution-plan-title">等待生成</h3></div>
-                  <span id="plan-call-estimate" class="count-label">0 次模型调用</span>
-                </div>
-                <div id="execution-plan-steps" class="execution-plan-steps"></div>
-              </div>
-
-              <div class="authorization-box">
-                <label class="authorization-check">
-                  <input id="dataset-scope-ack" type="checkbox" />
-                  <span>我已查看当前资料覆盖范围，并确认仅在资料完全兼容时把任务加入执行队列。</span>
-                </label>
-                <button id="authorize-execution-btn" class="primary-action" type="button" disabled>授权并加入执行队列</button>
-              </div>
-              <div id="queue-result" class="confirmed-task hidden"></div>
-              <p class="queue-boundary-note">加入队列只生成 TaskBoard（任务板）和待执行任务，不会在这个页面请求中同步调用 Analyst / Writer（分析 / 写作智能体）。</p>
-
-              <section id="execution-runner" class="execution-runner hidden">
-                <div class="panel-heading">
-                  <div>
-                    <p class="panel-kicker">Step6D.4 · Execution Runner（后台执行器）</p>
-                    <h3>启动后在这里实时查看六步证据链</h3>
-                  </div>
-                  <span id="execution-run-status" class="count-label">等待启动</span>
-                </div>
-                <div class="runner-controls">
-                  <label class="draft-field">
-                    执行模式
-                    <select id="execution-mode" class="run-select">
-                      <option value="mock">Mock（模拟）· 验证完整流程，不产生模型费用</option>
-                      <option value="deepseek">DeepSeek（真实）· Analyst + Writer 各一次真实调用</option>
-                    </select>
-                  </label>
-                  <button id="start-execution-btn" class="primary-action" type="button">开始后台执行</button>
-                </div>
-                <p id="execution-mode-note" class="queue-boundary-note">默认使用 Mock（模拟）执行。选择 DeepSeek 才会读取本机密钥并产生真实 API 调用。</p>
-                <div class="execution-progress" aria-label="执行进度">
-                  <div id="execution-progress-bar" class="execution-progress-bar" style="width: 0%"></div>
-                </div>
-                <div class="execution-progress-copy">
-                  <strong id="execution-progress-percent">0%</strong>
-                  <span id="execution-progress-message">等待用户点击开始</span>
-                </div>
-                <div id="execution-event-list" class="execution-event-list"></div>
-                <div id="execution-result" class="confirmed-task hidden"></div>
-              </section>
-            </div>
-          </section>
         </section>
 
         <section id="overview-view" class="view active">

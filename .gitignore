@@ -13,3 +13,7 @@ __pycache__/
 backend/app/data/logs/*.log
 backend/app/data/logs/*.pid
 backend/app/data/tmp/
+
+# User-created runtime artifacts. Historical snapshot/check fixtures remain tracked.
+backend/app/data/runs/task_user_*/
+backend/app/data/runs/draft_????????????/

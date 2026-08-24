@@ -204,10 +204,36 @@ class IntentDraftService:
                 "target_customers": normalized.target_customers,
                 "core_scenarios": normalized.core_scenarios,
                 "constraints": normalized.constraints,
-                "competitor_discovery_required": len(normalized.competitors) == 1,
+
+                # ResearchBrief V1
+                "research_brief": {
+                    "research_mode": normalized.research_mode,
+                    "primary_target": normalized.primary_target,
+                    "comparison_targets": normalized.comparison_targets,
+                    "reference_products": normalized.reference_products,
+                    "target_profiling": normalized.target_profiling,
+                    "market_scoping": normalized.market_scoping,
+                    "competitor_discovery": normalized.competitor_discovery,
+                    "cross_competitor_comparison": (
+                        normalized.cross_competitor_comparison
+                    ),
+                    "decision_oriented_analysis": (
+                        normalized.decision_oriented_analysis
+                    ),
+                    "research_gap_tracking": normalized.research_gap_tracking,
+                },
+
+                # Compatibility field for downstream V1 code.
+                "competitor_discovery_required": (
+                    normalized.competitor_discovery
+                ),
+
+                # V1 execution policy.
+                "competitor_discovery_strategy": "local_catalog_v1",
+
                 "execution_started": False,
                 "dataset_compatibility": "not_checked",
-                "next_step": "Step6D.3 dataset compatibility and execution planning",
+                "next_step": "Step6E.1 task-centric research planning",
             },
         )
         confirmed = normalized.model_copy(
@@ -250,7 +276,52 @@ class IntentDraftService:
 
         decision_question = clean(draft.decision_question)
         industry = clean(draft.industry)
+
+        # ResearchBrief V1
+        research_mode = clean(draft.research_mode)
+
+        primary_target = clean(draft.primary_target)
+        comparison_targets = clean_list(draft.comparison_targets)
+        reference_products = clean_list(draft.reference_products)
+
+        target_profiling = bool(draft.target_profiling)
+        market_scoping = bool(draft.market_scoping)
+        competitor_discovery = bool(draft.competitor_discovery)
+        cross_competitor_comparison = bool(
+            draft.cross_competitor_comparison
+        )
+        decision_oriented_analysis = bool(
+            draft.decision_oriented_analysis
+        )
+        research_gap_tracking = bool(draft.research_gap_tracking)
+
+        # Legacy compatibility
         competitors = clean_list(draft.competitors)
+
+        research_seeds: list[str] = []
+
+        if primary_target:
+            research_seeds.append(primary_target)
+
+        research_seeds.extend(comparison_targets)
+        research_seeds.extend(competitors)
+
+        competitors = clean_list(research_seeds)
+
+        # ResearchBrief V1 -> legacy AnalysisTaskDraft compatibility.
+        # The legacy `competitors` field temporarily represents known research seeds,
+        # not necessarily the complete competitor set.
+        research_seeds: list[str] = []
+
+        if primary_target:
+            research_seeds.append(primary_target)
+
+        research_seeds.extend(comparison_targets)
+
+        # Keep explicitly named legacy objects as well.
+        research_seeds.extend(competitors)
+
+        competitors = clean_list(research_seeds)
         missing_fields: list[str] = []
         if not decision_question:
             missing_fields.append(BLOCKING_FIELD_LABELS["decision_question"])
@@ -284,7 +355,23 @@ class IntentDraftService:
                 "request_text": request_text,
                 "decision_question": decision_question,
                 "industry": industry,
+
+                # Legacy compatibility field:
+                # known research seeds, not necessarily the complete competitor set.
                 "competitors": competitors,
+
+                # ResearchBrief V1
+                "research_mode": research_mode,
+                "primary_target": primary_target,
+                "comparison_targets": comparison_targets,
+                "reference_products": reference_products,
+                "target_profiling": target_profiling,
+                "market_scoping": market_scoping,
+                "competitor_discovery": competitor_discovery,
+                "cross_competitor_comparison": cross_competitor_comparison,
+                "decision_oriented_analysis": decision_oriented_analysis,
+                "research_gap_tracking": research_gap_tracking,
+
                 "target_customers": target_customers,
                 "core_scenarios": core_scenarios,
                 "focus_areas": clean_list(draft.focus_areas),
@@ -294,7 +381,11 @@ class IntentDraftService:
                 "missing_fields": missing_fields,
                 "clarification_questions": questions,
                 "ready_for_confirmation": ready,
-                "status": DraftStatus.READY if ready else DraftStatus.NEEDS_CLARIFICATION,
+                "status": (
+                    DraftStatus.READY
+                    if ready
+                    else DraftStatus.NEEDS_CLARIFICATION
+                ),
                 "updated_at": utc_now(),
                 "metadata": {
                     **draft.metadata,
@@ -302,7 +393,10 @@ class IntentDraftService:
                     "llm_model": model,
                     "prompt_version": prompt_version,
                     "blocking_validation_source": "deterministic_backend",
-                    "competitor_discovery_required": len(competitors) == 1,
+
+                    # Do not infer this from len(competitors) anymore.
+                    "competitor_discovery_required": competitor_discovery,
+
                     "execution_started": False,
                 },
             }

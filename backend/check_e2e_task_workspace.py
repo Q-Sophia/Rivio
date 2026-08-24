@@ -179,12 +179,13 @@ def main() -> None:
     frontend = frontend_path.read_text(encoding="utf-8")
     require('activeTaskId: ""' in frontend, "前端没有明确 activeTaskId")
     require("endpoints.workspace(taskId)" in frontend, "前端没有读取 task workspace")
-    require("setActiveTaskContext(payload.analysis_task.id)" in frontend, "确认任务后没有激活 task_id")
+    activate_confirmed_task = 'setActiveTaskContext(payload.analysis_task.id, { historyMode: "push" })'
+    require(activate_confirmed_task in frontend, "确认任务后没有激活 task_id")
     confirm_start = frontend.index("async function confirmDraft()")
     confirm_end = frontend.index("function resetExecutionPlanning()", confirm_start)
     confirm_source = frontend[confirm_start:confirm_end]
     require(
-        confirm_source.index("setActiveTaskContext(payload.analysis_task.id)")
+        confirm_source.index(activate_confirmed_task)
         < confirm_source.index("loadTaskWorkspace(payload.analysis_task.id)"),
         "确认任务后没有按 activeTaskId 加载 workspace",
     )
@@ -192,10 +193,11 @@ def main() -> None:
     refresh_end = frontend.index("function render()", refresh_start)
     refresh_source = frontend[refresh_start:refresh_end]
     require(
-        refresh_source.index("if (state.activeTaskId)")
-        < refresh_source.index("loadLegacyDashboard"),
-        "刷新按钮仍优先回退历史 Run",
+        "if (state.activeTaskId)" in refresh_source
+        and "restoreTaskContext()" in refresh_source,
+        "刷新按钮不能恢复 task workspace",
     )
+    require("loadLegacyDashboard" not in refresh_source, "刷新按钮仍会回退历史 Run")
     require("当前任务尚未生成该阶段产物。" in frontend, "主页面缺少统一空态")
     require("if (!report)" in frontend, "报告页没有安全处理 null report")
     require("if (claims.length)" in frontend, "结论页没有安全处理空 claims")

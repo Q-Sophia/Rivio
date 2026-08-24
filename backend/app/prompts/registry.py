@@ -99,7 +99,12 @@ class PromptDefinition:
             yaml.safe_dump(
                 {
                     "extraction_policy": self.content.get("extraction_policy", {}),
-                    "clarification_policy": self.content.get("clarification_policy", {}),
+                    "research_mode_policy": self.content.get(
+                        "research_mode_policy", []
+                    ),
+                    "clarification_policy": self.content.get(
+                        "clarification_policy", {}
+                    ),
                     "title_policy": self.content.get("title_policy", {}),
                     "negative_constraints": self.content.get("negative_constraints", []),
                     "output_contract": self.content.get("output_contract", {}),

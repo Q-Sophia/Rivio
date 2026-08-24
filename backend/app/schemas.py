@@ -251,6 +251,19 @@ class AnalysisTaskDraft(SchemaModel):
     core_scenarios: list[str] = Field(default_factory=list)
     focus_areas: list[str] = Field(default_factory=list)
     constraints: list[str] = Field(default_factory=list)
+    research_mode: str = ""
+
+    primary_target: str = ""
+    comparison_targets: list[str] = Field(default_factory=list)
+    reference_products: list[str] = Field(default_factory=list)
+
+    target_profiling: bool = False
+    market_scoping: bool = False
+    competitor_discovery: bool = False
+    cross_competitor_comparison: bool = False
+    decision_oriented_analysis: bool = False
+    research_gap_tracking: bool = True
+
     report_subject: str = ""
     preferred_title: str = ""
     missing_fields: list[str] = Field(default_factory=list)
@@ -381,6 +394,11 @@ class StartExecutionRequest(BaseModel):
 
 
 class RunResearchAnalysisRequest(BaseModel):
+    mode: ExecutionMode = ExecutionMode.DEEPSEEK
+    acknowledge_real_llm_call: bool = False
+
+
+class RunResearchReportingRequest(BaseModel):
     mode: ExecutionMode = ExecutionMode.DEEPSEEK
     acknowledge_real_llm_call: bool = False
 

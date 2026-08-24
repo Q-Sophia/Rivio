@@ -54,13 +54,39 @@ class ResearchPlannerAgent(BaseAgent):
 
         research_competitors = list(task.competitors)
         discovered_competitors: list[str] = []
-        if len(task.competitors) == 1:
-            primary = assessment.matched_competitor_map.get(
-                task.competitors[0], task.competitors[0]
+
+        research_brief = dict(
+            task.metadata.get("research_brief", {})
+        )
+
+        competitor_discovery_required = bool(
+            research_brief.get(
+                "competitor_discovery",
+                task.metadata.get(
+                    "competitor_discovery_required",
+                    False,
+                ),
             )
+        )
+
+        primary_target = str(
+            research_brief.get("primary_target", "") or ""
+        ).strip()
+
+        # V1 discovery strategy:
+        # expand only from the fixed local competitor/source catalog.
+        if competitor_discovery_required and primary_target:
+            primary = assessment.matched_competitor_map.get(
+                primary_target,
+                primary_target,
+            )
+
             if primary in sources_by_competitor:
                 for candidate in sources_by_competitor:
-                    if candidate != primary and candidate not in research_competitors:
+                    if (
+                        candidate != primary
+                        and candidate not in research_competitors
+                    ):
                         research_competitors.append(candidate)
                         discovered_competitors.append(candidate)
 
@@ -168,7 +194,8 @@ class ResearchPlannerAgent(BaseAgent):
                 "real_llm_used": False,
                 "planning_method": "deterministic_mock_v1",
                 "waiting_for_collector_count": len(waiting),
-                "competitor_discovery_required": len(task.competitors) == 1,
+                "competitor_discovery_required": competitor_discovery_required,
+                "competitor_discovery_strategy": "local_catalog_v1",
                 "competitor_discovery_method": (
                     "local_snapshot_source_catalog"
                     if discovered_competitors
