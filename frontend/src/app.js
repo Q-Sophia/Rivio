@@ -90,9 +90,9 @@ const endpoints = {
   runCollectorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/collector/run-once`,
   runExtractorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/extractor/run-once`,
   runCoverageOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/coverage/run-once`,
-  startResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-loop`,
-  researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-loop`,
-  researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-loop/events/stream?after=${after}`,
+  startResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
+  researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
+  researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run/events/stream?after=${after}`,
   researchAnalysis: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-analysis`,
   researchReporting: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-reporting`,
   workspace: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/workspace`,
@@ -500,11 +500,15 @@ function resetExecutionPlanning() {
 function showPlanningShell(taskId) {
   qs("#research-planning").classList.remove("hidden");
   qs("#research-planning").dataset.taskId = taskId;
-  qs("#research-plan-result").classList.add("hidden");
-  qs("#research-plan-status").textContent = "尚未规划";
+  qs("#research-plan-result").classList.remove("hidden");
+  qs("#research-plan-facts").innerHTML = "";
+  qs("#research-kiq-list").innerHTML = '<span class="small-text">启动自动研究后显示。</span>';
+  qs("#research-task-list").innerHTML = '<span class="small-text">启动自动研究后显示。</span>';
+  qs("#research-plan-status").textContent = "等待自动研究";
   qs("#build-research-plan-btn").disabled = false;
   qs("#build-research-plan-btn").textContent = "生成研究计划";
-  qs("#research-plan-copy").textContent = "第一版使用 Mock（模拟）规划，不调用 DeepSeek，也不访问网络。";
+  qs("#research-plan-copy").textContent = "开始自动研究后，后端会自动准备或复用 ResearchPlan / ResearchTask；用户无需单独生成计划。";
+  renderResearchLoopRuntime(null, []);
 }
 
 function renderResearchPlan(payload) {
@@ -520,8 +524,7 @@ function renderResearchPlan(payload) {
   );
   const coverage = payload.evidence_coverage || [];
   const gaps = payload.research_gaps || [];
-  const productCards = payload.product_cards || [];
-  const canAnalyzeCurrentEvidence = coverage.length > 0 && productCards.length > 0;
+  const canAnalyzeCurrentEvidence = Boolean(state.researchAnalysis?.can_analyze);
   state.researchPlan = plan;
   state.researchTasks = tasks;
   state.researchCanAnalyze = canAnalyzeCurrentEvidence;
@@ -533,21 +536,21 @@ function renderResearchPlan(payload) {
       : "需要先取得证据";
   qs("#research-plan-status").className = `count-label tag ${waiting.length ? "warning" : "true"}`;
   qs("#research-plan-copy").textContent = waiting.length
-    ? `Planner（规划智能体）发现 ${waiting.length} 个待采集任务；Collector（采集智能体）可读取 Seed URL，并通过智谱搜索缺失网址。`
-    : "当前人工快照覆盖全部研究任务，可以继续进入分析计划。";
+    ? `研究计划已准备：${waiting.length} 个 ResearchTask 等待 Research & Evidence Agent 自动研究。`
+    : "研究计划已准备；当前没有等待自动研究的 ResearchTask。";
   qs("#build-research-plan-btn").disabled = true;
   qs("#build-research-plan-btn").textContent = "研究计划已生成";
   qs("#research-plan-facts").innerHTML = [
     ["关键问题", `${kiqs.length} 个`],
     ["信息需求", `${(payload.information_needs || []).length} 个`],
     ["研究任务", `${tasks.length} 个`],
-    ["等待采集", `${waiting.length} 个`],
+    ["等待自动研究", `${waiting.length} 个`],
     ["证据覆盖", `${coverage.length} 格`],
     ["待补缺口", `${gaps.length} 个`],
   ].map(([label, value]) => `<div class="compatibility-fact"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("");
   qs("#research-kiq-list").innerHTML = kiqs.map((item) => `<div><strong>${escapeHtml(item.question)}</strong><br /><span>${escapeHtml(item.decision_link)}</span></div>`).join("");
   const researchTaskStatus = {
-    waiting_for_collector: "待采集",
+    waiting_for_collector: "等待自动研究",
     covered_by_snapshot: "已有人工快照",
     collected: "网页已采集",
     evidence_extracted: "证据已抽取",
@@ -563,7 +566,7 @@ function renderResearchPlan(payload) {
   const loopStatus = state.researchLoopRun?.status || "";
   const loopActive = ["queued", "running"].includes(loopStatus);
   const loopTerminal = ["completed", "requires_human", "failed"].includes(loopStatus);
-  const hasRunnableTask = waiting.length > 0 || extractorReady || coverageReady;
+  const hasRunnableTask = waiting.length > 0;
   qs("#run-collector-once-btn").disabled = loopActive || waiting.length === 0;
   qs("#run-extractor-once-btn").disabled = loopActive || !extractorReady;
   qs("#run-coverage-once-btn").disabled = loopActive || !coverageReady;
@@ -644,82 +647,226 @@ function researchLoopStatusLabel(status) {
   }[status] || status || "等待启动";
 }
 
-function researchLoopStageLabel(stage) {
+function researchAgentEventLabel(eventType) {
   return {
-    collector: "Collector（采集）",
-    extractor: "Extractor（抽取）",
-    coverage: "Analyst（覆盖检查）",
-  }[stage] || stage || "Research Loop（研究循环）";
+    queued: "进入研究队列",
+    started: "Research Agent 启动",
+    research_task_started: "开始 ResearchTask",
+    research_task_completed: "ResearchTask 完成",
+    research_task_failed: "ResearchTask 执行异常",
+    completed: "批量研究完成",
+    failed: "批量研究失败",
+  }[eventType] || eventType || "Research Agent R1";
 }
 
-function researchLoopStopLabel(reason) {
-  return {
-    coverage_sufficient: "证据覆盖充分",
-    budget_exhausted: "研究预算耗尽",
-    no_runnable_task: "没有可执行任务",
-    failed: "执行失败",
-  }[reason] || reason || "尚未停止";
+function researchTaskRuntimeLabel(researchTaskId) {
+  const task = (state.researchTasks || []).find(
+    (item) => item.id === researchTaskId,
+  );
+
+  if (!task) {
+    return researchTaskId || "等待 ResearchTask";
+  }
+
+  return [task.competitor, task.dimension]
+    .filter(Boolean)
+    .join(" · ") || researchTaskId;
 }
 
-function renderResearchLoopRuntime(run, events = state.researchLoopEvents) {
+function clampResearchProgressPercent(value) {
+  return Math.min(Math.max(Number(value || 0), 0), 100);
+}
+
+function renderResearchLoopRuntime(
+  run,
+  events = state.researchLoopEvents,
+) {
   state.researchLoopRun = run;
   state.researchLoopEvents = events || [];
+
   const status = run?.status || "pending";
-  const percent = Number(run?.progress_percent || 0);
+  const percent = clampResearchProgressPercent(
+    run?.progress_percent,
+  );
   const active = ["queued", "running"].includes(status);
-  const terminal = ["completed", "requires_human", "failed"].includes(status);
+  const terminal = ["completed", "failed"].includes(status);
+
   const statusElement = qs("#research-loop-status");
   statusElement.textContent = researchLoopStatusLabel(status);
-  statusElement.className = `count-label tag ${status === "completed" ? "true" : ["requires_human", "failed"].includes(status) ? "false" : "warning"}`;
-  qs("#research-loop-progress-bar").style.width = `${Math.min(Math.max(percent, 0), 100)}%`;
-  qs("#research-loop-progress-percent").textContent = `${percent}%`;
-  qs("#research-loop-progress-message").textContent = run?.message || "等待用户启动";
+  statusElement.className = `count-label tag ${
+    status === "completed"
+      ? "true"
+      : status === "failed"
+        ? "false"
+        : "warning"
+  }`;
+
+  qs("#research-loop-progress-bar").style.width =
+    `${percent}%`;
+
+  qs("#research-loop-progress-percent").textContent =
+    `${percent}%`;
+
+  qs("#research-loop-progress-message").textContent =
+    run?.message || "等待启动 Research Agent R1";
 
   const startButton = qs("#start-research-loop-btn");
-  if (run) {
-    startButton.disabled = active || terminal || !state.researchPlan;
-    startButton.textContent = status === "queued"
-      ? "等待后台领取"
-      : status === "running"
-        ? "正在自动研究"
-        : status === "completed"
-          ? "研究覆盖已经充分"
-          : status === "requires_human"
-            ? "已停止，等待人工处理"
+
+  if (!run) {
+    startButton.disabled = false;
+    startButton.textContent = "开始自动研究";
+  } else {
+    startButton.disabled =
+      active || terminal || !state.researchPlan;
+
+    startButton.textContent =
+      status === "queued"
+        ? "等待 Research Agent 后台领取"
+        : status === "running"
+          ? "Research Agent 正在研究"
+          : status === "completed"
+            ? "Research Agent 研究已完成"
             : status === "failed"
-              ? "研究循环失败"
-              : "自动运行研究循环";
+              ? "Research Agent 执行失败"
+              : "开始自动研究";
   }
-  qs("#run-collector-once-btn").disabled = active || qs("#run-collector-once-btn").disabled;
-  qs("#run-extractor-once-btn").disabled = active || qs("#run-extractor-once-btn").disabled;
-  qs("#run-coverage-once-btn").disabled = active || qs("#run-coverage-once-btn").disabled;
 
-  qs("#research-loop-facts").innerHTML = run ? [
-    ["循环动作", `${run.actions_completed || 0}/${run.max_actions || 0}`],
-    ["来源预算", `${run.source_count || 0}/${run.max_total_sources || 0}`],
-    ["采集轮次", `${run.current_collection_round || 0}/${run.max_collection_rounds || 0}`],
-    ["研究缺口", `${run.research_gap_count || 0} 个`],
-    ["采集/抽取/覆盖", `${run.collector_runs || 0}/${run.extractor_runs || 0}/${run.coverage_runs || 0}`],
-    ["停止原因", researchLoopStopLabel(run.stop_reason)],
-  ].map(([label, value]) => `<div class="compatibility-fact"><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}</strong></div>`).join("") : "";
+  // 正式产品路径已经迁移到 Research Agent R1。
+  // 旧 Collector / Extractor / Coverage 手动入口不再作为前端执行入口。
+  qs("#run-collector-once-btn").disabled = true;
+  qs("#run-extractor-once-btn").disabled = true;
+  qs("#run-coverage-once-btn").disabled = true;
 
-  qs("#research-loop-event-list").innerHTML = state.researchLoopEvents.length
-    ? state.researchLoopEvents.map((event) => `
-      <article class="execution-event ${escapeHtml(event.status)}">
-        <span class="execution-event-sequence">${String(event.sequence).padStart(2, "0")}</span>
-        <div>
-          <strong>${escapeHtml(researchLoopStageLabel(event.stage))}</strong>
-          <small>${escapeHtml(event.message)}</small>
+  const outcomes = run?.outcomes || {};
+  const completedTasks = Number(run?.completed_tasks || 0);
+  const failedTasks = Number(run?.failed_tasks || 0);
+  const activeRound = Number(
+    run?.current_collection_round || 0,
+  );
+  const currentRoundCompleted = Number(
+    run?.current_round_completed || 0,
+  );
+  const currentRoundTotal = Number(
+    run?.current_round_total || 0,
+  );
+
+  qs("#research-loop-facts").innerHTML = run
+    ? [
+        [
+          "Active round",
+          `${activeRound}/${run.max_collection_rounds || 3}`,
+        ],
+        [
+          "Current round",
+          `${currentRoundCompleted}/${currentRoundTotal}`,
+        ],
+        [
+          "Cumulative completed",
+          `${completedTasks}`,
+        ],
+        [
+          "COMPLETE",
+          `${outcomes.COMPLETE || 0}`,
+        ],
+        [
+          "PARTIAL",
+          `${outcomes.PARTIAL || 0}`,
+        ],
+        [
+          "EXHAUSTED",
+          `${outcomes.EXHAUSTED || 0}`,
+        ],
+        [
+          "FAILED",
+          `${failedTasks}`,
+        ],
+        [
+          "当前研究",
+          researchTaskRuntimeLabel(
+            run.current_research_task_id,
+          ),
+        ],
+      ]
+        .map(
+          ([label, value]) => `
+            <div class="compatibility-fact">
+              <span>${escapeHtml(label)}</span>
+              <strong>${escapeHtml(value)}</strong>
+            </div>
+          `,
+        )
+        .join("")
+    : "";
+
+  qs("#research-loop-event-list").innerHTML =
+    state.researchLoopEvents.length
+      ? state.researchLoopEvents
+          .map((event) => {
+            const eventClass =
+              event.event_type === "failed"
+              || event.event_type === "research_task_failed"
+                ? "failed"
+                : event.event_type === "completed"
+                  ? "completed"
+                  : "running";
+
+            const taskLabel = event.research_task_id
+              ? ` · ${researchTaskRuntimeLabel(
+                  event.research_task_id,
+                )}`
+              : "";
+
+            return `
+              <article class="execution-event ${escapeHtml(eventClass)}">
+                <span class="execution-event-sequence">
+                  ${String(event.sequence).padStart(2, "0")}
+                </span>
+                <div>
+                  <strong>
+                    ${escapeHtml(
+                      researchAgentEventLabel(event.event_type)
+                      + taskLabel,
+                    )}
+                  </strong>
+                  <small>${escapeHtml(event.message || "")}</small>
+                </div>
+                <span>R1</span>
+              </article>
+            `;
+          })
+          .join("")
+      : `
+        <div class="small-text">
+          启动后将实时显示 Research Agent R1 的
+          ResearchTask 调度、研究完成和失败事件。
+          单个 ResearchTask 内部执行
+          SEARCH → FETCH → READ → SUBMIT_EVIDENCE → FINISH。
         </div>
-        <span>${escapeHtml(event.progress_percent)}%</span>
-      </article>
-    `).join("")
-    : '<div class="small-text">启动后将实时显示 Collector → Extractor → Analyst（采集 → 抽取 → 覆盖检查）的自动交接。</div>';
+      `;
 
   const result = qs("#research-loop-result");
+
   if (terminal) {
-    const title = status === "completed" ? "自动研究循环已经完成。" : "自动研究循环已停止，未伪装成覆盖充分。";
-    result.innerHTML = `<strong>${escapeHtml(title)}</strong><br />停止原因：${escapeHtml(researchLoopStopLabel(run.stop_reason))}。${run.error ? `<br />${escapeHtml(run.error)}` : ""}`;
+    if (status === "completed") {
+      result.innerHTML = `
+        <strong>Research Agent R1 批量研究已完成。</strong>
+        <br />
+        COMPLETE：${escapeHtml(outcomes.COMPLETE || 0)}
+        · PARTIAL：${escapeHtml(outcomes.PARTIAL || 0)}
+        · EXHAUSTED：${escapeHtml(outcomes.EXHAUSTED || 0)}
+        · 执行异常：${escapeHtml(failedTasks)}
+      `;
+    } else {
+      result.innerHTML = `
+        <strong>Research Agent R1 批量研究执行失败。</strong>
+        ${
+          run?.error
+            ? `<br />${escapeHtml(run.error)}`
+            : ""
+        }
+      `;
+    }
+
     result.classList.remove("hidden");
   } else {
     result.classList.add("hidden");
@@ -735,81 +882,307 @@ function closeResearchLoopEventStream() {
 
 function connectResearchLoopEventStream(taskId) {
   closeResearchLoopEventStream();
-  const after = state.researchLoopEvents.at(-1)?.sequence || 0;
-  const source = new EventSource(`${API_BASE}${endpoints.researchLoopEvents(taskId, after)}`);
+
+  const after =
+    state.researchLoopEvents.at(-1)?.sequence || 0;
+
+  const source = new EventSource(
+    `${API_BASE}${endpoints.researchLoopEvents(
+      taskId,
+      after,
+    )}`,
+  );
+
   state.researchLoopEventSource = source;
-  source.addEventListener("research-loop", (message) => {
-    const event = JSON.parse(message.data);
-    if (!state.researchLoopEvents.some((item) => item.sequence === event.sequence)) {
+
+  source.addEventListener(
+    "research-agent",
+    (message) => {
+      const event = JSON.parse(message.data);
+
+      if (
+        state.researchLoopEvents.some(
+          (item) => item.sequence === event.sequence,
+        )
+      ) {
+        return;
+      }
+
       state.researchLoopEvents.push(event);
-    }
-    const current = state.researchLoopRun || {};
-    const run = {
-      ...current,
-      status: event.status,
-      current_stage: event.stage || current.current_stage,
-      progress_percent: event.progress_percent,
-      message: event.message,
-      actions_completed: Math.max(current.actions_completed || 0, event.action_index || 0),
-      stop_reason: event.data?.stop_reason || current.stop_reason,
-      error: event.event_type === "failed" ? event.message : current.error,
-    };
-    if (["completed", "requires_human", "failed"].includes(event.status)) {
-      closeResearchLoopEventStream();
-      loadResearchPlan(taskId);
-    } else {
-      renderResearchLoopRuntime(run);
-    }
-  });
+
+      const current = state.researchLoopRun || {};
+
+      const eventData = event.data || {};
+      const hasCompletedSnapshot =
+        Object.prototype.hasOwnProperty.call(
+          eventData,
+          "completed_tasks",
+        );
+      const hasFailedSnapshot =
+        Object.prototype.hasOwnProperty.call(
+          eventData,
+          "failed_tasks",
+        );
+
+      let completedTasks = hasCompletedSnapshot
+        ? Number(eventData.completed_tasks || 0)
+        : Number(current.completed_tasks || 0);
+
+      let failedTasks = hasFailedSnapshot
+        ? Number(eventData.failed_tasks || 0)
+        : Number(current.failed_tasks || 0);
+
+      if (
+        !hasCompletedSnapshot
+        && event.event_type === "research_task_completed"
+      ) {
+        completedTasks += 1;
+      }
+
+      if (
+        !hasFailedSnapshot
+        && event.event_type === "research_task_failed"
+      ) {
+        failedTasks += 1;
+      }
+
+      const outcomes = eventData.outcomes
+        ? { ...eventData.outcomes }
+        : { ...(current.outcomes || {}) };
+
+      if (
+        !eventData.outcomes
+        && event.event_type === "research_task_completed"
+        && event.data?.outcome
+      ) {
+        const outcome = event.data.outcome;
+        outcomes[outcome] =
+          Number(outcomes[outcome] || 0) + 1;
+      }
+
+      const totalTasks = Number(
+        eventData.total_tasks
+        ?? current.total_tasks
+        ?? 0,
+      );
+
+      const processedTasks =
+        completedTasks + failedTasks;
+
+      let status = "running";
+
+      if (event.event_type === "queued") {
+        status = "queued";
+      } else if (
+        event.event_type === "completed"
+      ) {
+        status = "completed";
+      } else if (
+        event.event_type === "failed"
+      ) {
+        status = "failed";
+      }
+
+      const eventProgress = Number(
+        eventData.progress_percent,
+      );
+      const progressPercent = clampResearchProgressPercent(
+        ["completed", "failed"].includes(status)
+          ? 100
+          : Number.isFinite(eventProgress)
+            ? eventProgress
+            : totalTasks > 0
+              ? Math.floor(
+                  100 * processedTasks / totalTasks,
+                )
+              : Number(current.progress_percent || 1),
+      );
+
+      const run = {
+        ...current,
+        status,
+        completed_tasks: completedTasks,
+        failed_tasks: failedTasks,
+        total_tasks: totalTasks,
+        outcomes,
+        progress_percent: progressPercent,
+        current_collection_round: Number(
+          eventData.active_collection_round
+          ?? eventData.collection_round
+          ?? current.current_collection_round
+          ?? 0,
+        ),
+        max_collection_rounds: Number(
+          eventData.max_collection_rounds
+          ?? current.max_collection_rounds
+          ?? 3,
+        ),
+        current_round_completed: Number(
+          eventData.current_round_completed
+          ?? current.current_round_completed
+          ?? 0,
+        ),
+        current_round_total: Number(
+          eventData.current_round_total
+          ?? current.current_round_total
+          ?? 0,
+        ),
+        current_research_task_id:
+          event.research_task_id
+          || current.current_research_task_id,
+        message:
+          event.message || current.message,
+        error:
+          event.event_type === "failed"
+            ? event.message
+            : current.error,
+      };
+
+      renderResearchLoopRuntime(
+        run,
+        state.researchLoopEvents,
+      );
+
+      if (
+        ["completed", "failed"].includes(status)
+      ) {
+        closeResearchLoopEventStream();
+
+        window.setTimeout(
+          () => loadResearchPlan(taskId),
+          150,
+        );
+      }
+    },
+  );
+
   source.onerror = () => {
-    if (!["completed", "requires_human", "failed"].includes(state.researchLoopRun?.status)) {
-      qs("#research-loop-progress-message").textContent = "实时连接暂时断开，正在读取最新持久化状态…";
+    if (
+      !["completed", "failed"].includes(
+        state.researchLoopRun?.status,
+      )
+    ) {
+      qs(
+        "#research-loop-progress-message",
+      ).textContent =
+        "Research Agent SSE 暂时断开，正在读取最新持久化状态…";
+
       closeResearchLoopEventStream();
-      window.setTimeout(() => loadResearchLoopStatus(taskId), 800);
+
+      window.setTimeout(
+        () => loadResearchLoopStatus(taskId),
+        800,
+      );
     }
   };
 }
 
 async function loadResearchLoopStatus(taskId) {
   try {
-    const payload = await fetchJson(endpoints.researchLoopStatus(taskId));
-    renderResearchLoopRuntime(payload.research_loop_run, payload.events || []);
-    if (!payload.terminal) connectResearchLoopEventStream(taskId);
+    const payload = await fetchJson(
+      endpoints.researchLoopStatus(taskId),
+    );
+
+    renderResearchLoopRuntime(
+      payload.research_agent_coordinator_run,
+      payload.events || [],
+    );
+
+    if (!payload.terminal) {
+      connectResearchLoopEventStream(taskId);
+    }
   } catch (error) {
-    if (String(error.message).startsWith("404")) {
+    if (
+      String(error.message).startsWith("404")
+    ) {
       renderResearchLoopRuntime(null, []);
       return;
     }
-    qs("#research-loop-progress-message").textContent = `研究循环状态读取失败：${error.message}`;
+
+    qs(
+      "#research-loop-progress-message",
+    ).textContent =
+      `Research Agent 状态读取失败：${error.message}`;
   }
 }
 
 async function startResearchLoop() {
-  const taskId = qs("#research-planning").dataset.taskId;
-  if (!taskId || !state.researchPlan) return;
-  const button = qs("#start-research-loop-btn");
+  const taskId =
+    qs("#research-planning").dataset.taskId;
+
+  if (!taskId) {
+    return;
+  }
+
+  const confirmed = window.confirm(
+    "Research Agent R1 将调用真实 DeepSeek，"
+    + "并执行 Tavily 搜索、网页读取与证据验证。"
+    + "确认启动本轮研究吗？",
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const button =
+    qs("#start-research-loop-btn");
+
   button.disabled = true;
-  button.textContent = "正在提交…";
-  qs("#research-loop-progress-message").textContent = "正在提交有限研究循环；不会调用真实大模型。";
+  button.textContent =
+    "正在提交 Research Agent…";
+
+  qs(
+    "#research-loop-progress-message",
+  ).textContent =
+    "正在启动 Research Agent R1；"
+    + "本轮会产生真实 DeepSeek 调用和 Web 访问。";
+
   try {
-    const payload = await fetchJson(endpoints.startResearchLoop(taskId), { method: "POST" });
-    renderResearchLoopRuntime(payload.research_loop_run, []);
+    const payload = await fetchJson(
+      endpoints.startResearchLoop(taskId),
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          mode: "deepseek",
+          acknowledge_real_llm_call: true,
+        }),
+      },
+    );
+
+    if (payload.research_plan) {
+      renderResearchPlan(payload.research_plan);
+    }
+
+    renderResearchLoopRuntime(
+      payload.research_agent_coordinator_run,
+      [],
+    );
+
     connectResearchLoopEventStream(taskId);
   } catch (error) {
-    qs("#research-loop-progress-message").textContent = `研究循环未启动：${error.message}`;
+    qs(
+      "#research-loop-progress-message",
+    ).textContent =
+      `Research Agent 未启动：${error.message}`;
+
     button.disabled = false;
-    button.textContent = "自动运行研究循环";
+    button.textContent =
+      "开始自动研究";
   }
 }
 
 function renderResearchAnalysis(payload) {
   state.researchAnalysis = payload;
   const completed = Boolean(payload?.completed);
+  state.researchCanAnalyze = Boolean(payload?.can_analyze);
   const button = qs("#run-research-analysis-btn");
   button.disabled = completed || !state.researchCanAnalyze;
   button.textContent = completed
     ? "DeepSeek 分析已经完成"
-    : "调用 DeepSeek 生成分析结论（1 次）";
+    : "调用 DeepSeek 生成分析结论（通常 2 次）";
   const result = qs("#research-analysis-result");
   if (completed) {
     const supported = (payload.citation_checks || []).filter((item) => item.status === "supported").length;
@@ -817,9 +1190,12 @@ function renderResearchAnalysis(payload) {
     const latestCall = calls.at(-1) || {};
     result.innerHTML = `<strong>当前网页研究产物已经生成分析结论。</strong><br />V2 结论：${escapeHtml((payload.claims_v2 || []).length)} 条 · 引用检查：${escapeHtml((payload.citation_checks || []).length)} 条 · supported（充分支持）：${escapeHtml(supported)} 条<br />后端 Analyst 真实调用记录：${escapeHtml(calls.length)} 次 · ${escapeHtml(latestCall.provider || "-")} · ${escapeHtml(latestCall.model || "-")} · ${escapeHtml(latestCall.duration_ms || 0)} ms`;
     result.classList.remove("hidden");
-    qs("#research-analysis-copy").textContent = "Analyst 已读取结构化 SourceEvidence / ProductCard / EvidenceCoverage，原确定性覆盖与缺口产物保持不变。";
+    qs("#research-analysis-copy").textContent = "Analyst 已读取当前任务可追溯的 Verified Evidence；ProductCard 与 EvidenceCoverage 仅在存在时作为辅助产物。";
   } else {
     result.classList.add("hidden");
+    qs("#research-analysis-copy").textContent = state.researchCanAnalyze
+      ? `已有 ${payload.analyzable_evidence_count || 0} 条可追溯 Verified Evidence，可以生成阶段性分析；未完成的 ResearchTask 会作为 ResearchGap 保留。`
+      : (payload.analysis_blocking_reason || "当前任务没有可分析的 Verified Evidence。");
   }
 }
 
@@ -931,7 +1307,7 @@ async function runResearchAnalysis() {
   } catch (error) {
     qs("#research-analysis-copy").textContent = `DeepSeek 分析未完成：${error.message}`;
     button.disabled = false;
-    button.textContent = "调用 DeepSeek 生成分析结论（1 次）";
+    button.textContent = "调用 DeepSeek 生成分析结论（通常 2 次）";
   }
 }
 
@@ -1182,6 +1558,7 @@ function renderOverview() {
     trace = {},
     stage: workspaceStage,
     stageDetail,
+    analysisTask,
   } = state.data;
   const summary = savedSummary || {
     sources_count: sources.length,
@@ -1206,6 +1583,14 @@ function renderOverview() {
   const gate = qualityGates?.[0];
   const guardrailFailures = (guardrailChecks || []).filter((item) => item.status === "failed").length;
   const taskWorkspace = Boolean(state.activeTaskId);
+  const originalRequest = (
+    analysisTask?.metadata?.request_text
+    || analysisTask?.query
+    || ""
+  ).trim();
+  qs("#active-research-request").textContent = originalRequest
+    ? `研究需求：${originalRequest}`
+    : "研究需求：尚未选择任务";
   qs("#runtime-pill").textContent = taskWorkspace
     ? "Task Workspace（任务工作区）"
     : `${metadata.llm_provider || "mock"} · ${metadata.llm_model || "structured"}`;

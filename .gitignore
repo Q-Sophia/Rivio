@@ -13,7 +13,21 @@ __pycache__/
 backend/app/data/logs/*.log
 backend/app/data/logs/*.pid
 backend/app/data/tmp/
+app/data/
 
-# User-created runtime artifacts. Historical snapshot/check fixtures remain tracked.
-backend/app/data/runs/task_user_*/
-backend/app/data/runs/draft_????????????/
+# Runtime artifacts are local state. Existing tracked snapshot/pilot fixtures stay
+# tracked until they can be migrated deliberately to a fixture namespace.
+backend/app/data/runs/**
+
+# check_*.py and TaskBoard store checks rebuild these directories on every run.
+backend/app/data/checks/
+backend/app/data/taskboard_store_check/
+
+# Evaluation inputs may be stable fixtures, but generated reports stay local.
+backend/app/data/evaluations/search_source_quality_r1/source_quality_eval_v1.json
+backend/app/data/evaluations/search_source_quality_r1/source_quality_eval_v1.md
+backend/app/data/evaluations/search_source_quality_r1/trae_source_candidates.csv
+backend/app/data/evaluations/source_rag_hybrid_rerank/
+
+# Local exports of runtime workspaces.
+backend/app/data/runs/*.zip

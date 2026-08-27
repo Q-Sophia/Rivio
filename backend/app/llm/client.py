@@ -9,6 +9,7 @@ from app.llm.config import LLMConfig
 from app.llm.language import contains_chinese, validate_structured_output_language
 from app.llm.provider import (
     LLMProviderOutputTruncatedError,
+    LLMProviderResponseError,
     MockStructuredProvider,
     ProviderResult,
     StructuredLLMProvider,
@@ -44,6 +45,8 @@ from app.schemas import (
     LLMOutput,
     ProductCard,
     ResearchGap,
+    ResearchAgentAction,
+    ResearchActionType,
     RunStatus,
     SourceDocument,
     SourceEvidence,
@@ -70,6 +73,14 @@ class LLMOutputTruncatedError(ValueError):
         super().__init__(f"LLM 输出被截断；stage={stage}；{message}")
         self.stage = stage
         self.finish_reason = "length"
+
+
+class LLMStructuredOutputError(ValueError):
+    """A provider response or parsed object failed the requested structure."""
+
+    def __init__(self, stage: str, message: str):
+        super().__init__(f"LLM 结构化输出无效；stage={stage}；{message}")
+        self.stage = stage
 
 
 def _find_internal_reference_fields(value: Any) -> set[str]:
@@ -163,6 +174,7 @@ class LLMClient:
         report_claim_refs_added: list[str] = []
         rejected_portfolio_claims: list[dict[str, Any]] = []
         caught_exception: Exception | None = None
+        failure_phase = "provider"
         try:
             if isinstance(self.provider, MockStructuredProvider):
                 raw_output = self._mock_generate(
@@ -183,6 +195,7 @@ class LLMClient:
                     artifacts=artifacts,
                 )
                 raw_output = provider_result.raw_output
+            failure_phase = "validation"
             if output_schema == "CompetitiveAnalysisPortfolioV2":
                 raw_output, rejected_portfolio_claims = (
                     self._filter_unaligned_portfolio_claims(
@@ -215,6 +228,12 @@ class LLMClient:
         except Exception as exc:
             caught_exception = exc
             provider_error = f"{type(exc).__name__}: {exc}"
+            raw_output_text = str(getattr(exc, "raw_output_text", "") or "")
+            if raw_output_text:
+                raw_output = {
+                    "malformed_text": raw_output_text,
+                    "parse_error": provider_error,
+                }
             if self.config.mode == LLMMode.LLM_WITH_FALLBACK:
                 used_fallback = True
                 fallback_reason = provider_error
@@ -324,6 +343,14 @@ class LLMClient:
         if status == RunStatus.FAILED:
             if isinstance(caught_exception, LLMProviderOutputTruncatedError):
                 raise LLMOutputTruncatedError(node_id, error) from caught_exception
+            if (
+                failure_phase == "validation"
+                or (
+                    isinstance(caught_exception, LLMProviderResponseError)
+                    and bool(getattr(caught_exception, "raw_output_text", ""))
+                )
+            ):
+                raise LLMStructuredOutputError(node_id, error) from caught_exception
             raise ValueError(error)
         return raw_output, call, output
 
@@ -340,10 +367,7 @@ class LLMClient:
                 str(item.get("id", "")): str(item.get("competitor", ""))
                 for item in artifacts.get("evidence", [])
             },
-            known_competitors={
-                str(item.get("name", ""))
-                for item in artifacts.get("product_cards", [])
-            },
+            known_competitors=LLMClient._known_analyst_competitors(artifacts),
         )
         if not rejected:
             return raw_output, []
@@ -365,10 +389,7 @@ class LLMClient:
                 str(item.get("id", "")): str(item.get("competitor", ""))
                 for item in artifacts.get("evidence", [])
             },
-            known_competitors={
-                str(item.get("name", ""))
-                for item in artifacts.get("product_cards", [])
-            },
+            known_competitors=LLMClient._known_analyst_competitors(artifacts),
         )
         if not rejected:
             return raw_output, []
@@ -439,6 +460,21 @@ class LLMClient:
         if output_schema == "AnalysisTaskDraft":
             return {
                 "item": self._mock_task_draft(task_id, artifacts),
+                "generated_by": str(agent_role),
+                "output_language": self.config.output_language,
+            }
+        if output_schema == "ResearchAgentAction":
+            return {
+                "item": ResearchAgentAction(
+                    task_id=task_id,
+                    research_task_id=str(
+                        (artifacts.get("research_task") or [{}])[0].get("id", "")
+                    ),
+                    action=ResearchActionType.FINISH,
+                    rationale="Mock 模式不执行外部研究动作。",
+                    finish_status="EXHAUSTED",
+                    remaining_need="需要真实或 Fake trajectory 提供研究动作。",
+                ).model_dump(mode="json"),
                 "generated_by": str(agent_role),
                 "output_language": self.config.output_language,
             }
@@ -526,10 +562,7 @@ class LLMClient:
                     str(evidence.get("id", ""))
                     for evidence in artifacts.get("evidence", [])
                 },
-                known_competitors={
-                    str(card.get("name", ""))
-                    for card in artifacts.get("product_cards", [])
-                },
+                known_competitors=self._known_analyst_competitors(artifacts),
                 evidence_competitors={
                     str(evidence.get("id", "")): str(
                         evidence.get("competitor", "")
@@ -544,10 +577,7 @@ class LLMClient:
                 [item, item.brief_assessment, *item.competitor_profiles],
                 task_id,
             )
-            known_competitors = {
-                str(card.get("name", ""))
-                for card in artifacts.get("product_cards", [])
-            }
+            known_competitors = self._known_analyst_competitors(artifacts)
             invalid_competitors = sorted(
                 profile.name
                 for profile in item.competitor_profiles
@@ -585,10 +615,7 @@ class LLMClient:
                 "counter_evidence_ids",
                 known_evidence_ids,
             )
-            known_competitors = {
-                str(card.get("name", ""))
-                for card in artifacts.get("product_cards", [])
-            }
+            known_competitors = self._known_analyst_competitors(artifacts)
             invalid_competitors = sorted(
                 {
                     competitor
@@ -610,6 +637,28 @@ class LLMClient:
             expected_text = str(request_items[0].get("request_text", "")) if request_items else ""
             if expected_text and item.request_text != expected_text:
                 raise ValueError("AnalysisTaskDraft.request_text 与用户原文不一致")
+            return [item.id]
+        if output_schema == "ResearchAgentAction":
+            semantic_fields = {
+                "action", "rationale", "query", "search_scope", "url",
+                "source_id", "chunk_id", "exact_quote", "supports",
+                "remaining_need", "finish_status",
+            }
+            raw_item = raw_output.get("item", {})
+            if not isinstance(raw_item, dict):
+                raise ValueError("ResearchAgentAction.item 必须是对象")
+            research_tasks = artifacts.get("research_task", [])
+            expected_id = str(research_tasks[0].get("id", "")) if research_tasks else ""
+            item = ResearchAgentAction(
+                task_id=task_id,
+                research_task_id=expected_id,
+                **{
+                    key: value
+                    for key, value in raw_item.items()
+                    if key in semantic_fields
+                },
+            )
+            raw_output["item"] = item.model_dump(mode="json")
             return [item.id]
         raise ValueError(f"Unsupported output_schema={output_schema}")
 
@@ -1542,3 +1591,24 @@ class LLMClient:
             .replace("-", "_")
             .replace("?", "")
         )[:40]
+    @staticmethod
+    def _known_analyst_competitors(artifacts: dict[str, list]) -> set[str]:
+        task_items = artifacts.get("analysis_task", [])
+        task_competitors = (
+            task_items[0].get("competitors", []) if task_items else []
+        )
+        return {
+            str(name)
+            for name in [
+                *task_competitors,
+                *(
+                    item.get("competitor", "")
+                    for item in artifacts.get("evidence", [])
+                ),
+                *(
+                    item.get("name", "")
+                    for item in artifacts.get("product_cards", [])
+                ),
+            ]
+            if str(name).strip()
+        }

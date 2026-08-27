@@ -4,7 +4,7 @@ import os
 
 from app.harness.artifacts import ArtifactStore
 from app.llm.client import LLMClient
-from app.llm.config import LLMConfig
+from app.llm.config import LLMConfig, build_deepseek_compatible_config
 from app.prompts.registry import PromptRegistry
 from app.schemas import (
     AgentRole,
@@ -39,22 +39,13 @@ def build_intent_llm_config(*, force_mock: bool = False) -> LLMConfig:
             api_style="mock",
             structured_output_mode="json_schema",
         )
-    return LLMConfig(
-        provider=LLMProvider.COMPATIBLE,
-        model=os.environ.get("INTENT_LLM_MODEL", "deepseek-v4-flash"),
-        mode=LLMMode.LLM,
-        base_url=os.environ.get("INTENT_LLM_BASE_URL", "https://api.deepseek.com/v1"),
-        api_key_env=os.environ.get("INTENT_LLM_API_KEY_ENV", "DEEPSEEK_API_KEY"),
-        timeout_seconds=int(os.environ.get("INTENT_LLM_TIMEOUT_SECONDS", "90")),
-        max_tokens=int(os.environ.get("INTENT_LLM_MAX_TOKENS", "3000")),
+    return build_deepseek_compatible_config(
+        env_prefix="INTENT",
+        default_timeout_seconds=90,
+        default_max_tokens=3000,
         temperature=0.1,
-        output_language="zh-CN",
         max_retries=1,
         retry_base_seconds=1.0,
-        enable_real_calls=True,
-        api_style="chat_completions",
-        structured_output_mode="json_object",
-        thinking_mode="disabled",
     )
 
 

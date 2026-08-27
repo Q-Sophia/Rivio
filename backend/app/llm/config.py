@@ -157,3 +157,50 @@ def load_llm_config(*, mode: str | None = None) -> LLMConfig:
     )
     config.validate()
     return config
+
+
+def build_deepseek_compatible_config(
+    *,
+    env_prefix: str,
+    default_model: str = "deepseek-v4-flash",
+    default_timeout_seconds: int = 120,
+    default_max_tokens: int = 4000,
+    temperature: float = 0.2,
+    max_retries: int = 0,
+    retry_base_seconds: float = 1.0,
+) -> LLMConfig:
+    """Build the shared DeepSeek-compatible config used by production LLM stages."""
+
+    normalized_prefix = env_prefix.strip().strip("_").upper()
+    if not normalized_prefix:
+        raise ValueError("DeepSeek config env_prefix 不能为空")
+    key = lambda suffix: f"{normalized_prefix}_LLM_{suffix}"
+    config = LLMConfig(
+        provider=LLMProvider.COMPATIBLE,
+        model=os.environ.get(key("MODEL"), default_model),
+        mode=LLMMode.LLM,
+        base_url=os.environ.get(
+            key("BASE_URL"),
+            "https://api.deepseek.com/v1",
+        ),
+        api_key_env=os.environ.get(
+            key("API_KEY_ENV"),
+            "DEEPSEEK_API_KEY",
+        ),
+        timeout_seconds=int(
+            os.environ.get(key("TIMEOUT_SECONDS"), str(default_timeout_seconds))
+        ),
+        max_tokens=int(
+            os.environ.get(key("MAX_TOKENS"), str(default_max_tokens))
+        ),
+        temperature=temperature,
+        output_language="zh-CN",
+        max_retries=max_retries,
+        retry_base_seconds=retry_base_seconds,
+        enable_real_calls=True,
+        api_style="chat_completions",
+        structured_output_mode="json_object",
+        thinking_mode="disabled",
+    )
+    config.validate()
+    return config

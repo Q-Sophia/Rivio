@@ -82,6 +82,8 @@ def build_store(root: Path, task_id: str, research_task: ResearchTask) -> Artifa
         "collection_attempts",
         "search_attempts",
         "web_search_results",
+        "source_selection_runs",
+        "tool_calls",
     ]:
         store.save_many(task_id, artifact_type, [])
     record = TaskRecord(
@@ -210,7 +212,16 @@ def main() -> None:
     require(result["status"] == "completed", str(result))
     require(result["search_used"] is True, "缺失 URL 时没有调用 SearchProvider")
     search_results = store.load_many(task_id, "web_search_results")
-    require(len(search_results) == 2, "搜索结果没有完整保存为 artifacts")
+    search_attempts = store.load_many(task_id, "search_attempts")
+    require(
+        len(search_results) == sum(item["result_count"] for item in search_attempts),
+        "多阶段搜索结果没有完整保存为 artifacts",
+    )
+    require(
+        [item["metadata"]["acquisition_stage"] for item in search_attempts[:2]]
+        == ["official_discovery", "official_discovery"],
+        "事实型任务没有先执行 official discovery",
+    )
     require(sum(item["selected_for_collection"] for item in search_results) == 1, "URL 安全筛选错误")
     require(len(store.load_many(task_id, "sources")) == 1, "搜索结果没有进入采集链路")
 

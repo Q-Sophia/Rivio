@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import os
 import threading
 from typing import Any
 
 from app.agents import CitationAgent, LLMProfessionalAnalystAgent
 from app.agents.runtime import AgentRuntime
 from app.harness.artifacts import ArtifactStore
-from app.llm import LLMClient, LLMConfig
+from app.llm import LLMClient, LLMConfig, build_deepseek_compatible_config
 from app.schemas import (
     AgentContext,
     AgentRole,
@@ -15,9 +14,11 @@ from app.schemas import (
     AnalysisTask,
     DAGNode,
     ExecutionMode,
-    LLMMode,
-    LLMProvider,
     ResearchPlan,
+    ResearchAgentRun,
+    ResearchGap,
+    ResearchTask,
+    ResearchTaskOutcome,
     RunStatus,
     TaskRecord,
     TaskStatus,
@@ -57,9 +58,11 @@ class ResearchAnalysisService:
             for item in self.store.load_many(task_id, "llm_calls")
             if str(item.get("agent_role") or "") == AgentRole.ANALYST.value
         ]
+        readiness = self._analysis_readiness(task_id)
         return {
             "task_id": task_id,
             "completed": bool(portfolios),
+            **readiness,
             "analysis_portfolio": portfolios[-1] if portfolios else None,
             "claims": self.store.load_many(task_id, "claims"),
             "claims_v2": self.store.load_many(task_id, "claims_v2"),
@@ -96,6 +99,7 @@ class ResearchAnalysisService:
             plan = self._require_analyzable_plan(task_id)
             self.board_store.require_board(task_id)
             self._validate_inputs(task_id)
+            self._ensure_research_agent_gaps(task_id)
             config = self._deepseek_config()
             config.validate()
             readiness_errors = config.real_call_readiness_errors()
@@ -376,34 +380,125 @@ class ResearchAnalysisService:
         return ResearchPlan(**items[-1])
 
     def _validate_inputs(self, task_id: str) -> None:
-        required = {
-            "sources": "SourceDocument（来源文档）",
-            "evidence": "SourceEvidence（来源证据）",
-            "product_cards": "ProductCard（产品卡片）",
-            "evidence_coverage": "EvidenceCoverage（证据覆盖）",
+        readiness = self._analysis_readiness(task_id)
+        if not readiness["can_analyze"]:
+            raise ValueError(readiness["analysis_blocking_reason"])
+
+    def _analysis_readiness(self, task_id: str) -> dict[str, Any]:
+        sources = self.store.load_many(task_id, "sources")
+        evidence = self.store.load_many(task_id, "evidence")
+        source_ids = {str(item.get("id") or "") for item in sources}
+        analyzable = [
+            item
+            for item in evidence
+            if str(item.get("source_id") or "") in source_ids
+        ]
+        if not evidence:
+            reason = (
+                "当前任务没有可分析的 Verified Evidence；请先完成至少一条证据验证。"
+            )
+        elif not analyzable:
+            reason = (
+                "当前任务的 Evidence 无法追溯到 SourceDocument，暂不能进入 Analyst。"
+            )
+        else:
+            reason = ""
+        return {
+            "can_analyze": bool(analyzable),
+            "analysis_blocking_reason": reason,
+            "analyzable_evidence_count": len(analyzable),
+            "product_card_count": len(
+                self.store.load_many(task_id, "product_cards")
+            ),
         }
-        missing = [label for key, label in required.items() if not self.store.load_many(task_id, key)]
-        if missing:
-            raise ValueError("缺少 Step6F 输入：" + "、".join(missing))
+
+    def _ensure_research_agent_gaps(self, task_id: str) -> None:
+        """Bridge terminal R1 outcomes into deterministic gaps without overwriting legacy gaps."""
+
+        existing = [
+            ResearchGap(**item)
+            for item in self.store.load_many(task_id, "research_gaps")
+        ]
+        existing_research_task_ids = {
+            str(item.metadata.get("research_task_id") or "") for item in existing
+        }
+        research_tasks = {
+            item.id: item
+            for item in (
+                ResearchTask(**raw)
+                for raw in self.store.load_many(task_id, "research_tasks")
+            )
+        }
+        latest_runs: dict[str, ResearchAgentRun] = {}
+        for raw in self.store.load_many(task_id, "research_agent_runs"):
+            run = ResearchAgentRun(**raw)
+            latest_runs[run.research_task_id] = run
+
+        known_evidence_ids = {
+            str(item.get("id") or "")
+            for item in self.store.load_many(task_id, "evidence")
+        }
+        generated: list[ResearchGap] = []
+        for research_task_id, run in latest_runs.items():
+            if research_task_id in existing_research_task_ids:
+                continue
+            if run.outcome not in {
+                ResearchTaskOutcome.PARTIAL.value,
+                ResearchTaskOutcome.EXHAUSTED.value,
+            }:
+                continue
+            research_task = research_tasks.get(research_task_id)
+            if research_task is None:
+                continue
+            generated.append(
+                ResearchGap(
+                    id=f"gap_research_agent_{research_task_id}",
+                    task_id=task_id,
+                    competitors=(
+                        [research_task.competitor]
+                        if research_task.competitor
+                        else []
+                    ),
+                    dimension=research_task.dimension,
+                    missing_information=(
+                        run.remaining_need.strip() or research_task.objective
+                    ),
+                    decision_blocked=(
+                        "当前证据只能支持阶段性分析，不能完整回答该 ResearchTask。"
+                    ),
+                    why_existing_evidence_is_insufficient=(
+                        f"Research & Evidence Agent 以 {run.outcome} 结束；"
+                        "Analyst 应保留现有证据支持的结论，并披露该缺口。"
+                    ),
+                    suggested_queries=research_task.query_hints,
+                    preferred_source_types=research_task.preferred_source_types,
+                    priority=research_task.priority,
+                    stop_condition=research_task.stop_condition,
+                    related_evidence_ids=[
+                        evidence_id
+                        for evidence_id in run.verified_evidence_ids
+                        if evidence_id in known_evidence_ids
+                    ],
+                    metadata={
+                        "source": "research_agent_r1_bridge",
+                        "research_task_id": research_task_id,
+                        "research_agent_run_id": run.id,
+                        "research_task_outcome": run.outcome,
+                    },
+                )
+            )
+        if generated:
+            self.store.save_many(task_id, "research_gaps", [*existing, *generated])
 
     @staticmethod
     def _deepseek_config() -> LLMConfig:
-        return LLMConfig(
-            provider=LLMProvider.COMPATIBLE,
-            model=os.environ.get("STEP6F_LLM_MODEL", "deepseek-v4-flash"),
-            mode=LLMMode.LLM,
-            base_url=os.environ.get("STEP6F_LLM_BASE_URL", "https://api.deepseek.com/v1"),
-            api_key_env=os.environ.get("STEP6F_LLM_API_KEY_ENV", "DEEPSEEK_API_KEY"),
-            timeout_seconds=int(os.environ.get("STEP6F_LLM_TIMEOUT_SECONDS", "120")),
-            max_tokens=int(os.environ.get("STEP6F_LLM_MAX_TOKENS", "8000")),
+        return build_deepseek_compatible_config(
+            env_prefix="STEP6F",
+            default_timeout_seconds=120,
+            default_max_tokens=8000,
             temperature=0.2,
-            output_language="zh-CN",
             max_retries=0,
             retry_base_seconds=1.0,
-            enable_real_calls=True,
-            api_style="chat_completions",
-            structured_output_mode="json_object",
-            thinking_mode="disabled",
         )
 
 

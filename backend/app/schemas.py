@@ -20,6 +20,7 @@ class AgentRole(str, Enum):
     INTENT = "intent"
     ORCHESTRATOR = "orchestrator"
     COLLECTOR = "collector"
+    RESEARCHER = "researcher"
     EXTRACTOR = "extractor"
     ANALYST = "analyst"
     WRITER = "writer"
@@ -88,6 +89,20 @@ class SourceType(str, Enum):
     REPORT = "report"
     SOCIAL = "social"
     OTHER = "other"
+
+
+class SourceRole(str, Enum):
+    PRIMARY = "PRIMARY"
+    AUTHORITATIVE_SECONDARY = "AUTHORITATIVE_SECONDARY"
+    GENERAL_THIRD_PARTY = "GENERAL_THIRD_PARTY"
+    COMMUNITY = "COMMUNITY"
+    LOW_QUALITY = "LOW_QUALITY"
+
+
+class OfficialConfidence(str, Enum):
+    CONFIRMED = "confirmed"
+    PROBABLE = "probable"
+    UNKNOWN = "unknown"
 
 
 class EvidenceDimension(str, Enum):
@@ -177,6 +192,20 @@ class EvidenceCoverageStatus(str, Enum):
     WEAK = "weak"
     MISSING = "missing"
     NOT_APPLICABLE = "not_applicable"
+
+
+class ResearchActionType(str, Enum):
+    SEARCH = "SEARCH"
+    FETCH = "FETCH"
+    READ = "READ"
+    SUBMIT_EVIDENCE = "SUBMIT_EVIDENCE"
+    FINISH = "FINISH"
+
+
+class ResearchTaskOutcome(str, Enum):
+    COMPLETE = "COMPLETE"
+    PARTIAL = "PARTIAL"
+    EXHAUSTED = "EXHAUSTED"
 
 
 class SchemaModel(BaseModel):
@@ -403,6 +432,13 @@ class RunResearchReportingRequest(BaseModel):
     acknowledge_real_llm_call: bool = False
 
 
+class RunResearchAgentRequest(BaseModel):
+    research_task_id: str
+    mode: ExecutionMode = ExecutionMode.DEEPSEEK
+    acknowledge_real_llm_call: bool = False
+    budget: ResearchAgentBudget = Field(default_factory=lambda: ResearchAgentBudget())
+
+
 class ExecutionRun(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("execrun"))
     task_id: str
@@ -506,6 +542,98 @@ class ResearchTask(SchemaModel):
     research_gap_id: str = ""
 
 
+class ResearchAgentBudget(BaseModel):
+    max_steps: int = Field(default=12, ge=1, le=50)
+    max_searches: int = Field(default=4, ge=1, le=20)
+    max_sources: int = Field(default=6, ge=1, le=30)
+    max_failed_actions: int = Field(default=3, ge=1, le=20)
+
+
+class ObservedResearchTerm(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("observedterm"))
+    task_id: str
+    research_task_id: str
+    term: str
+    discovered_from: str
+    provenance_id: str
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchAgentAction(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("researchaction"))
+    task_id: str
+    research_task_id: str
+    action: ResearchActionType
+    rationale: str
+    query: str = ""
+    search_scope: str = "auto"
+    url: str = ""
+    source_id: str = ""
+    chunk_id: str = ""
+    exact_quote: str = ""
+    supports: str = ""
+    remaining_need: str = ""
+    finish_status: str = ""
+    created_at: datetime = Field(default_factory=utc_now)
+
+    @model_validator(mode="before")
+    @classmethod
+    def normalize_runtime_defaults(cls, value):
+        if not isinstance(value, dict):
+            return value
+        data = dict(value)
+        raw_scope = data.get("search_scope", "auto")
+        normalized_scope = str(raw_scope or "auto").strip().casefold()
+        if normalized_scope not in {"auto", "general", "community"}:
+            normalized_scope = "auto"
+        data["search_scope"] = normalized_scope
+        return data
+
+    @model_validator(mode="after")
+    def validate_action_arguments(self):
+        action_value = str(self.action)
+        if action_value == ResearchActionType.FINISH.value:
+            if not str(self.finish_status).strip():
+                raise ValueError("FINISH 缺少字段：finish_status")
+            ResearchTaskOutcome(self.finish_status)
+        return self
+
+
+class ResearchAgentObservation(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("researchobservation"))
+    task_id: str
+    research_task_id: str
+    action_id: str
+    action: ResearchActionType
+    status: str
+    summary: str
+    payload: dict[str, Any] = Field(default_factory=dict)
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchAgentRun(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("researchagentrun"))
+    task_id: str
+    research_task_id: str
+    status: RunStatus = RunStatus.RUNNING
+    outcome: str = ""
+    attempted_queries: list[str] = Field(default_factory=list)
+    visited_urls: list[str] = Field(default_factory=list)
+    rejected_sources: list[str] = Field(default_factory=list)
+    observed_terms: list[ObservedResearchTerm] = Field(default_factory=list)
+    verified_evidence_ids: list[str] = Field(default_factory=list)
+    failed_actions: list[str] = Field(default_factory=list)
+    remaining_need: str = ""
+    action_ids: list[str] = Field(default_factory=list)
+    observation_ids: list[str] = Field(default_factory=list)
+    step_count: int = Field(default=0, ge=0)
+    search_count: int = Field(default=0, ge=0)
+    source_count: int = Field(default=0, ge=0)
+    budget: ResearchAgentBudget = Field(default_factory=ResearchAgentBudget)
+    created_at: datetime = Field(default_factory=utc_now)
+    completed_at: datetime | None = None
+
+
 class WebPageContent(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("webpage"))
     task_id: str
@@ -519,6 +647,73 @@ class WebPageContent(SchemaModel):
     render_mode: str = "http"
     browser_engine: str = ""
     fetched_at: datetime = Field(default_factory=utc_now)
+
+
+class SourceChunk(SchemaModel):
+    id: str
+    task_id: str
+    source_id: str
+    web_page_id: str
+    content_hash: str
+    chunk_index: int = Field(ge=0)
+    source_text_start: int = Field(ge=0)
+    source_text_end: int = Field(ge=0)
+    text: str
+    title: str = ""
+    competitor: str = ""
+    origin_research_task_id: str = ""
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class SourceRetrievalHit(BaseModel):
+    chunk_id: str
+    rank: int = Field(ge=1)
+    score: float = Field(ge=0.0)
+    matched_terms: list[str] = Field(default_factory=list)
+    source_id: str = ""
+    bm25_rank: int | None = Field(default=None, ge=1)
+    bm25_score: float | None = None
+    dense_rank: int | None = Field(default=None, ge=1)
+    dense_score: float | None = None
+    rrf_rank: int | None = Field(default=None, ge=1)
+    rrf_score: float | None = None
+    rerank_rank: int | None = Field(default=None, ge=1)
+    rerank_score: float | None = None
+    final_rank: int | None = Field(default=None, ge=1)
+
+
+class SourceRetrievalRun(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("retrieval"))
+    task_id: str
+    research_task_id: str
+    algorithm: str = "bm25_v1"
+    query_text: str
+    query_hash: str
+    candidate_chunk_count: int = Field(default=0, ge=0)
+    selected_chunk_ids: list[str] = Field(default_factory=list)
+    selected_chunks: list[SourceRetrievalHit] = Field(default_factory=list)
+    top_k: int = Field(default=10, ge=1)
+    selected_text_chars: int = Field(default=0, ge=0)
+    total_candidate_chars: int = Field(default=0, ge=0)
+    fallback_used: bool = False
+    fallback_reason: str = ""
+    retrieval_mode: str = "bm25_v1"
+    embedding_model: str = ""
+    reranker_model: str = ""
+    bm25_candidate_count: int = Field(default=0, ge=0)
+    dense_candidate_count: int = Field(default=0, ge=0)
+    fusion_candidate_count: int = Field(default=0, ge=0)
+    reranked_count: int = Field(default=0, ge=0)
+    selected_count: int = Field(default=0, ge=0)
+    rrf_k: int = Field(default=60, ge=1)
+    embedding_cache_hits: int = Field(default=0, ge=0)
+    embedding_cache_misses: int = Field(default=0, ge=0)
+    bm25_ms: float = Field(default=0.0, ge=0.0)
+    dense_ms: float = Field(default=0.0, ge=0.0)
+    fusion_ms: float = Field(default=0.0, ge=0.0)
+    rerank_ms: float = Field(default=0.0, ge=0.0)
+    total_ms: float = Field(default=0.0, ge=0.0)
+    created_at: datetime = Field(default_factory=utc_now)
 
 
 class CollectionAttempt(SchemaModel):
@@ -565,6 +760,56 @@ class WebSearchResult(SchemaModel):
     published_at: str = ""
     selected_for_collection: bool = False
     rejection_reason: str = ""
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class OfficialDomainContext(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("officialdomain"))
+    task_id: str
+    competitor: str
+    domain: str
+    confidence: OfficialConfidence = OfficialConfidence.PROBABLE
+    research_task_ids: list[str] = Field(default_factory=list)
+    search_result_ids: list[str] = Field(default_factory=list)
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class SourceTaskAssociation(SchemaModel):
+    """A task-local authorization to reuse one globally deduplicated source."""
+
+    id: str = Field(default_factory=lambda: new_id("sourceassoc"))
+    task_id: str
+    research_task_id: str
+    source_id: str
+    discovery_method: str
+    search_result_id: str = ""
+    requested_url: str = ""
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class SourceSelectionRun(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("sourceselection"))
+    task_id: str
+    research_task_id: str
+    search_attempt_id: str
+    search_result_id: str
+    query: str = ""
+    url: str
+    domain: str
+    source_role: SourceRole
+    official_confidence: OfficialConfidence
+    relevance_score: float = 0.0
+    dimension_fit_score: float = 0.0
+    authority_score: float = 0.0
+    freshness_score: float = 0.0
+    penalties: list[str] = Field(default_factory=list)
+    penalty_score: float = 0.0
+    diversity_penalty: float = 0.0
+    final_score: float = 0.0
+    quality_rank: int = Field(ge=1)
+    selected: bool = False
+    selection_reason: str = ""
+    ranking_version: str = "source_quality_v1"
     created_at: datetime = Field(default_factory=utc_now)
 
 

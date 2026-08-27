@@ -10,14 +10,19 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
 
 from app.harness.artifacts import ArtifactStore
 from app.execution import (
     ResearchAnalysisOutputTruncatedError,
     get_execution_runner,
+    get_research_evidence_agent_service,
     get_research_analysis_service,
     get_research_reporting_service,
     get_research_loop_runner,
+)
+from app.execution.research_agent_coordinator import (
+    get_research_agent_coordinator,
 )
 from app.collection import CollectorQueueService
 from app.extraction import ExtractorQueueService
@@ -33,6 +38,7 @@ from app.schemas import (
     AuthorizeExecutionRequest,
     ConfirmAnalysisTaskRequest,
     IntentParseRequest,
+    RunResearchAgentRequest,
     RunResearchAnalysisRequest,
     RunResearchReportingRequest,
     StartExecutionRequest,
@@ -78,6 +84,11 @@ ARTIFACT_ENDPOINTS = {
     "research-loop-events": "research_loop_events",
     "analysis-evidence-coverage": "analysis_evidence_coverage",
     "analysis-research-gaps": "analysis_research_gaps",
+    "research-agent-runs": "research_agent_runs",
+    "research-agent-actions": "research_agent_actions",
+    "research-agent-observations": "research_agent_observations",
+    "research-agent-coordinator-runs": "research_agent_coordinator_runs",
+    "research-agent-coordinator-events": "research_agent_coordinator_events",
 }
 
 FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend"
@@ -103,6 +114,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class StartResearchAgentCoordinatorRequest(BaseModel):
+    mode: str = "deepseek"
+    acknowledge_real_llm_call: bool = False
 
 def get_store() -> ArtifactStore:
     return ArtifactStore()
@@ -393,6 +407,14 @@ def build_task_navigation_item(task_dir: Path) -> dict[str, Any] | None:
         max(modified_timestamps, default=task_dir.stat().st_mtime),
         tz=timezone.utc,
     ).isoformat()
+    task_metadata = analysis_task.get("metadata") or {}
+    if not isinstance(task_metadata, dict):
+        task_metadata = {}
+    request_text = str(
+        task_metadata.get("request_text")
+        or analysis_task.get("query")
+        or ""
+    )
     title = str(
         analysis_task.get("preferred_title")
         or analysis_task.get("report_subject")
@@ -402,7 +424,7 @@ def build_task_navigation_item(task_dir: Path) -> dict[str, Any] | None:
     return {
         "task_id": task_dir.name,
         "title": title,
-        "request_text": str(analysis_task.get("query") or title),
+        "request_text": request_text or title,
         "analysis_task_status": str(analysis_task.get("status") or "pending"),
         "status": status,
         "stage": workspace_stage,
@@ -473,6 +495,12 @@ def build_task_workspace(task_id: str) -> dict[str, Any]:
         "collectionAttempts": optional_list_from_dir(task_dir, "collection_attempts"),
         "searchAttempts": optional_list_from_dir(task_dir, "search_attempts"),
         "webSearchResults": optional_list_from_dir(task_dir, "web_search_results"),
+        "researchAgentRuns": optional_list_from_dir(task_dir, "research_agent_runs"),
+        "researchAgentActions": optional_list_from_dir(task_dir, "research_agent_actions"),
+        "researchAgentObservations": optional_list_from_dir(
+            task_dir,
+            "research_agent_observations",
+        ),
         "evidenceExtractionAttempts": optional_list_from_dir(
             task_dir,
             "evidence_extraction_attempts",
@@ -932,11 +960,228 @@ async def stream_research_loop_events(
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
+def research_agent_coordinator_status_payload(
+    task_id: str,
+) -> dict[str, Any]:
+    coordinator = get_research_agent_coordinator()
+    run = coordinator.reconcile_interrupted(task_id)
+    events = coordinator.get_events(task_id)
+
+    if run is None:
+        raise HTTPException(
+            status_code=404,
+            detail="该任务尚未启动 Research Agent R1 批量研究。",
+        )
+
+    return {
+        "research_agent_coordinator_run": run.model_dump(mode="json"),
+        "events": [
+            item.model_dump(mode="json")
+            for item in events
+        ],
+        "terminal": run.status in {"completed", "failed"},
+    }
+
+
+@app.post(
+    "/api/analysis-tasks/{task_id}/research-agent/run",
+    status_code=202,
+)
+def start_research_agent_coordinator(
+    task_id: str,
+    request: StartResearchAgentCoordinatorRequest,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+
+    try:
+        planning_service = ResearchPlanningService()
+        existing_plan = planning_service.get_latest_plan(task_id)
+        planning_payload = planning_service.build(task_id)
+        run = get_research_agent_coordinator().submit(
+            task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=(
+                request.acknowledge_real_llm_call
+            ),
+        )
+    except LookupError as exc:
+        raise HTTPException(
+            status_code=404,
+            detail=str(exc),
+        ) from exc
+    except ValueError as exc:
+        raise HTTPException(
+            status_code=422,
+            detail=str(exc),
+        ) from exc
+
+    return {
+        "research_plan": planning_payload,
+        "research_plan_created": existing_plan is None,
+        "research_agent_coordinator_run": (
+            run.model_dump(mode="json")
+        ),
+        "research_agent_started": True,
+        "message": (
+            "研究计划已准备，Research Agent R1 已进入后台执行；"
+            "可通过 SSE 观察研究进度。"
+        ),
+    }
+
+
+@app.get(
+    "/api/analysis-tasks/{task_id}/research-agent/run"
+)
+def get_research_agent_coordinator_run(
+    task_id: str,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    return research_agent_coordinator_status_payload(task_id)
+
+
+@app.get(
+    "/api/analysis-tasks/{task_id}/research-agent/run/events"
+)
+def get_research_agent_coordinator_events(
+    task_id: str,
+    after: int = 0,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+
+    events = get_research_agent_coordinator().get_events(
+        task_id,
+        after=max(after, 0),
+    )
+
+    return {
+        "events": [
+            item.model_dump(mode="json")
+            for item in events
+        ]
+    }
+
+
+@app.get(
+    "/api/analysis-tasks/{task_id}/research-agent/run/events/stream"
+)
+async def stream_research_agent_coordinator_events(
+    task_id: str,
+    after: int = 0,
+) -> StreamingResponse:
+    validate_path_segment(task_id, "task_id")
+    coordinator = get_research_agent_coordinator()
+
+    async def generate():
+        cursor = max(after, 0)
+        idle_ticks = 0
+
+        coordinator.reconcile_interrupted(task_id)
+
+        while True:
+            events = coordinator.get_events(
+                task_id,
+                after=cursor,
+            )
+
+            for event in events:
+                cursor = event.sequence
+
+                payload = json.dumps(
+                    event.model_dump(mode="json"),
+                    ensure_ascii=False,
+                )
+
+                yield (
+                    f"id: {event.sequence}\n"
+                    f"event: research-agent\n"
+                    f"data: {payload}\n\n"
+                )
+
+                idle_ticks = 0
+
+            latest = coordinator.get_latest_run(task_id)
+
+            if (
+                latest
+                and latest.status in {"completed", "failed"}
+                and not events
+            ):
+                break
+
+            if latest is None and idle_ticks >= 4:
+                payload = json.dumps(
+                    {
+                        "message": (
+                            "该任务尚未启动 "
+                            "Research Agent R1 批量研究。"
+                        )
+                    },
+                    ensure_ascii=False,
+                )
+
+                yield (
+                    "event: unavailable\n"
+                    f"data: {payload}\n\n"
+                )
+                break
+
+            idle_ticks += 1
+
+            if idle_ticks % 30 == 0:
+                yield ": heartbeat\n\n"
+
+            await asyncio.sleep(0.35)
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering": "no",
+        },
+    )
 
 @app.get("/api/analysis-tasks/{task_id}/research-analysis")
 def get_research_analysis(task_id: str) -> dict[str, Any]:
     validate_path_segment(task_id, "task_id")
     return get_research_analysis_service().get_payload(task_id)
+
+
+@app.get("/api/analysis-tasks/{task_id}/research-agent")
+def get_research_agent(
+    task_id: str,
+    research_task_id: str = "",
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    if research_task_id:
+        validate_path_segment(research_task_id, "research_task_id")
+    return get_research_evidence_agent_service().get_payload(
+        task_id,
+        research_task_id,
+    )
+
+
+@app.post("/api/analysis-tasks/{task_id}/research-agent")
+def run_research_agent(
+    task_id: str,
+    request: RunResearchAgentRequest,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    validate_path_segment(request.research_task_id, "research_task_id")
+    try:
+        return get_research_evidence_agent_service().run_once(
+            task_id,
+            research_task_id=request.research_task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
+            budget=request.budget,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
 
 
 @app.post("/api/analysis-tasks/{task_id}/research-analysis")

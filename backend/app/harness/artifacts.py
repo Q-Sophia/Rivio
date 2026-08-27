@@ -60,10 +60,17 @@ DEFAULT_ARTIFACT_TYPES = {
     "research_information_needs",
     "research_tasks",
     "web_pages",
+    "source_chunks",
+    "source_retrieval_runs",
     "collection_attempts",
     "search_attempts",
     "web_search_results",
+    "source_selection_runs",
+    "source_task_associations",
     "evidence_extraction_attempts",
+    "research_agent_runs",
+    "research_agent_actions",
+    "research_agent_observations",
 }
 
 

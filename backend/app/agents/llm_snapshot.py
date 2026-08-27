@@ -8,7 +8,7 @@ from app.agents.snapshot import (
     WriterAgent,
 )
 from app.llm import LLMClient
-from app.llm.client import LLMOutputTruncatedError
+from app.llm.client import LLMOutputTruncatedError, LLMStructuredOutputError
 from app.llm.structured import (
     parse_analysis_claims,
     parse_competitive_analysis_portfolio_v2,
@@ -263,9 +263,17 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         sources = [SourceDocument(**item) for item in raw["sources"]]
         evidence = [SourceEvidence(**item) for item in raw["evidence"]]
         product_cards = [ProductCard(**item) for item in raw["product_cards"]]
-        if not sources or not evidence or not product_cards:
+        if preserve_research_artifacts:
+            source_ids = {item.id for item in sources}
+            evidence = [item for item in evidence if item.source_id in source_ids]
+            if not sources or not evidence:
+                raise ValueError(
+                    "Research Analysis 需要可追溯的 sources 和 Verified Evidence"
+                )
+        elif not sources or not evidence or not product_cards:
             raise ValueError("Step6C 分析需要 sources、evidence 和 product_cards")
-        validate_product_card_evidence_links(product_cards, evidence)
+        if product_cards and not preserve_research_artifacts:
+            validate_product_card_evidence_links(product_cards, evidence)
         self.mark_refs_validated(
             context,
             "已验证 Step6C 输入中的 source_id 与 evidence_id 引用",
@@ -335,7 +343,9 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                 portfolio,
                 known_source_ids={item.id for item in sources},
                 known_evidence_ids={item.id for item in evidence},
-                known_competitors={item.name for item in product_cards},
+                known_competitors=self._known_competitors(
+                    task, evidence, product_cards
+                ),
                 evidence_competitors={item.id: item.competitor for item in evidence},
             )
             claims = portfolio_v2_to_legacy_claims(portfolio)
@@ -416,7 +426,7 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             stage="brief_profiles",
             output_schema="AnalystBriefProfilesStage",
             prompt_summary=(
-                "阶段 A：只根据当前 AnalysisTask、精简 ProductCard 和可追溯 Evidence，"
+                "阶段 A：只根据当前 AnalysisTask、可追溯 Evidence，以及可选的精简 ProductCard，"
                 "生成简洁的 BriefAssessment 与 CompetitorProfile。不要生成 Claims、"
                 "EvidenceCoverage、ResearchGap、KIQ 或 InformationNeed；不要逐条复述证据。"
             ),
@@ -509,7 +519,9 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             portfolio,
             known_source_ids={item.id for item in sources},
             known_evidence_ids={item.id for item in deduped_evidence},
-            known_competitors={item.name for item in product_cards},
+            known_competitors=self._known_competitors(
+                task, deduped_evidence, product_cards
+            ),
             evidence_competitors={
                 item.id: item.competitor for item in deduped_evidence
             },
@@ -561,12 +573,20 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         prompt_summary: str,
         artifact_factory,
     ) -> tuple[dict, int, int]:
-        """Retry a stage once, and only when the provider explicitly reports length."""
+        """Allow one bounded retry for either truncation or invalid structure."""
 
+        retry_kind = ""
+        structured_repair: dict | None = None
         for attempt in (1, 2):
             strict = attempt == 2
             artifacts = artifact_factory(strict)
-            node_id = f"{context.node_id}_{stage}_attempt_{attempt}"
+            if structured_repair is not None:
+                artifacts["structured_repair"] = [structured_repair]
+            node_id = (
+                f"{context.node_id}_{stage}_structured_repair_1"
+                if retry_kind == "structured"
+                else f"{context.node_id}_{stage}_attempt_{attempt}"
+            )
             try:
                 llm_raw, _call, _output = self.llm_client.generate_structured(
                     task_id=context.task_id,
@@ -582,8 +602,14 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                         prompt_summary
                         + (
                             " 本次为被截断后的唯一重试：进一步压缩表达，只保留最高决策价值字段。"
-                            if strict
-                            else ""
+                            if retry_kind == "length"
+                            else (
+                                " 上一次输出未通过 JSON 解析或 Stage Schema 校验。"
+                                "这是唯一一次 structured repair：只修复结构，继续使用同一个"
+                                "Stage Schema 和同一批证据，不得补造事实或默认字段语义。"
+                                if retry_kind == "structured"
+                                else ""
+                            )
                         )
                     ),
                     artifacts=artifacts,
@@ -595,6 +621,31 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                         stage,
                         f"分析子阶段在 2 次有限尝试后仍因 finish_reason=length 截断；{exc}",
                     ) from exc
+                retry_kind = "length"
+            except LLMStructuredOutputError:
+                if attempt == 2:
+                    raise
+                failed_output_id = f"llmout_{node_id}"
+                failed_output = next(
+                    (
+                        item
+                        for item in self.llm_client.trace.load_outputs(
+                            context.task_id
+                        )
+                        if item.id == failed_output_id
+                    ),
+                    None,
+                )
+                structured_repair = {
+                    "output_schema": output_schema,
+                    "original_output": (
+                        failed_output.raw_output if failed_output else {}
+                    ),
+                    "validation_errors": (
+                        failed_output.validation_errors if failed_output else []
+                    ),
+                }
+                retry_kind = "structured"
         raise AssertionError("unreachable")
 
     @staticmethod
@@ -607,6 +658,22 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             if existing is None or item.confidence > existing.confidence:
                 deduped[item.id] = item
         return list(deduped.values())
+
+    @staticmethod
+    def _known_competitors(
+        task: AnalysisTask,
+        evidence: list[SourceEvidence],
+        product_cards: list[ProductCard],
+    ) -> set[str]:
+        return {
+            name
+            for name in [
+                *task.competitors,
+                *(item.competitor for item in evidence),
+                *(item.name for item in product_cards),
+            ]
+            if name
+        }
 
     @staticmethod
     def _select_stage_evidence(

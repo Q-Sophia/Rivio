@@ -4,6 +4,7 @@ import os
 import sys
 from dataclasses import dataclass
 from typing import Protocol
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -27,6 +28,77 @@ class SearchProvider(Protocol):
         count: int = 5,
         domain_filter: str = "",
     ) -> list[SearchHit]: ...
+
+
+class TavilySearchProvider:
+    """Adapter for Tavily's official Search API."""
+
+    name = "tavily"
+
+    def __init__(
+        self,
+        api_key: str,
+        *,
+        base_url: str = "https://api.tavily.com/search",
+        timeout_seconds: float = 20.0,
+        transport: httpx.BaseTransport | None = None,
+    ):
+        if not api_key.strip():
+            raise ValueError("TAVILY_API_KEY 不能为空")
+        self.client = httpx.Client(
+            timeout=timeout_seconds,
+            transport=transport,
+            trust_env=False,
+            headers={
+                "Authorization": f"Bearer {api_key.strip()}",
+                "Content-Type": "application/json",
+            },
+        )
+        self.base_url = base_url
+
+    def search(
+        self,
+        query: str,
+        *,
+        count: int = 5,
+        domain_filter: str = "",
+    ) -> list[SearchHit]:
+        normalized_query = " ".join(query.split())
+        if not normalized_query:
+            raise ValueError("搜索词不能为空")
+        request_body: dict[str, object] = {
+            "query": normalized_query,
+            "search_depth": "basic",
+            "max_results": max(1, min(count, 20)),
+            "topic": "general",
+            "include_answer": False,
+            "include_raw_content": False,
+            "include_images": False,
+        }
+        normalized_domain = domain_filter.strip()
+        if normalized_domain:
+            request_body["include_domains"] = [normalized_domain]
+        response = self.client.post(self.base_url, json=request_body)
+        response.raise_for_status()
+        values = response.json().get("results") or []
+        hits: list[SearchHit] = []
+        for item in values:
+            if not isinstance(item, dict) or not item.get("url"):
+                continue
+            url = str(item["url"]).strip()
+            hits.append(
+                SearchHit(
+                    title=str(item.get("title") or "").strip(),
+                    url=url,
+                    snippet=str(item.get("content") or "").strip(),
+                    site_name=(urlsplit(url).hostname or "").strip(),
+                    published_at=str(item.get("published_date") or "").strip(),
+                )
+            )
+        return hits
+
+    def close(self) -> None:
+        self.client.close()
 
 
 class BochaSearchProvider:
@@ -183,12 +255,23 @@ def _read_user_environment(name: str) -> str:
 
 def build_search_provider_from_env() -> SearchProvider | None:
     provider = _read_user_environment("SEARCH_PROVIDER").lower()
+    tavily_key = _read_user_environment("TAVILY_API_KEY")
     bocha_key = _read_user_environment("BOCHA_API_KEY")
     zhipu_key = _read_user_environment("ZHIPU_API_KEY")
     if provider in {"", "auto"}:
-        provider = "zhipu" if zhipu_key else ("bocha" if bocha_key else "disabled")
+        provider = (
+            "tavily"
+            if tavily_key
+            else "zhipu"
+            if zhipu_key
+            else "bocha"
+            if bocha_key
+            else "disabled"
+        )
     if provider in {"disabled", "none", "off"}:
         return None
+    if provider == "tavily":
+        return TavilySearchProvider(tavily_key) if tavily_key else None
     if provider == "zhipu":
         return ZhipuSearchProvider(zhipu_key) if zhipu_key else None
     if provider == "bocha":
@@ -199,15 +282,26 @@ def build_search_provider_from_env() -> SearchProvider | None:
 def get_search_provider_status() -> dict[str, object]:
     """Return non-secret configuration status for the frontend."""
     provider = _read_user_environment("SEARCH_PROVIDER").lower()
+    tavily_configured = bool(_read_user_environment("TAVILY_API_KEY"))
     bocha_configured = bool(_read_user_environment("BOCHA_API_KEY"))
     zhipu_configured = bool(_read_user_environment("ZHIPU_API_KEY"))
     if provider in {"", "auto"}:
-        provider = "zhipu" if zhipu_configured else ("bocha" if bocha_configured else "disabled")
+        provider = (
+            "tavily"
+            if tavily_configured
+            else "zhipu"
+            if zhipu_configured
+            else "bocha"
+            if bocha_configured
+            else "disabled"
+        )
     configured = (
-        (provider == "zhipu" and zhipu_configured)
+        (provider == "tavily" and tavily_configured)
+        or (provider == "zhipu" and zhipu_configured)
         or (provider == "bocha" and bocha_configured)
     )
     endpoint = {
+        "tavily": "https://api.tavily.com/search",
         "zhipu": "https://open.bigmodel.cn/api/paas/v4/web_search",
         "bocha": "https://api.bochaai.com/v1/web-search",
     }.get(provider, "")

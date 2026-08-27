@@ -57,10 +57,10 @@ class ResearchPlanningService:
         task = self.get_task(task_id)
         if task is None:
             raise LookupError(f"未找到 AnalysisTask（分析任务）: {task_id}")
-        if task.metadata.get("execution_authorized") or task.metadata.get("execution_started"):
-            raise ValueError("任务已经授权或开始执行，不能重写研究计划。")
         if self.get_latest_plan(task_id) is not None:
             return self.get_payload(task_id)
+        if task.metadata.get("execution_authorized") or task.metadata.get("execution_started"):
+            raise ValueError("任务已经授权或开始执行，不能重写研究计划。")
 
         recorder = TraceRecorder(store=self.store, task_id=task_id)
         assessment = ExecutionPlanningService(store=self.store).assess_task(task)

@@ -31,8 +31,8 @@ input_contract:
     - "analysis_task"
     - "sources"
     - "evidence"
-    - "product_cards"
   optional:
+    - "product_cards"
     - "research_brief"
     - "prior_research_gaps"
     - "user_constraints"

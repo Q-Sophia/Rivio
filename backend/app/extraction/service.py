@@ -3,6 +3,12 @@ from __future__ import annotations
 from app.agents.runtime import AgentRuntime
 from app.agents.web_evidence import WebEvidenceExtractorAgent
 from app.harness.artifacts import ArtifactStore
+from app.retrieval import (
+    DenseBackend,
+    RerankerBackend,
+    SourceRAGService,
+    normalize_source_rag_mode,
+)
 from app.schemas import (
     AgentContext,
     AgentRole,
@@ -23,9 +29,19 @@ from app.workflow.trace import TraceRecorder
 class ExtractorQueueService:
     """Claim one extraction task and preserve a runtime/audit boundary."""
 
-    def __init__(self, *, store: ArtifactStore | None = None):
+    def __init__(
+        self,
+        *,
+        store: ArtifactStore | None = None,
+        source_rag_mode: str | None = None,
+        dense_backend: DenseBackend | None = None,
+        reranker_backend: RerankerBackend | None = None,
+    ):
         self.store = store or ArtifactStore()
         self.board_store = TaskBoardStore(self.store)
+        self.source_rag_mode = normalize_source_rag_mode(source_rag_mode)
+        self.dense_backend = dense_backend
+        self.reranker_backend = reranker_backend
 
     def run_once(self, task_id: str) -> dict:
         ready = [
@@ -82,6 +98,20 @@ class ExtractorQueueService:
         recorder.tool_calls = [
             ToolCall(**item) for item in self.store.load_many(task_id, "tool_calls")
         ]
+        source_ids = list(record.metadata.get("source_ids") or [])
+        retrieval_run = None
+        selected_chunks = []
+        if self.source_rag_mode != "off":
+            retrieval_run, selected_chunks = SourceRAGService(
+                store=self.store,
+                retrieval_mode=self.source_rag_mode,
+                dense_backend=self.dense_backend,
+                reranker_backend=self.reranker_backend,
+            ).run(
+                task_id=task_id,
+                research_task=research_task,
+                source_ids=source_ids,
+            )
         node = DAGNode(
             id=f"extract_{research_task.id}",
             task_id=task_id,
@@ -89,7 +119,17 @@ class ExtractorQueueService:
             agent_role=AgentRole.EXTRACTOR,
             status=RunStatus.RUNNING,
             depends_on=[record.depends_on[0]] if record.depends_on else [],
-            input_refs=["sources", "web_pages", "research_tasks"],
+            input_refs=(
+                ["sources", "web_pages", "research_tasks"]
+                if retrieval_run is None
+                else [
+                    "sources",
+                    "web_pages",
+                    "source_chunks",
+                    "source_retrieval_runs",
+                    "research_tasks",
+                ]
+            ),
         )
         recorder.dag_nodes.append(node)
         recorder.save_dag_nodes()
@@ -102,11 +142,31 @@ class ExtractorQueueService:
                 input_refs=node.input_refs,
                 metadata={
                     "research_task": research_task.model_dump(mode="json"),
-                    "source_ids": list(record.metadata.get("source_ids") or []),
+                    "source_ids": source_ids,
+                    "source_rag_mode": self.source_rag_mode,
+                    "source_chunk_ids": [item.id for item in selected_chunks],
+                    "retrieval_run_id": (
+                        retrieval_run.id if retrieval_run is not None else ""
+                    ),
                 },
             ),
             node=node,
         )
+        if retrieval_run is not None:
+            recorder.record_tool_call(
+                agent_run_id=result.agent_run.id,
+                tool_name="retrieve_source_chunks",
+                input_data={
+                    "research_task_id": research_task.id,
+                    "source_ids": source_ids,
+                    "algorithm": retrieval_run.algorithm,
+                    "top_k": retrieval_run.top_k,
+                },
+                output_summary=(
+                    f"从 {retrieval_run.candidate_chunk_count} 个候选 chunk 中选择 "
+                    f"{len(selected_chunks)} 个，共 {retrieval_run.selected_text_chars} 字符"
+                ),
+            )
         node.status = (
             RunStatus.COMPLETED
             if result.status == RunStatus.COMPLETED.value

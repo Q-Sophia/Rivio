@@ -4,9 +4,10 @@ from pathlib import Path
 
 from app.harness.artifacts import ArtifactStore
 from app.llm import LLMClient, LLMConfig
-from app.llm.client import LLMOutputTruncatedError
+from app.llm.client import LLMOutputTruncatedError, LLMStructuredOutputError
 from app.llm.provider import (
     LLMProviderOutputTruncatedError,
+    LLMProviderResponseError,
     OpenAIChatCompletionsProvider,
     ProviderResult,
     StructuredLLMProvider,
@@ -24,9 +25,11 @@ from app.schemas import (
     LLMMode,
     LLMProvider,
     ProductCard,
+    ResearchAgentRun,
     ResearchGap,
     ResearchPlan,
     ResearchPlanStatus,
+    ResearchTask,
     RunStatus,
     SourceDocument,
     SourceEvidence,
@@ -35,6 +38,7 @@ from app.schemas import (
 from app.workflow.snapshot_pipeline import build_snapshot_tool_registry
 from app.workflow.trace import TraceRecorder
 from app.agents import LLMProfessionalAnalystAgent
+from app.execution.research_analysis import ResearchAnalysisService
 
 
 TASK_ID = "task_step6f_output_stability"
@@ -48,26 +52,63 @@ def require(condition: bool, message: str) -> None:
 class StageFixtureProvider(StructuredLLMProvider):
     """Offline provider that can deterministically simulate length truncation."""
 
-    def __init__(self, *, mock_client: LLMClient, truncate_counts=None):
+    def __init__(
+        self,
+        *,
+        mock_client: LLMClient,
+        truncate_counts=None,
+        malformed_counts=None,
+        invalid_schema_counts=None,
+        generation_cards: list[ProductCard] | None = None,
+    ):
         self.mock_client = mock_client
         self.truncate_counts = dict(truncate_counts or {})
+        self.malformed_counts = dict(malformed_counts or {})
+        self.invalid_schema_counts = dict(invalid_schema_counts or {})
+        self.generation_cards = list(generation_cards or [])
         self.calls: list[str] = []
+        self.requests: list[dict] = []
 
     def generate(self, **kwargs) -> ProviderResult:
         output_schema = kwargs["output_schema"]
         self.calls.append(output_schema)
+        self.requests.append(kwargs)
         remaining = self.truncate_counts.get(output_schema, 0)
         if remaining:
             self.truncate_counts[output_schema] = remaining - 1
             raise LLMProviderOutputTruncatedError(
                 "fixture JSON truncated；finish_reason=length",
             )
+        malformed_remaining = self.malformed_counts.get(output_schema, 0)
+        if malformed_remaining:
+            self.malformed_counts[output_schema] = malformed_remaining - 1
+            raise LLMProviderResponseError(
+                "fixture malformed JSON；finish_reason=stop",
+                raw_output_text='{"item": {"task_id": "broken",},}',
+                finish_reason="stop",
+            )
+        invalid_remaining = self.invalid_schema_counts.get(output_schema, 0)
+        if invalid_remaining:
+            self.invalid_schema_counts[output_schema] = invalid_remaining - 1
+            return ProviderResult(
+                raw_output={"item": {"task_id": kwargs["task_id"]}},
+                request_id=f"offline_invalid_{len(self.calls)}",
+                metadata={"finish_reason": "stop"},
+            )
+        artifacts = kwargs["artifacts"]
+        if self.generation_cards and not artifacts.get("product_cards"):
+            artifacts = {
+                **artifacts,
+                "product_cards": [
+                    item.model_dump(mode="json") for item in self.generation_cards
+                ],
+            }
         return ProviderResult(
             raw_output=self.mock_client._mock_generate(
                 task_id=kwargs["task_id"],
                 agent_role=kwargs["agent_role"],
                 output_schema=output_schema,
-                artifacts=kwargs["artifacts"],
+                artifacts=artifacts,
             ),
             request_id=f"offline_{len(self.calls)}",
             input_tokens=100,
@@ -305,11 +346,21 @@ def run_agent(store: ArtifactStore, task: AnalysisTask, provider):
     return agent.execute(context)
 
 
-def build_provider(store: ArtifactStore, *, truncate_counts=None):
+def build_provider(
+    store: ArtifactStore,
+    *,
+    truncate_counts=None,
+    malformed_counts=None,
+    invalid_schema_counts=None,
+    generation_cards: list[ProductCard] | None = None,
+):
     mock_client = LLMClient(config=config(), store=store)
     return StageFixtureProvider(
         mock_client=mock_client,
         truncate_counts=truncate_counts,
+        malformed_counts=malformed_counts,
+        invalid_schema_counts=invalid_schema_counts,
+        generation_cards=generation_cards,
     )
 
 
@@ -358,6 +409,116 @@ def check_successful_assembly(root: Path) -> None:
         portfolio.metadata["raw_evidence_count"] == 4
         and portfolio.metadata["deduped_evidence_count"] == 3,
         "同一 evidence_id 应在送入模型前去重",
+    )
+
+
+def check_research_agent_bridge_without_product_cards(root: Path) -> None:
+    store, task = prepare_store(root)
+    generation_cards = fixture_models()[3]
+    store.save_many(TASK_ID, "product_cards", [])
+    store.save_many(TASK_ID, "evidence_coverage", [])
+    store.save_many(TASK_ID, "research_gaps", [])
+
+    research_tasks = [
+        ResearchTask(
+            id="researchtask_complete",
+            task_id=TASK_ID,
+            information_need_id="need_feature",
+            title="ClassIn 功能",
+            objective="确认 ClassIn 的教学能力。",
+            competitor="ClassIn",
+            dimension="feature",
+            stop_condition="取得可引用的功能证据。",
+            status="evidence_extracted",
+        ),
+        ResearchTask(
+            id="researchtask_exhausted",
+            task_id=TASK_ID,
+            information_need_id="need_feature",
+            title="BigBlueButton 定价",
+            objective="确认 BigBlueButton 的同口径成本。",
+            competitor="BigBlueButton",
+            dimension="pricing",
+            query_hints=["BigBlueButton pricing"],
+            preferred_source_types=["官方定价"],
+            stop_condition="取得同口径成本，或确认公开资料已穷尽。",
+            status="evidence_exhausted",
+        ),
+    ]
+    runs = [
+        ResearchAgentRun(
+            id="researchagentrun_complete",
+            task_id=TASK_ID,
+            research_task_id="researchtask_complete",
+            status=RunStatus.COMPLETED,
+            outcome="COMPLETE",
+            verified_evidence_ids=["ev_classin_feature"],
+        ),
+        ResearchAgentRun(
+            id="researchagentrun_exhausted",
+            task_id=TASK_ID,
+            research_task_id="researchtask_exhausted",
+            status=RunStatus.COMPLETED,
+            outcome="EXHAUSTED",
+            verified_evidence_ids=["ev_bbb_feature"],
+            remaining_need="缺少同口径公开成本。",
+        ),
+    ]
+    store.save_many(TASK_ID, "research_tasks", research_tasks)
+    store.save_many(TASK_ID, "research_agent_runs", runs)
+
+    service = ResearchAnalysisService(store=store)
+    readiness = service.get_payload(TASK_ID)
+    require(readiness["can_analyze"], "有 Verified Evidence 时应允许分析")
+    require(readiness["product_card_count"] == 0, "测试不得依赖 ProductCard")
+    service._validate_inputs(TASK_ID)
+    service._ensure_research_agent_gaps(TASK_ID)
+    gaps = store.load_many(TASK_ID, "research_gaps")
+    require(len(gaps) == 1, "COMPLETE 不产缺口，EXHAUSTED 应形成 ResearchGap")
+    require(
+        gaps[0]["metadata"]["research_task_id"] == "researchtask_exhausted",
+        "ResearchGap 应追溯到 EXHAUSTED ResearchTask",
+    )
+
+    provider = build_provider(store, generation_cards=generation_cards)
+    result = run_agent(store, task, provider)
+    require(result.status == RunStatus.COMPLETED, "无 ProductCard 时 Analyst 应可运行")
+    require(store.load_many(TASK_ID, "claims_v2"), "应生成证据约束的 Claims")
+    require(
+        store.load_many(TASK_ID, "analysis_research_gaps") == gaps,
+        "混合 COMPLETE/EXHAUSTED 的缺口应进入分析组合",
+    )
+
+
+def check_no_evidence_is_blocked(root: Path) -> None:
+    store, _task = prepare_store(root)
+    store.save_many(TASK_ID, "evidence", [])
+    service = ResearchAnalysisService(store=store)
+    payload = service.get_payload(TASK_ID)
+    require(not payload["can_analyze"], "完全无 Evidence 时必须禁止分析")
+    require(
+        "Verified Evidence" in payload["analysis_blocking_reason"],
+        "阻塞原因必须明确说明缺少 Verified Evidence",
+    )
+    try:
+        service._validate_inputs(TASK_ID)
+    except ValueError as exc:
+        require("Verified Evidence" in str(exc), "后端 gate 应返回相同明确原因")
+    else:
+        raise AssertionError("完全无 Evidence 不得通过后端 gate")
+
+
+def check_frontend_uses_backend_readiness() -> None:
+    frontend = (
+        Path(__file__).resolve().parent.parent / "frontend" / "src" / "app.js"
+    ).read_text(encoding="utf-8")
+    require(
+        "state.researchCanAnalyze = Boolean(payload?.can_analyze);" in frontend,
+        "前端分析按钮必须使用后端 can_analyze",
+    )
+    require(
+        "coverage.length > 0 && productCards.length > 0" not in frontend,
+        "前端不得继续把 EvidenceCoverage + ProductCard 作为硬 gate",
     )
 
 
@@ -410,6 +571,74 @@ def check_retry_cap(root: Path) -> None:
     )
 
 
+def check_structured_repair(root: Path) -> None:
+    store, task = prepare_store(root / "malformed_success")
+    provider = build_provider(
+        store,
+        malformed_counts={"AnalystBriefProfilesStage": 1},
+    )
+    result = run_agent(store, task, provider)
+    require(result.status == RunStatus.COMPLETED, "malformed JSON 修复后应成功")
+    require(
+        provider.calls
+        == [
+            "AnalystBriefProfilesStage",
+            "AnalystBriefProfilesStage",
+            "AnalystClaimsStage",
+        ],
+        "malformed JSON 只能触发一次同 Stage repair",
+    )
+    require(
+        provider.requests[0]["output_schema"]
+        == provider.requests[1]["output_schema"]
+        == "AnalystBriefProfilesStage",
+        "structured repair 没有复用原 Stage Schema",
+    )
+    repair_artifacts = provider.requests[1]["artifacts"]
+    require(
+        repair_artifacts["structured_repair"][0]["original_output"][
+            "malformed_text"
+        ].startswith('{"item"'),
+        "repair 输入没有携带可审计 malformed 原文",
+    )
+    outputs = store.load_many(TASK_ID, "llm_outputs")
+    require(
+        outputs[0]["validation_status"] == "failed"
+        and "malformed_text" in outputs[0]["raw_output"]
+        and outputs[1]["validation_status"] == "passed",
+        "原始 malformed output 与 repair output 未分别留痕",
+    )
+
+    schema_store, schema_task = prepare_store(root / "schema_success")
+    schema_provider = build_provider(
+        schema_store,
+        invalid_schema_counts={"AnalystBriefProfilesStage": 1},
+    )
+    schema_result = run_agent(schema_store, schema_task, schema_provider)
+    require(
+        schema_result.status == RunStatus.COMPLETED
+        and schema_provider.calls[:2]
+        == ["AnalystBriefProfilesStage", "AnalystBriefProfilesStage"],
+        "Stage Schema 失败没有执行唯一一次 structured repair",
+    )
+
+    failed_store, failed_task = prepare_store(root / "malformed_failed")
+    failed_provider = build_provider(
+        failed_store,
+        malformed_counts={"AnalystBriefProfilesStage": 2},
+    )
+    try:
+        run_agent(failed_store, failed_task, failed_provider)
+    except LLMStructuredOutputError:
+        require(
+            failed_provider.calls
+            == ["AnalystBriefProfilesStage", "AnalystBriefProfilesStage"],
+            "structured repair 失败后仍进行了额外调用",
+        )
+    else:
+        raise AssertionError("第二次 malformed JSON 被伪装成成功")
+
+
 def check_finish_reason_is_authoritative() -> None:
     try:
         OpenAIChatCompletionsProvider.extract_structured_output(
@@ -437,14 +666,24 @@ def main() -> None:
         / "step6f_output_stability"
     )
     check_successful_assembly(root / "success")
+    check_research_agent_bridge_without_product_cards(root / "ra_bridge")
+    check_no_evidence_is_blocked(root / "no_evidence")
+    check_frontend_uses_backend_readiness()
     check_bounded_retry(root / "retry")
     check_retry_cap(root / "retry_cap")
+    check_structured_repair(root / "structured_repair")
     check_finish_reason_is_authoritative()
     print("STEP6F_ANALYST_OUTPUT_STABILITY_CHECK_PASS")
     print("stages=brief_profiles,claims")
     print("normal_calls=2")
     print("max_calls=4")
     print("finish_reason_length=recognized")
+    print("malformed_json_structured_repair=bounded_once")
+    print("stage_schema_structured_repair=bounded_once")
+    print("research_agent_verified_evidence_bridge=pass")
+    print("product_cards_optional_for_research_analysis=true")
+    print("legacy_product_card_path_compatible=true")
+    print("frontend_backend_readiness_aligned=true")
     print("real_llm_called=false")
 
 

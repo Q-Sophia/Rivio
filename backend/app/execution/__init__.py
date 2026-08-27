@@ -9,6 +9,10 @@ from app.execution.research_reporting import (
     ResearchReportingService,
     get_research_reporting_service,
 )
+from app.execution.research_agent import (
+    ResearchEvidenceAgentService,
+    get_research_evidence_agent_service,
+)
 
 __all__ = [
     "ExecutionRunner",
@@ -16,8 +20,10 @@ __all__ = [
     "ResearchAnalysisService",
     "ResearchAnalysisOutputTruncatedError",
     "ResearchReportingService",
+    "ResearchEvidenceAgentService",
     "get_execution_runner",
     "get_research_loop_runner",
     "get_research_analysis_service",
     "get_research_reporting_service",
+    "get_research_evidence_agent_service",
 ]

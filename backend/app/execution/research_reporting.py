@@ -1,13 +1,12 @@
 from __future__ import annotations
 
-import os
 import threading
 from typing import Any
 
 from app.agents import LLMProfessionalWriterAgent, ReviewerAgent
 from app.agents.runtime import AgentRuntime
 from app.harness.artifacts import ArtifactStore
-from app.llm import LLMClient, LLMConfig
+from app.llm import LLMClient, LLMConfig, build_deepseek_compatible_config
 from app.schemas import (
     AgentContext,
     AgentRole,
@@ -21,8 +20,6 @@ from app.schemas import (
     CompetitorProfile,
     DAGNode,
     ExecutionMode,
-    LLMMode,
-    LLMProvider,
     RunStatus,
     ResearchGap,
     TaskRecord,
@@ -576,22 +573,13 @@ class ResearchReportingService:
 
     @staticmethod
     def _deepseek_config() -> LLMConfig:
-        return LLMConfig(
-            provider=LLMProvider.COMPATIBLE,
-            model=os.environ.get("REPORTING_LLM_MODEL", "deepseek-v4-flash"),
-            mode=LLMMode.LLM,
-            base_url=os.environ.get("REPORTING_LLM_BASE_URL", "https://api.deepseek.com/v1"),
-            api_key_env=os.environ.get("REPORTING_LLM_API_KEY_ENV", "DEEPSEEK_API_KEY"),
-            timeout_seconds=int(os.environ.get("REPORTING_LLM_TIMEOUT_SECONDS", "120")),
-            max_tokens=int(os.environ.get("REPORTING_LLM_MAX_TOKENS", "12000")),
+        return build_deepseek_compatible_config(
+            env_prefix="REPORTING",
+            default_timeout_seconds=120,
+            default_max_tokens=12000,
             temperature=0.2,
-            output_language="zh-CN",
             max_retries=0,
             retry_base_seconds=1.0,
-            enable_real_calls=True,
-            api_style="chat_completions",
-            structured_output_mode="json_object",
-            thinking_mode="disabled",
         )
 
 
