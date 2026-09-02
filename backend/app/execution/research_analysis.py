@@ -108,6 +108,7 @@ class ResearchAnalysisService:
 
             deterministic_coverage = self.store.load_many(task_id, "evidence_coverage")
             deterministic_gaps = self.store.load_many(task_id, "research_gaps")
+            authorized_evidence_ids = self._authorized_r1_evidence_ids(task_id)
             self._prepare_analysis_task(task_id)
             recorder = self._load_recorder(task_id)
             tools = build_snapshot_tool_registry(store=self.store, recorder=recorder)
@@ -170,6 +171,10 @@ class ResearchAnalysisService:
                         "preserve_research_artifacts": True,
                         "research_plan_id": plan.id,
                         "explicit_real_llm_authorization": True,
+                        "authorized_evidence_ids": sorted(
+                            authorized_evidence_ids
+                        ),
+                        "require_r1_evidence_authority": True,
                     },
                 ),
                 node=analyst_node,
@@ -387,13 +392,15 @@ class ResearchAnalysisService:
     def _analysis_readiness(self, task_id: str) -> dict[str, Any]:
         sources = self.store.load_many(task_id, "sources")
         evidence = self.store.load_many(task_id, "evidence")
+        authorized_ids = self._authorized_r1_evidence_ids(task_id)
         source_ids = {str(item.get("id") or "") for item in sources}
         analyzable = [
             item
             for item in evidence
+            if str(item.get("id") or "") in authorized_ids
             if str(item.get("source_id") or "") in source_ids
         ]
-        if not evidence:
+        if not authorized_ids:
             reason = (
                 "当前任务没有可分析的 Verified Evidence；请先完成至少一条证据验证。"
             )
@@ -407,9 +414,22 @@ class ResearchAnalysisService:
             "can_analyze": bool(analyzable),
             "analysis_blocking_reason": reason,
             "analyzable_evidence_count": len(analyzable),
+            "authorized_evidence_ids": sorted(authorized_ids),
             "product_card_count": len(
                 self.store.load_many(task_id, "product_cards")
             ),
+        }
+
+    def _authorized_r1_evidence_ids(self, task_id: str) -> set[str]:
+        known_ids = {
+            str(item.get("id") or "")
+            for item in self.store.load_many(task_id, "evidence")
+        }
+        return {
+            evidence_id
+            for raw in self.store.load_many(task_id, "research_agent_runs")
+            for evidence_id in ResearchAgentRun(**raw).verified_evidence_ids
+            if evidence_id in known_ids
         }
 
     def _ensure_research_agent_gaps(self, task_id: str) -> None:

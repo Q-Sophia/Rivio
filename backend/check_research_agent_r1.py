@@ -333,27 +333,22 @@ def main() -> None:
 
     repair_task_id, repair_task, _repair_store = setup(root, "finish_repair")
 
-    class FakeRepairClient:
-        def __init__(self, *, fail_twice: bool = False):
-            self.fail_twice = fail_twice
+    class FakeStructuredClient:
+        def __init__(self):
             self.calls: list[dict] = []
 
         def generate_structured(self, **kwargs):
             self.calls.append(kwargs)
-            if len(self.calls) == 1 or self.fail_twice:
-                raise ValueError(
-                    "ValueError: FINISH 缺少字段：finish_status"
-                )
             repaired = ResearchAgentAction(
                 task_id=repair_task_id,
                 research_task_id=repair_task.id,
                 action="FINISH",
-                rationale="证据仍不完整，有限修复后结束。",
+                rationale="证据仍不完整，结束本轮。",
                 finish_status="PARTIAL",
             )
             return {"item": repaired.model_dump(mode="json")}, None, None
 
-    repair_client = FakeRepairClient()
+    repair_client = FakeStructuredClient()
     repaired_action = LLMResearchActionDecider(
         llm_client=repair_client,
     ).decide(
@@ -368,29 +363,10 @@ def main() -> None:
     )
     require(
         repaired_action.finish_status == "PARTIAL"
-        and len(repair_client.calls) == 2
-        and repair_client.calls[-1]["node_id"].endswith("_finish_repair_1"),
-        "FINISH 缺字段没有执行唯一一次 structured repair",
+        and len(repair_client.calls) == 1
+        and repair_client.calls[0]["output_schema"] == "ResearchAgentAction",
+        "Research Agent action decider 未保持单次统一 LLM boundary 调用",
     )
-    always_invalid = FakeRepairClient(fail_twice=True)
-    try:
-        LLMResearchActionDecider(llm_client=always_invalid).decide(
-            task_id=repair_task_id,
-            research_task=repair_task,
-            information_need=None,
-            state=ResearchAgentRun(
-                task_id=repair_task_id,
-                research_task_id=repair_task.id,
-            ),
-            recent_observations=[],
-        )
-    except ValueError:
-        require(
-            len(always_invalid.calls) == 2,
-            "FINISH structured repair 未保持一次上限",
-        )
-    else:
-        raise AssertionError("无效 FINISH 被默认成 COMPLETE 或伪装成功")
 
     env_name = "RESEARCH_AGENT_LLM_API_KEY_ENV"
     previous = os.environ.get(env_name)
@@ -845,7 +821,7 @@ def main() -> None:
     print("production_provider=OpenAIChatCompletionsProvider")
     print("missing_deepseek_key_fails_explicitly=true")
     print("backend_owned_action_audit_fields=true")
-    print("finish_status_schema_and_bounded_repair=true")
+    print("finish_status_schema_and_central_retry=true")
     print("domain_agnostic_observed_term_filter=true")
     print("pricing_official_first_complete=true")
     print("community_strategy=true")

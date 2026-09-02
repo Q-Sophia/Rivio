@@ -352,6 +352,10 @@ def build_step6e4_research_tasks(
             and normalize_dimension(item.dimension) == normalized_dimension
         ]
         latest = max(matching, key=lambda item: item.collection_round) if matching else None
+        # Coverage supplements continue a real planned InformationNeed. A gap
+        # without an owning ResearchTask is not executable Mission work.
+        if latest is None or not latest.information_need_id:
+            continue
         if latest and latest.collection_round == current_round and latest.status == "waiting_for_collector":
             continue
         scope_round_key = (next_round, competitor, normalized_dimension)
@@ -396,7 +400,7 @@ def build_step6e4_research_tasks(
             ResearchTask(
                 id=gap_id,
                 task_id=task_id,
-                information_need_id=f"need_{_slug(competitor)}_{_slug(normalized_dimension)}",
+                information_need_id=latest.information_need_id,
                 title=f"第 {next_round} 轮补采 {competitor} 的{normalized_dimension}信息",
                 objective=f"补齐 {competitor} 在 {normalized_dimension} 维度的证据，解决当前覆盖缺口。",
                 competitor=competitor,

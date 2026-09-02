@@ -15,6 +15,7 @@ from app.schemas import (
     SourceChunk,
     SourceDocument,
     SourceEvidence,
+    SourceTaskAssociation,
     WebPageContent,
 )
 from build_product_cards_demo import validate_source_evidence_links
@@ -76,6 +77,7 @@ def verify_candidate_evidence(
     chunk: SourceChunk,
     exact_quote: str,
     supports: str,
+    source_association: SourceTaskAssociation | None = None,
 ) -> SourceEvidence:
     """Verify an agent-proposed quote against the current immutable page text."""
 
@@ -86,8 +88,16 @@ def verify_candidate_evidence(
     if research_task.task_id != task_id:
         raise ValueError("Candidate Evidence 的 ResearchTask 不属于当前 task")
     origin_research_task_id = str(source.metadata.get("research_task_id") or "")
-    if origin_research_task_id and origin_research_task_id != research_task.id:
-        raise ValueError("Candidate Evidence 不允许跨 ResearchTask 引用 SourceDocument")
+    association_authorized = bool(
+        source_association is not None
+        and source_association.task_id == task_id
+        and source_association.research_task_id == research_task.id
+        and source_association.source_id == source.id
+    )
+    if origin_research_task_id != research_task.id and not association_authorized:
+        raise ValueError(
+            "Candidate Evidence 不允许使用未与当前 ResearchTask 关联的 SourceDocument"
+        )
     if page.source_id != source.id or chunk.source_id != source.id:
         raise ValueError("Candidate Evidence 的 source/page/chunk 引用不一致")
     if chunk.web_page_id != page.id or chunk.content_hash != page.content_hash:
@@ -103,7 +113,8 @@ def verify_candidate_evidence(
         raise ValueError("Candidate Evidence quote 无法逐字回放到网页原文")
     identity = (
         f"{task_id}\n{source.id}\n{page.content_hash}\n"
-        f"{absolute_start}\n{absolute_end}"
+        f"{absolute_start}\n{absolute_end}\n{research_task.id}\n"
+        f"{normalize_dimension(research_task.dimension)}"
     )
     evidence_id = f"ev_{hashlib.sha256(identity.encode('utf-8')).hexdigest()[:16]}"
     return SourceEvidence(
@@ -121,6 +132,10 @@ def verify_candidate_evidence(
         metadata={
             "web_page_id": page.id,
             "research_task_id": research_task.id,
+            "source_origin_research_task_id": origin_research_task_id,
+            "source_task_association_id": (
+                source_association.id if source_association else ""
+            ),
             "source_url": source.url,
             "content_hash": page.content_hash,
             "source_chunk_id": chunk.id,

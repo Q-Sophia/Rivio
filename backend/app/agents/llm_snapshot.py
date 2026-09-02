@@ -8,7 +8,7 @@ from app.agents.snapshot import (
     WriterAgent,
 )
 from app.llm import LLMClient
-from app.llm.client import LLMOutputTruncatedError, LLMStructuredOutputError
+from app.llm.client import LLMOutputTruncatedError
 from app.llm.structured import (
     parse_analysis_claims,
     parse_competitive_analysis_portfolio_v2,
@@ -95,6 +95,74 @@ class LLMSnapshotAgent(SnapshotAgent):
         for item in raw.get("context_bundles", []):
             bundle = ContextBundle(**item)
             if bundle.agent_role == self.role:
+                if context.metadata.get("require_r1_evidence_authority"):
+                    authorized_ids = set(
+                        context.metadata.get("authorized_evidence_ids") or []
+                    )
+                    authorized_evidence = [
+                        SourceEvidence(**value)
+                        for value in self.llm_client.store.load_many(
+                            context.task_id, "evidence"
+                        )
+                        if value.get("id") in authorized_ids
+                    ]
+                    source_ids = list(
+                        dict.fromkeys(
+                            evidence.source_id
+                            for evidence in authorized_evidence
+                        )
+                    )
+                    by_dimension: dict[str, int] = {}
+                    for evidence in authorized_evidence:
+                        dimension = str(evidence.dimension)
+                        by_dimension[dimension] = (
+                            by_dimension.get(dimension, 0) + 1
+                        )
+                    artifact_refs = dict(bundle.artifact_refs)
+                    artifact_refs["evidence"] = [
+                        item.id for item in authorized_evidence
+                    ]
+                    artifact_refs["sources"] = source_ids
+                    artifact_refs["product_cards"] = []
+                    task_context = dict(bundle.task_context)
+                    artifact_counts = dict(
+                        task_context.get("artifact_counts") or {}
+                    )
+                    artifact_counts["evidence"] = len(authorized_evidence)
+                    artifact_counts["sources"] = len(source_ids)
+                    task_context["artifact_counts"] = artifact_counts
+                    working_context = dict(bundle.working_context)
+                    working_context["evidence_by_dimension"] = by_dimension
+                    working_context["product_cards"] = []
+                    sanitized = bundle.model_copy(
+                        update={
+                            "task_context": task_context,
+                            "working_context": working_context,
+                            "artifact_refs": artifact_refs,
+                            "source_ids": source_ids,
+                            "evidence_ids": [
+                                item.id for item in authorized_evidence
+                            ],
+                            "product_card_ids": [],
+                        }
+                    )
+                    bundles = [
+                        ContextBundle(**value)
+                        for value in self.llm_client.store.load_many(
+                            context.task_id, "context_bundles"
+                        )
+                    ]
+                    self.llm_client.store.save_many(
+                        context.task_id,
+                        "context_bundles",
+                        [
+                            sanitized
+                            if value.agent_role == self.role
+                            else value
+                            for value in bundles
+                        ],
+                    )
+                    return sanitized
                 return bundle
         return None
 
@@ -264,6 +332,26 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         evidence = [SourceEvidence(**item) for item in raw["evidence"]]
         product_cards = [ProductCard(**item) for item in raw["product_cards"]]
         if preserve_research_artifacts:
+            if context.metadata.get("require_r1_evidence_authority"):
+                authorized_ids = set(
+                    context.metadata.get("authorized_evidence_ids") or []
+                )
+                evidence = [
+                    item for item in evidence if item.id in authorized_ids
+                ]
+                raw["evidence"] = [
+                    item.model_dump(mode="json") for item in evidence
+                ]
+                product_cards = [
+                    card
+                    for card in product_cards
+                    if card.metadata.get("verified_evidence_only")
+                    and bool(card.evidence_ids)
+                    and set(card.evidence_ids) <= authorized_ids
+                ]
+                raw["product_cards"] = [
+                    item.model_dump(mode="json") for item in product_cards
+                ]
             source_ids = {item.id for item in sources}
             evidence = [item for item in evidence if item.source_id in source_ids]
             if not sources or not evidence:
@@ -573,20 +661,13 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         prompt_summary: str,
         artifact_factory,
     ) -> tuple[dict, int, int]:
-        """Allow one bounded retry for either truncation or invalid structure."""
+        """Keep the stage-specific retry only for output truncation."""
 
         retry_kind = ""
-        structured_repair: dict | None = None
         for attempt in (1, 2):
             strict = attempt == 2
             artifacts = artifact_factory(strict)
-            if structured_repair is not None:
-                artifacts["structured_repair"] = [structured_repair]
-            node_id = (
-                f"{context.node_id}_{stage}_structured_repair_1"
-                if retry_kind == "structured"
-                else f"{context.node_id}_{stage}_attempt_{attempt}"
-            )
+            node_id = f"{context.node_id}_{stage}_attempt_{attempt}"
             try:
                 llm_raw, _call, _output = self.llm_client.generate_structured(
                     task_id=context.task_id,
@@ -603,13 +684,7 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                         + (
                             " 本次为被截断后的唯一重试：进一步压缩表达，只保留最高决策价值字段。"
                             if retry_kind == "length"
-                            else (
-                                " 上一次输出未通过 JSON 解析或 Stage Schema 校验。"
-                                "这是唯一一次 structured repair：只修复结构，继续使用同一个"
-                                "Stage Schema 和同一批证据，不得补造事实或默认字段语义。"
-                                if retry_kind == "structured"
-                                else ""
-                            )
+                            else ""
                         )
                     ),
                     artifacts=artifacts,
@@ -622,29 +697,6 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                         f"分析子阶段在 2 次有限尝试后仍因 finish_reason=length 截断；{exc}",
                     ) from exc
                 retry_kind = "length"
-            except LLMStructuredOutputError:
-                if attempt == 2:
-                    raise
-                failed_output_id = f"llmout_{node_id}"
-                failed_output = next(
-                    (
-                        item
-                        for item in self.llm_client.trace.load_outputs(
-                            context.task_id
-                        )
-                        if item.id == failed_output_id
-                    ),
-                    None,
-                )
-                structured_repair = {
-                    "output_schema": output_schema,
-                    "original_output": (
-                        failed_output.raw_output if failed_output else {}
-                    ),
-                    "validation_errors": (
-                        failed_output.validation_errors if failed_output else []
-                    ),
-                }
                 retry_kind = "structured"
         raise AssertionError("unreachable")
 

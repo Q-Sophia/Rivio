@@ -17,6 +17,7 @@ from app.schemas import (
     ResearchAgentAction,
     ResearchAgentRun,
     ResearchTask,
+    SourceChunk,
     SourceDocument,
     WebPageContent,
     WebSearchResult,
@@ -456,6 +457,55 @@ def check_cross_task_source_reuse(root: Path) -> None:
     )
     require(task_two_read["status"] == "completed", "合法跨 task Source reuse 不可 READ")
     require(task_three_read["status"] == "failed", "未关联 Source 可跨 task READ")
+    chunk = SourceChunk(**store.load_many(task_id, "source_chunks")[0])
+    origin_submitted = tools.submit_evidence(
+        task_id=task_id,
+        research_task=task_one,
+        source_id=source.id,
+        chunk_id=chunk.id,
+        exact_quote=source.content_excerpt,
+        supports="origin feature",
+    )
+    submitted = tools.submit_evidence(
+        task_id=task_id,
+        research_task=task_two,
+        source_id=source.id,
+        chunk_id=chunk.id,
+        exact_quote=source.content_excerpt,
+        supports="shared feature",
+    )
+    require(
+        origin_submitted["evidence_id"] != submitted["evidence_id"],
+        "跨 ResearchTask 的相同 quote 覆盖了提交 provenance",
+    )
+    evidence = next(
+        item
+        for item in store.load_many(task_id, "evidence")
+        if item["id"] == submitted["evidence_id"]
+    )
+    require(
+        source.metadata["research_task_id"] == task_one.id,
+        "Source 首次发现 provenance 被覆盖",
+    )
+    require(
+        evidence["metadata"]["research_task_id"] == task_two.id
+        and evidence["metadata"]["source_origin_research_task_id"]
+        == task_one.id,
+        "Evidence submit provenance 未指向合法复用 Task",
+    )
+    try:
+        tools.submit_evidence(
+            task_id=task_id,
+            research_task=task_three,
+            source_id=source.id,
+            chunk_id=chunk.id,
+            exact_quote=source.content_excerpt,
+            supports="unauthorized shared feature",
+        )
+    except ValueError as exc:
+        require("未与当前 ResearchTask 关联" in str(exc), "拒绝原因错误")
+    else:
+        raise AssertionError("未关联 Source 可跨 task SUBMIT_EVIDENCE")
     tools.close()
 
 

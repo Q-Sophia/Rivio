@@ -324,7 +324,13 @@ def config() -> LLMConfig:
     )
 
 
-def run_agent(store: ArtifactStore, task: AnalysisTask, provider):
+def run_agent(
+    store: ArtifactStore,
+    task: AnalysisTask,
+    provider,
+    *,
+    authorized_evidence_ids: list[str] | None = None,
+):
     recorder = TraceRecorder(store=store, task_id=TASK_ID)
     tools = build_snapshot_tool_registry(store=store, recorder=recorder)
     client = LLMClient(config=config(), store=store, provider=provider)
@@ -341,6 +347,10 @@ def run_agent(store: ArtifactStore, task: AnalysisTask, provider):
         metadata={
             "agent_run_id": "run_step6f_fixture",
             "preserve_research_artifacts": True,
+            "authorized_evidence_ids": authorized_evidence_ids or [],
+            "require_r1_evidence_authority": (
+                authorized_evidence_ids is not None
+            ),
         },
     )
     return agent.execute(context)
@@ -490,6 +500,108 @@ def check_research_agent_bridge_without_product_cards(root: Path) -> None:
     )
 
 
+def check_r1_verified_evidence_authority(root: Path) -> None:
+    store, task = prepare_store(root)
+    legacy = SourceEvidence(
+        id="ev_legacy_unverified",
+        task_id=TASK_ID,
+        source_id="src_classin",
+        competitor="ClassIn",
+        dimension="feature",
+        snippet="legacy unverified statement",
+        normalized_fact="legacy unverified statement",
+        confidence=0.99,
+        metadata={"source": "legacy_extractor"},
+    )
+    store.save_many(
+        TASK_ID,
+        "evidence",
+        [
+            *(SourceEvidence(**item) for item in store.load_many(TASK_ID, "evidence")),
+            legacy,
+        ],
+    )
+    authorized = [
+        "ev_classin_feature",
+        "ev_classin_pricing",
+        "ev_bbb_feature",
+    ]
+    store.save_many(
+        TASK_ID,
+        "research_agent_runs",
+        [
+            ResearchAgentRun(
+                task_id=TASK_ID,
+                research_task_id="researchtask_authority",
+                status=RunStatus.COMPLETED,
+                outcome="COMPLETE",
+                verified_evidence_ids=authorized,
+            )
+        ],
+    )
+    store.save_many(
+        TASK_ID,
+        "product_cards",
+        [
+            ProductCard(**item).model_copy(
+                update={
+                    "metadata": {
+                        **item.get("metadata", {}),
+                        "verified_evidence_only": True,
+                    }
+                }
+            )
+            for item in store.load_many(TASK_ID, "product_cards")
+        ],
+    )
+    service = ResearchAnalysisService(store=store)
+    readiness = service._analysis_readiness(TASK_ID)
+    require(
+        readiness["authorized_evidence_ids"] == sorted(authorized),
+        "Analyst readiness 未使用 R1 verified allowlist",
+    )
+    provider = build_provider(store)
+    result = run_agent(
+        store,
+        task,
+        provider,
+        authorized_evidence_ids=authorized,
+    )
+    require(result.status == RunStatus.COMPLETED, "verified-only Analyst 执行失败")
+    for request in provider.requests:
+        evidence_ids = {
+            item["id"] for item in request["artifacts"].get("evidence", [])
+        }
+        require(
+            "ev_legacy_unverified" not in evidence_ids
+            and evidence_ids <= set(authorized),
+            "legacy/unverified Evidence 进入 Analyst 上下文",
+        )
+    analyst_calls = store.load_many(TASK_ID, "llm_calls")
+    require(
+        all(
+            "ev_legacy_unverified"
+            not in call.get("input_artifact_refs", {}).get("evidence", [])
+            and set(
+                call.get("input_artifact_refs", {}).get("evidence", [])
+            )
+            <= set(authorized)
+            for call in analyst_calls
+        ),
+        "ContextBundle 泄漏 legacy/unverified Evidence",
+    )
+    analyst_bundle = next(
+        item
+        for item in store.load_many(TASK_ID, "context_bundles")
+        if item["agent_role"] == "analyst"
+    )
+    require(
+        "ev_legacy_unverified" not in analyst_bundle["evidence_ids"]
+        and set(analyst_bundle["evidence_ids"]) <= set(authorized),
+        "持久化 Analyst ContextBundle 未执行 verified-only gate",
+    )
+
+
 def check_no_evidence_is_blocked(root: Path) -> None:
     store, _task = prepare_store(root)
     store.save_many(TASK_ID, "evidence", [])
@@ -586,27 +698,27 @@ def check_structured_repair(root: Path) -> None:
             "AnalystBriefProfilesStage",
             "AnalystClaimsStage",
         ],
-        "malformed JSON 只能触发一次同 Stage repair",
+        "malformed JSON 只能触发一次统一 structured retry",
     )
     require(
         provider.requests[0]["output_schema"]
         == provider.requests[1]["output_schema"]
         == "AnalystBriefProfilesStage",
-        "structured repair 没有复用原 Stage Schema",
+        "统一 structured retry 没有复用原 Stage Schema",
     )
-    repair_artifacts = provider.requests[1]["artifacts"]
     require(
-        repair_artifacts["structured_repair"][0]["original_output"][
-            "malformed_text"
-        ].startswith('{"item"'),
-        "repair 输入没有携带可审计 malformed 原文",
+        provider.requests[0]["artifacts"] == provider.requests[1]["artifacts"]
+        and "只返回符合原 json_schema 的合法 JSON"
+        in provider.requests[1]["prompt_summary"],
+        "统一 structured retry 没有保持输入或追加严格 JSON 指令",
     )
     outputs = store.load_many(TASK_ID, "llm_outputs")
     require(
-        outputs[0]["validation_status"] == "failed"
-        and "malformed_text" in outputs[0]["raw_output"]
-        and outputs[1]["validation_status"] == "passed",
-        "原始 malformed output 与 repair output 未分别留痕",
+        outputs[0]["validation_status"] == "passed"
+        and outputs[0]["metadata"]["structured_retry_performed"] is True
+        and outputs[0]["metadata"]["structured_retry_result"] == "succeeded"
+        and outputs[0]["metadata"]["initial_diagnostics"]["parse_error"],
+        "malformed 初次失败与统一 retry 结果未在单次逻辑调用中留痕",
     )
 
     schema_store, schema_task = prepare_store(root / "schema_success")
@@ -619,7 +731,7 @@ def check_structured_repair(root: Path) -> None:
         schema_result.status == RunStatus.COMPLETED
         and schema_provider.calls[:2]
         == ["AnalystBriefProfilesStage", "AnalystBriefProfilesStage"],
-        "Stage Schema 失败没有执行唯一一次 structured repair",
+        "Stage Schema 失败没有执行唯一一次统一 structured retry",
     )
 
     failed_store, failed_task = prepare_store(root / "malformed_failed")
@@ -633,7 +745,7 @@ def check_structured_repair(root: Path) -> None:
         require(
             failed_provider.calls
             == ["AnalystBriefProfilesStage", "AnalystBriefProfilesStage"],
-            "structured repair 失败后仍进行了额外调用",
+            "统一 structured retry 失败后仍进行了额外调用",
         )
     else:
         raise AssertionError("第二次 malformed JSON 被伪装成成功")
@@ -668,6 +780,7 @@ def main() -> None:
     check_successful_assembly(root / "success")
     check_research_agent_bridge_without_product_cards(root / "ra_bridge")
     check_no_evidence_is_blocked(root / "no_evidence")
+    check_r1_verified_evidence_authority(root / "verified_authority")
     check_frontend_uses_backend_readiness()
     check_bounded_retry(root / "retry")
     check_retry_cap(root / "retry_cap")
@@ -678,8 +791,8 @@ def main() -> None:
     print("normal_calls=2")
     print("max_calls=4")
     print("finish_reason_length=recognized")
-    print("malformed_json_structured_repair=bounded_once")
-    print("stage_schema_structured_repair=bounded_once")
+    print("malformed_json_central_retry=bounded_once")
+    print("stage_schema_central_retry=bounded_once")
     print("research_agent_verified_evidence_bridge=pass")
     print("product_cards_optional_for_research_analysis=true")
     print("legacy_product_card_path_compatible=true")

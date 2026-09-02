@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import json
 import re
 import time
+from dataclasses import dataclass
 from typing import Any
 
 from app.harness.artifacts import ArtifactStore
@@ -47,6 +49,7 @@ from app.schemas import (
     ResearchGap,
     ResearchAgentAction,
     ResearchActionType,
+    ResearchMissionDecision,
     RunStatus,
     SourceDocument,
     SourceEvidence,
@@ -81,6 +84,14 @@ class LLMStructuredOutputError(ValueError):
     def __init__(self, stage: str, message: str):
         super().__init__(f"LLM 结构化输出无效；stage={stage}；{message}")
         self.stage = stage
+
+
+@dataclass
+class _StructuredAttemptFailure(Exception):
+    phase: str
+    error: Exception
+    raw_output: dict[str, Any]
+    provider_result: ProviderResult | None
 
 
 def _find_internal_reference_fields(value: Any) -> set[str]:
@@ -167,110 +178,148 @@ class LLMClient:
         started_at = utc_now()
         start = time.perf_counter()
         call_id = f"llmcall_{node_id}"
+        system_context = context_bundle.system_context if context_bundle else []
         used_fallback = False
         fallback_reason = ""
         provider_result: ProviderResult | None = None
+        provider_results: list[ProviderResult] = []
         raw_output: dict[str, Any] = {}
         report_claim_refs_added: list[str] = []
         rejected_portfolio_claims: list[dict[str, Any]] = []
         caught_exception: Exception | None = None
         failure_phase = "provider"
+        structured_retry_performed = False
+        structured_retry_result = "not_needed"
+        initial_diagnostics = self._empty_structured_diagnostics()
+        retry_diagnostics = self._empty_structured_diagnostics()
+        logical_attempt_count = 0
+
         try:
-            if isinstance(self.provider, MockStructuredProvider):
-                raw_output = self._mock_generate(
-                    task_id=task_id,
-                    agent_role=agent_role,
-                    output_schema=output_schema,
-                    artifacts=artifacts,
-                )
-            else:
-                provider_result = self.provider.generate(
-                    task_id=task_id,
-                    agent_role=agent_role,
-                    output_schema=output_schema,
-                    prompt_summary=prompt_summary,
-                    system_context=(
-                        context_bundle.system_context if context_bundle else []
-                    ),
-                    artifacts=artifacts,
-                )
-                raw_output = provider_result.raw_output
-            failure_phase = "validation"
-            if output_schema == "CompetitiveAnalysisPortfolioV2":
-                raw_output, rejected_portfolio_claims = (
-                    self._filter_unaligned_portfolio_claims(
-                        raw_output=raw_output,
-                        artifacts=artifacts,
-                    )
-                )
-            if output_schema == "AnalystClaimsStage":
-                raw_output, rejected_portfolio_claims = (
-                    self._filter_unaligned_stage_claims(
-                        raw_output=raw_output,
-                        artifacts=artifacts,
-                    )
-                )
-            if output_schema == "CompetitiveReport":
-                raw_output, report_claim_refs_added = normalize_report_claim_references(
-                    raw_output,
-                    [str(item.get("id", "")) for item in artifacts.get("claims", [])],
-                )
-            parsed_ids = self._validate_output(
+            logical_attempt_count += 1
+            (
+                raw_output,
+                provider_result,
+                parsed_ids,
+                report_claim_refs_added,
+                rejected_portfolio_claims,
+            ) = self._run_structured_attempt(
                 task_id=task_id,
+                agent_role=agent_role,
                 output_schema=output_schema,
-                raw_output=raw_output,
+                prompt_summary=prompt_summary,
+                system_context=system_context,
                 artifacts=artifacts,
             )
+            if provider_result is not None:
+                provider_results.append(provider_result)
             status = RunStatus.COMPLETED
             error = ""
             validation_status = "passed"
             validation_errors: list[str] = []
-        except Exception as exc:
-            caught_exception = exc
-            provider_error = f"{type(exc).__name__}: {exc}"
-            raw_output_text = str(getattr(exc, "raw_output_text", "") or "")
-            if raw_output_text:
-                raw_output = {
-                    "malformed_text": raw_output_text,
-                    "parse_error": provider_error,
-                }
-            if self.config.mode == LLMMode.LLM_WITH_FALLBACK:
-                used_fallback = True
-                fallback_reason = provider_error
-                raw_output = self._mock_generate(
-                    task_id=task_id,
-                    agent_role=agent_role,
-                    output_schema=output_schema,
-                    artifacts=artifacts,
-                )
-                if output_schema == "CompetitiveAnalysisPortfolioV2":
-                    raw_output, rejected_portfolio_claims = (
-                        self._filter_unaligned_portfolio_claims(
-                            raw_output=raw_output,
-                            artifacts=artifacts,
-                        )
-                    )
-                if output_schema == "CompetitiveReport":
-                    raw_output, report_claim_refs_added = normalize_report_claim_references(
+        except _StructuredAttemptFailure as initial_failure:
+            initial_diagnostics = self._structured_failure_diagnostics(
+                initial_failure
+            )
+            raw_output = initial_failure.raw_output
+            if initial_failure.provider_result is not None:
+                provider_results.append(initial_failure.provider_result)
+            final_failure = initial_failure
+            if self._is_structured_retryable(initial_failure):
+                structured_retry_performed = True
+                try:
+                    logical_attempt_count += 1
+                    (
                         raw_output,
-                        [str(item.get("id", "")) for item in artifacts.get("claims", [])],
+                        provider_result,
+                        parsed_ids,
+                        report_claim_refs_added,
+                        rejected_portfolio_claims,
+                    ) = self._run_structured_attempt(
+                        task_id=task_id,
+                        agent_role=agent_role,
+                        output_schema=output_schema,
+                        prompt_summary=(
+                            prompt_summary
+                            + "\n结构化输出重试：只返回符合原 json_schema 的合法 JSON；"
+                            "不要输出 markdown、代码围栏或解释文本。"
+                        ),
+                        system_context=system_context,
+                        artifacts=artifacts,
                     )
-                parsed_ids = self._validate_output(
-                    task_id=task_id,
-                    output_schema=output_schema,
-                    raw_output=raw_output,
-                    artifacts=artifacts,
+                    if provider_result is not None:
+                        provider_results.append(provider_result)
+                    structured_retry_result = "succeeded"
+                    status = RunStatus.COMPLETED
+                    error = ""
+                    validation_status = "passed"
+                    validation_errors = []
+                except _StructuredAttemptFailure as retry_failure:
+                    final_failure = retry_failure
+                    retry_diagnostics = self._structured_failure_diagnostics(
+                        retry_failure
+                    )
+                    raw_output = retry_failure.raw_output
+                    if retry_failure.provider_result is not None:
+                        provider_results.append(retry_failure.provider_result)
+                    structured_retry_result = "failed"
+
+            if structured_retry_result != "succeeded":
+                caught_exception = final_failure.error
+                failure_phase = final_failure.phase
+                failure_message = self._structured_failure_message(
+                    initial_failure=initial_failure,
+                    retry_failure=(
+                        final_failure if structured_retry_performed else None
+                    ),
                 )
-                status = RunStatus.COMPLETED
-                error = ""
-                validation_status = "passed"
-                validation_errors = []
-            else:
-                parsed_ids = []
-                status = RunStatus.FAILED
-                error = provider_error
-                validation_status = "failed"
-                validation_errors = [error]
+                raw_output_text = str(
+                    getattr(final_failure.error, "raw_output_text", "") or ""
+                )
+                if raw_output_text:
+                    raw_output = {
+                        "malformed_text": raw_output_text,
+                        "parse_error": (
+                            retry_diagnostics.get("parse_error")
+                            or initial_diagnostics.get("parse_error")
+                            or str(final_failure.error)
+                        ),
+                    }
+                if self.config.mode == LLMMode.LLM_WITH_FALLBACK:
+                    used_fallback = True
+                    fallback_reason = failure_message
+                    (
+                        raw_output,
+                        _mock_result,
+                        parsed_ids,
+                        report_claim_refs_added,
+                        rejected_portfolio_claims,
+                    ) = self._run_structured_attempt(
+                        task_id=task_id,
+                        agent_role=agent_role,
+                        output_schema=output_schema,
+                        prompt_summary=prompt_summary,
+                        system_context=system_context,
+                        artifacts=artifacts,
+                        force_mock=True,
+                    )
+                    structured_retry_result = (
+                        "failed_fallback_succeeded"
+                        if structured_retry_performed
+                        else "not_performed_fallback_succeeded"
+                    )
+                    status = RunStatus.COMPLETED
+                    error = ""
+                    validation_status = "passed"
+                    validation_errors = []
+                else:
+                    parsed_ids = []
+                    status = RunStatus.FAILED
+                    error = failure_message
+                    validation_status = "failed"
+                    validation_errors = [error]
+
+        if provider_results:
+            provider_result = provider_results[-1]
 
         completed_at = utc_now()
         duration_ms = int((time.perf_counter() - start) * 1000)
@@ -317,13 +366,39 @@ class LLMClient:
                     _find_internal_reference_fields(artifacts)
                 ),
                 "request_id": provider_result.request_id if provider_result else "",
-                "attempts": provider_result.attempts if provider_result else 0,
-                "input_tokens": provider_result.input_tokens if provider_result else 0,
-                "output_tokens": provider_result.output_tokens if provider_result else 0,
+                "request_ids": [
+                    item.request_id for item in provider_results if item.request_id
+                ],
+                "attempts": sum(item.attempts for item in provider_results),
+                "structured_attempt_count": logical_attempt_count,
+                "input_tokens": sum(item.input_tokens for item in provider_results),
+                "output_tokens": sum(item.output_tokens for item in provider_results),
                 "finish_reason": (
                     provider_result.metadata.get("finish_reason", "unknown")
                     if provider_result
                     else getattr(caught_exception, "finish_reason", "unknown")
+                ),
+                "structured_output_stage": node_id,
+                "structured_output_model": self.config.model,
+                "structured_response_chars": initial_diagnostics.get(
+                    "response_chars", 0
+                ),
+                "structured_parse_error": initial_diagnostics.get(
+                    "parse_error", ""
+                ),
+                "structured_schema_error": initial_diagnostics.get(
+                    "schema_error", ""
+                ),
+                "structured_retry_performed": structured_retry_performed,
+                "structured_retry_result": structured_retry_result,
+                "structured_retry_response_chars": retry_diagnostics.get(
+                    "response_chars", 0
+                ),
+                "structured_retry_parse_error": retry_diagnostics.get(
+                    "parse_error", ""
+                ),
+                "structured_retry_schema_error": retry_diagnostics.get(
+                    "schema_error", ""
                 ),
             },
         )
@@ -337,6 +412,12 @@ class LLMClient:
             parsed_object_ids=parsed_ids,
             validation_status=validation_status,
             validation_errors=validation_errors,
+            metadata={
+                "structured_retry_performed": structured_retry_performed,
+                "structured_retry_result": structured_retry_result,
+                "initial_diagnostics": initial_diagnostics,
+                "retry_diagnostics": retry_diagnostics,
+            },
         )
         self.trace.append_call(task_id, call)
         self.trace.append_output(task_id, output)
@@ -353,6 +434,173 @@ class LLMClient:
                 raise LLMStructuredOutputError(node_id, error) from caught_exception
             raise ValueError(error)
         return raw_output, call, output
+
+    def _run_structured_attempt(
+        self,
+        *,
+        task_id: str,
+        agent_role: AgentRole,
+        output_schema: str,
+        prompt_summary: str,
+        system_context: list[str],
+        artifacts: dict[str, list],
+        force_mock: bool = False,
+    ) -> tuple[
+        dict[str, Any],
+        ProviderResult | None,
+        list[str],
+        list[str],
+        list[dict[str, Any]],
+    ]:
+        provider_result: ProviderResult | None = None
+        raw_output: dict[str, Any] = {}
+        try:
+            if force_mock or isinstance(self.provider, MockStructuredProvider):
+                raw_output = self._mock_generate(
+                    task_id=task_id,
+                    agent_role=agent_role,
+                    output_schema=output_schema,
+                    artifacts=artifacts,
+                )
+            else:
+                provider_result = self.provider.generate(
+                    task_id=task_id,
+                    agent_role=agent_role,
+                    output_schema=output_schema,
+                    prompt_summary=prompt_summary,
+                    system_context=system_context,
+                    artifacts=artifacts,
+                )
+                raw_output = provider_result.raw_output
+        except Exception as exc:
+            raise _StructuredAttemptFailure(
+                phase="provider",
+                error=exc,
+                raw_output=raw_output,
+                provider_result=provider_result,
+            ) from exc
+
+        report_claim_refs_added: list[str] = []
+        rejected_portfolio_claims: list[dict[str, Any]] = []
+        try:
+            if output_schema == "CompetitiveAnalysisPortfolioV2":
+                raw_output, rejected_portfolio_claims = (
+                    self._filter_unaligned_portfolio_claims(
+                        raw_output=raw_output,
+                        artifacts=artifacts,
+                    )
+                )
+            if output_schema == "AnalystClaimsStage":
+                raw_output, rejected_portfolio_claims = (
+                    self._filter_unaligned_stage_claims(
+                        raw_output=raw_output,
+                        artifacts=artifacts,
+                    )
+                )
+            if output_schema == "CompetitiveReport":
+                raw_output, report_claim_refs_added = (
+                    normalize_report_claim_references(
+                        raw_output,
+                        [
+                            str(item.get("id", ""))
+                            for item in artifacts.get("claims", [])
+                        ],
+                    )
+                )
+            parsed_ids = self._validate_output(
+                task_id=task_id,
+                output_schema=output_schema,
+                raw_output=raw_output,
+                artifacts=artifacts,
+            )
+        except Exception as exc:
+            raise _StructuredAttemptFailure(
+                phase="validation",
+                error=exc,
+                raw_output=raw_output,
+                provider_result=provider_result,
+            ) from exc
+        return (
+            raw_output,
+            provider_result,
+            parsed_ids,
+            report_claim_refs_added,
+            rejected_portfolio_claims,
+        )
+
+    @staticmethod
+    def _is_structured_retryable(failure: _StructuredAttemptFailure) -> bool:
+        if isinstance(failure.error, LLMProviderOutputTruncatedError):
+            return False
+        if failure.phase == "validation":
+            return True
+        return isinstance(failure.error, LLMProviderResponseError) and bool(
+            getattr(failure.error, "raw_output_text", "")
+        )
+
+    @staticmethod
+    def _empty_structured_diagnostics() -> dict[str, Any]:
+        return {
+            "response_chars": 0,
+            "parse_error": "",
+            "schema_error": "",
+        }
+
+    @staticmethod
+    def _structured_failure_diagnostics(
+        failure: _StructuredAttemptFailure,
+    ) -> dict[str, Any]:
+        raw_text = str(
+            getattr(failure.error, "raw_output_text", "") or ""
+        )
+        response_chars = int(
+            getattr(failure.error, "response_chars", 0)
+            or (
+                failure.provider_result.metadata.get("response_chars", 0)
+                if failure.provider_result is not None
+                else 0
+            )
+            or len(raw_text)
+            or (
+                len(json.dumps(failure.raw_output, ensure_ascii=False))
+                if failure.raw_output
+                else 0
+            )
+        )
+        return {
+            "response_chars": response_chars,
+            "parse_error": (
+                str(
+                    getattr(failure.error, "parse_error", "")
+                    or failure.error
+                )
+                if failure.phase == "provider"
+                else ""
+            ),
+            "schema_error": (
+                f"{type(failure.error).__name__}: {failure.error}"
+                if failure.phase == "validation"
+                else ""
+            ),
+        }
+
+    @staticmethod
+    def _structured_failure_message(
+        *,
+        initial_failure: _StructuredAttemptFailure,
+        retry_failure: _StructuredAttemptFailure | None,
+    ) -> str:
+        initial = (
+            f"initial_{initial_failure.phase}="
+            f"{type(initial_failure.error).__name__}: {initial_failure.error}"
+        )
+        if retry_failure is None:
+            return initial
+        return (
+            f"{initial}；structured_retry_failed；"
+            f"retry_{retry_failure.phase}="
+            f"{type(retry_failure.error).__name__}: {retry_failure.error}"
+        )
 
     @staticmethod
     def _filter_unaligned_portfolio_claims(
@@ -474,6 +722,18 @@ class LLMClient:
                     rationale="Mock 模式不执行外部研究动作。",
                     finish_status="EXHAUSTED",
                     remaining_need="需要真实或 Fake trajectory 提供研究动作。",
+                ).model_dump(mode="json"),
+                "generated_by": str(agent_role),
+                "output_language": self.config.output_language,
+            }
+        if output_schema == "ResearchMissionDecision":
+            mission = (artifacts.get("research_mission") or [{}])[0]
+            return {
+                "item": ResearchMissionDecision(
+                    task_id=task_id,
+                    mission_id=str(mission.get("id") or ""),
+                    action="FINISH",
+                    reason="Mock Supervisor 不创建新的 Research Unit。",
                 ).model_dump(mode="json"),
                 "generated_by": str(agent_role),
                 "output_language": self.config.output_language,
@@ -658,6 +918,34 @@ class LLMClient:
                     if key in semantic_fields
                 },
             )
+            raw_output["item"] = item.model_dump(mode="json")
+            return [item.id]
+        if output_schema == "ResearchMissionDecision":
+            semantic_fields = {
+                "action", "target_need", "research_goal", "reason",
+            }
+            raw_item = raw_output.get("item", {})
+            if not isinstance(raw_item, dict):
+                raise ValueError("ResearchMissionDecision.item 必须是对象")
+            missions = artifacts.get("research_mission", [])
+            mission_id = str(missions[0].get("id", "")) if missions else ""
+            item = ResearchMissionDecision(
+                task_id=task_id,
+                mission_id=mission_id,
+                **{
+                    key: value
+                    for key, value in raw_item.items()
+                    if key in semantic_fields
+                },
+            )
+            allowed_needs = {
+                str(value.get("id") or "")
+                for value in artifacts.get("mission_information_needs", [])
+            }
+            if item.target_need and item.target_need not in allowed_needs:
+                raise ValueError(
+                    "ResearchMissionDecision.target_need 未引用输入 InformationNeed"
+                )
             raw_output["item"] = item.model_dump(mode="json")
             return [item.id]
         raise ValueError(f"Unsupported output_schema={output_schema}")

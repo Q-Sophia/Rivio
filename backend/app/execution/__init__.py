@@ -13,6 +13,9 @@ from app.execution.research_agent import (
     ResearchEvidenceAgentService,
     get_research_evidence_agent_service,
 )
+from app.execution.research_mission import ResearchMissionService
+from app.execution.research_mission_context import ResearchMissionContextBuilder
+from app.execution.research_mission_supervisor import LLMMissionSupervisor
 
 __all__ = [
     "ExecutionRunner",
@@ -21,6 +24,9 @@ __all__ = [
     "ResearchAnalysisOutputTruncatedError",
     "ResearchReportingService",
     "ResearchEvidenceAgentService",
+    "ResearchMissionService",
+    "ResearchMissionContextBuilder",
+    "LLMMissionSupervisor",
     "get_execution_runner",
     "get_research_loop_runner",
     "get_research_analysis_service",

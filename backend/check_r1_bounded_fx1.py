@@ -63,6 +63,10 @@ def check_generation_dedup_and_round_two() -> None:
     require(supplement.collection_round == 2, "首次补采不是 Round2")
     require(supplement.dimension == "other", "dimension 未 canonicalize")
     require(
+        supplement.information_need_id == initial.information_need_id,
+        "补采 ResearchTask 新增了 synthetic dangling InformationNeed",
+    )
+    require(
         supplement.metadata.get("trigger_gap_ids")
         == ["gap_growth", "gap_market"],
         "合并补采任务未保留全部 gap provenance",

@@ -10,12 +10,20 @@ from pydantic import BaseModel, Field
 
 from app.agents.web_evidence import normalize_dimension
 from app.execution.research_agent import get_research_evidence_agent_service
+from app.execution.research_mission import ResearchMissionService
+from app.execution.research_mission_supervisor import (
+    build_llm_mission_supervisor,
+    mission_coverage_and_gaps,
+)
 from app.harness.artifacts import ArtifactStore
 from app.intake import ResearchAgentBoundedRefreshService
 from app.schemas import (
     EvidenceCoverageStatus,
     ExecutionMode,
+    MissionSupervisorAction,
     ResearchAgentBudget,
+    ResearchMissionBudgetState,
+    ResearchMissionState,
     ResearchPlan,
     ResearchTask,
     new_id,
@@ -34,6 +42,7 @@ SUFFICIENT_COVERAGE_STATUSES = {
 
 ResearchServiceFactory = Callable[[ArtifactStore], Any]
 CoverageServiceFactory = Callable[[ArtifactStore], Any]
+MissionSupervisorFactory = Callable[[ArtifactStore], Any]
 
 
 class ResearchAgentCoordinatorRun(BaseModel):
@@ -102,6 +111,7 @@ class ResearchAgentCoordinator:
         max_workers: int = 1,
         research_service_factory: ResearchServiceFactory | None = None,
         coverage_service_factory: CoverageServiceFactory | None = None,
+        mission_supervisor_factory: MissionSupervisorFactory | None = None,
     ):
         self.store = store or ArtifactStore()
         self._pool = ThreadPoolExecutor(
@@ -115,6 +125,9 @@ class ResearchAgentCoordinator:
         )
         self._coverage_service_factory = coverage_service_factory or (
             lambda store: ResearchAgentBoundedRefreshService(store=store)
+        )
+        self._mission_supervisor_factory = mission_supervisor_factory or (
+            lambda store: build_llm_mission_supervisor(store=store)
         )
 
     def get_latest_run(
@@ -160,6 +173,7 @@ class ResearchAgentCoordinator:
                 "必须显式确认 Research Agent 会产生真实多轮 LLM 调用。"
             )
 
+        ResearchMissionService(store=self.store).ensure_missions(task_id)
         research_task_ids = self._runnable_research_task_ids(task_id)
 
         if not research_task_ids:
@@ -383,6 +397,13 @@ class ResearchAgentCoordinator:
                 coverage_summary = self._coverage_service_factory(
                     self.store
                 ).refresh(run.task_id)
+                ResearchMissionService(store=self.store).refresh_coverage(
+                    run.task_id
+                )
+                current = self._refresh_snapshot(current)
+                supervisor_decisions = self._supervise_missions(
+                    current, completed_round=round_number
+                )
                 all_task_ids = [
                     item.id
                     for item in self._deduplicated_research_tasks(run.task_id)
@@ -405,6 +426,7 @@ class ResearchAgentCoordinator:
                     data={
                         "collection_round": round_number,
                         "coverage_summary": coverage_summary,
+                        "mission_supervisor_decisions": supervisor_decisions,
                     },
                 )
 
@@ -457,6 +479,9 @@ class ResearchAgentCoordinator:
             data={"collection_round": research_task.collection_round},
         )
         try:
+            mission_service = ResearchMissionService(store=self.store)
+            mission_service.ensure_missions(started.task_id)
+            mission_service.prepare_worker(started.task_id, research_task)
             remaining_sources = max(
                 1,
                 started.max_total_sources
@@ -489,6 +514,9 @@ class ResearchAgentCoordinator:
                 mode=mode,
                 acknowledge_real_llm_call=acknowledge_real_llm_call,
                 budget=budget,
+            )
+            mission_service.merge_worker(
+                started.task_id, research_task_id
             )
             agent_runs = payload.get("runs") or []
             latest_agent_run = agent_runs[-1] if agent_runs else {}
@@ -558,6 +586,121 @@ class ResearchAgentCoordinator:
             )
         return None
 
+    def _supervise_missions(
+        self,
+        run: ResearchAgentCoordinatorRun,
+        *,
+        completed_round: int,
+    ) -> list[dict[str, Any]]:
+        if self._budget_stop(run) is not None:
+            return []
+        mission_service = ResearchMissionService(store=self.store)
+        missions = mission_service.ensure_missions(run.task_id)
+        if not missions:
+            return []
+        supervisor = self._mission_supervisor_factory(self.store)
+        decisions: list[dict[str, Any]] = []
+        for mission in missions:
+            if mission.status == "finished":
+                continue
+            worker_result = mission_service.latest_worker_result(
+                run.task_id, mission.id
+            )
+            if worker_result is None:
+                continue
+            state = next(
+                item
+                for item in (
+                    ResearchMissionState(**raw)
+                    for raw in self.store.load_many(
+                        run.task_id, "research_mission_states"
+                    )
+                )
+                if item.mission_id == mission.id
+            )
+            coverage, gaps = mission_coverage_and_gaps(
+                store=self.store, task_id=run.task_id, mission=mission
+            )
+            budget_state = ResearchMissionBudgetState(
+                collection_round=max(1, completed_round),
+                max_collection_rounds=run.max_collection_rounds,
+                completed_units=len(state.worker_result_ids),
+                max_units=max(
+                    1,
+                    len(mission.information_need_ids)
+                    * run.max_collection_rounds,
+                ),
+                sources_used=run.source_count,
+                max_total_sources=run.max_total_sources,
+                actions_used=run.actions_completed,
+                max_actions=run.max_actions,
+            )
+            decision = supervisor.decide(
+                task_id=run.task_id,
+                mission=mission,
+                state=state,
+                worker_result=worker_result,
+                coverage=coverage,
+                gaps=gaps,
+                budget_state=budget_state,
+            )
+            bounded_reason = ""
+            if mission.information_need_ids and all(
+                state.coverage_status_by_need.get(need_id)
+                in SUFFICIENT_COVERAGE_STATUSES
+                for need_id in mission.information_need_ids
+            ):
+                bounded_reason = "Mission Coverage 已充分。"
+            elif completed_round >= run.max_collection_rounds:
+                bounded_reason = "Mission 已达到最大采集轮数。"
+            elif budget_state.completed_units >= budget_state.max_units:
+                bounded_reason = "Mission 已达到 Research Unit 上限。"
+            if (
+                bounded_reason
+                and decision.action != MissionSupervisorAction.FINISH.value
+            ):
+                decision = decision.model_copy(
+                    update={
+                        "action": MissionSupervisorAction.FINISH.value,
+                        "target_need": "",
+                        "research_goal": "",
+                        "reason": bounded_reason,
+                        "metadata": {
+                            **decision.metadata,
+                            "bounded_override": True,
+                            "original_action": str(decision.action),
+                        },
+                    }
+                )
+            mission_service.record_supervisor_decision(decision)
+            unit = None
+            if decision.action == MissionSupervisorAction.FINISH.value:
+                mission_service.finish_mission(run.task_id, mission.id)
+            else:
+                unit = mission_service.materialize_research_unit(
+                    decision,
+                    collection_round=completed_round + 1,
+                    max_collection_rounds=run.max_collection_rounds,
+                )
+            decisions.append(
+                {
+                    "decision_id": decision.id,
+                    "mission_id": mission.id,
+                    "action": str(decision.action),
+                    "target_need": decision.target_need,
+                    "research_unit_id": unit.id if unit else "",
+                    "reason": decision.reason,
+                }
+            )
+            self._append_event(
+                run,
+                event_type="mission_supervisor_decision",
+                message=decision.reason,
+                research_task_id=unit.id if unit else "",
+                data=decisions[-1],
+            )
+        return decisions
+
     def _post_coverage_stop(
         self,
         run: ResearchAgentCoordinatorRun,
@@ -577,6 +720,12 @@ class ResearchAgentCoordinator:
         runnable = self._runnable_research_tasks(run.task_id)
         if runnable:
             return None
+        missions = self.store.load_many(run.task_id, "research_missions")
+        if missions and all(item.get("status") == "finished" for item in missions):
+            return (
+                "mission_supervisor_finish",
+                "Mission Supervisor 已确认研究可以结束，交给当前 Analyst。",
+            )
         if run.current_collection_round >= run.max_collection_rounds:
             return (
                 "max_collection_rounds",
@@ -728,10 +877,17 @@ class ResearchAgentCoordinator:
         return [representatives[key] for key in ordered_keys]
 
     def _runnable_research_tasks(self, task_id: str) -> list[ResearchTask]:
+        finished_task_ids = {
+            research_task_id
+            for mission in self.store.load_many(task_id, "research_missions")
+            if mission.get("status") == "finished"
+            for research_task_id in mission.get("research_task_ids", [])
+        }
         return [
             item
             for item in self._deduplicated_research_tasks(task_id)
             if item.status == "waiting_for_collector"
+            and item.id not in finished_task_ids
         ]
 
     def _latest_plan(self, task_id: str) -> ResearchPlan | None:

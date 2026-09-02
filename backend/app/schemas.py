@@ -202,6 +202,12 @@ class ResearchActionType(str, Enum):
     FINISH = "FINISH"
 
 
+class MissionSupervisorAction(str, Enum):
+    CREATE_RESEARCH_UNIT = "CREATE_RESEARCH_UNIT"
+    REQUEST_MORE_EVIDENCE = "REQUEST_MORE_EVIDENCE"
+    FINISH = "FINISH"
+
+
 class ResearchTaskOutcome(str, Enum):
     COMPLETE = "COMPLETE"
     PARTIAL = "PARTIAL"
@@ -615,6 +621,7 @@ class ResearchAgentRun(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("researchagentrun"))
     task_id: str
     research_task_id: str
+    mission_id: str = ""
     status: RunStatus = RunStatus.RUNNING
     outcome: str = ""
     attempted_queries: list[str] = Field(default_factory=list)
@@ -632,6 +639,160 @@ class ResearchAgentRun(SchemaModel):
     budget: ResearchAgentBudget = Field(default_factory=ResearchAgentBudget)
     created_at: datetime = Field(default_factory=utc_now)
     completed_at: datetime | None = None
+
+
+class ResearchMission(SchemaModel):
+    """A deterministic coherent research scope for one competitor."""
+
+    id: str = Field(default_factory=lambda: new_id("researchmission"))
+    task_id: str
+    competitor: str
+    goal: str = ""
+    information_need_ids: list[str] = Field(default_factory=list)
+    research_task_ids: list[str] = Field(default_factory=list)
+    status: str = "active"
+    created_at: datetime = Field(default_factory=utc_now)
+    updated_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchMissionState(SchemaModel):
+    """Compact shared facts; never contains Worker message/observation history."""
+
+    id: str = Field(default_factory=lambda: new_id("missionstate"))
+    task_id: str
+    mission_id: str
+    competitor: str
+    attempted_queries: list[str] = Field(default_factory=list)
+    visited_urls: list[str] = Field(default_factory=list)
+    source_ids: list[str] = Field(default_factory=list)
+    verified_evidence_ids: list[str] = Field(default_factory=list)
+    observed_terms: list[str] = Field(default_factory=list)
+    confirmed_official_domains: list[str] = Field(default_factory=list)
+    worker_run_ids: list[str] = Field(default_factory=list)
+    worker_result_ids: list[str] = Field(default_factory=list)
+    supervisor_decision_ids: list[str] = Field(default_factory=list)
+    outcome_by_need: dict[str, str] = Field(default_factory=dict)
+    coverage_status_by_need: dict[str, str] = Field(default_factory=dict)
+    remaining_need_by_id: dict[str, str] = Field(default_factory=dict)
+    version: int = Field(default=1, ge=1)
+    updated_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchWorkerNeedContext(BaseModel):
+    id: str
+    question_id: str = ""
+    dimension: str
+    required_facts: list[str] = Field(default_factory=list)
+    preferred_source_types: list[str] = Field(default_factory=list)
+    comparability_basis: str = ""
+    decision_link: str = ""
+    coverage_status: str = ""
+    remaining_need: str = ""
+
+
+class ResearchWorkerSourceContext(BaseModel):
+    source_id: str
+    title: str = ""
+    url: str
+    source_type: str = ""
+    official_confidence: str = "unknown"
+
+
+class ResearchWorkerEvidenceContext(BaseModel):
+    evidence_id: str
+    source_id: str
+    dimension: str
+    fact: str
+
+
+class ResearchWorkerGapContext(BaseModel):
+    gap_id: str
+    dimension: str
+    missing_information: str
+    insufficiency_reason: str = ""
+
+
+class ResearchMissionBudgetState(BaseModel):
+    collection_round: int = Field(default=1, ge=1)
+    max_collection_rounds: int = Field(default=3, ge=1)
+    completed_units: int = Field(default=0, ge=0)
+    max_units: int = Field(default=1, ge=1)
+    sources_used: int = Field(default=0, ge=0)
+    max_total_sources: int = Field(default=40, ge=1)
+    actions_used: int = Field(default=0, ge=0)
+    max_actions: int = Field(default=100, ge=1)
+    worker_max_steps: int = Field(default=12, ge=1)
+    worker_max_searches: int = Field(default=4, ge=1)
+    worker_max_sources: int = Field(default=6, ge=1)
+
+
+class ResearchWorkerContext(SchemaModel):
+    """Filtered Mission context visible to one focused Research Worker."""
+
+    id: str = Field(default_factory=lambda: new_id("researchworkercontext"))
+    task_id: str
+    mission_id: str
+    mission_goal: str
+    competitor: str
+    current_need: ResearchWorkerNeedContext
+    related_discovered_terms: list[str] = Field(default_factory=list)
+    confirmed_official_domains: list[str] = Field(default_factory=list)
+    related_sources: list[ResearchWorkerSourceContext] = Field(default_factory=list)
+    related_verified_evidence: list[ResearchWorkerEvidenceContext] = Field(
+        default_factory=list
+    )
+    previous_queries: list[str] = Field(default_factory=list)
+    previous_query_count: int = Field(default=0, ge=0)
+    visited_urls: list[str] = Field(default_factory=list)
+    visited_url_count: int = Field(default=0, ge=0)
+    remaining_gaps: list[ResearchWorkerGapContext] = Field(default_factory=list)
+    budget_state: ResearchMissionBudgetState = Field(
+        default_factory=ResearchMissionBudgetState
+    )
+    conversation_history_shared: bool = False
+
+
+class ResearchWorkerResult(SchemaModel):
+    """Structured Worker outcome merged into MissionState."""
+
+    id: str = Field(default_factory=lambda: new_id("researchworkerresult"))
+    task_id: str
+    mission_id: str
+    research_task_id: str
+    information_need_id: str
+    outcome: str
+    attempted_queries: list[str] = Field(default_factory=list)
+    visited_urls: list[str] = Field(default_factory=list)
+    source_ids: list[str] = Field(default_factory=list)
+    verified_evidence_ids: list[str] = Field(default_factory=list)
+    discovered_terms: list[str] = Field(default_factory=list)
+    remaining_need: str = ""
+    steps_used: int = Field(default=0, ge=0)
+    searches_used: int = Field(default=0, ge=0)
+    sources_used: int = Field(default=0, ge=0)
+    completed_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchMissionDecision(SchemaModel):
+    """One structured Mission Supervisor decision; never performs research."""
+
+    id: str = Field(default_factory=lambda: new_id("missiondecision"))
+    task_id: str
+    mission_id: str
+    action: MissionSupervisorAction
+    target_need: str = ""
+    research_goal: str = ""
+    reason: str
+    created_at: datetime = Field(default_factory=utc_now)
+
+    @model_validator(mode="after")
+    def validate_research_target(self):
+        if self.action != MissionSupervisorAction.FINISH.value:
+            if not self.target_need.strip():
+                raise ValueError("继续研究的 Supervisor decision 缺少 target_need")
+            if not self.research_goal.strip():
+                raise ValueError("继续研究的 Supervisor decision 缺少 research_goal")
+        return self
 
 
 class WebPageContent(SchemaModel):

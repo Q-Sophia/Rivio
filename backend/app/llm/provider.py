@@ -8,6 +8,10 @@ from typing import Any, Callable
 import httpx
 
 from app.llm.config import LLMConfig
+from app.llm.structured_output import (
+    StructuredJSONParseError,
+    parse_structured_json_text,
+)
 from app.schemas import AgentRole, LLMProvider
 
 
@@ -30,10 +34,14 @@ class LLMProviderResponseError(LLMProviderError):
         *,
         raw_output_text: str = "",
         finish_reason: str = "",
+        parse_error: str = "",
+        response_chars: int = 0,
     ):
         super().__init__(message)
         self.raw_output_text = raw_output_text
         self.finish_reason = finish_reason
+        self.parse_error = parse_error
+        self.response_chars = response_chars or len(raw_output_text)
 
 
 class LLMProviderOutputTruncatedError(LLMProviderResponseError):
@@ -116,6 +124,9 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
         )
         response_data, attempts, response_headers = self._post_with_retry(payload)
         raw_output = self.extract_structured_output(response_data)
+        response_chars = self._structured_response_chars(
+            response_data, raw_output
+        )
         usage = response_data.get("usage") or {}
         return ProviderResult(
             raw_output=raw_output,
@@ -141,6 +152,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                     or response_data.get("status")
                     or "unknown"
                 ),
+                "response_chars": response_chars,
             },
         )
 
@@ -293,38 +305,35 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
 
     @staticmethod
     def _decode_json_text(value: str) -> dict[str, Any]:
-        cleaned = value.strip().lstrip("\ufeff")
-        if cleaned.startswith("```"):
-            lines = cleaned.splitlines()
-            if lines and lines[0].strip().lower() in {"```", "```json"}:
-                lines = lines[1:]
-            if lines and lines[-1].strip() == "```":
-                lines = lines[:-1]
-            cleaned = "\n".join(lines).strip()
-
-        candidates = [cleaned]
-        first_brace = cleaned.find("{")
-        last_brace = cleaned.rfind("}")
-        if first_brace >= 0 and last_brace > first_brace:
-            object_text = cleaned[first_brace : last_brace + 1]
-            if object_text != cleaned:
-                candidates.append(object_text)
-
-        parsed = None
-        last_error: json.JSONDecodeError | None = None
-        for candidate in candidates:
-            try:
-                parsed = json.loads(candidate)
-                break
-            except json.JSONDecodeError as exc:
-                last_error = exc
-        if parsed is None:
+        try:
+            return parse_structured_json_text(value)
+        except StructuredJSONParseError as exc:
             raise LLMProviderResponseError(
-                "模型输出文本不是有效 JSON"
-            ) from last_error
-        if not isinstance(parsed, dict):
-            raise LLMProviderResponseError("模型结构化输出顶层必须是对象")
-        return parsed
+                str(exc),
+                raw_output_text=exc.raw_output_text,
+                parse_error=exc.parse_error,
+                response_chars=exc.response_chars,
+            ) from exc
+
+    @staticmethod
+    def _structured_response_chars(
+        response_data: dict[str, Any], raw_output: dict[str, Any]
+    ) -> int:
+        output_text = response_data.get("output_text")
+        if isinstance(output_text, str):
+            return len(output_text)
+        choices = response_data.get("choices") or []
+        if choices:
+            content = (choices[0].get("message") or {}).get("content")
+            if isinstance(content, str):
+                return len(content)
+            if isinstance(content, list):
+                return sum(
+                    len(str(item.get("text", "")))
+                    for item in content
+                    if isinstance(item, dict)
+                )
+        return len(json.dumps(raw_output, ensure_ascii=False))
 
     @staticmethod
     def _compact_artifacts(artifacts: dict[str, list]) -> dict[str, list]:
@@ -347,6 +356,14 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "information_need",
             "research_state",
             "recent_observations",
+            "mission_context",
+            "research_mission",
+            "mission_state_summary",
+            "research_worker_result",
+            "mission_information_needs",
+            "information_need_coverage",
+            "mission_research_gaps",
+            "mission_budget_state",
             "structured_repair",
         }
         return {
@@ -382,6 +399,14 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "只要仍有可执行的安全线索和预算，不得提前 FINISH/EXHAUSTED。",
                 "只有 verified_evidence_ids 已覆盖当前需要时才能 FINISH/COMPLETE。",
                 "选择 FINISH 时 finish_status 必须且只能是 COMPLETE、PARTIAL 或 EXHAUSTED；不得省略。",
+            ]
+        if output_schema == "ResearchMissionDecision":
+            return [
+                "你是 ResearchMission Supervisor，只做研究委派或结束决策，不调用搜索、抓取或证据工具。",
+                "target_need 只能逐字复用输入 mission_information_needs 中的 id。",
+                "CREATE_RESEARCH_UNIT 用于尚未执行的 need；REQUEST_MORE_EVIDENCE 用于已有研究但 Coverage 仍不足的 need。",
+                "达到 SUFFICIENT、轮数或预算上限、或没有可执行缺口时必须 FINISH。",
+                "不得生成新的 InformationNeed、竞品、事实、Source 或 Evidence id。",
             ]
         if output_schema not in {
             "CompetitiveAnalysisPortfolioV2",
@@ -419,6 +444,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "AnalystClaimsStage": "analyst_claims_stage",
             "AnalysisTaskDraft": "analysis_task_draft",
             "ResearchAgentAction": "research_agent_action",
+            "ResearchMissionDecision": "research_mission_decision",
         }.get(output_schema, "structured_output")
 
     @staticmethod
@@ -672,6 +698,28 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "generated_by": {"type": "string"},
                 "output_language": {"type": "string"},
             }
+        elif output_schema == "ResearchMissionDecision":
+            from app.schemas import ResearchMissionDecision
+
+            decision_schema = ResearchMissionDecision.model_json_schema()
+            definitions = decision_schema.pop("$defs", {})
+            system_owned_fields = {
+                "id", "task_id", "mission_id", "created_at",
+                "schema_version", "metadata",
+            }
+            decision_properties = decision_schema.get("properties", {})
+            for field_name in system_owned_fields:
+                decision_properties.pop(field_name, None)
+            decision_schema["required"] = [
+                field_name
+                for field_name in decision_schema.get("required", [])
+                if field_name not in system_owned_fields
+            ]
+            properties = {
+                "item": decision_schema,
+                "generated_by": {"type": "string"},
+                "output_language": {"type": "string"},
+            }
         else:
             raise ValueError(f"不支持的 output_schema={output_schema}")
         schema = {
@@ -685,6 +733,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "AnalystBriefProfilesStage",
             "AnalystClaimsStage",
             "ResearchAgentAction",
+            "ResearchMissionDecision",
         }:
             schema["$defs"] = definitions
         return schema
@@ -899,6 +948,8 @@ class OpenAIChatCompletionsProvider(OpenAIResponsesProvider):
             error_message,
             raw_output_text=content,
             finish_reason=finish_reason,
+            parse_error=str(cause),
+            response_chars=len(content),
         )
 
 
