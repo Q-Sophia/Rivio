@@ -4,9 +4,11 @@ import os
 import sys
 from dataclasses import dataclass
 from typing import Protocol
-from urllib.parse import urlsplit
 
 import httpx
+
+from app.tools.providers.tavily_provider import TavilyProvider
+
 
 
 @dataclass(frozen=True)
@@ -16,6 +18,8 @@ class SearchHit:
     snippet: str = ""
     site_name: str = ""
     published_at: str = ""
+    source_type: str = "general_third_party"
+    metadata: dict[str, object] | None = None
 
 
 class SearchProvider(Protocol):
@@ -31,7 +35,7 @@ class SearchProvider(Protocol):
 
 
 class TavilySearchProvider:
-    """Adapter for Tavily's official Search API."""
+    """Legacy SearchHit facade over the Tool Runtime TavilyProvider."""
 
     name = "tavily"
 
@@ -43,18 +47,14 @@ class TavilySearchProvider:
         timeout_seconds: float = 20.0,
         transport: httpx.BaseTransport | None = None,
     ):
-        if not api_key.strip():
-            raise ValueError("TAVILY_API_KEY 不能为空")
-        self.client = httpx.Client(
-            timeout=timeout_seconds,
+        self.tool_provider = TavilyProvider(
+            api_key,
+            base_url=base_url,
+            timeout_seconds=timeout_seconds,
             transport=transport,
-            trust_env=False,
-            headers={
-                "Authorization": f"Bearer {api_key.strip()}",
-                "Content-Type": "application/json",
-            },
         )
-        self.base_url = base_url
+        self.client = self.tool_provider.client
+        self.base_url = self.tool_provider.base_url
 
     def search(
         self,
@@ -63,42 +63,25 @@ class TavilySearchProvider:
         count: int = 5,
         domain_filter: str = "",
     ) -> list[SearchHit]:
-        normalized_query = " ".join(query.split())
-        if not normalized_query:
-            raise ValueError("搜索词不能为空")
-        request_body: dict[str, object] = {
-            "query": normalized_query,
-            "search_depth": "basic",
-            "max_results": max(1, min(count, 20)),
-            "topic": "general",
-            "include_answer": False,
-            "include_raw_content": False,
-            "include_images": False,
-        }
-        normalized_domain = domain_filter.strip()
-        if normalized_domain:
-            request_body["include_domains"] = [normalized_domain]
-        response = self.client.post(self.base_url, json=request_body)
-        response.raise_for_status()
-        values = response.json().get("results") or []
-        hits: list[SearchHit] = []
-        for item in values:
-            if not isinstance(item, dict) or not item.get("url"):
-                continue
-            url = str(item["url"]).strip()
-            hits.append(
-                SearchHit(
-                    title=str(item.get("title") or "").strip(),
-                    url=url,
-                    snippet=str(item.get("content") or "").strip(),
-                    site_name=(urlsplit(url).hostname or "").strip(),
-                    published_at=str(item.get("published_date") or "").strip(),
-                )
+        return [
+            SearchHit(
+                title=item.title,
+                url=item.url,
+                snippet=item.content,
+                site_name=str(item.metadata.get("site_name") or ""),
+                published_at=str(item.metadata.get("published_at") or ""),
+                source_type=item.source_type,
+                metadata=dict(item.metadata),
             )
-        return hits
+            for item in self.tool_provider.search(
+                query,
+                count=count,
+                domain_filter=domain_filter,
+            )
+        ]
 
     def close(self) -> None:
-        self.client.close()
+        self.tool_provider.close()
 
 
 class BochaSearchProvider:
@@ -276,6 +259,11 @@ def build_search_provider_from_env() -> SearchProvider | None:
         return ZhipuSearchProvider(zhipu_key) if zhipu_key else None
     if provider == "bocha":
         return BochaSearchProvider(bocha_key) if bocha_key else None
+    if provider == "zhihu":
+        raise ValueError(
+            "SEARCH_PROVIDER=zhihu 已退出普通 web_search 主链；"
+            "知乎应通过独立 zhihu_search MCP Tool 接入。"
+        )
     raise ValueError(f"不支持的 SEARCH_PROVIDER：{provider}")
 
 
@@ -310,5 +298,5 @@ def get_search_provider_status() -> dict[str, object]:
         "configured": configured,
         "endpoint": endpoint,
         "purpose": "web_search",
-        "transport": "direct",
+        "transport": "api",
     }

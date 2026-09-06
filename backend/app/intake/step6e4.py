@@ -4,6 +4,7 @@ from typing import Any
 
 from app.agents.web_evidence import normalize_dimension
 from app.harness.artifacts import ArtifactStore
+from app.tools.router import research_intent_for_dimension
 from app.schemas import (
     AgentRole,
     AnalysisTask,
@@ -405,6 +406,11 @@ def build_step6e4_research_tasks(
                 objective=f"补齐 {competitor} 在 {normalized_dimension} 维度的证据，解决当前覆盖缺口。",
                 competitor=competitor,
                 dimension=normalized_dimension,
+                research_intent=(
+                    latest.research_intent
+                    if latest and latest.research_intent
+                    else research_intent_for_dimension(normalized_dimension)
+                ),
                 query_hints=[
                     f"{competitor} {normalized_dimension} 官方",
                     f"{competitor} {normalized_dimension} 文档 第{next_round}轮核验",

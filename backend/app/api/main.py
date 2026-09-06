@@ -24,6 +24,7 @@ from app.execution import (
 from app.execution.research_agent_coordinator import (
     get_research_agent_coordinator,
 )
+from app.execution.evidence_feed import build_evidence_feed
 from app.collection import CollectorQueueService
 from app.extraction import ExtractorQueueService
 from app.intake import (
@@ -89,6 +90,8 @@ ARTIFACT_ENDPOINTS = {
     "research-agent-observations": "research_agent_observations",
     "research-agent-coordinator-runs": "research_agent_coordinator_runs",
     "research-agent-coordinator-events": "research_agent_coordinator_events",
+    "research-task-failures": "research_task_failures",
+    "research-batch-results": "research_batch_results",
 }
 
 FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend"
@@ -745,6 +748,19 @@ def get_analysis_task_workspace(task_id: str) -> dict[str, Any]:
     return build_task_workspace(task_id)
 
 
+@app.get("/tasks/{task_id}/evidence-feed")
+@app.get("/api/tasks/{task_id}/evidence-feed")
+def get_evidence_feed(task_id: str) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    store = get_store()
+    if not store.load_many(task_id, "analysis_tasks"):
+        raise HTTPException(
+            status_code=404,
+            detail=f"Analysis task not found: {task_id}",
+        )
+    return {"items": build_evidence_feed(store, task_id)}
+
+
 def execution_plan_payload(
     service: ExecutionPlanningService,
     task_id: str,
@@ -979,7 +995,7 @@ def research_agent_coordinator_status_payload(
             item.model_dump(mode="json")
             for item in events
         ],
-        "terminal": run.status in {"completed", "failed"},
+        "terminal": run.status in {"completed", "failed", "stopped"},
     }
 
 
@@ -1039,6 +1055,24 @@ def get_research_agent_coordinator_run(
     return research_agent_coordinator_status_payload(task_id)
 
 
+@app.post(
+    "/api/analysis-tasks/{task_id}/research-agent/run/stop"
+)
+def stop_research_agent_coordinator(
+    task_id: str,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        run = get_research_agent_coordinator().request_stop(task_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {
+        "research_agent_coordinator_run": run.model_dump(mode="json"),
+        "stop_requested": run.status in {"stopping", "stopped"},
+        "terminal": run.status in {"completed", "failed", "stopped"},
+    }
+
+
 @app.get(
     "/api/analysis-tasks/{task_id}/research-agent/run/events"
 )
@@ -1078,6 +1112,7 @@ async def stream_research_agent_coordinator_events(
         coordinator.reconcile_interrupted(task_id)
 
         while True:
+            coordinator.sync_evidence_events(task_id)
             events = coordinator.get_events(
                 task_id,
                 after=cursor,
@@ -1103,7 +1138,7 @@ async def stream_research_agent_coordinator_events(
 
             if (
                 latest
-                and latest.status in {"completed", "failed"}
+                and latest.status in {"completed", "failed", "stopped"}
                 and not events
             ):
                 break

@@ -8,6 +8,7 @@ from app.collection import CollectorQueueService
 from app.harness.artifacts import ArtifactStore
 from app.schemas import (
     AgentRole,
+    OfficialDomainContext,
     ResearchBudget,
     ResearchPlan,
     ResearchPlanStatus,
@@ -240,6 +241,19 @@ def check_factual_official_first(root: Path) -> dict[str, int]:
         research_task=research_task,
         source_budget=3,
     )
+    store.save_many(
+        task_id,
+        "official_domain_contexts",
+        [
+            OfficialDomainContext(
+                task_id=task_id,
+                competitor="Nebula",
+                domain="docs.nebula.example",
+                confidence="confirmed",
+                research_task_ids=[research_task.id],
+            )
+        ],
+    )
     provider = FakeOfficialFirstSearchProvider()
     collector = CollectorQueueService(
         store=store,
@@ -269,11 +283,11 @@ def check_factual_official_first(root: Path) -> dict[str, int]:
         item for item in provider.calls if str(item["query"]).startswith("site:")
     )
     require(
-        str(targeted_call["query"]).startswith("site:docs.nebula.example "),
+        str(targeted_call["query"]).startswith("site:nebula.example "),
         "未生成 site targeted query",
     )
     require(
-        targeted_call["domain_filter"] == "docs.nebula.example",
+        targeted_call["domain_filter"] == "nebula.example",
         "Targeted Search 未沿用 SearchProvider domain_filter contract",
     )
     require(

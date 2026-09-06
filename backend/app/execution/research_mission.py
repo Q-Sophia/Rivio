@@ -5,6 +5,7 @@ from typing import Any
 
 from app.agents.web_evidence import normalize_dimension
 from app.harness.artifacts import ArtifactStore
+from app.tools.router import research_intent_for_dimension
 from app.schemas import (
     EvidenceCoverage,
     InformationNeed,
@@ -576,6 +577,10 @@ class ResearchMissionService:
             objective=decision.research_goal,
             competitor=mission.competitor,
             dimension=normalize_dimension(need.dimension),
+            research_intent=(
+                need.research_intent
+                or research_intent_for_dimension(need.dimension)
+            ),
             preferred_source_types=need.preferred_source_types,
             status="waiting_for_collector",
             stop_condition=decision.reason,

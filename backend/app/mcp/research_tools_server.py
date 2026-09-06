@@ -78,6 +78,8 @@ def create_research_tools_server(
                     snippet=item.snippet,
                     site_name=item.site_name,
                     published_at=item.published_at,
+                    source_type=item.source_type,
+                    metadata=dict(item.metadata or {}),
                 )
                 for item in hits
             ],

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import threading
 from collections.abc import Callable
 from concurrent.futures import Future, ThreadPoolExecutor
@@ -10,6 +11,7 @@ from pydantic import BaseModel, Field
 
 from app.agents.web_evidence import normalize_dimension
 from app.execution.research_agent import get_research_evidence_agent_service
+from app.execution.evidence_feed import build_evidence_feed_transitions
 from app.execution.research_mission import ResearchMissionService
 from app.execution.research_mission_supervisor import (
     build_llm_mission_supervisor,
@@ -20,12 +22,15 @@ from app.intake import ResearchAgentBoundedRefreshService
 from app.schemas import (
     EvidenceCoverageStatus,
     ExecutionMode,
+    InformationNeed,
     MissionSupervisorAction,
     ResearchAgentBudget,
+    ResearchAgentRun,
     ResearchMissionBudgetState,
     ResearchMissionState,
     ResearchPlan,
     ResearchTask,
+    SourceEvidence,
     new_id,
     utc_now,
 )
@@ -33,8 +38,11 @@ from app.schemas import (
 
 COORDINATOR_RUNS_ARTIFACT = "research_agent_coordinator_runs"
 COORDINATOR_EVENTS_ARTIFACT = "research_agent_coordinator_events"
+RESEARCH_TASK_FAILURES_ARTIFACT = "research_task_failures"
+RESEARCH_BATCH_RESULTS_ARTIFACT = "research_batch_results"
 
-ACTIVE_STATUSES = {"queued", "running"}
+ACTIVE_STATUSES = {"queued", "running", "stopping"}
+TERMINAL_STATUSES = {"completed", "failed", "stopped"}
 SUFFICIENT_COVERAGE_STATUSES = {
     EvidenceCoverageStatus.SUFFICIENT.value,
     EvidenceCoverageStatus.NOT_APPLICABLE.value,
@@ -67,6 +75,7 @@ class ResearchAgentCoordinatorRun(BaseModel):
     coverage_status_counts: dict[str, int] = Field(default_factory=dict)
     research_gap_count: int = 0
     stop_reason: str = ""
+    result_status: str = ""
 
     current_research_task_id: str = ""
     outcomes: dict[str, int] = Field(default_factory=dict)
@@ -91,6 +100,30 @@ class ResearchAgentCoordinatorEvent(BaseModel):
     message: str = ""
     data: dict[str, Any] = Field(default_factory=dict)
 
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchTaskFailure(BaseModel):
+    id: str = Field(default_factory=lambda: new_id("researchtaskfailure"))
+    task_id: str
+    research_task_id: str
+    research_need_id: str = ""
+    mission_id: str = ""
+    collection_round: int = Field(default=1, ge=1)
+    stage: str
+    error_type: str
+    error_message: str
+    created_at: datetime = Field(default_factory=utc_now)
+
+
+class ResearchBatchResult(BaseModel):
+    id: str = Field(default_factory=lambda: new_id("researchbatch"))
+    task_id: str
+    collection_round: int = Field(ge=1)
+    status: str
+    completed_tasks: list[str] = Field(default_factory=list)
+    failed_tasks: list[ResearchTaskFailure] = Field(default_factory=list)
+    pending_tasks: list[str] = Field(default_factory=list)
     created_at: datetime = Field(default_factory=utc_now)
 
 
@@ -120,6 +153,7 @@ class ResearchAgentCoordinator:
         )
         self._lock = threading.RLock()
         self._futures: dict[str, Future] = {}
+        self._stop_requested: set[str] = set()
         self._research_service_factory = research_service_factory or (
             lambda _store: get_research_evidence_agent_service()
         )
@@ -153,6 +187,82 @@ class ResearchAgentCoordinator:
             )
             if int(item.get("sequence", 0)) > after
         ]
+
+    def sync_evidence_events(
+        self,
+        task_id: str,
+        *,
+        run: ResearchAgentCoordinatorRun | None = None,
+    ) -> list[ResearchAgentCoordinatorEvent]:
+        """Append missing Evidence Library transitions to the existing stream."""
+
+        with self._lock:
+            current = run or self.get_latest_run(task_id)
+            if current is None:
+                return []
+
+            existing = self.store.load_many(
+                task_id,
+                COORDINATOR_EVENTS_ARTIFACT,
+            )
+            emitted_keys = {
+                (
+                    str(item.get("data", {}).get("url") or "")
+                    .strip()
+                    .rstrip("/")
+                    .casefold(),
+                    str(item.get("data", {}).get("status") or ""),
+                )
+                for item in existing
+                if item.get("event_type") == "evidence_added"
+            }
+            appended: list[ResearchAgentCoordinatorEvent] = []
+            status_labels = {
+                "discovered": "已发现",
+                "collection_failed": "采集失败",
+                "collected": "已采集",
+                "verified": "已验证",
+            }
+
+            for item in build_evidence_feed_transitions(self.store, task_id):
+                key = (
+                    str(item.get("url") or "")
+                    .strip()
+                    .rstrip("/")
+                    .casefold(),
+                    str(item.get("status") or ""),
+                )
+                if key in emitted_keys:
+                    continue
+
+                payload = {
+                    "title": item["title"],
+                    "url": item["url"],
+                    "source_tool": item["source_tool"],
+                    "status": item["status"],
+                    "reliability_score": item["reliability_score"],
+                }
+                event = ResearchAgentCoordinatorEvent(
+                    task_id=task_id,
+                    coordinator_run_id=current.id,
+                    sequence=len(existing) + len(appended) + 1,
+                    event_type="evidence_added",
+                    message=(
+                        f"{status_labels.get(item['status'], item['status'])}："
+                        f"{item['title']}"
+                    ),
+                    data=payload,
+                )
+                appended.append(event)
+                emitted_keys.add(key)
+
+            if appended:
+                self.store.append_many(
+                    task_id,
+                    COORDINATOR_EVENTS_ARTIFACT,
+                    appended,
+                )
+            return appended
 
     def submit(
         self,
@@ -263,6 +373,69 @@ class ResearchAgentCoordinator:
 
         return latest
 
+    def request_stop(
+        self,
+        task_id: str,
+    ) -> ResearchAgentCoordinatorRun:
+        """Request cooperative cancellation at the next safe task boundary."""
+
+        with self._lock:
+            latest = self.get_latest_run(task_id)
+            if latest is None:
+                raise LookupError(
+                    f"未找到 ResearchAgentCoordinatorRun: {task_id}"
+                )
+            if latest.status in TERMINAL_STATUSES:
+                return latest
+            if latest.status == "stopping":
+                return latest
+
+            self._stop_requested.add(task_id)
+            stopping = latest.model_copy(
+                update={
+                    "status": "stopping",
+                    "stop_reason": "user_requested",
+                    "message": (
+                        "已收到中止请求；当前 ResearchTask 安全结束后停止。"
+                    ),
+                }
+            )
+            self._save_run(stopping)
+            self._append_event(
+                stopping,
+                event_type="stop_requested",
+                message=stopping.message,
+                data={"stop_reason": "user_requested"},
+            )
+
+            future = self._futures.get(task_id)
+            if future is None or future.cancel():
+                return self._finish(
+                    stopping,
+                    status="stopped",
+                    reason="user_requested",
+                    message="Research Agent 已按用户请求中止。",
+                )
+            return stopping
+
+    def _is_stop_requested(self, task_id: str) -> bool:
+        with self._lock:
+            return task_id in self._stop_requested
+
+    def _stop_if_requested(
+        self,
+        run: ResearchAgentCoordinatorRun,
+    ) -> bool:
+        if not self._is_stop_requested(run.task_id):
+            return False
+        self._finish(
+            run,
+            status="stopped",
+            reason="user_requested",
+            message="Research Agent 已按用户请求中止。",
+        )
+        return True
+
     def reconcile_interrupted(
         self,
         task_id: str,
@@ -277,6 +450,14 @@ class ResearchAgentCoordinator:
 
             if future is not None and not future.done():
                 return latest
+
+            if latest.status == "stopping":
+                return self._finish(
+                    latest,
+                    status="stopped",
+                    reason="user_requested",
+                    message="Research Agent 已按用户请求中止。",
+                )
 
             failed = latest.model_copy(
                 update={
@@ -306,6 +487,9 @@ class ResearchAgentCoordinator:
         mode: ExecutionMode,
         acknowledge_real_llm_call: bool,
     ) -> None:
+        if self._stop_if_requested(run):
+            return
+
         running = run.model_copy(
             update={
                 "status": "running",
@@ -324,9 +508,11 @@ class ResearchAgentCoordinator:
         )
 
         current = running
-        errors: list[str] = []
+        failures: list[ResearchTaskFailure] = []
         try:
             while True:
+                if self._stop_if_requested(current):
+                    return
                 current = self._refresh_snapshot(current)
                 budget_stop = self._budget_stop(current)
                 if budget_stop is not None:
@@ -382,17 +568,27 @@ class ResearchAgentCoordinator:
                     },
                 )
 
+                round_completed_task_ids: list[str] = []
+                round_failure_start = len(failures)
                 for research_task in round_tasks:
+                    if self._stop_if_requested(current):
+                        return
                     current = self._refresh_snapshot(current)
                     if self._budget_stop(current) is not None:
                         break
+                    failure_count = len(failures)
                     current = self._run_research_task(
                         current,
                         research_task=research_task,
                         mode=mode,
                         acknowledge_real_llm_call=acknowledge_real_llm_call,
-                        errors=errors,
+                        failures=failures,
                     )
+                    if len(failures) == failure_count:
+                        round_completed_task_ids.append(research_task.id)
+
+                    if self._stop_if_requested(current):
+                        return
 
                 coverage_summary = self._coverage_service_factory(
                     self.store
@@ -429,16 +625,37 @@ class ResearchAgentCoordinator:
                         "mission_supervisor_decisions": supervisor_decisions,
                     },
                 )
-
-                if errors:
-                    self._finish(
-                        current,
-                        status="failed",
-                        reason="research_task_failed",
-                        message="Research Agent R1 有任务执行失败，bounded loop 已停止。",
-                        error="\n".join(errors),
-                    )
-                    return
+                round_failures = failures[round_failure_start:]
+                pending_task_ids = self._runnable_research_task_ids(
+                    run.task_id
+                )
+                batch_status = (
+                    "FAILED"
+                    if round_failures and not round_completed_task_ids
+                    else "PARTIAL"
+                    if round_failures or pending_task_ids
+                    else "COMPLETE"
+                )
+                batch_result = ResearchBatchResult(
+                    task_id=run.task_id,
+                    collection_round=round_number,
+                    status=batch_status,
+                    completed_tasks=round_completed_task_ids,
+                    failed_tasks=round_failures,
+                    pending_tasks=pending_task_ids,
+                )
+                self._append_batch_result(batch_result)
+                self._append_event(
+                    current,
+                    event_type="research_batch_completed",
+                    message=(
+                        f"第 {round_number} 轮 batch={batch_status}；"
+                        f"完成 {len(round_completed_task_ids)}，"
+                        f"失败 {len(round_failures)}，"
+                        f"待执行 {len(pending_task_ids)}。"
+                    ),
+                    data=batch_result.model_dump(mode="json"),
+                )
 
                 decision = self._post_coverage_stop(current)
                 if decision is not None:
@@ -461,7 +678,7 @@ class ResearchAgentCoordinator:
         research_task: ResearchTask,
         mode: ExecutionMode,
         acknowledge_real_llm_call: bool,
-        errors: list[str],
+        failures: list[ResearchTaskFailure],
     ) -> ResearchAgentCoordinatorRun:
         research_task_id = research_task.id
         started = current.model_copy(
@@ -515,6 +732,10 @@ class ResearchAgentCoordinator:
                 acknowledge_real_llm_call=acknowledge_real_llm_call,
                 budget=budget,
             )
+            self.sync_evidence_events(
+                started.task_id,
+                run=started,
+            )
             mission_service.merge_worker(
                 started.task_id, research_task_id
             )
@@ -548,8 +769,17 @@ class ResearchAgentCoordinator:
             )
             return updated
         except Exception as exc:
+            self.sync_evidence_events(
+                started.task_id,
+                run=started,
+            )
             error = f"{research_task_id}: {type(exc).__name__}: {exc}"
-            errors.append(error)
+            failure = self._record_research_task_failure(
+                task_id=started.task_id,
+                research_task=research_task,
+                error=exc,
+            )
+            failures.append(failure)
             updated = self._refresh_snapshot(
                 started.model_copy(
                     update={
@@ -567,6 +797,7 @@ class ResearchAgentCoordinator:
                 event_type="research_task_failed",
                 research_task_id=research_task_id,
                 message=error,
+                data=failure.model_dump(mode="json"),
             )
             return updated
 
@@ -585,6 +816,148 @@ class ResearchAgentCoordinator:
                 "已达到 Research Agent 动作预算，停止补采并交给当前 Analyst。",
             )
         return None
+
+    def _record_research_task_failure(
+        self,
+        *,
+        task_id: str,
+        research_task: ResearchTask,
+        error: Exception,
+    ) -> ResearchTaskFailure:
+        error_message = str(error)
+        stage_match = re.search(r"stage=([^；;\s]+)", error_message)
+        nested_error_match = re.search(
+            r"(?:^|:\s)([A-Za-z_][A-Za-z0-9_]*(?:Error|Exception)):",
+            error_message,
+        )
+        mission = ResearchMissionService(store=self.store).mission_for_task(
+            task_id, research_task.id
+        )
+        failure = ResearchTaskFailure(
+            task_id=task_id,
+            research_task_id=research_task.id,
+            research_need_id=research_task.information_need_id,
+            mission_id=str(
+                research_task.metadata.get("mission_id")
+                or (mission.id if mission else "")
+            ),
+            collection_round=research_task.collection_round,
+            stage=(stage_match.group(1) if stage_match else "research_worker"),
+            error_type=(
+                nested_error_match.group(1)
+                if nested_error_match
+                else type(error).__name__
+            ),
+            error_message=error_message[:4000],
+        )
+        existing_failures = [
+            ResearchTaskFailure(**item)
+            for item in self.store.load_many(
+                task_id, RESEARCH_TASK_FAILURES_ARTIFACT
+            )
+        ]
+        self.store.save_many(
+            task_id,
+            RESEARCH_TASK_FAILURES_ARTIFACT,
+            [*existing_failures, failure],
+        )
+
+        runs = [
+            ResearchAgentRun(**item)
+            for item in self.store.load_many(task_id, "research_agent_runs")
+        ]
+        matching_indexes = [
+            index
+            for index, item in enumerate(runs)
+            if item.research_task_id == research_task.id
+        ]
+        failed_evidence_ids: set[str] = set()
+        if matching_indexes:
+            index = matching_indexes[-1]
+            failed_evidence_ids.update(runs[index].verified_evidence_ids)
+            runs[index] = runs[index].model_copy(
+                update={
+                    "status": "failed",
+                    "outcome": "FAILED",
+                    "verified_evidence_ids": [],
+                    "completed_at": utc_now(),
+                    "metadata": {
+                        **runs[index].metadata,
+                        "research_task_failure_id": failure.id,
+                    },
+                }
+            )
+        else:
+            runs.append(
+                ResearchAgentRun(
+                    task_id=task_id,
+                    research_task_id=research_task.id,
+                    mission_id=failure.mission_id,
+                    status="failed",
+                    outcome="FAILED",
+                    remaining_need=research_task.objective,
+                    completed_at=utc_now(),
+                    metadata={"research_task_failure_id": failure.id},
+                )
+            )
+        self.store.save_many(task_id, "research_agent_runs", runs)
+
+        evidence = [
+            SourceEvidence(**item)
+            for item in self.store.load_many(task_id, "evidence")
+        ]
+        self.store.save_many(
+            task_id,
+            "evidence",
+            [
+                item
+                for item in evidence
+                if item.id not in failed_evidence_ids
+                and str(item.metadata.get("research_task_id") or "")
+                != research_task.id
+            ],
+        )
+        research_tasks = self._all_research_tasks(task_id)
+        self.store.save_many(
+            task_id,
+            "research_tasks",
+            [
+                item.model_copy(
+                    update={
+                        "status": "research_failed",
+                        "metadata": {
+                            **item.metadata,
+                            "research_task_failure_id": failure.id,
+                        },
+                    }
+                )
+                if item.id == research_task.id
+                else item
+                for item in research_tasks
+            ],
+        )
+        try:
+            ResearchMissionService(store=self.store).merge_worker(
+                task_id, research_task.id
+            )
+        except Exception:
+            # Failure isolation must preserve the original task error even if
+            # the optional Mission merge cannot be completed.
+            pass
+        return failure
+
+    def _append_batch_result(self, result: ResearchBatchResult) -> None:
+        existing = [
+            ResearchBatchResult(**item)
+            for item in self.store.load_many(
+                result.task_id, RESEARCH_BATCH_RESULTS_ARTIFACT
+            )
+        ]
+        self.store.save_many(
+            result.task_id,
+            RESEARCH_BATCH_RESULTS_ARTIFACT,
+            [*existing, result],
+        )
 
     def _supervise_missions(
         self,
@@ -645,19 +1018,29 @@ class ResearchAgentCoordinator:
                 budget_state=budget_state,
             )
             bounded_reason = ""
-            if mission.information_need_ids and all(
+
+            all_needs_sufficient = bool(mission.information_need_ids) and all(
                 state.coverage_status_by_need.get(need_id)
                 in SUFFICIENT_COVERAGE_STATUSES
                 for need_id in mission.information_need_ids
-            ):
+            )
+
+            if all_needs_sufficient:
                 bounded_reason = "Mission Coverage 已充分。"
             elif completed_round >= run.max_collection_rounds:
                 bounded_reason = "Mission 已达到最大采集轮数。"
             elif budget_state.completed_units >= budget_state.max_units:
                 bounded_reason = "Mission 已达到 Research Unit 上限。"
+            elif budget_state.sources_used >= budget_state.max_total_sources:
+                bounded_reason = "Mission 已达到 Source 预算上限。"
+            elif budget_state.actions_used >= budget_state.max_actions:
+                bounded_reason = "Mission 已达到 Action 预算上限。"
+
+            # Direction A:
+            # Supervisor 想继续，但确定性 Gate 已证明必须停止。
             if (
-                bounded_reason
-                and decision.action != MissionSupervisorAction.FINISH.value
+                    bounded_reason
+                    and decision.action != MissionSupervisorAction.FINISH.value
             ):
                 decision = decision.model_copy(
                     update={
@@ -669,9 +1052,96 @@ class ResearchAgentCoordinator:
                             **decision.metadata,
                             "bounded_override": True,
                             "original_action": str(decision.action),
+                            "gate_direction": "force_finish",
                         },
                     }
                 )
+
+            # Direction B:
+            # Supervisor 想提前 FINISH，但预算仍允许，并且存在：
+            #   未充分覆盖的真实 InformationNeed
+            #   + 与它对应的 ResearchGap
+            # 则拒绝 premature FINISH，再补一轮证据。
+            elif (
+                    decision.action == MissionSupervisorAction.FINISH.value
+                    and not bounded_reason
+            ):
+                needs = {
+                    item.id: item
+                    for item in (
+                        InformationNeed(**raw)
+                        for raw in self.store.load_many(
+                        run.task_id, "research_information_needs"
+                    )
+                    )
+                    if item.id in mission.information_need_ids
+                }
+
+                unresolved_need_ids = [
+                    need_id
+                    for need_id in mission.information_need_ids
+                    if state.coverage_status_by_need.get(need_id)
+                       not in SUFFICIENT_COVERAGE_STATUSES
+                ]
+
+                actionable_gap = None
+                target_need_id = ""
+
+                for need_id in unresolved_need_ids:
+                    need = needs.get(need_id)
+                    if need is None:
+                        continue
+
+                    match = next(
+                        (
+                            gap
+                            for gap in gaps
+                            if normalize_dimension(gap.dimension)
+                               == normalize_dimension(need.dimension)
+                               and gap.missing_information.strip()
+                               and (
+                                       gap.suggested_queries
+                                       or gap.preferred_source_types
+                                       or gap.decision_blocked.strip()
+                               )
+                        ),
+                        None,
+                    )
+
+                    if match is not None:
+                        actionable_gap = match
+                        target_need_id = need_id
+                        break
+
+                if actionable_gap is not None and target_need_id:
+                    already_researched = target_need_id in state.outcome_by_need
+
+                    decision = decision.model_copy(
+                        update={
+                            "action": (
+                                MissionSupervisorAction.REQUEST_MORE_EVIDENCE.value
+                                if already_researched
+                                else MissionSupervisorAction.CREATE_RESEARCH_UNIT.value
+                            ),
+                            "target_need": target_need_id,
+                            "research_goal": (
+                                "补充以下尚未充分覆盖的信息："
+                                f"{actionable_gap.missing_information}"
+                            ),
+                            "reason": (
+                                "Supervisor 请求 FINISH，但当前仍存在未充分覆盖的 "
+                                "InformationNeed 和可执行 ResearchGap，且 Mission "
+                                "预算尚未耗尽，因此阻止过早结束并继续研究。"
+                            ),
+                            "metadata": {
+                                **decision.metadata,
+                                "finish_veto": True,
+                                "gate_direction": "prevent_premature_finish",
+                                "original_action": str(decision.action),
+                                "research_gap_id": actionable_gap.id,
+                            },
+                        }
+                    )
             mission_service.record_supervisor_decision(decision)
             unit = None
             if decision.action == MissionSupervisorAction.FINISH.value:
@@ -796,30 +1266,54 @@ class ResearchAgentCoordinator:
         status: str = "completed",
         error: str = "",
     ) -> ResearchAgentCoordinatorRun:
-        final = self._refresh_snapshot(run).model_copy(
-            update={
-                "status": status,
-                "stop_reason": reason,
-                "current_research_task_id": "",
-                "progress_percent": 100,
-                "message": message,
-                "error": error,
-                "completed_at": utc_now(),
-            }
-        )
-        self._save_run(final)
-        self._append_event(
-            final,
-            event_type=status,
-            message=message,
-            data={
-                "stop_reason": reason,
-                "completed_tasks": final.completed_tasks,
-                "failed_tasks": final.failed_tasks,
-                "outcomes": final.outcomes,
-            },
-        )
-        return final
+        with self._lock:
+            if (
+                run.task_id in self._stop_requested
+                and status != "failed"
+            ):
+                status = "stopped"
+                reason = "user_requested"
+                message = "Research Agent 已按用户请求中止。"
+
+            result_status = (
+                "STOPPED"
+                if status == "stopped"
+                else "FAILED"
+                if status == "failed"
+                or (run.failed_tasks and not run.completed_tasks)
+                else "PARTIAL"
+                if run.failed_tasks
+                else "COMPLETE"
+            )
+            final = self._refresh_snapshot(run).model_copy(
+                update={
+                    "status": status,
+                    "result_status": result_status,
+                    "stop_reason": reason,
+                    "current_research_task_id": "",
+                    "progress_percent": (
+                        run.progress_percent if status == "stopped" else 100
+                    ),
+                    "message": message,
+                    "error": error,
+                    "completed_at": utc_now(),
+                }
+            )
+            self._save_run(final)
+            self._append_event(
+                final,
+                event_type=status,
+                message=message,
+                data={
+                    "stop_reason": reason,
+                    "result_status": final.result_status,
+                    "completed_tasks": final.completed_tasks,
+                    "failed_tasks": final.failed_tasks,
+                    "outcomes": final.outcomes,
+                },
+            )
+            self._stop_requested.discard(run.task_id)
+            return final
 
     def _runnable_research_task_ids(
         self,
@@ -912,7 +1406,13 @@ class ResearchAgentCoordinator:
 
             for item in existing:
                 if item.id == run.id:
-                    updated.append(run)
+                    if (
+                        item.status == "stopping"
+                        and run.status in {"queued", "running"}
+                    ):
+                        updated.append(item)
+                    else:
+                        updated.append(run)
                     replaced = True
                 else:
                     updated.append(item)

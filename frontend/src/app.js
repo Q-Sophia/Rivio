@@ -22,10 +22,13 @@ const state = {
   researchLoopRun: null,
   researchLoopEvents: [],
   researchLoopEventSource: null,
+  researchLoopEventCursor: 0,
   researchAnalysis: null,
   researchReporting: null,
   researchCanAnalyze: false,
   integrationStatus: null,
+  evidenceFeed: [],
+  evidenceFeedRefreshTimer: null,
 };
 
 const views = {
@@ -91,10 +94,12 @@ const endpoints = {
   runExtractorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/extractor/run-once`,
   runCoverageOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/coverage/run-once`,
   startResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
+  stopResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run/stop`,
   researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
   researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run/events/stream?after=${after}`,
   researchAnalysis: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-analysis`,
   researchReporting: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-reporting`,
+  evidenceFeed: (taskId) => `/tasks/${encodeURIComponent(taskId)}/evidence-feed`,
   workspace: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/workspace`,
   latestStep6CExperiment: "/api/experiments/step6c/latest",
   dashboard: (runId, taskId) =>
@@ -257,6 +262,117 @@ async function fetchJson(path, options = {}) {
     throw new Error(`${response.status} ${response.statusText}: ${detail}`);
   }
   return response.json();
+}
+
+function evidenceSourceLabel(item) {
+  const sourceType = String(item.source_type || "").toLowerCase();
+  const sourceTool = String(item.source_tool || "").toLowerCase();
+  if (["official_site", "official", "first_party"].includes(sourceType)) {
+    return "官方网站";
+  }
+  if (sourceTool === "zhihu_search") return "Zhihu MCP";
+  if (sourceTool === "tavily") return "Tavily / Web Search";
+  if (["social", "community"].includes(sourceType)) return "社区来源";
+  return "其他来源";
+}
+
+function evidenceStatusLabel(status) {
+  return {
+    discovered: "已发现",
+    collection_failed: "采集失败",
+    collected: "已采集",
+    verified: "已验证",
+  }[status] || status || "未知";
+}
+
+function evidenceReliabilityLabel(value) {
+  const score = Number(value);
+  if (!Number.isFinite(score) || score <= 0) return "待评估";
+  return `${Math.round(Math.min(score, 1) * 100)}%`;
+}
+
+function evidenceQualityLabel(item) {
+  if (["discovered", "collection_failed"].includes(item.status)) {
+    const score = Number(item.candidate_quality_score);
+    return Number.isFinite(score)
+      ? `候选质量 ${score.toFixed(1)}`
+      : "已通过候选审核";
+  }
+  return `可信度 ${evidenceReliabilityLabel(item.reliability_score)}`;
+}
+
+function renderEvidenceLibrary() {
+  const items = state.evidenceFeed || [];
+  const count = qs("#evidence-library-count");
+  const status = qs("#evidence-library-status");
+  const list = qs("#evidence-library-list");
+  if (!count || !status || !list) return;
+
+  count.textContent = String(items.length);
+  const verified = items.filter((item) => item.status === "verified").length;
+  const collected = items.filter((item) => item.status === "collected").length;
+  const failed = items.filter((item) => item.status === "collection_failed").length;
+  status.textContent = items.length
+    ? `${verified} 个已验证 · ${collected} 个已采集${failed ? ` · ${failed} 个采集失败` : ""} · 实时跟随 Research Agent 更新`
+    : state.activeTaskId
+      ? "Research Agent 尚未纳入候选来源。"
+      : "创建或选择任务后显示实时来源。";
+
+  list.innerHTML = items.length
+    ? items.map((item) => {
+        const safeUrl = safeExternalUrl(item.url);
+        const link = safeUrl
+          ? `<a class="evidence-library-link" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">打开来源</a>`
+          : '<span class="evidence-library-link disabled">链接不可用</span>';
+        const failureReason = item.status === "collection_failed"
+          ? `<p class="evidence-library-failure">原因：${escapeHtml(item.failure_reason || "采集未成功，等待重试")}</p>`
+          : "";
+        return `
+          <article class="evidence-library-card ${escapeHtml(item.status)}">
+            <div class="evidence-library-card-head">
+              <span class="evidence-source-badge">${escapeHtml(evidenceSourceLabel(item))}</span>
+              <span class="evidence-status-badge ${escapeHtml(item.status)}">${escapeHtml(evidenceStatusLabel(item.status))}</span>
+            </div>
+            <h4>${escapeHtml(item.title || item.url || "未命名来源")}</h4>
+            <div class="evidence-library-meta">
+              <span>${escapeHtml(evidenceQualityLabel(item))}</span>
+              <span>${escapeHtml(item.source_type || "待识别")}</span>
+            </div>
+            ${failureReason}
+            ${link}
+          </article>
+        `;
+      }).join("")
+    : '<div class="evidence-library-empty">尚未发现证据来源。</div>';
+}
+
+async function loadEvidenceFeed(taskId, { suppressError = false } = {}) {
+  if (!taskId) {
+    state.evidenceFeed = [];
+    renderEvidenceLibrary();
+    return;
+  }
+  try {
+    const payload = await fetchJson(endpoints.evidenceFeed(taskId));
+    if (state.activeTaskId !== taskId) return;
+    state.evidenceFeed = Array.isArray(payload.items) ? payload.items : [];
+    renderEvidenceLibrary();
+  } catch (error) {
+    if (!suppressError) {
+      const status = qs("#evidence-library-status");
+      if (status) status.textContent = `证据库读取失败：${error.message}`;
+    }
+  }
+}
+
+function scheduleEvidenceFeedRefresh(taskId) {
+  if (state.evidenceFeedRefreshTimer) {
+    window.clearTimeout(state.evidenceFeedRefreshTimer);
+  }
+  state.evidenceFeedRefreshTimer = window.setTimeout(() => {
+    state.evidenceFeedRefreshTimer = null;
+    loadEvidenceFeed(taskId, { suppressError: true });
+  }, 80);
 }
 
 function splitDraftList(value) {
@@ -491,10 +607,13 @@ function resetExecutionPlanning() {
   state.researchTasks = [];
   state.researchLoopRun = null;
   state.researchLoopEvents = [];
+  state.researchLoopEventCursor = 0;
   state.researchAnalysis = null;
   state.researchReporting = null;
   state.researchCanAnalyze = false;
+  state.evidenceFeed = [];
   qs("#research-planning").classList.add("hidden");
+  renderEvidenceLibrary();
 }
 
 function showPlanningShell(taskId) {
@@ -564,8 +683,8 @@ function renderResearchPlan(payload) {
     </div>
   `).join("");
   const loopStatus = state.researchLoopRun?.status || "";
-  const loopActive = ["queued", "running"].includes(loopStatus);
-  const loopTerminal = ["completed", "requires_human", "failed"].includes(loopStatus);
+  const loopActive = ["queued", "running", "stopping"].includes(loopStatus);
+  const loopTerminal = ["completed", "requires_human", "failed", "stopped"].includes(loopStatus);
   const hasRunnableTask = waiting.length > 0;
   qs("#run-collector-once-btn").disabled = loopActive || waiting.length === 0;
   qs("#run-extractor-once-btn").disabled = loopActive || !extractorReady;
@@ -641,6 +760,8 @@ function researchLoopStatusLabel(status) {
   return {
     queued: "排队中",
     running: "自动研究中",
+    stopping: "正在中止",
+    stopped: "已中止",
     completed: "覆盖充分",
     requires_human: "需要人工处理",
     failed: "执行失败",
@@ -654,6 +775,8 @@ function researchAgentEventLabel(eventType) {
     research_task_started: "开始 ResearchTask",
     research_task_completed: "ResearchTask 完成",
     research_task_failed: "ResearchTask 执行异常",
+    stop_requested: "收到中止请求",
+    stopped: "Research Agent 已中止",
     completed: "批量研究完成",
     failed: "批量研究失败",
   }[eventType] || eventType || "Research Agent R1";
@@ -682,21 +805,23 @@ function renderResearchLoopRuntime(
   events = state.researchLoopEvents,
 ) {
   state.researchLoopRun = run;
-  state.researchLoopEvents = events || [];
+  state.researchLoopEvents = (events || []).filter(
+    (event) => event.event_type !== "evidence_added",
+  );
 
   const status = run?.status || "pending";
   const percent = clampResearchProgressPercent(
     run?.progress_percent,
   );
-  const active = ["queued", "running"].includes(status);
-  const terminal = ["completed", "failed"].includes(status);
+  const active = ["queued", "running", "stopping"].includes(status);
+  const terminal = ["completed", "failed", "stopped"].includes(status);
 
   const statusElement = qs("#research-loop-status");
   statusElement.textContent = researchLoopStatusLabel(status);
   statusElement.className = `count-label tag ${
     status === "completed"
       ? "true"
-      : status === "failed"
+      : ["failed", "stopped"].includes(status)
         ? "false"
         : "warning"
   }`;
@@ -728,8 +853,19 @@ function renderResearchLoopRuntime(
             ? "Research Agent 研究已完成"
             : status === "failed"
               ? "Research Agent 执行失败"
+              : status === "stopping"
+                ? "Research Agent 正在中止"
+                : status === "stopped"
+                  ? "Research Agent 已中止"
               : "开始自动研究";
   }
+
+  const stopButton = qs("#stop-research-loop-btn");
+  stopButton.classList.toggle("hidden", !active);
+  stopButton.disabled = status === "stopping";
+  stopButton.textContent = status === "stopping"
+    ? "正在安全中止…"
+    : "中止任务";
 
   // 正式产品路径已经迁移到 Research Agent R1。
   // 旧 Collector / Extractor / Coverage 手动入口不再作为前端执行入口。
@@ -856,6 +992,11 @@ function renderResearchLoopRuntime(
         · EXHAUSTED：${escapeHtml(outcomes.EXHAUSTED || 0)}
         · 执行异常：${escapeHtml(failedTasks)}
       `;
+    } else if (status === "stopped") {
+      result.innerHTML = `
+        <strong>Research Agent 已由用户中止。</strong>
+        <br />已完成 ${escapeHtml(completedTasks)} 个 ResearchTask；已保存的来源与证据不会删除。
+      `;
     } else {
       result.innerHTML = `
         <strong>Research Agent R1 批量研究执行失败。</strong>
@@ -883,8 +1024,9 @@ function closeResearchLoopEventStream() {
 function connectResearchLoopEventStream(taskId) {
   closeResearchLoopEventStream();
 
-  const after =
-    state.researchLoopEvents.at(-1)?.sequence || 0;
+  const after = state.researchLoopEventCursor
+    || state.researchLoopEvents.at(-1)?.sequence
+    || 0;
 
   const source = new EventSource(
     `${API_BASE}${endpoints.researchLoopEvents(
@@ -899,6 +1041,15 @@ function connectResearchLoopEventStream(taskId) {
     "research-agent",
     (message) => {
       const event = JSON.parse(message.data);
+      state.researchLoopEventCursor = Math.max(
+        state.researchLoopEventCursor,
+        Number(event.sequence || 0),
+      );
+
+      if (event.event_type === "evidence_added") {
+        scheduleEvidenceFeedRefresh(taskId);
+        return;
+      }
 
       if (
         state.researchLoopEvents.some(
@@ -973,6 +1124,10 @@ function connectResearchLoopEventStream(taskId) {
 
       if (event.event_type === "queued") {
         status = "queued";
+      } else if (event.event_type === "stop_requested") {
+        status = "stopping";
+      } else if (event.event_type === "stopped") {
+        status = "stopped";
       } else if (
         event.event_type === "completed"
       ) {
@@ -1044,7 +1199,7 @@ function connectResearchLoopEventStream(taskId) {
       );
 
       if (
-        ["completed", "failed"].includes(status)
+        ["completed", "failed", "stopped"].includes(status)
       ) {
         closeResearchLoopEventStream();
 
@@ -1058,7 +1213,7 @@ function connectResearchLoopEventStream(taskId) {
 
   source.onerror = () => {
     if (
-      !["completed", "failed"].includes(
+      !["completed", "failed", "stopped"].includes(
         state.researchLoopRun?.status,
       )
     ) {
@@ -1081,6 +1236,13 @@ async function loadResearchLoopStatus(taskId) {
   try {
     const payload = await fetchJson(
       endpoints.researchLoopStatus(taskId),
+    );
+
+    state.researchLoopEventCursor = Math.max(
+      0,
+      ...(payload.events || []).map(
+        (event) => Number(event.sequence || 0),
+      ),
     );
 
     renderResearchLoopRuntime(
@@ -1161,6 +1323,8 @@ async function startResearchLoop() {
       [],
     );
 
+    state.researchLoopEventCursor = 0;
+
     connectResearchLoopEventStream(taskId);
   } catch (error) {
     qs(
@@ -1171,6 +1335,39 @@ async function startResearchLoop() {
     button.disabled = false;
     button.textContent =
       "开始自动研究";
+  }
+}
+
+async function stopResearchLoop() {
+  const taskId = qs("#research-planning").dataset.taskId;
+  if (!taskId) return;
+
+  const confirmed = window.confirm(
+    "确认中止当前 Research Agent 任务吗？"
+    + "当前 ResearchTask 会在安全边界结束，已经保存的来源和证据会保留。",
+  );
+  if (!confirmed) return;
+
+  const button = qs("#stop-research-loop-btn");
+  button.disabled = true;
+  button.textContent = "正在提交中止请求…";
+  try {
+    const payload = await fetchJson(
+      endpoints.stopResearchLoop(taskId),
+      { method: "POST" },
+    );
+    renderResearchLoopRuntime(
+      payload.research_agent_coordinator_run,
+      state.researchLoopEvents,
+    );
+    if (!payload.terminal) {
+      connectResearchLoopEventStream(taskId);
+    }
+  } catch (error) {
+    button.disabled = false;
+    button.textContent = "中止任务";
+    qs("#research-loop-progress-message").textContent =
+      `中止请求失败：${error.message}`;
   }
 }
 
@@ -1403,6 +1600,8 @@ function showNoActiveTask(message = "请选择最近任务，或在“新建分�
   qs("#stage-detail").textContent = message;
   qs("#runtime-pill").textContent = "Task Workspace（任务工作区）";
   setStatus("请选择任务");
+  state.evidenceFeed = [];
+  renderEvidenceLibrary();
   renderRecentTasks();
 }
 
@@ -1487,6 +1686,7 @@ async function loadTaskWorkspace(
     state.analysisTask = workspace.analysisTask || state.analysisTask;
     state.data = normalizeWorkspaceData(workspace, taskId);
     render();
+    await loadEvidenceFeed(taskId, { suppressError: true });
     setStatus(`当前任务 · ${taskId}`, "ok");
     return true;
   } catch (error) {
@@ -1511,6 +1711,8 @@ async function loadLegacyDashboard(run = state.activeLegacyRun, { historyMode = 
     ]);
     state.activeTaskId = "";
     state.activeLegacyRun = run;
+    state.evidenceFeed = [];
+    renderEvidenceLibrary();
     syncTaskUrl("", historyMode);
     qs("#task-id").value = run.task_id;
     renderRecentTasks();
@@ -2583,6 +2785,7 @@ function setup() {
   qs("#run-extractor-once-btn").addEventListener("click", runExtractorOnce);
   qs("#run-coverage-once-btn").addEventListener("click", runCoverageOnce);
   qs("#start-research-loop-btn").addEventListener("click", startResearchLoop);
+  qs("#stop-research-loop-btn").addEventListener("click", stopResearchLoop);
   qs("#run-research-analysis-btn").addEventListener("click", runResearchAnalysis);
   qs("#run-research-reporting-btn").addEventListener("click", runResearchReporting);
   qs("#refresh-integrations-btn").addEventListener("click", loadIntegrationStatus);

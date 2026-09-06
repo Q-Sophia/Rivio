@@ -4,10 +4,13 @@ import time
 from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from app.schemas import RunStatus, SchemaModel, utc_now
-from app.workflow.trace import TraceRecorder
+from app.tools.base import ResearchTool
+
+if TYPE_CHECKING:
+    from app.workflow.trace import TraceRecorder
 
 ToolHandler = Callable[..., Any]
 
@@ -18,6 +21,9 @@ class ToolDefinition:
     handler: ToolHandler
     description: str = ""
     input_schema: dict[str, Any] = field(default_factory=dict)
+
+    def execute(self, **kwargs: Any) -> Any:
+        return self.handler(**kwargs)
 
 
 class ToolRegistry:
@@ -33,18 +39,39 @@ class ToolRegistry:
 
     def register(
         self,
-        tool_name: str,
-        handler: ToolHandler,
+        tool_name: str | ResearchTool,
+        handler: ToolHandler | None = None,
         *,
         description: str = "",
         input_schema: dict[str, Any] | None = None,
     ) -> None:
-        self._tools[tool_name] = ToolDefinition(
-            name=tool_name,
-            handler=handler,
-            description=description,
-            input_schema=input_schema or {},
-        )
+        if isinstance(tool_name, ResearchTool):
+            tool = tool_name
+            definition = ToolDefinition(
+                name=tool.name,
+                handler=tool.execute,
+                description=tool.description,
+                input_schema=dict(tool.input_schema),
+            )
+        else:
+            if handler is None:
+                raise ValueError("注册函数型 Tool 时 handler 不能为空")
+            definition = ToolDefinition(
+                name=tool_name,
+                handler=handler,
+                description=description,
+                input_schema=input_schema or {},
+            )
+        self._tools[definition.name] = definition
+
+    def get(self, tool_name: str) -> ToolDefinition:
+        try:
+            return self._tools[tool_name]
+        except KeyError as exc:
+            raise ValueError(f"Unknown tool: {tool_name}") from exc
+
+    def list_tools(self) -> list[ToolDefinition]:
+        return list(self._tools.values())
 
     def call(
         self,
@@ -55,14 +82,11 @@ class ToolRegistry:
         output_summary: str = "",
         **kwargs: Any,
     ) -> Any:
-        if tool_name not in self._tools:
-            raise ValueError(f"Unknown tool: {tool_name}")
-
         started_at = utc_now()
         start = time.perf_counter()
-        tool = self._tools[tool_name]
+        tool = self.get(tool_name)
         try:
-            result = tool.handler(task_id=task_id, **kwargs)
+            result = tool.execute(task_id=task_id, **kwargs)
         except Exception as exc:
             completed_at = utc_now()
             error = f"{type(exc).__name__}: {exc}"
@@ -100,7 +124,7 @@ class ToolRegistry:
                 "description": tool.description,
                 "input_schema": tool.input_schema,
             }
-            for tool in self._tools.values()
+            for tool in self.list_tools()
         ]
 
     def _record(

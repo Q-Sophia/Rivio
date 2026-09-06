@@ -142,6 +142,12 @@ def verify_candidate_evidence(
             "quote_verified": True,
             "candidate_supports": supports,
             "normalization_policy": "whitespace_only_no_new_facts",
+            "provider": str(source.metadata.get("provider") or ""),
+            "source_type": str(
+                source.metadata.get("tool_source_type")
+                or getattr(source.source_type, "value", source.source_type)
+            ),
+            "acquisition": dict(source.metadata.get("acquisition") or {}),
         },
     )
 

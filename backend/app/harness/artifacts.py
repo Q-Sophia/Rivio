@@ -76,6 +76,8 @@ DEFAULT_ARTIFACT_TYPES = {
     "research_worker_contexts",
     "research_worker_results",
     "research_mission_decisions",
+    "research_task_failures",
+    "research_batch_results",
 }
 
 

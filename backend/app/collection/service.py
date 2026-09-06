@@ -410,6 +410,7 @@ class CollectorQueueService:
         search_result_id: str = "",
         collection_method: str = "web_collector_seed_url_v1",
         reliability_score: float = 0.7,
+        source_type_hint: str = "",
     ) -> dict:
         """Deterministically fetch one Agent-selected URL and persist V1 artifacts."""
         existing_sources = [
@@ -539,6 +540,13 @@ class CollectorQueueService:
             if preferred_source_types
             else SourceType.OTHER.value
         )
+        tool_source_type = (
+            str(search_result.metadata.get("source_type") or "")
+            if search_result
+            else str(source_type_hint or "")
+        )
+        if tool_source_type == "community" and not confirmed_first_party:
+            source_type = SourceType.SOCIAL.value
         if (
             source_type == SourceType.OFFICIAL_SITE.value
             and not confirmed_first_party
@@ -590,6 +598,15 @@ class CollectorQueueService:
                 "published_at": (
                     search_result.published_at if search_result else ""
                 ),
+                "provider": search_result.provider if search_result else "",
+                "tool_source_type": tool_source_type,
+                "acquisition": {
+                    "method": collection_method,
+                    "search_attempt_id": (
+                        search_result.search_attempt_id if search_result else ""
+                    ),
+                    "search_result_id": search_result_id,
+                },
             },
         )
         page = WebPageContent(
@@ -1022,6 +1039,7 @@ class CollectorQueueService:
                     duration_ms=duration_ms,
                 )
                 for rank, hit in enumerate(hits, start=1):
+                    tool_metadata = dict(hit.metadata or {})
                     result = WebSearchResult(
                         task_id=task_id,
                         research_task_id=research_task.id,
@@ -1037,6 +1055,8 @@ class CollectorQueueService:
                         metadata={
                             "acquisition_stage": stage,
                             "official_host_hint": domain_filter,
+                            "source_type": hit.source_type,
+                            "tool_metadata": tool_metadata,
                         },
                     )
                     results.append(result)

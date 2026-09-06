@@ -188,6 +188,7 @@
                 <button id="run-extractor-once-btn" class="secondary-action" type="button" disabled>抽取下一项证据</button>
                 <button id="run-coverage-once-btn" class="secondary-action" type="button" disabled>更新覆盖并判断补采</button>
               </div>
+              <div class="research-runtime-layout">
               <section id="research-loop-runtime" class="research-loop-runner">
                 <div class="panel-heading">
                   <div>
@@ -198,7 +199,10 @@
                 </div>
                 <div class="runner-controls">
                   <p class="queue-boundary-note">后端会先自动准备研究计划，再由 Research &amp; Evidence Agent 在有限步骤和来源预算内研究；每个 ResearchTask 会明确返回 COMPLETE、PARTIAL 或 EXHAUSTED。</p>
-                  <button id="start-research-loop-btn" class="primary-action" type="button">开始自动研究</button>
+                  <div class="runner-actions">
+                    <button id="start-research-loop-btn" class="primary-action" type="button">开始自动研究</button>
+                    <button id="stop-research-loop-btn" class="danger-action hidden" type="button" disabled>中止任务</button>
+                  </div>
                 </div>
                 <div class="execution-progress" aria-label="自动研究进度">
                   <div id="research-loop-progress-bar" class="execution-progress-bar" style="width: 0%"></div>
@@ -221,6 +225,21 @@
                 </div>
                 <div id="research-reporting-result" class="confirmed-task hidden"></div>
               </section>
+
+              <aside id="evidence-library" class="panel evidence-library-panel" aria-labelledby="evidence-library-title">
+                <div class="panel-heading evidence-library-heading">
+                  <div>
+                    <p class="panel-kicker">Evidence Library（实时证据库）</p>
+                    <h3 id="evidence-library-title">证据库</h3>
+                  </div>
+                  <span id="evidence-library-count" class="count-label">0</span>
+                </div>
+                <p id="evidence-library-status" class="evidence-library-status">创建或选择任务后显示实时来源。</p>
+                <div id="evidence-library-list" class="evidence-library-list" aria-live="polite">
+                  <div class="evidence-library-empty">尚未发现证据来源。</div>
+                </div>
+              </aside>
+              </div>
             </div>
           </section>
 

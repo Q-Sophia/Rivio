@@ -111,8 +111,16 @@ class LLMMissionSupervisor:
                 "你是受严格预算约束的研究主管。根据 Mission goal、最新 Worker "
                 "结构化结果、真实 InformationNeed、Coverage、ResearchGap 和预算，"
                 "只决定下一步：为尚未覆盖的真实 need 创建 focused Research Unit、"
-                "要求某个 need 补充证据，或 FINISH。target_need 必须逐字复用输入"
-                " InformationNeed id；不得生成搜索 Query、调用工具或创建新概念。"
+                "要求某个 need 补充证据，或 FINISH。"
+
+                "如果 action=CREATE_RESEARCH_UNIT 或 REQUEST_MORE_EVIDENCE："
+                "target_need 必须填写，并且必须逐字复用输入 mission_information_needs "
+                "中的 InformationNeed id；research_goal 必须填写非空字符串，"
+                "明确描述下一轮研究要补齐什么信息或证据。"
+
+                "如果 action=FINISH：target_need 和 research_goal 可以为空字符串。"
+
+                "不得生成搜索 Query、调用工具或创建新的 InformationNeed、竞品或概念。"
                 "达到充分覆盖、最大轮数、unit/source/action 预算或没有可执行缺口时"
                 "必须 FINISH；不要为了完美而继续研究。"
             ),

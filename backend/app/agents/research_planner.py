@@ -5,6 +5,7 @@ from pathlib import Path
 
 from app.agents.base import BaseAgent
 from app.harness.artifacts import ArtifactStore
+from app.tools.router import research_intent_for_dimension
 from app.schemas import (
     AgentContext,
     AgentResult,
@@ -94,6 +95,7 @@ class ResearchPlannerAgent(BaseAgent):
         needs: list[InformationNeed] = []
         research_tasks: list[ResearchTask] = []
         for index, dimension in enumerate(dimensions):
+            research_intent = research_intent_for_dimension(dimension)
             priority = TaskPriority.HIGH if index < 2 else TaskPriority.MEDIUM
             kiq = KeyIntelligenceQuestion(
                 task_id=task.id,
@@ -106,6 +108,7 @@ class ResearchPlannerAgent(BaseAgent):
                 task_id=task.id,
                 question_id=kiq.id,
                 dimension=dimension,
+                research_intent=research_intent,
                 required_facts=[
                     f"每个竞品关于{dimension}的当前事实",
                     "事实对应的来源、发布时间与适用范围",
@@ -141,6 +144,7 @@ class ResearchPlannerAgent(BaseAgent):
                         ),
                         competitor=competitor,
                         dimension=dimension,
+                        research_intent=research_intent,
                         query_hints=[
                             f"{competitor} {dimension} 官方",
                             f"{competitor} {dimension} 文档",

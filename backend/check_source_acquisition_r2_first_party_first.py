@@ -10,6 +10,7 @@ from app.schemas import (
     AgentRole,
     EvidenceCoverage,
     EvidenceCoverageStatus,
+    OfficialDomainContext,
     ResearchTask,
     TaskBoard,
     TaskRecord,
@@ -156,6 +157,7 @@ def make_store(root: Path, task: ResearchTask) -> ArtifactStore:
         "source_selection_runs",
         "tool_calls",
         "evidence_coverage",
+        "official_domain_contexts",
     ):
         store.save_many(task.task_id, artifact_type, [])
     return store
@@ -167,8 +169,23 @@ def discover(
     *,
     coverage_status: EvidenceCoverageStatus | None = None,
     provider: FakeSearchProvider | None = None,
+    confirmed_official_domain: bool = True,
 ) -> tuple[ArtifactStore, FakeSearchProvider, ResearchTask]:
     store = make_store(root, task)
+    if confirmed_official_domain:
+        store.save_many(
+            task.task_id,
+            "official_domain_contexts",
+            [
+                OfficialDomainContext(
+                    task_id=task.task_id,
+                    competitor=task.competitor,
+                    domain="docs.nebula.example",
+                    confidence="confirmed",
+                    research_task_ids=[task.id],
+                )
+            ],
+        )
     if coverage_status is not None:
         store.save_many(
             task.task_id,
@@ -279,7 +296,11 @@ def check_community_direct_general(root: Path) -> None:
         "task_source_acquisition_r2_community",
         objective="收集 Nebula 用户体验、实际使用和社区反馈",
     )
-    store, _provider, discovered = discover(root / "community", task)
+    store, _provider, discovered = discover(
+        root / "community",
+        task,
+        confirmed_official_domain=False,
+    )
     require(
         stages(store, task.task_id) == ["general"],
         "明确社区需求被强制 official-first",

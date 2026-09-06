@@ -533,6 +533,7 @@ class ResearchTask(SchemaModel):
     objective: str
     competitor: str
     dimension: str
+    research_intent: str = ""
     query_hints: list[str] = Field(default_factory=list)
     seed_urls: list[str] = Field(default_factory=list)
     preferred_domains: list[str] = Field(default_factory=list)
@@ -923,6 +924,35 @@ class WebSearchResult(SchemaModel):
     rejection_reason: str = ""
     created_at: datetime = Field(default_factory=utc_now)
 
+class ResearchSourceCandidate(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("sourcecandidate"))
+    task_id: str
+    research_task_id: str
+
+    query: str
+
+    # 哪个平级检索 Tool 发现的
+    source_tool: str
+
+    title: str = ""
+    url: str
+    snippet: str = ""
+    content: str = ""
+
+    # 如 web / zhihu / bilibili / xiaohongshu
+    channel: str = ""
+
+    provider: str = ""
+
+    # community / general_third_party / ...
+    source_type: str = ""
+
+    published_at: str = ""
+
+    selected_for_collection: bool = False
+
+    metadata: dict[str, Any] = Field(default_factory=dict)
+
 
 class OfficialDomainContext(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("officialdomain"))
@@ -1292,6 +1322,7 @@ class InformationNeed(SchemaModel):
     task_id: str
     question_id: str
     dimension: str
+    research_intent: str = ""
     required_facts: list[str] = Field(default_factory=list)
     preferred_source_types: list[str] = Field(default_factory=list)
     comparability_basis: str

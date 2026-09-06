@@ -17,6 +17,7 @@ from app.tools.search_provider import (
 )
 
 
+
 SEARCH_TOOL_TRANSPORT_ENV = "SEARCH_TOOL_TRANSPORT"
 MCP_SERVER_NAME = "research-tools"
 _SEARCH_PROVIDER_ENV_KEYS = (
@@ -33,6 +34,8 @@ class WebSearchResultItem(BaseModel):
     snippet: str = ""
     site_name: str = ""
     published_at: str = ""
+    source_type: str = "general_third_party"
+    metadata: dict[str, object] = Field(default_factory=dict)
 
 
 class WebSearchToolResult(BaseModel):
@@ -63,19 +66,25 @@ class NativeSearchToolTransport:
     transport = "native"
     server_name = ""
 
-    def __init__(self, provider: SearchProvider):
+    def __init__(
+        self,
+        provider: SearchProvider,
+        *,
+        tool_name: str = "web_search",
+    ):
         self.provider = provider
+        self.tool_name = tool_name
 
     @property
     def provider_name(self) -> str:
         return self.provider.name
 
     def search(
-        self,
-        query: str,
-        *,
-        count: int = 5,
-        domain_filter: str = "",
+            self,
+            query: str,
+            *,
+            count: int = 5,
+            domain_filter: str = "",
     ) -> list[SearchHit]:
         return self.provider.search(
             query,
@@ -85,6 +94,7 @@ class NativeSearchToolTransport:
 
     def close(self) -> None:
         close = getattr(self.provider, "close", None)
+
         if callable(close):
             close()
 
@@ -143,6 +153,8 @@ class MCPWebSearchTransport:
                 snippet=item.snippet,
                 site_name=item.site_name,
                 published_at=item.published_at,
+                source_type=item.source_type,
+                metadata=dict(item.metadata),
             )
             for item in payload.results
         ]
@@ -205,13 +217,37 @@ def _search_provider_subprocess_env() -> dict[str, str]:
     }
 
 
-def build_search_tool_transport_from_env() -> SearchToolTransport | None:
-    mode = _read_user_environment(SEARCH_TOOL_TRANSPORT_ENV).casefold() or "native"
+def build_search_tool_transport_from_env(
+    *,
+    tool_name: str = "web_search",
+) -> SearchToolTransport | None:
+
+    if tool_name != "web_search":
+        raise ValueError(
+            "SearchToolTransport 当前只兼容 web_search；"
+            "其他独立 Tool 应通过 ToolRegistry + 独立 MCP Client 执行。"
+        )
+
+    mode = _read_user_environment(
+        SEARCH_TOOL_TRANSPORT_ENV
+    ).casefold() or "native"
+
     if mode == "native":
         provider = build_search_provider_from_env()
-        return NativeSearchToolTransport(provider) if provider is not None else None
+
+        return (
+            NativeSearchToolTransport(
+                provider,
+                tool_name=tool_name,
+            )
+            if provider is not None
+            else None
+        )
+
     if mode == "mcp":
         return MCPWebSearchTransport()
+
     raise ValueError(
-        f"不支持的 {SEARCH_TOOL_TRANSPORT_ENV}：{mode}；仅支持 native|mcp。"
+        f"不支持的 {SEARCH_TOOL_TRANSPORT_ENV}：{mode}；"
+        "仅支持 native|mcp。"
     )

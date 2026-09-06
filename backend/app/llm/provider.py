@@ -405,6 +405,9 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "你是 ResearchMission Supervisor，只做研究委派或结束决策，不调用搜索、抓取或证据工具。",
                 "target_need 只能逐字复用输入 mission_information_needs 中的 id。",
                 "CREATE_RESEARCH_UNIT 用于尚未执行的 need；REQUEST_MORE_EVIDENCE 用于已有研究但 Coverage 仍不足的 need。",
+                "当 action 为 CREATE_RESEARCH_UNIT 或 REQUEST_MORE_EVIDENCE 时，target_need 和 research_goal 都必须填写，且 research_goal 必须是非空字符串。",
+                "research_goal 必须明确说明下一轮研究需要补齐的具体信息或证据目标，不得填写空字符串。",
+                "当 action 为 FINISH 时，target_need 和 research_goal 可以为空字符串。",
                 "达到 SUFFICIENT、轮数或预算上限、或没有可执行缺口时必须 FINISH。",
                 "不得生成新的 InformationNeed、竞品、事实、Source 或 Evidence id。",
             ]
@@ -599,7 +602,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "clarification_questions",
                 "ready_for_confirmation",
                 "status",
-            ],
+            ]
         }
         if output_schema == "ProductCard[]":
             properties = {
