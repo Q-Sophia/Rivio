@@ -31,3 +31,17 @@ backend/app/data/evaluations/source_rag_hybrid_rerank/
 
 # Local exports of runtime workspaces.
 backend/app/data/runs/*.zip
+
+# Local generated artifacts
+artifacts/
+backend/eval_outputs/
+backend/app/*.zip
+backend/app/data/runs.zip
+backend/taskkill
+
+# Local generated artifacts
+artifacts/
+backend/eval_outputs/
+backend/app/*.zip
+backend/app/data/runs.zip
+backend/taskkill
