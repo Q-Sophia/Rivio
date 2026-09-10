@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import atexit
 import json
+import threading
 import time
 from dataclasses import dataclass, field
 from typing import Any, Callable
@@ -17,6 +19,40 @@ from app.schemas import AgentRole, LLMProvider
 
 TransportFactory = Callable[..., httpx.BaseTransport]
 SleepFunction = Callable[[float], None]
+
+
+_SHARED_HTTP_CLIENTS: dict[bool, httpx.Client] = {}
+_SHARED_HTTP_CLIENTS_LOCK = threading.Lock()
+
+
+def _shared_http_client(*, trust_env: bool) -> httpx.Client:
+    """Reuse TCP/TLS connections across short-lived provider instances."""
+
+    with _SHARED_HTTP_CLIENTS_LOCK:
+        client = _SHARED_HTTP_CLIENTS.get(trust_env)
+        if client is None:
+            client = httpx.Client(
+                timeout=None,
+                trust_env=trust_env,
+                limits=httpx.Limits(
+                    max_connections=100,
+                    max_keepalive_connections=20,
+                    keepalive_expiry=60.0,
+                ),
+            )
+            _SHARED_HTTP_CLIENTS[trust_env] = client
+        return client
+
+
+def _close_shared_http_clients() -> None:
+    with _SHARED_HTTP_CLIENTS_LOCK:
+        clients = list(_SHARED_HTTP_CLIENTS.values())
+        _SHARED_HTTP_CLIENTS.clear()
+    for client in clients:
+        client.close()
+
+
+atexit.register(_close_shared_http_clients)
 
 
 class LLMProviderError(RuntimeError):
@@ -99,6 +135,20 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
         self.config = config
         self.transport = transport
         self.sleep = sleep
+        self._owns_client = transport is not None
+        self._client = (
+            httpx.Client(
+                timeout=None,
+                transport=transport,
+                trust_env=config.trust_env_proxy,
+            )
+            if transport is not None
+            else _shared_http_client(trust_env=config.trust_env_proxy)
+        )
+
+    def close(self) -> None:
+        if self._owns_client:
+            self._client.close()
 
     def generate(
         self,
@@ -237,16 +287,16 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
         last_error: Exception | None = None
         for attempt in range(1, attempts + 1):
             try:
-                with httpx.Client(
-                    timeout=self.config.timeout_seconds,
-                    transport=self.transport,
-                    trust_env=self.config.trust_env_proxy,
-                ) as client:
-                    response = client.post(
-                        self._endpoint_url(),
-                        headers=headers,
-                        json=payload,
-                    )
+                response = self._client.post(
+                    self._endpoint_url(),
+                    headers=headers,
+                    json=payload,
+                    timeout=httpx.Timeout(
+                        self.config.timeout_seconds,
+                        connect=min(15.0, float(self.config.timeout_seconds)),
+                        pool=min(15.0, float(self.config.timeout_seconds)),
+                    ),
+                )
                 if response.status_code in self.RETRYABLE_STATUS_CODES:
                     raise LLMProviderTransientError(
                         self._http_error_message(response)
@@ -364,6 +414,9 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "information_need_coverage",
             "mission_research_gaps",
             "mission_budget_state",
+            "framework_definition",
+            "research_tasks",
+            "assessment_scope",
             "structured_repair",
         }
         return {
@@ -385,6 +438,24 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
                 "本阶段只生成 brief_assessment 与 competitor_profiles，不生成结论、覆盖度或研究缺口。",
                 "竞品画像中的 source_ids 与 evidence_ids 只能复用输入编号。",
                 "每个竞品画像应简洁，避免逐条复述证据。",
+            ]
+        if output_schema == "AnalystAssessmentStage":
+            return [
+                "本阶段只评估 Framework required_facts 与 completion_criteria，不生成报告结论。",
+                "每个 assessment_scope 的 competitor/dimension 组合必须恰好输出一次。",
+                "covered_facts、missing_facts 只能逐字复用 Framework 定义，且必须完整分区。",
+                (
+                    "completion_criteria_evaluations 必须逐字复用 "
+                    "assessment_scope.completion_criteria_refs 的 criterion_id，"
+                    "每个 ID 恰好一次，不得自由复述或省略。"
+                ),
+                (
+                    "criterion 状态只能是 met、unmet、not_applicable；"
+                    "条件式 criterion 前提不成立时使用 not_applicable。"
+                ),
+                "Evidence 只能用于其所属 competitor 和映射后的 evidence_dimension。",
+                "资料未提及表示 missing，不表示产品不具备；不得依赖模型记忆补足事实。",
+                "ResearchGap 只描述影响竞争判断的可执行缺口，不负责创建 ResearchTask。",
             ]
         if output_schema == "ResearchAgentAction":
             return [
@@ -445,6 +516,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "CompetitiveAnalysisPortfolioV2": "competitive_analysis_portfolio_v2",
             "AnalystBriefProfilesStage": "analyst_brief_profiles_stage",
             "AnalystClaimsStage": "analyst_claims_stage",
+            "AnalystAssessmentStage": "analyst_assessment_stage",
             "AnalysisTaskDraft": "analysis_task_draft",
             "ResearchAgentAction": "research_agent_action",
             "ResearchMissionDecision": "research_mission_decision",
@@ -635,14 +707,19 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
         elif output_schema in {
             "AnalystBriefProfilesStage",
             "AnalystClaimsStage",
+            "AnalystAssessmentStage",
         }:
-            from app.schemas import AnalystBriefProfilesStage, AnalystClaimsStage
-
-            stage_model = (
-                AnalystBriefProfilesStage
-                if output_schema == "AnalystBriefProfilesStage"
-                else AnalystClaimsStage
+            from app.schemas import (
+                AnalystAssessmentStage,
+                AnalystBriefProfilesStage,
+                AnalystClaimsStage,
             )
+
+            stage_model = {
+                "AnalystBriefProfilesStage": AnalystBriefProfilesStage,
+                "AnalystClaimsStage": AnalystClaimsStage,
+                "AnalystAssessmentStage": AnalystAssessmentStage,
+            }[output_schema]
             stage_schema = stage_model.model_json_schema()
             definitions = stage_schema.pop("$defs", {})
             properties = {
@@ -735,6 +812,7 @@ class OpenAIResponsesProvider(StructuredLLMProvider):
             "CompetitiveAnalysisPortfolioV2",
             "AnalystBriefProfilesStage",
             "AnalystClaimsStage",
+            "AnalystAssessmentStage",
             "ResearchAgentAction",
             "ResearchMissionDecision",
         }:

@@ -35,6 +35,7 @@ DEFAULT_ARTIFACT_TYPES = {
     "llm_calls",
     "llm_outputs",
     "analysis_portfolios",
+    "analysis_assessments",
     "brief_assessments",
     "competitor_profiles",
     "intelligence_questions",
@@ -78,6 +79,10 @@ DEFAULT_ARTIFACT_TYPES = {
     "research_mission_decisions",
     "research_task_failures",
     "research_batch_results",
+    "agent_handoffs",
+    "pipeline_runs",
+    "pipeline_checkpoints",
+    "pipeline_events",
 }
 
 

@@ -2,14 +2,22 @@ from __future__ import annotations
 
 from app.harness.artifacts import ArtifactStore
 from app.prompts import PromptRegistry
-from app.reporting import resolve_report_title, validate_professional_report
+from app.reporting import (
+    build_professional_mock_report,
+    build_report_statements,
+    resolve_report_title,
+    validate_professional_report,
+)
 from app.schemas import (
+    AnalysisClaim,
     AnalysisClaimV2,
     AnalysisTask,
     BriefAssessment,
-    CompetitiveReport,
+    CitationCheck,
+    ComparabilityNote,
+    CompetitorProfile,
+    EvidenceCoverage,
     LLMCall,
-    ReportStatement,
     ResearchGap,
     SourceEvidence,
 )
@@ -25,10 +33,6 @@ def require(condition: bool, message: str) -> None:
 def main() -> None:
     store = ArtifactStore()
     task_id = DEFAULT_STEP6C_TASK_ID
-    reports = [
-        CompetitiveReport(**item)
-        for item in store.load_many(task_id, "reports")
-    ]
     briefs = [
         BriefAssessment(**item)
         for item in store.load_many(task_id, "brief_assessments")
@@ -37,24 +41,68 @@ def main() -> None:
         AnalysisClaimV2(**item)
         for item in store.load_many(task_id, "claims_v2")
     ]
+    legacy_claims = [
+        AnalysisClaim(**item) for item in store.load_many(task_id, "claims")
+    ]
+    citation_checks = [
+        CitationCheck(**item)
+        for item in store.load_many(task_id, "citation_checks")
+    ]
+    profiles = [
+        CompetitorProfile(**item)
+        for item in store.load_many(task_id, "competitor_profiles")
+    ]
+    coverage = [
+        EvidenceCoverage(**item)
+        for item in store.load_many(task_id, "evidence_coverage")
+    ]
+    comparability_notes = [
+        ComparabilityNote(**item)
+        for item in store.load_many(task_id, "comparability_notes")
+    ]
     gaps = [
         ResearchGap(**item)
         for item in store.load_many(task_id, "research_gaps")
     ]
     calls = [LLMCall(**item) for item in store.load_many(task_id, "llm_calls")]
-    statements = [
-        ReportStatement(**item)
-        for item in store.load_many(task_id, "report_statements")
-    ]
     evidence = [
         SourceEvidence(**item)
         for item in store.load_many(task_id, "evidence")
     ]
-    require(bool(reports and briefs and claims), "缺少 Step6C Writer 验收产物")
+    require(bool(briefs and claims), "缺少 Step6C Writer 验收产物")
 
     task = build_snapshot_task(task_id=task_id)
-    report = reports[-1]
     brief = briefs[-1]
+    report = build_professional_mock_report(
+        task_id=task_id,
+        task=task,
+        brief=brief,
+        profiles=profiles,
+        coverage=coverage,
+        comparability_notes=comparability_notes,
+        claims_v2=claims,
+        legacy_claims=legacy_claims,
+        citation_checks=citation_checks,
+        research_gaps=gaps,
+        output_language="zh-CN",
+    )
+    statements = build_report_statements(
+        report=report,
+        claims_v2=claims,
+        legacy_claims=legacy_claims,
+        citation_checks=citation_checks,
+        profiles=profiles,
+        comparability_notes=comparability_notes,
+        research_gaps=gaps,
+    )
+    report = report.model_copy(
+        update={
+            "sections": {
+                **report.sections,
+                "report_statement_ids": [item.id for item in statements],
+            }
+        }
+    )
     expected_title, title_source = resolve_report_title(task, brief)
     validate_professional_report(
         report,
@@ -95,17 +143,15 @@ def main() -> None:
     require(len(writer_calls) == 1, "Writer LLMCall 数量不是 1")
     writer_call = writer_calls[0]
     require(writer_call.prompt_id == "competitive_writer", "Writer prompt_id 错误")
-    require(
-        writer_call.prompt_version == "2.1.1-candidate",
-        "Writer prompt_version 错误",
-    )
+    prompt = PromptRegistry().load("competitive_writer", allow_candidate=True)
+    require(prompt.version == "2.2.0-candidate", "Writer Prompt Registry 版本错误")
+    require(writer_call.prompt_version == prompt.version, "Writer prompt_version 错误")
     payload_types = set(writer_call.metadata.get("input_payload_artifact_types", []))
     require("sources" not in payload_types, "Professional Writer 不应读取原始 sources")
     require("evidence" not in payload_types, "Professional Writer 不应读取原始 evidence")
     require("claims_v2" in payload_types, "Professional Writer 未读取 claims_v2")
     require("research_gaps" in payload_types, "Professional Writer 未读取 research_gaps")
 
-    prompt = PromptRegistry().load("competitive_writer", allow_candidate=True)
     runtime_prompt = prompt.build_writer_runtime_prompt(
         task,
         resolved_title=expected_title,
@@ -130,6 +176,40 @@ def main() -> None:
     require(
         resolve_report_title(subject)[0] == "企业法律顾问服务竞品分析报告",
         "report_subject 优先级错误",
+    )
+    comparison_subject = AnalysisTask(
+        query="比较两个平台",
+        report_subject="小红书与抖音的竞品对比分析",
+    )
+    require(
+        resolve_report_title(comparison_subject)[0]
+        == "小红书与抖音的竞品对比分析报告",
+        "竞品对比分析标题被重复追加",
+    )
+    competitive_subject = AnalysisTask(
+        query="比较两个平台",
+        report_subject="小红书与抖音竞品分析",
+    )
+    require(
+        resolve_report_title(competitive_subject)[0]
+        == "小红书与抖音竞品分析报告",
+        "竞品分析标题被重复追加",
+    )
+    generic_subject = AnalysisTask(
+        query="分析行业方案",
+        report_subject="在线教育",
+    )
+    require(
+        resolve_report_title(generic_subject)[0] == "在线教育竞品分析报告",
+        "普通主题未追加竞品分析报告",
+    )
+    report_subject = AnalysisTask(
+        query="比较两个平台",
+        report_subject="小红书与抖音竞争分析报告",
+    )
+    require(
+        resolve_report_title(report_subject)[0] == "小红书与抖音竞争分析报告",
+        "已有报告结尾被重复追加",
     )
     industry = AnalysisTask(query="比较三个方案", industry="消费电子")
     require(

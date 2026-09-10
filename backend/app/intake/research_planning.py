@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from app.agents.research_planner import ResearchPlannerAgent
 from app.agents.runtime import AgentRuntime
+from app.frameworks import (
+    DEFAULT_FRAMEWORK_ID,
+    DEFAULT_FRAMEWORK_VERSION,
+    FrameworkRegistry,
+    get_framework_registry,
+)
 from app.harness.artifacts import ArtifactStore
 from app.intake.planning import ExecutionPlanningService
 from app.schemas import (
@@ -23,8 +29,14 @@ from app.workflow.trace import TraceRecorder
 class ResearchPlanningService:
     """Step6E.1 boundary: one planner run, artifacts, then dynamic TaskBoard records."""
 
-    def __init__(self, *, store: ArtifactStore | None = None):
+    def __init__(
+        self,
+        *,
+        store: ArtifactStore | None = None,
+        framework_registry: FrameworkRegistry | None = None,
+    ):
         self.store = store or ArtifactStore()
+        self.framework_registry = framework_registry or get_framework_registry()
 
     def get_task(self, task_id: str):
         return ExecutionPlanningService(store=self.store).get_task(task_id)
@@ -64,6 +76,16 @@ class ResearchPlanningService:
 
         recorder = TraceRecorder(store=self.store, task_id=task_id)
         assessment = ExecutionPlanningService(store=self.store).assess_task(task)
+        framework_id = str(
+            task.metadata.get("framework_id") or DEFAULT_FRAMEWORK_ID
+        )
+        framework_version = str(
+            task.metadata.get("framework_version") or DEFAULT_FRAMEWORK_VERSION
+        )
+        framework = self.framework_registry.load_framework(
+            framework_id,
+            framework_version,
+        )
         node = DAGNode(
             id="research_planning",
             task_id=task_id,
@@ -80,7 +102,10 @@ class ResearchPlanningService:
                 task=task,
                 node_id=node.id,
                 input_refs=node.input_refs,
-                metadata={"dataset_assessment": assessment.model_dump(mode="json")},
+                metadata={
+                    "dataset_assessment": assessment.model_dump(mode="json"),
+                    "framework_definition": framework.model_dump(mode="json"),
+                },
             ),
             node=node,
         )
@@ -117,6 +142,10 @@ class ResearchPlanningService:
                     "research_task_id": item.id,
                     "stop_condition": item.stop_condition,
                     "planner": "research_planner_agent",
+                    "framework_id": item.framework_id,
+                    "framework_version": item.framework_version,
+                    "framework_dimension_id": item.framework_dimension_id,
+                    "framework_content_hash": item.framework_content_hash,
                 },
             )
             for item in research_tasks
@@ -131,6 +160,9 @@ class ResearchPlanningService:
                     "source": "Step6E.1 Research Planner",
                     "workflow_shape": "dynamic_research_tasks",
                     "execution_started": False,
+                    "framework_id": framework.framework_id,
+                    "framework_version": framework.version,
+                    "framework_content_hash": framework.content_hash,
                 },
             )
         )

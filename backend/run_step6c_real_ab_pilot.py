@@ -151,9 +151,7 @@ def _run_variant(
     runtime_prompt = prompt.build_runtime_prompt(task)
     artifacts = {
         "analysis_task": [task.model_dump(mode="json")],
-        "sources": [item.model_dump(mode="json") for item in sources],
         "evidence": [item.model_dump(mode="json") for item in evidence],
-        "product_cards": [item.model_dump(mode="json") for item in product_cards],
     }
     client = LLMClient(config=config, store=output_store)
     raw_output, call, _output = client.generate_structured(

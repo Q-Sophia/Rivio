@@ -60,6 +60,7 @@ def validate_structured_output_language(
         "CompetitiveAnalysisPortfolioV2",
         "AnalystBriefProfilesStage",
         "AnalystClaimsStage",
+        "AnalystAssessmentStage",
     }:
         item = raw_output.get("item", {})
         if not item:
@@ -87,6 +88,19 @@ def validate_structured_output_language(
             gap_id = gap.get("id", "research_gap")
             if not contains_chinese(gap.get("missing_information", "")):
                 errors.append(f"{gap_id}.missing_information 不是简体中文业务文本")
+        for assessment in item.get("dimension_assessments", []):
+            assessment_id = (
+                f"{assessment.get('competitor', '')}/"
+                f"{assessment.get('dimension_id', '')}"
+            )
+            for field in ("reasoning", "decision_impact"):
+                if not contains_chinese(assessment.get(field, "")):
+                    errors.append(
+                        f"{assessment_id}.{field} 不是简体中文业务文本"
+                    )
+        for insight in item.get("insights", []):
+            if not contains_chinese(insight.get("summary", "")):
+                errors.append("AssessmentInsight.summary 不是简体中文业务文本")
     elif output_schema == "AnalysisTaskDraft":
         item = raw_output.get("item", {})
         if not item:

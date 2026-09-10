@@ -47,11 +47,7 @@ def _metric_passed(metrics: dict[str, dict]) -> bool:
 def _fixture_payload(fixture) -> dict[str, list[dict]]:
     return {
         "analysis_task": [fixture.task.model_dump(mode="json")],
-        "sources": [item.model_dump(mode="json") for item in fixture.sources],
         "evidence": [item.model_dump(mode="json") for item in fixture.evidence],
-        "product_cards": [
-            item.model_dump(mode="json") for item in fixture.product_cards
-        ],
     }
 
 

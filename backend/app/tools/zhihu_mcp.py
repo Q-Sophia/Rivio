@@ -180,6 +180,9 @@ class ZhihuRemoteMCPClient:
         sse_url: str = ZHIHU_MCP_SSE_URL,
         timeout: float = 10.0,
         sse_read_timeout: float = 60.0,
+        attempt_timeout: float = 12.0,
+        max_attempts: int = 2,
+        retry_delay: float = 0.25,
     ):
         self.access_key = (
             access_key
@@ -194,6 +197,9 @@ class ZhihuRemoteMCPClient:
         self.sse_url = sse_url
         self.timeout = timeout
         self.sse_read_timeout = sse_read_timeout
+        self.attempt_timeout = max(1.0, float(attempt_timeout))
+        self.max_attempts = max(1, int(max_attempts))
+        self.retry_delay = max(0.0, float(retry_delay))
         self.closed = False
 
     def search(
@@ -237,6 +243,44 @@ class ZhihuRemoteMCPClient:
         )
 
     async def _search_async(
+            self,
+            *,
+            query: str,
+            count: int,
+    ) -> list[ToolResult]:
+        last_error: BaseException | None = None
+
+        for attempt in range(1, self.max_attempts + 1):
+            try:
+                return await asyncio.wait_for(
+                    self._search_once_async(
+                        query=query,
+                        count=count,
+                    ),
+                    timeout=self.attempt_timeout,
+                )
+            except BaseExceptionGroup as exc:
+                if not _is_retryable_mcp_error(exc):
+                    raise
+                last_error = _first_meaningful_exception(exc)
+            except Exception as exc:
+                if not _is_retryable_mcp_error(exc):
+                    raise
+                last_error = exc
+
+            if attempt < self.max_attempts:
+                if self.retry_delay:
+                    await asyncio.sleep(self.retry_delay)
+                continue
+
+        detail = last_error or RuntimeError("unknown Zhihu MCP failure")
+        raise RuntimeError(
+            "Zhihu Remote MCP 网络调用失败，"
+            f"已尝试 {self.max_attempts} 次："
+            f"{type(detail).__name__}: {detail}"
+        ) from detail
+
+    async def _search_once_async(
             self,
             *,
             query: str,
@@ -499,6 +543,55 @@ def _tool_error_summary(
 
     return summary[:500] or "unknown MCP tool error"
 
+
+
+def _iter_leaf_exceptions(error: BaseException):
+    if isinstance(error, BaseExceptionGroup):
+        for item in error.exceptions:
+            yield from _iter_leaf_exceptions(item)
+        return
+
+    yield error
+
+
+def _first_meaningful_exception(error: BaseException) -> BaseException:
+    leaves = list(_iter_leaf_exceptions(error))
+    for item in leaves:
+        if type(item).__name__ != "CancelledError":
+            return item
+    return leaves[0] if leaves else error
+
+
+def _is_retryable_mcp_error(error: BaseException) -> bool:
+    retryable_names = {
+        "ConnectTimeout",
+        "ConnectError",
+        "ReadTimeout",
+        "WriteTimeout",
+        "PoolTimeout",
+        "RemoteProtocolError",
+        "ReadError",
+        "WriteError",
+        "NetworkError",
+        "EndOfStream",
+        "BrokenResourceError",
+        "ClosedResourceError",
+        "TimeoutError",
+    }
+
+    leaves = [
+        item
+        for item in _iter_leaf_exceptions(error)
+        if type(item).__name__ != "CancelledError"
+    ]
+    if not leaves:
+        return False
+
+    return all(
+        isinstance(item, (TimeoutError, ConnectionError, OSError))
+        or type(item).__name__ in retryable_names
+        for item in leaves
+    )
 
 def _first_exception(
     error: BaseException,

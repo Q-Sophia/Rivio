@@ -17,6 +17,9 @@ from app.schemas import (
     ResearchPlan,
     ResearchAgentRun,
     ResearchGap,
+    ResearchGapImpact,
+    ResearchGapOrigin,
+    ResearchGapType,
     ResearchTask,
     ResearchTaskOutcome,
     RunStatus,
@@ -59,6 +62,7 @@ class ResearchAnalysisService:
             if str(item.get("agent_role") or "") == AgentRole.ANALYST.value
         ]
         readiness = self._analysis_readiness(task_id)
+        assessments = self.store.load_many(task_id, "analysis_assessments")
         return {
             "task_id": task_id,
             "completed": bool(portfolios),
@@ -73,6 +77,8 @@ class ResearchAnalysisService:
             "analysis_research_gaps": self.store.load_many(
                 task_id, "analysis_research_gaps"
             ),
+            "analysis_assessment": assessments[-1] if assessments else None,
+            "analysis_assessments": assessments,
             "analyst_llm_calls": analyst_calls,
         }
 
@@ -82,13 +88,14 @@ class ResearchAnalysisService:
         *,
         mode: ExecutionMode | str,
         acknowledge_real_llm_call: bool,
+        pipeline_id: str = "",
     ) -> dict[str, Any]:
         selected_mode = ExecutionMode(mode)
         if selected_mode != ExecutionMode.DEEPSEEK:
             raise ValueError("Step6F 当前只接受显式 DeepSeek（真实）分析模式。")
         if not acknowledge_real_llm_call:
             raise ValueError(
-                "必须明确确认本次通常产生 2 次、仅截断时最多 4 次真实 DeepSeek Analyst 调用。"
+                "必须明确确认本次通常产生 3 次、仅截断时最多 6 次真实 DeepSeek Analyst 调用。"
             )
 
         with self._lock:
@@ -125,11 +132,13 @@ class ResearchAnalysisService:
                         "research_plans",
                         "research_kiqs",
                         "research_information_needs",
+                        "research_tasks",
                         "sources",
                         "evidence",
                         "product_cards",
                         "evidence_coverage",
                         "research_gaps",
+                        "analysis_assessments",
                     ],
                 ),
             )
@@ -160,6 +169,8 @@ class ResearchAnalysisService:
                         "claims",
                         "analysis_evidence_coverage",
                         "analysis_research_gaps",
+                        "analysis_assessments",
+                        "research_gaps",
                     ],
                 ),
                 context=AgentContext(
@@ -175,6 +186,9 @@ class ResearchAnalysisService:
                             authorized_evidence_ids
                         ),
                         "require_r1_evidence_authority": True,
+                        "pipeline_id": (
+                            pipeline_id or f"standalone_analysis_{task_id}"
+                        ),
                     },
                 ),
                 node=analyst_node,
@@ -204,14 +218,22 @@ class ResearchAnalysisService:
 
             after_call_count = len(self.store.load_many(task_id, "llm_calls"))
             call_count = after_call_count - before_call_count
-            if not 2 <= call_count <= 4:
+            if not 2 <= call_count <= 6:
                 raise RuntimeError(
-                    "Step6F 两阶段 Analyst 必须记录 2 至 4 次有限 LLM 调用。"
+                    "Step6F Analyst 必须记录 2 至 6 次有限 LLM 调用；"
+                    "2 次仅允许复用已持久化的相同 Framework/Evidence assessment。"
                 )
             if self.store.load_many(task_id, "evidence_coverage") != deterministic_coverage:
                 raise RuntimeError("确定性 EvidenceCoverage 被 Analyst 覆盖。")
-            if self.store.load_many(task_id, "research_gaps") != deterministic_gaps:
-                raise RuntimeError("确定性 ResearchGap 被 Analyst 覆盖。")
+            merged_gaps = {
+                str(item.get("id") or ""): item
+                for item in self.store.load_many(task_id, "research_gaps")
+            }
+            if any(
+                merged_gaps.get(str(item.get("id") or "")) != item
+                for item in deterministic_gaps
+            ):
+                raise RuntimeError("Analyst 修改或删除了上游 ResearchGap。")
 
             self.board_store.update_status(
                 task_id,
@@ -224,6 +246,8 @@ class ResearchAnalysisService:
                     "claims",
                     "analysis_evidence_coverage",
                     "analysis_research_gaps",
+                    "analysis_assessments",
+                    "research_gaps",
                 ],
                 claimed_by_agent="professional_research_analyst_agent",
             )
@@ -337,17 +361,19 @@ class ResearchAnalysisService:
                 "research_plans",
                 "research_kiqs",
                 "research_information_needs",
+                "research_tasks",
                 "sources",
                 "evidence",
                 "product_cards",
                 "evidence_coverage",
                 "research_gaps",
+                "analysis_assessments",
             ],
             reason="基于 Step6E 结构化研究产物生成当前任务专属分析结论。",
             metadata={
                 "source": "step6f_research_analysis",
-                "real_llm_calls_authorized": 4,
-                "normal_llm_calls_expected": 2,
+                "real_llm_calls_authorized": 6,
+                "normal_llm_calls_expected": 3,
             },
         )
         self.board_store.upsert_record(task_id, record)
@@ -499,6 +525,18 @@ class ResearchAnalysisService:
                         for evidence_id in run.verified_evidence_ids
                         if evidence_id in known_evidence_ids
                     ],
+                    gap_type=ResearchGapType.INSUFFICIENT_EVIDENCE,
+                    impact=ResearchGapImpact(research_task.priority),
+                    origin=ResearchGapOrigin.RESEARCH_AGENT,
+                    framework_id=research_task.framework_id,
+                    framework_version=research_task.framework_version,
+                    framework_dimension_id=(
+                        research_task.framework_dimension_id
+                    ),
+                    framework_content_hash=(
+                        research_task.framework_content_hash
+                    ),
+                    research_task_ids=[research_task_id],
                     metadata={
                         "source": "research_agent_r1_bridge",
                         "research_task_id": research_task_id,
@@ -517,7 +555,7 @@ class ResearchAnalysisService:
             default_timeout_seconds=120,
             default_max_tokens=8000,
             temperature=0.2,
-            max_retries=0,
+            max_retries=2,
             retry_base_seconds=1.0,
         )
 

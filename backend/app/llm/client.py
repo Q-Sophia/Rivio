@@ -25,8 +25,11 @@ from app.llm.structured import (
 from app.reporting import build_professional_mock_report
 from app.schemas import (
     AgentRole,
+    AnalystAssessmentStage,
+    AnalystDimensionAssessmentDraft,
     AnalystBriefProfilesStage,
     AnalystClaimsStage,
+    AnalystResearchGapDraft,
     AnalysisClaim,
     AnalysisClaimV2,
     AnalysisTask,
@@ -34,12 +37,15 @@ from app.schemas import (
     BriefAssessment,
     CitationCheck,
     CitationStatus,
+    CompletionCriterionEvaluation,
+    CompletionCriterionStatus,
     ComparabilityNote,
     CompetitiveAnalysisPortfolioV2,
     CompetitorProfile,
     CompetitiveReport,
     ContextBundle,
     EvidenceCoverage,
+    DimensionAssessmentStatus,
     InformationNeed,
     KeyIntelligenceQuestion,
     LLMCall,
@@ -47,6 +53,8 @@ from app.schemas import (
     LLMOutput,
     ProductCard,
     ResearchGap,
+    ResearchGapImpact,
+    ResearchGapType,
     ResearchAgentAction,
     ResearchActionType,
     ResearchMissionDecision,
@@ -67,6 +75,51 @@ _INTERNAL_REFERENCE_FIELD_NAMES = {
     "related_evidence_ids",
     "supporting_artifact_ids",
 }
+_ANALYST_STAGE_ALLOWED_ARTIFACTS = {
+    "CompetitiveAnalysisPortfolioV2": {
+        "analysis_task",
+        "evidence",
+    },
+    "AnalystBriefProfilesStage": {
+        "analysis_task",
+        "evidence",
+    },
+    "AnalystAssessmentStage": {
+        "analysis_task",
+        "framework_definition",
+        "assessment_scope",
+        "research_tasks",
+        "evidence",
+    },
+    "AnalystClaimsStage": {
+        "analysis_task",
+        "evidence",
+        "competitor_profiles",
+    },
+}
+_ANALYST_STAGE_FORBIDDEN_FIELDS = {
+    "content_excerpt",
+    "raw_content",
+    "page_content",
+    "html",
+    "web_page",
+}
+
+
+def _find_forbidden_analyst_fields(value: Any) -> set[str]:
+    """Find raw-source fields before an Analyst model request is sent."""
+
+    found: set[str] = set()
+    if isinstance(value, dict):
+        for key, nested in value.items():
+            normalized_key = str(key).strip().lower()
+            if normalized_key in _ANALYST_STAGE_FORBIDDEN_FIELDS:
+                found.add(normalized_key)
+            found.update(_find_forbidden_analyst_fields(nested))
+    elif isinstance(value, (list, tuple)):
+        for nested in value:
+            found.update(_find_forbidden_analyst_fields(nested))
+    return found
 
 
 class LLMOutputTruncatedError(ValueError):
@@ -175,6 +228,27 @@ class LLMClient:
         prompt_version: str = "",
         prompt_hash: str = "",
     ) -> tuple[dict[str, Any], LLMCall, LLMOutput]:
+        analyst_allowed_artifacts = _ANALYST_STAGE_ALLOWED_ARTIFACTS.get(
+            output_schema
+        )
+        if analyst_allowed_artifacts is not None:
+            unexpected_artifacts = sorted(
+                set(artifacts) - analyst_allowed_artifacts
+            )
+            if unexpected_artifacts:
+                raise ValueError(
+                    f"{output_schema} 禁止输入 artifact: "
+                    + ", ".join(unexpected_artifacts)
+                )
+            forbidden_fields = sorted(
+                _find_forbidden_analyst_fields(artifacts)
+            )
+            if forbidden_fields:
+                raise ValueError(
+                    f"{output_schema} 禁止输入网页正文或 Source 原文字段: "
+                    + ", ".join(forbidden_fields)
+                )
+
         started_at = utc_now()
         start = time.perf_counter()
         call_id = f"llmcall_{node_id}"
@@ -705,6 +779,87 @@ class LLMClient:
                 "generated_by": str(agent_role),
                 "output_language": self.config.output_language,
             }
+        if output_schema == "AnalystAssessmentStage":
+            evidence = [
+                SourceEvidence(**item) for item in artifacts.get("evidence", [])
+            ]
+            assessments: list[AnalystDimensionAssessmentDraft] = []
+            gaps: list[AnalystResearchGapDraft] = []
+            for scope in artifacts.get("assessment_scope", []):
+                matches = [
+                    item
+                    for item in evidence
+                    if item.competitor == scope.get("competitor")
+                    and str(item.dimension) == str(scope.get("evidence_dimension"))
+                ]
+                required = list(scope.get("required_facts", []))
+                criteria = list(scope.get("completion_criteria", []))
+                criterion_refs = list(
+                    scope.get("completion_criteria_refs", [])
+                )
+                covered = required[:1] if matches else []
+                missing = required[len(covered):]
+                status = (
+                    DimensionAssessmentStatus.PARTIAL
+                    if covered
+                    else DimensionAssessmentStatus.MISSING
+                )
+                assessments.append(
+                    AnalystDimensionAssessmentDraft(
+                        dimension_id=str(scope.get("dimension_id") or ""),
+                        competitor=str(scope.get("competitor") or ""),
+                        status=status,
+                        covered_facts=covered,
+                        missing_facts=missing,
+                        evidence_ids=[item.id for item in matches],
+                        completion_criteria_evaluations=[
+                            CompletionCriterionEvaluation(
+                                criterion_id=str(ref["criterion_id"]),
+                                status=CompletionCriterionStatus.UNMET,
+                            )
+                            for ref in criterion_refs
+                        ],
+                        completion_criteria_unmet=(
+                            criteria if not criterion_refs else []
+                        ),
+                        reasoning=(
+                            "现有证据只形成部分覆盖，仍需补齐框架要求。"
+                            if matches
+                            else "当前没有同对象、同维度的可验证证据。"
+                        ),
+                        decision_impact="缺失信息会限制当前比较结论的可靠性。",
+                    )
+                )
+                if missing:
+                    gaps.append(
+                        AnalystResearchGapDraft(
+                            dimension_id=str(scope.get("dimension_id") or ""),
+                            competitors=[str(scope.get("competitor") or "")],
+                            gap_type=ResearchGapType.MISSING_FACT,
+                            impact=ResearchGapImpact.MEDIUM,
+                            missing_facts=missing,
+                            missing_information="；".join(missing),
+                            why_existing_evidence_is_insufficient=(
+                                "现有证据未覆盖全部 Framework required_facts。"
+                            ),
+                            suggested_queries=[],
+                            preferred_source_types=list(
+                                scope.get("preferred_source_types", [])
+                            ),
+                            decision_blocked="当前只能形成阶段性判断。",
+                            stop_condition="；".join(criteria),
+                        )
+                    )
+            item = AnalystAssessmentStage(
+                task_id=task_id,
+                dimension_assessments=assessments,
+                research_gaps=gaps,
+            )
+            return {
+                "item": item.model_dump(mode="json"),
+                "generated_by": str(agent_role),
+                "output_language": self.config.output_language,
+            }
         if output_schema == "AnalysisTaskDraft":
             return {
                 "item": self._mock_task_draft(task_id, artifacts),
@@ -815,8 +970,9 @@ class LLMClient:
             validate_portfolio_v2_refs(
                 item,
                 known_source_ids={
-                    str(source.get("id", ""))
-                    for source in artifacts.get("sources", [])
+                    str(evidence.get("source_id", ""))
+                    for evidence in artifacts.get("evidence", [])
+                    if evidence.get("source_id")
                 },
                 known_evidence_ids={
                     str(evidence.get("id", ""))
@@ -851,7 +1007,11 @@ class LLMClient:
             self._ensure_known_refs(
                 item.competitor_profiles,
                 "source_ids",
-                {str(source.get("id", "")) for source in artifacts.get("sources", [])},
+                {
+                    str(evidence.get("source_id", ""))
+                    for evidence in artifacts.get("evidence", [])
+                    if evidence.get("source_id")
+                },
             )
             self._ensure_known_refs(
                 item.competitor_profiles,
@@ -889,6 +1049,29 @@ class LLMClient:
                     "AnalystClaimsStage contains unknown competitors: "
                     + ", ".join(invalid_competitors)
                 )
+            return [item.id]
+        if output_schema == "AnalystAssessmentStage":
+            from app.analysis_assessment import (
+                validate_analyst_assessment_stage,
+            )
+            from app.schemas import FrameworkDefinition
+
+            item = AnalystAssessmentStage(**raw_output.get("item", {}))
+            self._ensure_task_ids([item], task_id)
+            framework_items = artifacts.get("framework_definition", [])
+            if len(framework_items) != 1:
+                raise ValueError(
+                    "AnalystAssessmentStage 需要且只接受一个 FrameworkDefinition"
+                )
+            validate_analyst_assessment_stage(
+                stage=item,
+                framework=FrameworkDefinition(**framework_items[0]),
+                scope=list(artifacts.get("assessment_scope", [])),
+                evidence=[
+                    SourceEvidence(**value)
+                    for value in artifacts.get("evidence", [])
+                ],
+            )
             return [item.id]
         if output_schema == "AnalysisTaskDraft":
             item = AnalysisTaskDraft(**raw_output.get("item", {}))
@@ -1152,7 +1335,6 @@ class LLMClient:
         task_data = (artifacts.get("analysis_task") or [{}])[0]
         query = str(task_data.get("query") or "完成当前竞品分析决策")
         industry = str(task_data.get("industry") or "待确认行业")
-        focus_areas = [str(item) for item in task_data.get("focus_areas", [])]
         task_metadata = dict(task_data.get("metadata") or {})
         research_brief = dict(task_metadata.get("research_brief") or {})
         product_cards = [
@@ -1164,6 +1346,15 @@ class LLMClient:
         evidence = [
             SourceEvidence(**item) for item in artifacts.get("evidence", [])
         ]
+        if not product_cards:
+            product_cards = [
+                ProductCard(
+                    **self._mock_product_card(task_id, competitor, items)
+                )
+                for competitor, items in self._evidence_by_competitor(
+                    artifacts
+                ).items()
+            ]
         source_by_id = {item.id: item for item in sources}
         evidence_by_competitor: dict[str, list[SourceEvidence]] = {}
         for item in evidence:

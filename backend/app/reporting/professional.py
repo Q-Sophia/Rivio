@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+import math
 import re
 from collections import defaultdict
-from typing import Any
 
 from app.schemas import (
     AnalysisClaim,
@@ -20,7 +20,7 @@ from app.schemas import (
 
 
 REPORT_PROMPT_ID = "competitive_writer"
-REPORT_PROMPT_VERSION = "2.1.1-candidate"
+REPORT_PROMPT_VERSION = "2.2.0-candidate"
 REQUIRED_REPORT_SECTIONS = [
     "执行摘要",
     "研究目标与决策背景",
@@ -202,6 +202,8 @@ def build_professional_mock_report(
 
 本报告围绕“{brief.decision_question}”整理现有证据，覆盖 {competitors or '当前研究对象'}。以下判断均来自已经结构化并通过引用检查的 AnalysisClaim（分析结论），不把资料未提及解释为产品不具备。
 
+执行摘要优先呈现会改变产品选择、实施责任、成本判断或风险边界的结论。阅读这些判断时，需要同时核对其适用对象、业务场景与证据强度；当结论仅为 weak（弱支持）、不同方案缺乏统一比较口径或关键 ResearchGap 尚未关闭时，当前结果只能用于缩小验证范围，不能替代最终选型或投入决策。
+
 {executive_lines}
 
 ## 研究目标与决策背景
@@ -220,6 +222,8 @@ def build_professional_mock_report(
 这些对象代表的产品形态、交付责任和采用路径并不完全相同，因此不能用功能数量或单一价格直接排序。 {' '.join(f'[{item.id}]' for item in profiles)}
 
 ## 核心维度对比
+
+本节围绕同一决策维度对 {competitors or '当前研究对象'} 进行横向对照。对比重点不是罗列功能数量，而是识别已经验证的事实和能力差异，并说明这些差异对用户场景、产品设计、运营投入、实施责任、总体成本或商业决策意味着什么。只有结构化结论已经提供原因、机制或背景时才解释形成逻辑；缺乏统一口径、证据较弱或尚未覆盖的部分保留为限制，不把未知信息改写为产品缺陷或推断性结论。
 
 {chr(10).join(dimension_lines)}
 
@@ -242,6 +246,8 @@ def build_professional_mock_report(
 ## 决策建议
 
 以下内容是基于现有证据的条件性建议；若引用结论只达到 weak（弱支持）或关键缺口尚未关闭，应先完成验证再做最终选择。
+
+建议应结合实际采用者、业务场景和组织能力执行：先确认候选路径是否满足当前决策目标，再核对引用结论的适用边界与可比性，最后把仍会改变选择的未知项转化为明确验证动作。任何建议都不构成脱离前置条件的绝对排名；当成本、部署、集成、服务范围或风险资料不足时，应先关闭相应 ResearchGap，再决定是否扩大试点或正式投入。
 
 {recommendation_lines}
 
@@ -431,6 +437,39 @@ def validate_professional_report(
     ]
     if missing_sections:
         errors.append("缺少专业报告章节: " + ", ".join(missing_sections))
+
+    body = report.markdown
+    index_match = re.search(
+        r"(?m)^##\s+结论引用索引\s*$",
+        report.markdown,
+    )
+    if index_match:
+        body = report.markdown[: index_match.start()]
+    claim_count = len(report.claim_ids)
+    if claim_count >= 10:
+        minimum_body_chars = 1800
+    elif claim_count >= 6:
+        minimum_body_chars = 1300
+    elif claim_count >= 3:
+        minimum_body_chars = 900
+    else:
+        minimum_body_chars = 600
+    if _report_visible_char_count(body) < minimum_body_chars:
+        errors.append("专业报告正文信息量不足")
+
+    executive_summary = _extract_report_section(report.markdown, "执行摘要")
+    if _report_visible_char_count(executive_summary) < 180:
+        errors.append("执行摘要信息量不足")
+    core_comparison = _extract_report_section(
+        report.markdown,
+        "核心维度对比",
+    )
+    minimum_core_chars = 450 if claim_count >= 6 else 250
+    if _report_visible_char_count(core_comparison) < minimum_core_chars:
+        errors.append("核心维度对比信息量不足")
+    recommendations = _extract_report_section(report.markdown, "决策建议")
+    if _report_visible_char_count(recommendations) < 180:
+        errors.append("决策建议信息量不足")
     unknown_claim_ids = sorted(set(report.claim_ids) - known_claim_ids)
     if unknown_claim_ids:
         errors.append("报告引用未知 claim_id: " + ", ".join(unknown_claim_ids))
@@ -441,6 +480,24 @@ def validate_professional_report(
     ]
     if missing_claim_refs:
         errors.append("报告正文缺少 claim_id: " + ", ".join(missing_claim_refs))
+    body_claim_ids = {
+        claim_id
+        for claim_id in report.claim_ids
+        if f"[{claim_id}]" in body
+    }
+    minimum_body_claims = 1 if claim_count <= 3 else math.ceil(claim_count * 0.6)
+    if claim_count and len(body_claim_ids) < minimum_body_claims:
+        errors.append("有效 Claim 主要停留在引用索引，未进入分析正文")
+
+    competitors = list(
+        dict.fromkeys(item.strip() for item in task.competitors if item.strip())
+    )
+    if len(competitors) >= 2:
+        compared_competitors = [
+            item for item in competitors if item in core_comparison
+        ]
+        if len(compared_competitors) < 2:
+            errors.append("核心维度对比未形成跨竞品综合")
     declared_gaps = {
         str(item) for item in report.sections.get("research_gap_ids", [])
     }
@@ -456,6 +513,46 @@ def validate_professional_report(
         raise ValueError("；".join(errors))
 
 
+def _extract_report_section(markdown: str, section_name: str) -> str:
+    """Return one level-two report section without adjacent sections."""
+
+    pattern = re.compile(
+        rf"(?m)^##\s+{re.escape(section_name)}\s*$",
+    )
+    match = pattern.search(markdown or "")
+    if match is None:
+        return ""
+    next_section = re.search(r"(?m)^##\s+.+$", (markdown or "")[match.end() :])
+    end = (
+        match.end() + next_section.start()
+        if next_section is not None
+        else len(markdown or "")
+    )
+    return (markdown or "")[match.end() : end].strip()
+
+
+def _report_visible_char_count(text: str) -> int:
+    """Count reader-visible content rather than Markdown/audit syntax."""
+
+    visible = text or ""
+    visible = re.sub(r"!\[([^\]]*)\]\([^)]*\)", r"\1", visible)
+    visible = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", visible)
+    visible = re.sub(
+        r"\[(?:claim|clv2|gap|researchgap)[-_][^\]]+\]",
+        "",
+        visible,
+        flags=re.IGNORECASE,
+    )
+    visible = re.sub(
+        r"(?m)^\s*(?:#{1,6}\s*|[-+*]\s+|\d+[.)]\s+)",
+        "",
+        visible,
+    )
+    visible = visible.replace("**", "").replace("__", "")
+    visible = visible.replace("`", "")
+    return len(re.sub(r"\s+", "", visible))
+
+
 def _clean_title(value: str) -> str:
     value = re.sub(r"[\r\n#]+", " ", value or "")
     return re.sub(r"\s+", " ", value).strip(" -—：:")[:80]
@@ -466,11 +563,16 @@ def _ensure_report_suffix(value: str) -> str:
 
 
 def _ensure_competitive_report_suffix(value: str) -> str:
-    if value.endswith("竞品分析报告"):
-        return value
     if value.endswith("报告"):
         return value
-    if value.endswith("竞品分析"):
+    competitive_analysis_suffixes = (
+        "竞品分析",
+        "竞品对比分析",
+        "竞品比较分析",
+        "竞争分析",
+        "竞争对比分析",
+    )
+    if value.endswith(competitive_analysis_suffixes):
         return value + "报告"
     return value + "竞品分析报告"
 

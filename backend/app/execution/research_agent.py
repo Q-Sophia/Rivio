@@ -213,8 +213,19 @@ class LLMResearchActionDecider:
             f"{official_first_policy}"
             f"{community_research_policy}"
 
-            "选择 FINISH 时必须返回 "
-            "finish_status=COMPLETE、PARTIAL 或 EXHAUSTED。"
+            "在每一步决策前，先判断当前 Verified Evidence 是否已经满足 ResearchTask 的核心研究目标；"
+            "Framework 的 required_facts 表示核心研究方向，completion_criteria 表示完成判断依据。"
+            "不要把版本、地域、时间、套餐、部署、合同、接口权限等仅在适用时才存在的信息，"
+            "机械视为所有产品都必须补齐的条件；公开资料不存在或该条件不适用时，可以记录边界后结束。"
+            
+            "如果已经取得可验证 Evidence，且核心研究目标和 completion_criteria 已基本满足，"
+            "应优先 FINISH，而不是为了补充非核心细节继续 SEARCH。"
+            
+            "选择 FINISH 时必须返回 finish_status："
+            "COMPLETE 表示已有 Verified Evidence，且核心研究目标已经得到足够支持，"
+            "即使仍存在非核心、条件式或公开不可得的信息，也可以 COMPLETE；"
+            "PARTIAL 表示已有 Verified Evidence，但仍缺少会实质影响当前研究结论的核心事实；"
+            "EXHAUSTED 表示经过合理检索后仍没有形成可用 Verified Evidence，或已无有效研究路径。"
         )
         raw, _call, _output = self.llm_client.generate_structured(
             task_id=task_id,
@@ -236,7 +247,7 @@ def build_research_agent_llm_config() -> LLMConfig:
         default_timeout_seconds=90,
         default_max_tokens=2000,
         temperature=0.1,
-        max_retries=1,
+        max_retries=3,
         retry_base_seconds=1.0,
     )
 
@@ -1575,15 +1586,6 @@ class ResearchEvidenceAgent(BaseAgent):
             if forced:
                 state = state.model_copy(update={"outcome": forced, "status": RunStatus.COMPLETED, "completed_at": utc_now()})
                 break
-            research_source_candidates = [
-                item
-                for item in self.store.load_many(
-                    context.task_id,
-                    "research_source_candidates",
-                )
-                if item.get("research_task_id") == research_task.id
-                   and item.get("selected_for_collection")
-            ]
 
             research_source_candidates = [
                 item
@@ -1623,9 +1625,18 @@ class ResearchEvidenceAgent(BaseAgent):
                 state.remaining_need = action.remaining_need
 
             if action.action == ResearchActionType.FINISH.value:
-                outcome = ResearchTaskOutcome(action.finish_status).value
-                if outcome == ResearchTaskOutcome.COMPLETE.value and not state.verified_evidence_ids:
+                requested_outcome = ResearchTaskOutcome(action.finish_status).value
+
+                if not state.verified_evidence_ids:
                     outcome = ResearchTaskOutcome.EXHAUSTED.value
+                elif requested_outcome == ResearchTaskOutcome.EXHAUSTED.value:
+                    outcome = ResearchTaskOutcome.PARTIAL.value
+                else:
+                    outcome = requested_outcome
+
+                if outcome == ResearchTaskOutcome.COMPLETE.value:
+                    state.remaining_need = ""
+
                 state.outcome = outcome
                 state.status = RunStatus.COMPLETED
                 state.completed_at = utc_now()
@@ -1975,7 +1986,9 @@ class ResearchEvidenceAgentService:
         terminal_runs = [
             item
             for item in self.store.load_many(task_id, "research_agent_runs")
-            if item.get("research_task_id") == research_task_id and item.get("outcome")
+            if item.get("research_task_id") == research_task_id
+            and item.get("outcome")
+            and item.get("outcome") != "FAILED"
         ]
         if terminal_runs:
             from app.intake.step6e4 import (

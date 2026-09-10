@@ -96,13 +96,6 @@ class StageFixtureProvider(StructuredLLMProvider):
                 metadata={"finish_reason": "stop"},
             )
         artifacts = kwargs["artifacts"]
-        if self.generation_cards and not artifacts.get("product_cards"):
-            artifacts = {
-                **artifacts,
-                "product_cards": [
-                    item.model_dump(mode="json") for item in self.generation_cards
-                ],
-            }
         return ProviderResult(
             raw_output=self.mock_client._mock_generate(
                 task_id=kwargs["task_id"],
@@ -301,6 +294,7 @@ def prepare_store(root: Path) -> tuple[ArtifactStore, AnalysisTask]:
         "analysis_portfolios": [],
         "analysis_evidence_coverage": [],
         "analysis_research_gaps": [],
+        "analysis_assessments": [],
         "brief_assessments": [],
         "competitor_profiles": [],
         "intelligence_questions": [],
@@ -379,11 +373,69 @@ def check_successful_assembly(root: Path) -> None:
     original_coverage = store.load_many(TASK_ID, "evidence_coverage")
     provider = build_provider(store)
     result = run_agent(store, task, provider)
-    require(result.status == RunStatus.COMPLETED, "两阶段 Analyst 应成功")
+    require(result.status == RunStatus.COMPLETED, "三阶段 Analyst 应成功")
     require(
         provider.calls
-        == ["AnalystBriefProfilesStage", "AnalystClaimsStage"],
+        == [
+            "AnalystBriefProfilesStage",
+            "AnalystAssessmentStage",
+            "AnalystClaimsStage",
+        ],
         "Analyst 不应再依赖一次完整 Portfolio JSON",
+    )
+    for request in provider.requests:
+        request_artifacts = request["artifacts"]
+        serialized_request_artifacts = str(request_artifacts).lower()
+        require("sources" not in request_artifacts, "Analyst 不得读取 SourceDocument")
+        require(
+            "content_excerpt" not in serialized_request_artifacts
+            and "raw_content" not in serialized_request_artifacts,
+            "任何 Analyst 模型阶段都不得接收网页原文",
+        )
+    analyst_bundles = [
+        ContextBundle(**item)
+        for item in store.load_many(TASK_ID, "context_bundles")
+        if item.get("agent_role") == AgentRole.ANALYST.value
+    ]
+    require(analyst_bundles, "应持久化 Analyst ContextBundle")
+    require(
+        all(
+            not bundle.source_ids
+            and not bundle.artifact_refs.get("sources")
+            and not bundle.product_card_ids
+            and not bundle.artifact_refs.get("product_cards")
+            for bundle in analyst_bundles
+        ),
+        "Analyst ContextBundle 不得暴露 SourceDocument 或 ProductCard 引用",
+    )
+    assessment_request = next(
+        request
+        for request in provider.requests
+        if request["output_schema"] == "AnalystAssessmentStage"
+    )
+    assessment_artifacts = assessment_request["artifacts"]
+    require(
+        set(assessment_artifacts)
+        == {
+            "analysis_task",
+            "framework_definition",
+            "assessment_scope",
+            "research_tasks",
+            "evidence",
+        },
+        "Assessment 模型输入只能包含任务、Framework 与 Evidence",
+    )
+    require(
+        set(provider.requests[0]["artifacts"]) == {"analysis_task", "evidence"}
+        and set(provider.requests[2]["artifacts"])
+        == {"analysis_task", "evidence", "competitor_profiles"},
+        "Brief/Claims 也只能读取 Evidence 与必要的阶段输出",
+    )
+    serialized_assessment_artifacts = str(assessment_artifacts).lower()
+    require(
+        "content_excerpt" not in serialized_assessment_artifacts
+        and "raw_content" not in serialized_assessment_artifacts,
+        "Assessment 模型输入不得包含网页正文或 Source 原文字段",
     )
     portfolios = store.load_many(TASK_ID, "analysis_portfolios")
     require(len(portfolios) == 1, "应确定性组装一个 Portfolio")
@@ -407,6 +459,10 @@ def check_successful_assembly(root: Path) -> None:
         == original_coverage,
         "Portfolio 应原样引用上游 EvidenceCoverage",
     )
+    require(
+        len(store.load_many(TASK_ID, "analysis_assessments")) == 1,
+        "应持久化一个 Framework-aware AnalysisAssessment",
+    )
     known_ids = {item.id for item in evidence}
     require(
         all(
@@ -420,6 +476,72 @@ def check_successful_assembly(root: Path) -> None:
         and portfolio.metadata["deduped_evidence_count"] == 3,
         "同一 evidence_id 应在送入模型前去重",
     )
+
+
+def check_assessment_source_boundary_guard(root: Path) -> None:
+    store, _ = prepare_store(root)
+    provider = build_provider(store)
+    client = LLMClient(config=config(), store=store, provider=provider)
+    common = {
+        "task_id": TASK_ID,
+        "agent_role": AgentRole.ANALYST,
+        "agent_run_id": "run_assessment_boundary_guard",
+        "node_id": "assessment_boundary_guard",
+        "context_bundle": None,
+        "prompt_id": "competitive_analysis_assessment",
+        "prompt_summary": "boundary guard regression",
+    }
+    allowed_artifacts = {
+        "analysis_task": [],
+        "framework_definition": [],
+        "assessment_scope": [],
+        "research_tasks": [],
+        "evidence": [],
+    }
+
+    stage_artifacts = {
+        "CompetitiveAnalysisPortfolioV2": {
+            "analysis_task": [],
+            "evidence": [],
+        },
+        "AnalystBriefProfilesStage": {
+            "analysis_task": [],
+            "evidence": [],
+        },
+        "AnalystAssessmentStage": allowed_artifacts,
+        "AnalystClaimsStage": {
+            "analysis_task": [],
+            "evidence": [],
+            "competitor_profiles": [],
+        },
+    }
+    for output_schema, artifacts in stage_artifacts.items():
+        try:
+            client.generate_structured(
+                **common,
+                output_schema=output_schema,
+                artifacts={**artifacts, "sources": []},
+            )
+        except ValueError as exc:
+            require("禁止输入 artifact" in str(exc), "应拒绝 sources artifact")
+        else:
+            raise AssertionError(f"{output_schema} 不得接收 sources artifact")
+
+    try:
+        client.generate_structured(
+            **common,
+            output_schema="AnalystAssessmentStage",
+            artifacts={
+                **allowed_artifacts,
+                "evidence": [{"id": "evidence_bad", "raw_content": "raw"}],
+            },
+        )
+    except ValueError as exc:
+        require("Source 原文字段" in str(exc), "应拒绝嵌套原文字段")
+    else:
+        raise AssertionError("Assessment 不得接收嵌套网页原文")
+
+    require(not provider.calls, "边界校验必须发生在模型 Provider 调用之前")
 
 
 def check_research_agent_bridge_without_product_cards(root: Path) -> None:
@@ -494,9 +616,10 @@ def check_research_agent_bridge_without_product_cards(root: Path) -> None:
     result = run_agent(store, task, provider)
     require(result.status == RunStatus.COMPLETED, "无 ProductCard 时 Analyst 应可运行")
     require(store.load_many(TASK_ID, "claims_v2"), "应生成证据约束的 Claims")
+    analyzed_gaps = store.load_many(TASK_ID, "analysis_research_gaps")
     require(
-        store.load_many(TASK_ID, "analysis_research_gaps") == gaps,
-        "混合 COMPLETE/EXHAUSTED 的缺口应进入分析组合",
+        all(any(item["id"] == gap["id"] for item in analyzed_gaps) for gap in gaps),
+        "上游 COMPLETE/EXHAUSTED 缺口必须原样进入分析组合",
     )
 
 
@@ -646,15 +769,16 @@ def check_bounded_retry(root: Path) -> None:
         provider.calls
         == [
             "AnalystBriefProfilesStage",
+            "AnalystAssessmentStage",
             "AnalystClaimsStage",
             "AnalystClaimsStage",
         ],
         "仅被截断阶段可重试一次",
     )
     calls = store.load_many(TASK_ID, "llm_calls")
-    require(calls[1]["status"] == "failed", "截断尝试必须留存失败审计")
+    require(calls[2]["status"] == "failed", "截断尝试必须留存失败审计")
     require(
-        calls[1]["metadata"]["finish_reason"] == "length",
+        calls[2]["metadata"]["finish_reason"] == "length",
         "finish_reason=length 必须显式记录",
     )
 
@@ -683,6 +807,41 @@ def check_retry_cap(root: Path) -> None:
     )
 
 
+def check_assessment_reused_after_claim_failure(root: Path) -> None:
+    store, task = prepare_store(root)
+    failed_provider = build_provider(
+        store,
+        truncate_counts={"AnalystClaimsStage": 2},
+    )
+    try:
+        run_agent(store, task, failed_provider)
+    except LLMOutputTruncatedError:
+        pass
+    else:
+        raise AssertionError("Claims 连续截断时应停止当前 Analyst run")
+    require(
+        len(store.load_many(TASK_ID, "analysis_assessments")) == 1,
+        "Claims 失败前已验证的 AnalysisAssessment 应持久化",
+    )
+    require(
+        not store.load_many(TASK_ID, "analysis_portfolios"),
+        "Claims 失败不得保存半成品 Portfolio",
+    )
+
+    resumed_provider = build_provider(store)
+    result = run_agent(store, task, resumed_provider)
+    require(result.status == RunStatus.COMPLETED, "恢复后 Analyst 应成功")
+    require(
+        resumed_provider.calls
+        == ["AnalystBriefProfilesStage", "AnalystClaimsStage"],
+        "相同 Pipeline/Framework/Evidence assessment 应在恢复时复用",
+    )
+    require(
+        len(store.load_many(TASK_ID, "analysis_assessments")) == 1,
+        "恢复不得重复生成相同 AnalysisAssessment",
+    )
+
+
 def check_structured_repair(root: Path) -> None:
     store, task = prepare_store(root / "malformed_success")
     provider = build_provider(
@@ -696,6 +855,7 @@ def check_structured_repair(root: Path) -> None:
         == [
             "AnalystBriefProfilesStage",
             "AnalystBriefProfilesStage",
+            "AnalystAssessmentStage",
             "AnalystClaimsStage",
         ],
         "malformed JSON 只能触发一次统一 structured retry",
@@ -732,6 +892,42 @@ def check_structured_repair(root: Path) -> None:
         and schema_provider.calls[:2]
         == ["AnalystBriefProfilesStage", "AnalystBriefProfilesStage"],
         "Stage Schema 失败没有执行唯一一次统一 structured retry",
+    )
+
+    assessment_store, assessment_task = prepare_store(
+        root / "assessment_schema_success"
+    )
+    assessment_provider = build_provider(
+        assessment_store,
+        invalid_schema_counts={"AnalystAssessmentStage": 1},
+    )
+    assessment_result = run_agent(
+        assessment_store,
+        assessment_task,
+        assessment_provider,
+    )
+    require(
+        assessment_result.status == RunStatus.COMPLETED
+        and assessment_provider.calls
+        == [
+            "AnalystBriefProfilesStage",
+            "AnalystAssessmentStage",
+            "AnalystAssessmentStage",
+            "AnalystClaimsStage",
+        ],
+        "Assessment criterion schema 失败应只重试一次并继续 Claims",
+    )
+    assessment_outputs = [
+        item
+        for item in assessment_store.load_many(TASK_ID, "llm_outputs")
+        if item["output_schema"] == "AnalystAssessmentStage"
+    ]
+    require(
+        len(assessment_outputs) == 1
+        and assessment_outputs[0]["metadata"]["structured_retry_performed"]
+        is True
+        and assessment_outputs[0]["validation_status"] == "passed",
+        "Assessment structured retry 必须保留单次逻辑调用审计",
     )
 
     failed_store, failed_task = prepare_store(root / "malformed_failed")
@@ -778,18 +974,20 @@ def main() -> None:
         / "step6f_output_stability"
     )
     check_successful_assembly(root / "success")
+    check_assessment_source_boundary_guard(root / "assessment_boundary")
     check_research_agent_bridge_without_product_cards(root / "ra_bridge")
     check_no_evidence_is_blocked(root / "no_evidence")
     check_r1_verified_evidence_authority(root / "verified_authority")
     check_frontend_uses_backend_readiness()
     check_bounded_retry(root / "retry")
     check_retry_cap(root / "retry_cap")
+    check_assessment_reused_after_claim_failure(root / "assessment_resume")
     check_structured_repair(root / "structured_repair")
     check_finish_reason_is_authoritative()
     print("STEP6F_ANALYST_OUTPUT_STABILITY_CHECK_PASS")
-    print("stages=brief_profiles,claims")
-    print("normal_calls=2")
-    print("max_calls=4")
+    print("stages=brief_profiles,framework_assessment,claims")
+    print("normal_calls=3")
+    print("max_calls=6")
     print("finish_reason_length=recognized")
     print("malformed_json_central_retry=bounded_once")
     print("stage_schema_central_retry=bounded_once")

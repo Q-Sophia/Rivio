@@ -178,6 +178,7 @@ class ContextBuilder:
         feedback_tasks: list[TaskRecord] = artifacts["feedback_tasks"]
         reports = self.store.load_many(working_memory.task_id, "reports")
         report_ids = [str(item.get("id", "")) for item in reports]
+        selected_product_cards = product_cards
 
         if agent_role == AgentRole.COLLECTOR:
             selected_sources = sources
@@ -198,10 +199,13 @@ class ContextBuilder:
                 "next_expected_output": ["ProductCard"],
             }
         elif agent_role == AgentRole.ANALYST:
-            selected_sources = sources[:6]
+            # Analyst reasoning is Evidence-only. SourceDocument/ProductCard
+            # remain in the store for provenance and compatibility validation,
+            # but are not exposed in the Analyst bundle.
+            selected_sources = []
             selected_evidence = evidence
+            selected_product_cards = []
             working_context = {
-                "product_cards": [self._product_card_summary(card) for card in product_cards],
                 "evidence_by_dimension": self._count_by(evidence, "dimension"),
                 "weak_claim_ids": working_memory.weak_claim_ids,
                 "next_expected_output": ["AnalysisClaim"],
@@ -244,7 +248,7 @@ class ContextBuilder:
             "artifact_refs": self._artifact_refs(
                 selected_sources=selected_sources,
                 selected_evidence=selected_evidence,
-                product_cards=product_cards,
+                product_cards=selected_product_cards,
                 claims=claims,
                 citation_checks=citation_checks,
                 report_ids=report_ids,
@@ -252,7 +256,7 @@ class ContextBuilder:
             ),
             "source_ids": [source.id for source in selected_sources],
             "evidence_ids": [item.id for item in selected_evidence],
-            "product_card_ids": [card.id for card in product_cards],
+            "product_card_ids": [card.id for card in selected_product_cards],
             "claim_ids": [claim.id for claim in claims],
             "citation_check_ids": [check.id for check in citation_checks],
             "report_ids": report_ids,
@@ -335,7 +339,10 @@ class ContextBuilder:
         if agent_role == AgentRole.WRITER:
             return common + ["report_conclusions_require_claim_ids"]
         if agent_role == AgentRole.ANALYST:
-            return common + ["claims_require_evidence_ids"]
+            return common + [
+                "claims_require_evidence_ids",
+                "analyst_evidence_only_no_source_content",
+            ]
         if agent_role == AgentRole.COLLECTOR:
             return common + ["raw_web_results_must_be_structured"]
         return common

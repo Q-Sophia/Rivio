@@ -194,6 +194,47 @@ class EvidenceCoverageStatus(str, Enum):
     NOT_APPLICABLE = "not_applicable"
 
 
+class AnalysisAssessmentStatus(str, Enum):
+    SUFFICIENT = "SUFFICIENT"
+    PARTIAL = "PARTIAL"
+    INSUFFICIENT = "INSUFFICIENT"
+
+
+class DimensionAssessmentStatus(str, Enum):
+    COVERED = "COVERED"
+    PARTIAL = "PARTIAL"
+    MISSING = "MISSING"
+    CONFLICTING = "CONFLICTING"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+
+
+class CompletionCriterionStatus(str, Enum):
+    MET = "met"
+    UNMET = "unmet"
+    NOT_APPLICABLE = "not_applicable"
+
+
+class ResearchGapType(str, Enum):
+    MISSING_FACT = "missing_fact"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+    MISSING_SOURCE_TYPE = "missing_source_type"
+    MISSING_COMPARISON = "missing_comparison"
+    DECISION_BLOCKING = "decision_blocking"
+
+
+class ResearchGapImpact(str, Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+
+class ResearchGapOrigin(str, Enum):
+    RESEARCH_AGENT = "research_agent"
+    DETERMINISTIC_COVERAGE = "deterministic_coverage"
+    PROFESSIONAL_ANALYST = "professional_analyst"
+
+
 class ResearchActionType(str, Enum):
     SEARCH = "SEARCH"
     FETCH = "FETCH"
@@ -525,6 +566,76 @@ class ResearchBudget(BaseModel):
     stop_when_all_required_facts_covered: bool = True
 
 
+class DimensionDefinition(SchemaModel):
+    """One versioned planning dimension resolved by FrameworkRegistry."""
+
+    dimension_id: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    label: str = Field(min_length=1)
+    aliases: list[str] = Field(default_factory=list)
+    evidence_dimension: EvidenceDimension
+    research_intent: str = Field(min_length=1)
+    objective_template: str = Field(min_length=1)
+    research_questions: list[str] = Field(min_length=1)
+    required_facts: list[str] = Field(min_length=1)
+    query_templates: list[str] = Field(min_length=1)
+    preferred_source_types: list[SourceType] = Field(min_length=1)
+    comparability_basis: str = Field(min_length=1)
+    completion_criteria: list[str] = Field(min_length=1)
+    priority: TaskPriority = TaskPriority.MEDIUM
+
+    @model_validator(mode="after")
+    def validate_unique_text_values(self) -> "DimensionDefinition":
+        for field_name in (
+            "aliases",
+            "research_questions",
+            "required_facts",
+            "query_templates",
+            "completion_criteria",
+        ):
+            values = [str(item).strip() for item in getattr(self, field_name)]
+            if any(not item for item in values):
+                raise ValueError(f"{field_name} 不能包含空字符串")
+            if len({item.casefold() for item in values}) != len(values):
+                raise ValueError(f"{field_name} 不能包含重复项")
+            setattr(self, field_name, values)
+        return self
+
+
+class FrameworkDefinition(SchemaModel):
+    """Validated business definition; YAML is an implementation detail."""
+
+    framework_id: str = Field(pattern=r"^[a-z][a-z0-9_]*$")
+    version: str = Field(pattern=r"^\d+\.\d+\.\d+$")
+    name: str = Field(min_length=1)
+    description: str = ""
+    default_dimension_ids: list[str] = Field(min_length=1)
+    dimensions: list[DimensionDefinition] = Field(min_length=1)
+    content_hash: str = Field(default="", pattern=r"^(?:|[0-9a-f]{64})$")
+
+    @model_validator(mode="after")
+    def validate_dimension_index(self) -> "FrameworkDefinition":
+        dimension_ids = [item.dimension_id for item in self.dimensions]
+        if len(set(dimension_ids)) != len(dimension_ids):
+            raise ValueError("Framework dimensions 存在重复 dimension_id")
+        missing = sorted(set(self.default_dimension_ids) - set(dimension_ids))
+        if missing:
+            raise ValueError(
+                "default_dimension_ids 引用了不存在的维度: " + ", ".join(missing)
+            )
+        aliases: dict[str, str] = {}
+        for dimension in self.dimensions:
+            for value in [dimension.dimension_id, dimension.label, *dimension.aliases]:
+                key = "".join(str(value).strip().casefold().replace("-", "_").split())
+                owner = aliases.get(key)
+                if owner is not None and owner != dimension.dimension_id:
+                    raise ValueError(
+                        f"Framework dimension alias 冲突: {value!r} 同时属于 "
+                        f"{owner} 与 {dimension.dimension_id}"
+                    )
+                aliases[key] = dimension.dimension_id
+        return self
+
+
 class ResearchTask(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("researchtask"))
     task_id: str
@@ -547,6 +658,31 @@ class ResearchTask(SchemaModel):
     collection_round: int = Field(default=1, ge=1, le=10)
     parent_research_task_id: str = ""
     research_gap_id: str = ""
+    framework_id: str = Field(default="", pattern=r"^(?:|[a-z][a-z0-9_]*)$")
+    framework_version: str = Field(default="", pattern=r"^(?:|\d+\.\d+\.\d+)$")
+    framework_dimension_id: str = Field(
+        default="",
+        pattern=r"^(?:|[a-z][a-z0-9_]*)$",
+    )
+    framework_content_hash: str = Field(
+        default="",
+        pattern=r"^(?:|[0-9a-f]{64})$",
+    )
+
+    @model_validator(mode="after")
+    def validate_framework_provenance(self) -> "ResearchTask":
+        framework_values = (
+            self.framework_id,
+            self.framework_version,
+            self.framework_dimension_id,
+            self.framework_content_hash,
+        )
+        populated = [bool(str(value).strip()) for value in framework_values]
+        if any(populated) and not all(populated):
+            raise ValueError("ResearchTask framework provenance 必须完整填写")
+        if self.schema_version == "v2" and not all(populated):
+            raise ValueError("ResearchTask v2 必须绑定完整 Framework provenance")
+        return self
 
 
 class ResearchAgentBudget(BaseModel):
@@ -1396,6 +1532,135 @@ class AnalystClaimsStage(SchemaModel):
     )
 
 
+class AnalystDimensionAssessmentDraft(BaseModel):
+    """Semantic LLM output; application code owns identity and scores."""
+
+    dimension_id: str
+    competitor: str
+    status: DimensionAssessmentStatus
+    covered_facts: list[str] = Field(default_factory=list)
+    missing_facts: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    completion_criteria_evaluations: list["CompletionCriterionEvaluation"] = Field(
+        default_factory=list,
+        description=(
+            "Preferred stable-ID criterion partition; include every scope criterion once."
+        ),
+    )
+    completion_criteria_met: list[str] = Field(
+        default_factory=list,
+        description="Legacy text projection; leave empty when ID evaluations are used.",
+    )
+    completion_criteria_unmet: list[str] = Field(
+        default_factory=list,
+        description="Legacy text projection; leave empty when ID evaluations are used.",
+    )
+    completion_criteria_not_applicable: list[str] = Field(
+        default_factory=list,
+        description="Legacy text projection for conditional criteria.",
+    )
+    reasoning: str
+    decision_impact: str
+
+
+class CompletionCriterionEvaluation(BaseModel):
+    criterion_id: str = Field(pattern=r"^criterion_[0-9a-f]{12}$")
+    status: CompletionCriterionStatus
+
+
+class AssessmentInsight(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("assessmentinsight"))
+    task_id: str
+    summary: str
+    dimension_id: str
+    competitors: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.5, ge=0.0, le=1.0)
+    decision_impact: str
+
+
+class AnalystAssessmentInsightDraft(BaseModel):
+    summary: str
+    dimension_id: str
+    competitors: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    confidence: float = Field(default=0.5, ge=0.0, le=1.0)
+    decision_impact: str
+
+
+class AnalystResearchGapDraft(BaseModel):
+    dimension_id: str
+    competitors: list[str] = Field(default_factory=list)
+    gap_type: ResearchGapType
+    impact: ResearchGapImpact
+    missing_facts: list[str] = Field(default_factory=list)
+    missing_information: str
+    why_existing_evidence_is_insufficient: str
+    suggested_queries: list[str] = Field(default_factory=list)
+    preferred_source_types: list[str] = Field(default_factory=list)
+    blocks_decision: bool = False
+    decision_blocked: str
+    stop_condition: str
+
+
+class AnalystAssessmentStage(SchemaModel):
+    """One bounded Framework-aware critique stage from the existing Analyst."""
+
+    id: str = Field(default_factory=lambda: new_id("analyststage"))
+    task_id: str
+    dimension_assessments: list[AnalystDimensionAssessmentDraft] = Field(
+        default_factory=list,
+        min_length=1,
+        max_length=48,
+    )
+    insights: list[AnalystAssessmentInsightDraft] = Field(
+        default_factory=list,
+        max_length=12,
+    )
+    research_gaps: list[AnalystResearchGapDraft] = Field(
+        default_factory=list,
+        max_length=24,
+    )
+
+
+class DimensionAssessment(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("dimensionassessment"))
+    task_id: str
+    research_task_ids: list[str] = Field(default_factory=list)
+    dimension_id: str
+    evidence_dimension: str
+    competitor: str
+    status: DimensionAssessmentStatus
+    coverage_score: float = Field(default=0.0, ge=0.0, le=1.0)
+    covered_facts: list[str] = Field(default_factory=list)
+    missing_facts: list[str] = Field(default_factory=list)
+    evidence_ids: list[str] = Field(default_factory=list)
+    completion_criteria_evaluations: list[CompletionCriterionEvaluation] = Field(
+        default_factory=list
+    )
+    completion_criteria_met: list[str] = Field(default_factory=list)
+    completion_criteria_unmet: list[str] = Field(default_factory=list)
+    completion_criteria_not_applicable: list[str] = Field(default_factory=list)
+    reasoning: str
+    decision_impact: str
+
+    @model_validator(mode="after")
+    def validate_fact_partition(self) -> "DimensionAssessment":
+        overlap = set(self.covered_facts) & set(self.missing_facts)
+        if overlap:
+            raise ValueError(
+                "covered_facts 与 missing_facts 不能重叠: "
+                + ", ".join(sorted(overlap))
+            )
+        if self.status == DimensionAssessmentStatus.COVERED.value and (
+            self.missing_facts or self.completion_criteria_unmet
+        ):
+            raise ValueError("COVERED dimension 不能包含缺失事实或未满足标准")
+        if self.status == DimensionAssessmentStatus.MISSING.value and self.evidence_ids:
+            raise ValueError("MISSING dimension 不能引用支持性 Evidence")
+        return self
+
+
 class ResearchGap(SchemaModel):
     id: str = Field(default_factory=lambda: new_id("gap"))
     task_id: str
@@ -1409,6 +1674,36 @@ class ResearchGap(SchemaModel):
     priority: TaskPriority = TaskPriority.MEDIUM
     stop_condition: str
     related_evidence_ids: list[str] = Field(default_factory=list)
+    gap_type: ResearchGapType = ResearchGapType.MISSING_FACT
+    impact: ResearchGapImpact = ResearchGapImpact.MEDIUM
+    origin: ResearchGapOrigin = ResearchGapOrigin.DETERMINISTIC_COVERAGE
+    missing_facts: list[str] = Field(default_factory=list)
+    assessment_id: str = ""
+    framework_id: str = ""
+    framework_version: str = ""
+    framework_dimension_id: str = ""
+    framework_content_hash: str = ""
+    research_task_ids: list[str] = Field(default_factory=list)
+    blocks_decision: bool = False
+
+
+class AnalysisAssessment(SchemaModel):
+    id: str = Field(default_factory=lambda: new_id("assessment"))
+    pipeline_id: str
+    task_id: str
+    assessment_round: int = Field(default=1, ge=1)
+    framework_id: str
+    framework_version: str
+    framework_content_hash: str
+    evidence_batch_hash: str
+    evidence_ids: list[str] = Field(default_factory=list)
+    overall_status: AnalysisAssessmentStatus
+    coverage_score: float = Field(default=0.0, ge=0.0, le=1.0)
+    dimension_assessments: list[DimensionAssessment] = Field(default_factory=list)
+    insights: list[AssessmentInsight] = Field(default_factory=list)
+    research_gaps: list[ResearchGap] = Field(default_factory=list)
+    analyst_agent_run_id: str
+    created_at: datetime = Field(default_factory=utc_now)
 
 
 class CompetitiveAnalysisPortfolioV2(SchemaModel):

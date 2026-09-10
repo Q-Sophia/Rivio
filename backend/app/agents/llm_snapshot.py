@@ -1,6 +1,12 @@
 from __future__ import annotations
 
 from app.context import build_context_memory_artifacts
+from app.analysis_assessment import (
+    compute_evidence_batch_hash,
+    materialize_analysis_assessment,
+    merge_research_gaps,
+    resolve_framework_assessment_binding,
+)
 from app.agents.snapshot import (
     AnalystAgent,
     ExtractorAgent,
@@ -23,24 +29,27 @@ from app.llm.structured import (
 from app.schemas import (
     AgentContext,
     AgentResult,
+    AnalysisAssessment,
     AnalysisClaim,
     AnalysisClaimV2,
     AnalysisTask,
+    AnalystAssessmentStage,
     AnalystBriefProfilesStage,
     AnalystClaimsStage,
     BriefAssessment,
     CitationCheck,
     ComparabilityNote,
     CompetitiveAnalysisPortfolioV2,
-    CompetitiveReport,
     CompetitorProfile,
     ContextBundle,
     EvidenceCoverage,
+    FrameworkDefinition,
     InformationNeed,
     KeyIntelligenceQuestion,
     LLMMode,
     ProductCard,
     ResearchGap,
+    ResearchTask,
     ReportStatement,
     SourceDocument,
     SourceEvidence,
@@ -323,8 +332,10 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                     "research_plans",
                     "research_kiqs",
                     "research_information_needs",
+                    "research_tasks",
                     "evidence_coverage",
                     "research_gaps",
+                    "analysis_assessments",
                 ]
             )
         raw = self.load_many(context, artifact_types)
@@ -384,8 +395,8 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             )
         runtime_prompt = prompt.build_runtime_prompt(task)
         llm_artifacts = {
-            **raw,
             "analysis_task": [task.model_dump(mode="json")],
+            "evidence": [item.model_dump(mode="json") for item in evidence],
         }
         try:
             bundle = self.load_context_bundle(context)
@@ -501,10 +512,9 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         evidence: list[SourceEvidence],
         product_cards: list[ProductCard],
     ) -> AgentResult:
-        """Build Step6F Portfolio from two bounded LLM outputs plus upstream facts."""
+        """Build Step6F Portfolio from bounded brief, assessment and claim stages."""
 
         deduped_evidence = self._dedupe_evidence(evidence)
-        source_by_id = {item.id: item for item in sources}
         bundle = self.load_context_bundle(context)
 
         brief_raw, brief_call_count, brief_input_count = self._run_analysis_stage(
@@ -525,11 +535,101 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                     max_per_competitor=5 if strict else 8,
                     max_total=20 if strict else 32,
                 ),
-                source_by_id=source_by_id,
-                product_cards=product_cards,
             ),
         )
         brief_stage = AnalystBriefProfilesStage(**brief_raw.get("item", {}))
+
+        research_tasks = [
+            ResearchTask(**item) for item in raw.get("research_tasks", [])
+        ]
+        binding = resolve_framework_assessment_binding(
+            task=task,
+            research_tasks=research_tasks,
+            framework_payload=context.metadata.get("framework_definition"),
+        )
+        evidence_batch_hash = str(
+            context.metadata.get("evidence_batch_hash")
+            or compute_evidence_batch_hash(deduped_evidence)
+        )
+        pipeline_id = str(
+            context.metadata.get("pipeline_id")
+            or f"standalone_analysis_{context.task_id}"
+        )
+        existing_assessments = [
+            AnalysisAssessment(**item)
+            for item in raw.get("analysis_assessments", [])
+        ]
+        assessment = next(
+            (
+                item
+                for item in reversed(existing_assessments)
+                if item.pipeline_id == pipeline_id
+                and item.framework_content_hash == binding.framework.content_hash
+                and item.evidence_batch_hash == evidence_batch_hash
+            ),
+            None,
+        )
+        assessment_call_count = 0
+        assessment_input_count = 0
+        if assessment is None:
+            assessment_prompt = self.prompt_registry.load(
+                "competitive_analysis_assessment",
+                allow_candidate=True,
+            )
+            assessment_raw, assessment_call_count, assessment_input_count = (
+                self._run_analysis_stage(
+                    context=context,
+                    bundle=bundle,
+                    prompt=assessment_prompt,
+                    stage="framework_assessment",
+                    output_schema="AnalystAssessmentStage",
+                    prompt_summary=assessment_prompt.build_runtime_prompt(task),
+                    artifact_factory=lambda strict: (
+                        self._assessment_stage_artifacts(
+                            task=task,
+                            evidence=self._select_stage_evidence(
+                                deduped_evidence,
+                                max_per_competitor=12 if strict else 20,
+                                max_total=48 if strict else 80,
+                            ),
+                            research_tasks=research_tasks,
+                            framework=binding.framework,
+                            scope=binding.scope,
+                        )
+                    ),
+                )
+            )
+            assessment_stage = AnalystAssessmentStage(
+                **assessment_raw.get("item", {})
+            )
+            assessment_round = int(
+                context.metadata.get("assessment_round")
+                or len(existing_assessments) + 1
+            )
+            assessment = materialize_analysis_assessment(
+                stage=assessment_stage,
+                binding=binding,
+                evidence=deduped_evidence,
+                task=task,
+                pipeline_id=pipeline_id,
+                assessment_round=assessment_round,
+                analyst_agent_run_id=self.agent_run_id(context),
+                evidence_batch_hash=evidence_batch_hash,
+            )
+            self.save_many(
+                context,
+                "analysis_assessments",
+                [*existing_assessments, assessment],
+                "Framework AnalysisAssessment 已持久化，可供失败恢复复用",
+            )
+
+        upstream_gaps = [
+            ResearchGap(**item) for item in raw.get("research_gaps", [])
+        ]
+        merged_gaps = merge_research_gaps(
+            upstream_gaps,
+            assessment.research_gaps,
+        )
 
         claims_raw, claims_call_count, claims_input_count = self._run_analysis_stage(
             context=context,
@@ -550,15 +650,13 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                     max_per_competitor=8 if strict else 16,
                     max_total=32 if strict else 60,
                 ),
-                source_by_id=source_by_id,
-                product_cards=product_cards,
                 competitor_profiles=brief_stage.competitor_profiles,
             ),
         )
         claims_stage = AnalystClaimsStage(**claims_raw.get("item", {}))
 
         coverage = [EvidenceCoverage(**item) for item in raw["evidence_coverage"]]
-        gaps = [ResearchGap(**item) for item in raw["research_gaps"]]
+        gaps = merged_gaps
         questions = [
             KeyIntelligenceQuestion(**item) for item in raw["research_kiqs"]
         ]
@@ -589,16 +687,23 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             metadata={
                 "source": "step6f_research_analysis",
                 "assembly": "python_deterministic_v1",
-                "llm_stage_count": 2,
-                "llm_call_count": brief_call_count + claims_call_count,
+                "llm_stage_count": 3,
+                "llm_call_count": (
+                    brief_call_count
+                    + assessment_call_count
+                    + claims_call_count
+                ),
                 "stage_input_evidence_counts": {
                     "brief_profiles": brief_input_count,
+                    "framework_assessment": assessment_input_count,
                     "claims": claims_input_count,
                 },
                 "deduped_evidence_count": len(deduped_evidence),
                 "raw_evidence_count": len(evidence),
                 "upstream_coverage_preserved": True,
                 "upstream_research_gaps_preserved": True,
+                "analysis_assessment_id": assessment.id,
+                "analysis_assessment_status": assessment.overall_status,
                 "prompt_hash": prompt.content_hash,
                 "prompt_status": prompt.status,
             },
@@ -627,7 +732,16 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             "claims_v2": portfolio.items,
             "claims": claims,
             "analysis_evidence_coverage": portfolio.evidence_coverage,
-            "analysis_research_gaps": portfolio.research_gaps,
+            "analysis_research_gaps": merged_gaps,
+            "research_gaps": merged_gaps,
+            "analysis_assessments": [
+                *[
+                    item
+                    for item in existing_assessments
+                    if item.id != assessment.id
+                ],
+                assessment,
+            ],
         }
         for artifact_type, items in artifacts_to_save.items():
             self.save_many(
@@ -639,10 +753,12 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         return self.make_result(
             context,
             output_summary=(
-                f"通过 2 个有界结构化阶段组装专业分析："
+                f"通过 3 个有界结构化阶段组装专业分析："
                 f"{len(portfolio.competitor_profiles)} 个竞品画像、"
                 f"{len(portfolio.items)} 个 V2 结论；"
-                f"本次实际 LLM 调用 {brief_call_count + claims_call_count} 次"
+                "Framework 评估状态 "
+                f"{assessment.overall_status}；本次实际 LLM 调用 "
+                f"{brief_call_count + assessment_call_count + claims_call_count} 次"
             ),
             output_artifacts={
                 artifact_type: [item.id for item in items]
@@ -771,44 +887,43 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         *,
         task: AnalysisTask,
         evidence: list[SourceEvidence],
-        source_by_id: dict[str, SourceDocument],
-        product_cards: list[ProductCard],
         competitor_profiles: list[CompetitorProfile] | None = None,
     ) -> dict[str, list]:
-        evidence_ids = {item.id for item in evidence}
-        source_ids = {item.source_id for item in evidence}
-        cards = [
-            card.model_copy(
-                update={
-                    "source_ids": [
-                        item for item in card.source_ids if item in source_ids
-                    ],
-                    "evidence_ids": [
-                        item for item in card.evidence_ids if item in evidence_ids
-                    ],
-                    "target_users": card.target_users[:4],
-                    "core_features": card.core_features[:6],
-                    "strengths": card.strengths[:4],
-                    "weaknesses": card.weaknesses[:4],
-                }
-            ).model_dump(mode="json")
-            for card in product_cards
-        ]
         result = {
             "analysis_task": [task.model_dump(mode="json")],
-            "sources": [
-                source_by_id[source_id].model_dump(mode="json")
-                for source_id in sorted(source_ids)
-                if source_id in source_by_id
-            ],
             "evidence": [item.model_dump(mode="json") for item in evidence],
-            "product_cards": cards,
         }
         if competitor_profiles is not None:
             result["competitor_profiles"] = [
                 item.model_dump(mode="json") for item in competitor_profiles
             ]
         return result
+
+    @staticmethod
+    def _assessment_stage_artifacts(
+        *,
+        task: AnalysisTask,
+        evidence: list[SourceEvidence],
+        research_tasks: list[ResearchTask],
+        framework: FrameworkDefinition,
+        scope: list[dict],
+    ) -> dict[str, list]:
+        scoped_task_ids = {
+            task_id
+            for item in scope
+            for task_id in item.get("research_task_ids", [])
+        }
+        return {
+            "analysis_task": [task.model_dump(mode="json")],
+            "framework_definition": [framework.model_dump(mode="json")],
+            "assessment_scope": scope,
+            "research_tasks": [
+                item.model_dump(mode="json")
+                for item in research_tasks
+                if not scoped_task_ids or item.id in scoped_task_ids
+            ],
+            "evidence": [item.model_dump(mode="json") for item in evidence],
+        }
 
 
 class LLMWriterAgent(LLMSnapshotAgent, WriterAgent):
@@ -904,7 +1019,6 @@ class LLMProfessionalWriterAgent(LLMSnapshotAgent, WriterAgent):
         raw = self.load_many(context, artifact_types)
         briefs = [BriefAssessment(**item) for item in raw["brief_assessments"]]
         profiles = [CompetitorProfile(**item) for item in raw["competitor_profiles"]]
-        coverage = [EvidenceCoverage(**item) for item in raw["evidence_coverage"]]
         notes = [ComparabilityNote(**item) for item in raw["comparability_notes"]]
         claims_v2 = [AnalysisClaimV2(**item) for item in raw["claims_v2"]]
         gaps = [ResearchGap(**item) for item in raw["research_gaps"]]

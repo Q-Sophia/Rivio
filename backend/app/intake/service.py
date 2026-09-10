@@ -44,7 +44,7 @@ def build_intent_llm_config(*, force_mock: bool = False) -> LLMConfig:
         default_timeout_seconds=90,
         default_max_tokens=3000,
         temperature=0.1,
-        max_retries=1,
+        max_retries=3,
         retry_base_seconds=1.0,
     )
 

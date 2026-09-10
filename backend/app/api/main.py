@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app.harness.artifacts import ArtifactStore
+from app.harness.pipeline import get_research_pipeline_harness
 from app.execution import (
     ResearchAnalysisOutputTruncatedError,
     get_execution_runner,
@@ -48,6 +49,7 @@ from app.schemas import (
 
 ARTIFACT_ENDPOINTS = {
     "sources": "sources",
+    "source-chunks": "source_chunks",
     "evidence": "evidence",
     "product-cards": "product_cards",
     "claims": "claims",
@@ -85,6 +87,7 @@ ARTIFACT_ENDPOINTS = {
     "research-loop-events": "research_loop_events",
     "analysis-evidence-coverage": "analysis_evidence_coverage",
     "analysis-research-gaps": "analysis_research_gaps",
+    "analysis-assessments": "analysis_assessments",
     "research-agent-runs": "research_agent_runs",
     "research-agent-actions": "research_agent_actions",
     "research-agent-observations": "research_agent_observations",
@@ -92,6 +95,10 @@ ARTIFACT_ENDPOINTS = {
     "research-agent-coordinator-events": "research_agent_coordinator_events",
     "research-task-failures": "research_task_failures",
     "research-batch-results": "research_batch_results",
+    "agent-handoffs": "agent_handoffs",
+    "pipeline-runs": "pipeline_runs",
+    "pipeline-checkpoints": "pipeline_checkpoints",
+    "pipeline-events": "pipeline_events",
 }
 
 FRONTEND_DIR = Path(__file__).resolve().parents[3] / "frontend"
@@ -121,8 +128,17 @@ class StartResearchAgentCoordinatorRequest(BaseModel):
     mode: str = "deepseek"
     acknowledge_real_llm_call: bool = False
 
+
+class StartResearchPipelineRequest(BaseModel):
+    mode: str = "deepseek"
+    acknowledge_real_llm_call: bool = False
+
 def get_store() -> ArtifactStore:
     return ArtifactStore()
+
+
+def enum_value(value: Any) -> str:
+    return str(getattr(value, "value", value))
 
 
 def validate_path_segment(value: str, label: str) -> str:
@@ -457,6 +473,7 @@ def build_task_workspace(task_id: str) -> dict[str, Any]:
         "run": None,
         "summary": optional_latest_from_dir(task_dir, "pipeline_summary"),
         "sources": optional_list_from_dir(task_dir, "sources"),
+        "sourceChunks": optional_list_from_dir(task_dir, "source_chunks"),
         "evidence": optional_list_from_dir(task_dir, "evidence"),
         "productCards": optional_list_from_dir(task_dir, "product_cards"),
         "claims": optional_list_from_dir(task_dir, "claims"),
@@ -1174,6 +1191,199 @@ async def stream_research_agent_coordinator_events(
             "Cache-Control": "no-cache",
             "X-Accel-Buffering": "no",
         },
+    )
+
+
+def research_pipeline_status_payload(task_id: str) -> dict[str, Any]:
+    harness = get_research_pipeline_harness()
+    run = harness.reconcile_interrupted(task_id)
+    if run is None:
+        raise HTTPException(
+            status_code=404,
+            detail="该任务尚未启动统一多 Agent Pipeline。",
+        )
+
+    coordinator = get_research_agent_coordinator()
+    research_run = coordinator.get_latest_run(task_id)
+    compatibility_run = (
+        research_run.model_dump(mode="json")
+        if research_run is not None
+        else {
+            "total_tasks": 0,
+            "completed_tasks": 0,
+            "failed_tasks": 0,
+            "outcomes": {},
+            "current_collection_round": 0,
+            "max_collection_rounds": 0,
+            "current_round_total": 0,
+            "current_round_completed": 0,
+            "current_research_task_id": "",
+        }
+    )
+    compatibility_run.update(
+        {
+            "id": run.id,
+            "task_id": run.task_id,
+            "status": enum_value(run.status),
+            "current_stage": enum_value(run.current_stage),
+            "progress_percent": run.progress_percent,
+            "completed_stages": list(run.completed_stages),
+            "message": run.message,
+            "error": run.error,
+            "stop_reason": run.stop_reason,
+            "resume_count": run.resume_count,
+            "last_checkpoint_id": run.last_checkpoint_id,
+        }
+    )
+    events = harness.get_events(task_id)
+    return {
+        "pipeline_run": run.model_dump(mode="json"),
+        # Compatibility projection keeps the existing research progress UI and
+        # API clients working while lifecycle ownership moves to the Harness.
+        "research_agent_coordinator_run": compatibility_run,
+        "events": [item.model_dump(mode="json") for item in events],
+        "terminal": enum_value(run.status)
+        in {"completed", "failed", "stopped", "interrupted"},
+    }
+
+
+@app.post("/api/analysis-tasks/{task_id}/pipeline/run", status_code=202)
+def start_research_pipeline(
+    task_id: str,
+    request: StartResearchPipelineRequest,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        run = get_research_pipeline_harness().submit(
+            task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    payload = research_pipeline_status_payload(task_id)
+    planning_service = ResearchPlanningService()
+    plan = planning_service.get_latest_plan(task_id)
+    payload.update(
+        {
+            "research_plan": (
+                planning_service.get_payload(task_id) if plan is not None else None
+            ),
+            "pipeline_started": enum_value(run.status) != "completed",
+            "message": (
+                "统一 Harness 已接管自动流程：Planner → Research → Analyst → "
+                "Citation → Writer → Reviewer → QualityGate。"
+            ),
+        }
+    )
+    return payload
+
+
+@app.get("/api/analysis-tasks/{task_id}/pipeline/run")
+def get_research_pipeline_run(task_id: str) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    return research_pipeline_status_payload(task_id)
+
+
+@app.post("/api/analysis-tasks/{task_id}/pipeline/run/resume", status_code=202)
+def resume_research_pipeline(
+    task_id: str,
+    request: StartResearchPipelineRequest,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        get_research_pipeline_harness().submit(
+            task_id,
+            mode=request.mode,
+            acknowledge_real_llm_call=request.acknowledge_real_llm_call,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    return research_pipeline_status_payload(task_id)
+
+
+@app.post("/api/analysis-tasks/{task_id}/pipeline/run/stop")
+def stop_research_pipeline(task_id: str) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    try:
+        run = get_research_pipeline_harness().request_stop(task_id)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    payload = research_pipeline_status_payload(task_id)
+    payload["stop_requested"] = enum_value(run.status) in {"stopping", "stopped"}
+    return payload
+
+
+@app.get("/api/analysis-tasks/{task_id}/pipeline/run/events")
+def get_research_pipeline_events(
+    task_id: str,
+    after: int = 0,
+) -> dict[str, Any]:
+    validate_path_segment(task_id, "task_id")
+    events = get_research_pipeline_harness().get_events(
+        task_id,
+        after=max(after, 0),
+    )
+    return {"events": [item.model_dump(mode="json") for item in events]}
+
+
+@app.get("/api/analysis-tasks/{task_id}/pipeline/run/events/stream")
+async def stream_research_pipeline_events(
+    task_id: str,
+    after: int = 0,
+) -> StreamingResponse:
+    validate_path_segment(task_id, "task_id")
+    harness = get_research_pipeline_harness()
+
+    async def generate():
+        cursor = max(after, 0)
+        idle_ticks = 0
+        harness.reconcile_interrupted(task_id)
+        while True:
+            harness.sync_research_events(task_id)
+            events = harness.get_events(task_id, after=cursor)
+            for event in events:
+                cursor = event.sequence
+                payload = json.dumps(
+                    event.model_dump(mode="json"),
+                    ensure_ascii=False,
+                )
+                yield (
+                    f"id: {event.sequence}\n"
+                    "event: pipeline\n"
+                    f"data: {payload}\n\n"
+                )
+                idle_ticks = 0
+
+            latest = harness.get_latest_run(task_id)
+            if (
+                latest
+                and enum_value(latest.status)
+                in {"completed", "failed", "stopped", "interrupted"}
+                and not events
+            ):
+                break
+            if latest is None and idle_ticks >= 4:
+                payload = json.dumps(
+                    {"message": "该任务尚未启动统一多 Agent Pipeline。"},
+                    ensure_ascii=False,
+                )
+                yield f"event: unavailable\ndata: {payload}\n\n"
+                break
+            idle_ticks += 1
+            if idle_ticks % 30 == 0:
+                yield ": heartbeat\n\n"
+            await asyncio.sleep(0.35)
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
 
 @app.get("/api/analysis-tasks/{task_id}/research-analysis")

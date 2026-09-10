@@ -530,9 +530,15 @@ class ResearchMissionService:
             updated = existing.model_copy(
                 update={
                     "objective": decision.research_goal,
+                    "stop_condition": (
+                        existing.stop_condition
+                        if existing.stop_condition
+                        else decision.reason
+                    ),
                     "metadata": {
                         **existing.metadata,
                         "mission_id": mission.id,
+                        "supervisor_reason": decision.reason,
                         "supervisor_decision_ids": list(
                             dict.fromkeys(
                                 [
@@ -560,13 +566,25 @@ class ResearchMissionService:
             and item.competitor.casefold() == mission.competitor.casefold()
         ]
         parent = max(parents, key=lambda item: item.collection_round) if parents else None
+        framework_provenance = (
+            {
+                "schema_version": parent.schema_version,
+                "framework_id": parent.framework_id,
+                "framework_version": parent.framework_version,
+                "framework_dimension_id": parent.framework_dimension_id,
+                "framework_content_hash": parent.framework_content_hash,
+            }
+            if parent and parent.framework_id
+            else {}
+        )
         identity = (
             f"{decision.task_id}|{mission.id}|{need.id}|{collection_round}"
         )
         research_unit = ResearchTask(
+            **framework_provenance,
             id=(
-                "researchtask_mission_"
-                + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
+                    "researchtask_mission_"
+                    + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:16]
             ),
             task_id=decision.task_id,
             information_need_id=need.id,
@@ -578,12 +596,16 @@ class ResearchMissionService:
             competitor=mission.competitor,
             dimension=normalize_dimension(need.dimension),
             research_intent=(
-                need.research_intent
-                or research_intent_for_dimension(need.dimension)
+                    need.research_intent
+                    or research_intent_for_dimension(need.dimension)
             ),
             preferred_source_types=need.preferred_source_types,
             status="waiting_for_collector",
-            stop_condition=decision.reason,
+            stop_condition=(
+                parent.stop_condition
+                if parent and parent.stop_condition
+                else decision.reason
+            ),
             collection_round=collection_round,
             parent_research_task_id=parent.id if parent else "",
             assigned_role="researcher",
@@ -591,6 +613,7 @@ class ResearchMissionService:
                 "source": "r2_mission_supervisor",
                 "mission_id": mission.id,
                 "supervisor_decision_ids": [decision.id],
+                "supervisor_reason": decision.reason,
             },
         )
         self.store.save_many(

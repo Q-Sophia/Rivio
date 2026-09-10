@@ -173,9 +173,7 @@ def main() -> None:
     task, sources, evidence, cards = build_fixture()
     artifacts = {
         "analysis_task": [task.model_dump(mode="json")],
-        "sources": [item.model_dump(mode="json") for item in sources],
         "evidence": [item.model_dump(mode="json") for item in evidence],
-        "product_cards": [item.model_dump(mode="json") for item in cards],
     }
     artifact_root = (
         Path(__file__).resolve().parent / "app" / "data" / "contract_tests"

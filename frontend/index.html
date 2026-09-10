@@ -3,12 +3,129 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="多 Agent 竞品分析助手的证据链、任务协作、大模型调用与质量治理控制台。" />
-    <title>多 Agent 竞品分析助手</title>
+    <meta name="description" content="由 AI Research Team 协作完成、证据可追溯的竞品研究工作区。" />
+    <title>AI Research Team Workspace</title>
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <div class="app-shell">
+    <div id="research-product-app" class="research-product-shell">
+      <header class="research-topbar">
+        <button id="product-home-btn" class="research-brand" type="button" aria-label="返回 Research Brief">
+          <span class="research-brand-mark">R</span>
+          <span><strong>Research Team</strong><small>Evidence-first workspace</small></span>
+        </button>
+        <nav class="research-nav" aria-label="研究流程">
+          <button class="research-nav-item active" type="button" data-product-view="brief">Research Brief</button>
+          <button class="research-nav-item" type="button" data-product-view="workspace">Team Workspace</button>
+          <button class="research-nav-item" type="button" data-product-view="report">Research Report</button>
+        </nav>
+        <button id="open-diagnostics-btn" class="research-diagnostics-button" type="button">Developer Console</button>
+      </header>
+
+      <main class="research-main">
+        <section id="product-brief-view" class="research-page active" aria-labelledby="product-brief-title">
+          <div class="research-brief-shell">
+            <div id="product-brief-input-state" class="research-brief-state active">
+              <p class="research-eyebrow">AI RESEARCH TEAM</p>
+              <h1 id="product-brief-title">把一个研究问题，交给一支 AI 团队</h1>
+              <p class="research-brief-intro">Planner 拆解问题，Research Agent 搜集证据，Analyst 与 Citation 形成可验证结论，Writer 和 Reviewer 完成报告。</p>
+              <div class="research-prompt-card">
+                <textarea id="product-research-request" rows="7" placeholder="描述你想研究的市场、产品或竞争问题，以及这项研究需要帮助你做出的决策。"></textarea>
+                <div class="research-prompt-footer">
+                  <span>公开来源 · 逐条验证 · 结论可追溯</span>
+                  <button id="product-parse-brief-btn" class="research-primary-button" type="button">生成 Research Brief <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+              <div class="research-examples" aria-label="研究示例">
+                <button type="button" data-product-example="对比豆包与千问的产品能力、商业模式与生态，帮助企业产品团队判断自研 AI 助手的差异化机会。">AI 助手竞争格局</button>
+                <button type="button" data-product-example="分析飞书、钉钉和企业微信在企业协作场景中的功能基线、技术接入和商业模式。">企业协作产品对标</button>
+                <button type="button" data-product-example="研究 Notion、Obsidian 和飞书知识库的核心场景与产品路线，识别知识管理产品的机会。">知识管理产品机会</button>
+              </div>
+              <p id="product-brief-input-status" class="research-inline-status" aria-live="polite"></p>
+            </div>
+
+            <div id="product-brief-confirm-state" class="research-brief-state" aria-live="polite">
+              <button id="product-edit-brief-btn" class="research-back-button" type="button">← 修改研究问题</button>
+              <p class="research-eyebrow">RESEARCH BRIEF</p>
+              <h1>确认团队要解决的问题</h1>
+              <p class="research-brief-intro">这里只确认研究边界；确认后任务会保存，但不会自动启动。</p>
+              <article class="research-brief-summary">
+                <label><span>研究目标</span><textarea id="product-brief-decision" rows="3" aria-label="研究目标"></textarea></label>
+                <label><span>研究对象</span><input id="product-brief-competitors" type="text" aria-label="研究对象" /></label>
+                <label><span>关注重点</span><input id="product-brief-focus" type="text" aria-label="关注重点" /></label>
+                <label><span>报告主题</span><input id="product-brief-subject" type="text" aria-label="报告主题" /></label>
+              </article>
+              <div class="research-confirm-actions">
+                <p id="product-brief-confirm-status" class="research-inline-status">请检查 Research Brief 后确认。</p>
+                <button id="product-confirm-brief-btn" class="research-primary-button" type="button">确认并开始研究 <span aria-hidden="true">→</span></button>
+                <button id="product-launch-research-btn" class="research-primary-button hidden" type="button">重新尝试启动研究 <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="product-workspace-view" class="research-page" aria-labelledby="workspace-title">
+          <div class="workspace-product-header">
+            <div>
+              <p class="research-eyebrow">LIVE TEAM WORKSPACE</p>
+              <h1 id="workspace-title">AI Research Team Workspace</h1>
+              <p id="product-workspace-query">选择或启动一项研究任务。</p>
+            </div>
+            <div class="workspace-header-status">
+              <div class="workspace-progress-copy"><span id="product-workspace-status">等待任务</span><strong id="product-workspace-progress">0%</strong></div>
+              <div class="workspace-progress-track"><span id="product-workspace-progress-bar"></span></div>
+              <button id="product-stop-research-btn" class="research-secondary-button hidden" type="button">中止研究</button>
+            </div>
+          </div>
+
+          <section class="agent-pipeline-panel" aria-labelledby="agent-pipeline-title">
+            <div class="workspace-section-heading"><div><p class="research-eyebrow">TEAM PIPELINE</p><h2 id="agent-pipeline-title">Agent Pipeline</h2></div><span id="agent-pipeline-gate"></span></div>
+            <div id="product-agent-pipeline" class="agent-pipeline"></div>
+          </section>
+
+          <div class="workspace-product-grid">
+            <section class="activity-stream-panel" aria-labelledby="activity-stream-title">
+              <div class="workspace-section-heading sticky-heading"><div><p class="research-eyebrow">LIVE ACTIONS</p><h2 id="activity-stream-title">Agent Activity Stream</h2></div><span id="product-activity-count">0 actions</span></div>
+              <div id="product-activity-stream" class="agent-activity-stream" aria-live="polite"></div>
+            </section>
+
+            <aside class="evidence-workbench workspace-evidence-links" aria-label="Selected Evidence Chain">
+              <section class="selected-evidence-section">
+                <div class="workspace-section-heading sticky-heading"><div><p class="research-eyebrow">LIVE SOURCES</p><h2>Selected Evidence Chain</h2></div><span id="product-workspace-evidence-count">0 links</span></div>
+                <div id="product-selected-evidence-chain" class="selected-evidence-chain workspace-evidence-link-list" aria-live="polite"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section id="product-report-view" class="research-page" aria-labelledby="product-report-title">
+          <div id="product-report-layout" class="product-report-layout">
+            <article class="product-report-document">
+              <header class="product-report-header">
+                <p class="research-eyebrow">RESEARCH REPORT</p>
+                <h1 id="product-report-title">Research Report</h1>
+                <p id="product-report-meta">报告尚未生成。</p>
+              </header>
+              <p class="product-report-reading-guide">带“查看证据”标记的段落支持鼠标悬停、点击和键盘聚焦；证据栏收起后，点击任意可追溯段落会自动重新展开。内部审计编号不会出现在报告正文中。</p>
+              <div id="product-report-body" class="product-report-body report-markdown"></div>
+            </article>
+            <aside id="product-report-evidence-panel" class="product-report-evidence-panel">
+              <div class="workspace-section-heading sticky-heading product-report-evidence-heading">
+                <div><p class="research-eyebrow">EVIDENCE TRACE</p><h2>证据追溯</h2></div>
+                <button id="product-report-evidence-toggle" class="evidence-toggle" type="button" aria-expanded="true" aria-controls="product-report-evidence-detail" aria-label="收起证据追溯栏">收起</button>
+              </div>
+              <div class="product-report-trace-status"><span id="product-report-evidence-status">未选择</span></div>
+              <div id="product-report-evidence-detail" class="product-report-evidence-detail report-evidence-detail" aria-live="polite">
+                将鼠标移到报告中的关键论点上，右侧会显示对应的分析结论、证据摘录和来源链接。
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="diagnostics-app" class="app-shell hidden">
+      <button id="exit-diagnostics-btn" class="diagnostics-exit-button" type="button">← 退出 Developer Console</button>
       <aside class="sidebar">
         <div class="brand">
           <div class="brand-mark">CI</div>
@@ -158,7 +275,7 @@
               </div>
             </div>
             <div class="confirm-row">
-              <p>确认后会保存 AnalysisTask（分析任务）；点击“开始自动研究”时，后端会自动准备或复用研究计划，不会启动旧 Snapshot 六步流程。</p>
+              <p>确认后会保存 AnalysisTask（分析任务）；点击“开始自动流水线”后，统一 Harness 会自动推进研究、分析、引用检查、写作、审查和质量闸门。</p>
               <button id="confirm-draft-btn" class="primary-action" type="button" disabled>确认任务（不启动分析）</button>
             </div>
             <div id="confirmed-task" class="confirmed-task hidden"></div>
@@ -173,7 +290,7 @@
               <span id="research-plan-status" class="count-label">尚未规划</span>
             </div>
             <div class="planning-boundary">
-              <p id="research-plan-copy">开始自动研究后，后端会自动准备或复用 ResearchPlan / ResearchTask；用户无需单独生成计划。</p>
+              <p id="research-plan-copy">开始自动流水线后，后端会自动准备或复用 ResearchPlan / ResearchTask；用户无需单独生成计划。</p>
               <button id="build-research-plan-btn" class="primary-action hidden" type="button" aria-hidden="true" tabindex="-1">生成研究计划（兼容入口）</button>
             </div>
             <div id="research-plan-result" class="hidden">
@@ -192,19 +309,19 @@
               <section id="research-loop-runtime" class="research-loop-runner">
                 <div class="panel-heading">
                   <div>
-                    <p class="panel-kicker">Research &amp; Evidence Agent（研究与证据智能体）</p>
-                    <h3>围绕研究任务自动搜索、阅读并提交可验证证据</h3>
+                    <p class="panel-kicker">Multi-Agent Pipeline（统一多智能体流水线）</p>
+                    <h3>从研究计划自动推进到报告质量闸门</h3>
                   </div>
                   <span id="research-loop-status" class="count-label">等待启动</span>
                 </div>
                 <div class="runner-controls">
-                  <p class="queue-boundary-note">后端会先自动准备研究计划，再由 Research &amp; Evidence Agent 在有限步骤和来源预算内研究；每个 ResearchTask 会明确返回 COMPLETE、PARTIAL 或 EXHAUSTED。</p>
+                  <p class="queue-boundary-note">统一 Harness 管理 Planner、Research、Analyst、Citation、Writer、Reviewer 的生命周期、结构化交接与 checkpoint；ResearchTask 仍受步骤和来源预算约束。</p>
                   <div class="runner-actions">
-                    <button id="start-research-loop-btn" class="primary-action" type="button">开始自动研究</button>
+                    <button id="start-research-loop-btn" class="primary-action" type="button">开始自动流水线</button>
                     <button id="stop-research-loop-btn" class="danger-action hidden" type="button" disabled>中止任务</button>
                   </div>
                 </div>
-                <div class="execution-progress" aria-label="自动研究进度">
+                <div class="execution-progress" aria-label="多智能体流水线进度">
                   <div id="research-loop-progress-bar" class="execution-progress-bar" style="width: 0%"></div>
                 </div>
                 <div class="execution-progress-copy">
@@ -215,13 +332,13 @@
                 <div id="research-loop-event-list" class="execution-event-list"></div>
                 <div id="research-loop-result" class="confirmed-task hidden"></div>
                 <div class="planning-boundary">
-                  <p id="research-analysis-copy">只要已有可引用证据和 ProductCard，就可以显式调用两阶段 DeepSeek Analyst（分析智能体）形成阶段性结论；通常 2 次调用，只有长度截断时才有限重试，最多 4 次。未覆盖内容会保留为 ResearchGap。</p>
-                  <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>调用 DeepSeek 生成分析结论（通常 2 次）</button>
+                  <p id="research-analysis-copy">自动流水线会在研究结束后运行 Analyst 与 Citation；此按钮保留为故障恢复和兼容入口。</p>
+                  <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>恢复 Analyst 阶段（兼容入口）</button>
                 </div>
                 <div id="research-analysis-result" class="confirmed-task hidden"></div>
                 <div class="planning-boundary">
-                  <p id="research-reporting-copy">Analyst 与 Citation 完成后，可独立生成正式报告；Writer 会额外调用 1 次真实 DeepSeek，Reviewer 与 QualityGate 不调用大模型。</p>
-                  <button id="run-research-reporting-btn" class="primary-action" type="button" disabled>生成竞品分析报告（额外 1 次 DeepSeek）</button>
+                  <p id="research-reporting-copy">自动流水线会继续运行 Writer、Reviewer 与 QualityGate；此按钮保留为故障恢复和兼容入口。</p>
+                  <button id="run-research-reporting-btn" class="primary-action" type="button" disabled>恢复 Reporting 阶段（兼容入口）</button>
                 </div>
                 <div id="research-reporting-result" class="confirmed-task hidden"></div>
               </section>
@@ -490,6 +607,7 @@
       </main>
     </div>
 
+    <script src="./src/workspace-projection.js"></script>
     <script src="./src/app.js"></script>
   </body>
 </html>

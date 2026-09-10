@@ -26,6 +26,7 @@ from app.schemas import (
     MissionSupervisorAction,
     ResearchAgentBudget,
     ResearchAgentRun,
+    ResearchMission,
     ResearchMissionBudgetState,
     ResearchMissionState,
     ResearchPlan,
@@ -43,6 +44,7 @@ RESEARCH_BATCH_RESULTS_ARTIFACT = "research_batch_results"
 
 ACTIVE_STATUSES = {"queued", "running", "stopping"}
 TERMINAL_STATUSES = {"completed", "failed", "stopped"}
+MAX_TRANSIENT_TASK_RESUMES = 2
 SUFFICIENT_COVERAGE_STATUSES = {
     EvidenceCoverageStatus.SUFFICIENT.value,
     EvidenceCoverageStatus.NOT_APPLICABLE.value,
@@ -283,19 +285,24 @@ class ResearchAgentCoordinator:
                 "必须显式确认 Research Agent 会产生真实多轮 LLM 调用。"
             )
 
-        ResearchMissionService(store=self.store).ensure_missions(task_id)
-        research_task_ids = self._runnable_research_task_ids(task_id)
-
-        if not research_task_ids:
-            raise ValueError(
-                "当前任务没有需要自动研究的 ResearchTask。"
-            )
-
         with self._lock:
             latest = self.get_latest_run(task_id)
 
             if latest and latest.status in ACTIVE_STATUSES:
                 return latest
+
+            ResearchMissionService(store=self.store).ensure_missions(task_id)
+            requeued_task_ids = (
+                self._requeue_transient_research_tasks(task_id)
+                if latest and latest.status == "failed"
+                else []
+            )
+            research_task_ids = self._runnable_research_task_ids(task_id)
+
+            if not research_task_ids:
+                raise ValueError(
+                    "当前任务没有需要自动研究的 ResearchTask。"
+                )
 
             plan = self._latest_plan(task_id)
             if plan is None:
@@ -327,7 +334,14 @@ class ResearchAgentCoordinator:
                     self.store.load_many(task_id, "research_agent_actions")
                 ),
                 max_actions=max_actions,
-                message="Research Agent R1 已进入后台研究队列。",
+                message=(
+                    "Research Agent R1 已进入后台研究队列。"
+                    + (
+                        f" 已重新排队 {len(requeued_task_ids)} 个传输层失败任务。"
+                        if requeued_task_ids
+                        else ""
+                    )
+                ),
             )
 
             self._save_run(run)
@@ -342,6 +356,7 @@ class ResearchAgentCoordinator:
                 run,
                 event_type="queued",
                 message=f"等待执行 {len(research_task_ids)} 个 ResearchTask。",
+                data={"transient_requeued_task_ids": requeued_task_ids},
             )
 
             self._futures[task_id] = self._pool.submit(
@@ -1323,6 +1338,94 @@ class ResearchAgentCoordinator:
         # readers. Product code treats it as "ready for Research Agent" and
         # does not expose Collector as a required user-facing stage.
         return [item.id for item in self._runnable_research_tasks(task_id)]
+
+    def _requeue_transient_research_tasks(self, task_id: str) -> list[str]:
+        """Requeue only the latest unresolved scope after a transport failure."""
+
+        latest_failure_by_task: dict[str, ResearchTaskFailure] = {}
+        for raw in self.store.load_many(task_id, RESEARCH_TASK_FAILURES_ARTIFACT):
+            failure = ResearchTaskFailure(**raw)
+            latest_failure_by_task[failure.research_task_id] = failure
+
+        sufficient_scopes = {
+            (
+                str(item.get("competitor") or "").casefold(),
+                normalize_dimension(str(item.get("dimension") or "")),
+            )
+            for item in self.store.load_many(task_id, "evidence_coverage")
+            if str(item.get("status") or "") in SUFFICIENT_COVERAGE_STATUSES
+        }
+
+        execution_tasks = self._deduplicated_research_tasks(task_id)
+        latest_by_scope: dict[tuple[str, str], ResearchTask] = {}
+        for item in execution_tasks:
+            scope = (
+                item.competitor.casefold(),
+                normalize_dimension(item.dimension),
+            )
+            previous = latest_by_scope.get(scope)
+            if previous is None or item.collection_round >= previous.collection_round:
+                latest_by_scope[scope] = item
+        latest_task_ids = {item.id for item in latest_by_scope.values()}
+
+        requeued: set[str] = set()
+        updated_tasks: list[ResearchTask] = []
+        for item in self._all_research_tasks(task_id):
+            scope = (
+                item.competitor.casefold(),
+                normalize_dimension(item.dimension),
+            )
+            failure = latest_failure_by_task.get(item.id)
+            retry_count = int(item.metadata.get("transient_resume_count", 0) or 0)
+            is_latest_unresolved = (
+                item.id in latest_task_ids
+                and scope not in sufficient_scopes
+            )
+            is_transient = bool(
+                failure
+                and "LLMProviderTransientError" in failure.error_message
+            )
+            if (
+                item.status == "research_failed"
+                and is_latest_unresolved
+                and is_transient
+                and retry_count < MAX_TRANSIENT_TASK_RESUMES
+            ):
+                requeued.add(item.id)
+                item = item.model_copy(
+                    update={
+                        "status": "waiting_for_collector",
+                        "metadata": {
+                            **item.metadata,
+                            "transient_resume_count": retry_count + 1,
+                            "transient_resume_failure_id": failure.id,
+                            "transient_resume_requeued_at": utc_now().isoformat(),
+                        },
+                    }
+                )
+            updated_tasks.append(item)
+
+        if not requeued:
+            return []
+
+        self.store.save_many(task_id, "research_tasks", updated_tasks)
+        missions = [
+            ResearchMission(**raw)
+            for raw in self.store.load_many(task_id, "research_missions")
+        ]
+        self.store.save_many(
+            task_id,
+            "research_missions",
+            [
+                mission.model_copy(
+                    update={"status": "active", "updated_at": utc_now()}
+                )
+                if requeued.intersection(mission.research_task_ids)
+                else mission
+                for mission in missions
+            ],
+        )
+        return [item.id for item in updated_tasks if item.id in requeued]
 
     def _all_research_tasks(self, task_id: str) -> list[ResearchTask]:
         return [

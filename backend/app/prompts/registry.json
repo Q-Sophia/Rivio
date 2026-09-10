@@ -51,8 +51,25 @@
       "evaluation_plan": "docs/step6c_prompt_evaluation_plan.md"
     },
     {
+      "id": "competitive_analysis_assessment",
+      "version": "1.0.0-candidate",
+      "path": "competitive_analysis_assessment/v1.yaml",
+      "agent_role": "analyst",
+      "output_contract": "AnalystAssessmentStage",
+      "language": "zh-CN",
+      "status": "candidate_not_runtime_enabled",
+      "requires": [
+        "AnalysisTask",
+        "FrameworkDefinition",
+        "ResearchTask[]",
+        "SourceEvidence[]",
+        "AssessmentScope[]"
+      ],
+      "evaluation_plan": "docs/professional_analyst_feedback_foundation_design.md"
+    },
+    {
       "id": "competitive_writer",
-      "version": "2.1.1-candidate",
+      "version": "2.2.0-candidate",
       "path": "competitive_writer/v2.yaml",
       "agent_role": "writer",
       "output_contract": "CompetitiveReport",

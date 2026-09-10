@@ -195,12 +195,20 @@ def build_deepseek_compatible_config(
         ),
         temperature=temperature,
         output_language="zh-CN",
-        max_retries=max_retries,
-        retry_base_seconds=retry_base_seconds,
+        max_retries=int(
+            os.environ.get(key("MAX_RETRIES"), str(max_retries))
+        ),
+        retry_base_seconds=float(
+            os.environ.get(
+                key("RETRY_BASE_SECONDS"),
+                str(retry_base_seconds),
+            )
+        ),
         enable_real_calls=True,
         api_style="chat_completions",
         structured_output_mode="json_object",
         thinking_mode="disabled",
+        trust_env_proxy=_env_bool(key("TRUST_ENV_PROXY"), False),
     )
     config.validate()
     return config

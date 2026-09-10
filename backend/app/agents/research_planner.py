@@ -4,12 +4,18 @@ import json
 from pathlib import Path
 
 from app.agents.base import BaseAgent
+from app.frameworks import (
+    DEFAULT_FRAMEWORK_ID,
+    DEFAULT_FRAMEWORK_VERSION,
+    load_framework,
+)
 from app.harness.artifacts import ArtifactStore
-from app.tools.router import research_intent_for_dimension
 from app.schemas import (
     AgentContext,
     AgentResult,
     AgentRole,
+    DimensionDefinition,
+    FrameworkDefinition,
     InformationNeed,
     KeyIntelligenceQuestion,
     ResearchBudget,
@@ -18,16 +24,71 @@ from app.schemas import (
     ResearchTask,
     DatasetCompatibilityAssessment,
     TaskMode,
-    TaskPriority,
 )
 
 
-DEFAULT_DIMENSIONS = ["产品定位", "产品能力", "定价与成本", "生态与集成"]
 SNAPSHOT_SOURCE_PATH = Path(__file__).resolve().parents[1] / "data" / "snapshots" / "online_education" / "sources.json"
 
 
+def _dimension_key(value: str) -> str:
+    return "".join(str(value).strip().casefold().replace("-", "_").split())
+
+
+def _dimension_aliases(dimension: DimensionDefinition) -> set[str]:
+    return {
+        _dimension_key(value)
+        for value in (
+            dimension.dimension_id,
+            dimension.label,
+            dimension.evidence_dimension,
+            *dimension.aliases,
+        )
+    }
+
+
+def _resolve_dimensions(
+    framework: FrameworkDefinition,
+    focus_areas: list[str],
+) -> list[DimensionDefinition]:
+    by_id = {item.dimension_id: item for item in framework.dimensions}
+    if not focus_areas:
+        return [by_id[item] for item in framework.default_dimension_ids]
+
+    aliases: dict[str, DimensionDefinition] = {}
+    for dimension in framework.dimensions:
+        for alias in _dimension_aliases(dimension):
+            aliases[alias] = dimension
+    selected: list[DimensionDefinition] = []
+    unknown: list[str] = []
+    for focus in focus_areas:
+        dimension = aliases.get(_dimension_key(focus))
+        if dimension is None:
+            unknown.append(focus)
+        elif dimension.dimension_id not in {item.dimension_id for item in selected}:
+            selected.append(dimension)
+    if unknown:
+        raise ValueError(
+            "当前 Framework 不包含以下研究维度: " + ", ".join(unknown)
+        )
+    return selected
+
+
+def _render(
+    template: str,
+    *,
+    competitor: str,
+    dimension: DimensionDefinition,
+    decision_question: str,
+) -> str:
+    return template.format(
+        competitor=competitor,
+        dimension_label=dimension.label,
+        decision_question=decision_question,
+    )
+
+
 class ResearchPlannerAgent(BaseAgent):
-    """Step6E.1 mock planner: turn one AnalysisTask into auditable research work."""
+    """Turn one AnalysisTask and FrameworkDefinition into auditable work."""
 
     def __init__(self, *, store: ArtifactStore):
         super().__init__(
@@ -46,8 +107,14 @@ class ResearchPlannerAgent(BaseAgent):
     def execute(self, context: AgentContext) -> AgentResult:
         task = context.task
         assessment = DatasetCompatibilityAssessment(**context.metadata["dataset_assessment"])
-        dimensions = task.focus_areas or DEFAULT_DIMENSIONS
-        supported = set(assessment.supported_focus_areas)
+        framework_payload = context.metadata.get("framework_definition")
+        framework = (
+            FrameworkDefinition(**framework_payload)
+            if framework_payload
+            else load_framework(DEFAULT_FRAMEWORK_ID, DEFAULT_FRAMEWORK_VERSION)
+        )
+        dimensions = _resolve_dimensions(framework, task.focus_areas)
+        supported = {_dimension_key(item) for item in assessment.supported_focus_areas}
         snapshot_sources = json.loads(SNAPSHOT_SOURCE_PATH.read_text(encoding="utf-8"))
         sources_by_competitor: dict[str, list[dict]] = {}
         for source in snapshot_sources:
@@ -94,28 +161,32 @@ class ResearchPlannerAgent(BaseAgent):
         kiqs: list[KeyIntelligenceQuestion] = []
         needs: list[InformationNeed] = []
         research_tasks: list[ResearchTask] = []
-        for index, dimension in enumerate(dimensions):
-            research_intent = research_intent_for_dimension(dimension)
-            priority = TaskPriority.HIGH if index < 2 else TaskPriority.MEDIUM
+        for dimension in dimensions:
+            research_intent = dimension.research_intent
+            priority = dimension.priority
             kiq = KeyIntelligenceQuestion(
                 task_id=task.id,
-                question=f"各候选产品在{dimension}上有哪些可验证差异，这些差异如何影响用户决策？",
+                question="；".join(
+                    _render(
+                        question,
+                        competitor="各候选产品",
+                        dimension=dimension,
+                        decision_question=task.query,
+                    )
+                    for question in dimension.research_questions
+                ),
                 decision_link=task.query,
-                dimensions=[dimension],
+                dimensions=[dimension.evidence_dimension],
                 priority=priority,
             )
             need = InformationNeed(
                 task_id=task.id,
                 question_id=kiq.id,
-                dimension=dimension,
+                dimension=dimension.evidence_dimension,
                 research_intent=research_intent,
-                required_facts=[
-                    f"每个竞品关于{dimension}的当前事实",
-                    "事实对应的来源、发布时间与适用范围",
-                    "能够支持横向比较的统一口径",
-                ],
-                preferred_source_types=["official_site", "docs", "pricing_page"],
-                comparability_basis=f"使用相同的{dimension}口径比较全部候选对象",
+                required_facts=dimension.required_facts,
+                preferred_source_types=dimension.preferred_source_types,
+                comparability_basis=dimension.comparability_basis,
                 decision_link=task.query,
             )
             kiqs.append(kiq)
@@ -127,27 +198,51 @@ class ResearchPlannerAgent(BaseAgent):
                 )
                 seed_sources = sources_by_competitor.get(canonical, [])
                 covered = bool(seed_sources) and (
-                    not task.focus_areas or dimension in supported
+                    not task.focus_areas
+                    or bool(_dimension_aliases(dimension) & supported)
                 )
                 revalidate_seed_urls = task.mode == TaskMode.LIVE and bool(seed_sources)
                 research_tasks.append(
                     ResearchTask(
+                        schema_version="v2",
                         task_id=task.id,
                         information_need_id=need.id,
-                        title=f"核实 {competitor} 的{dimension}信息",
+                        title=f"核实 {competitor} 的{dimension.label}信息",
                         objective=(
-                            f"从已知 URL 重新采集并核实 {competitor} 的{dimension}证据"
+                            "从已知 URL 重新采集并核实："
+                            + _render(
+                                dimension.objective_template,
+                                competitor=competitor,
+                                dimension=dimension,
+                                decision_question=task.query,
+                            )
                             if revalidate_seed_urls
-                            else f"复核人工快照中 {competitor} 的{dimension}证据"
+                            else "复核人工快照："
+                            + _render(
+                                dimension.objective_template,
+                                competitor=competitor,
+                                dimension=dimension,
+                                decision_question=task.query,
+                            )
                             if covered
-                            else f"采集能够回答 {competitor} 在{dimension}方面表现的可靠资料"
+                            else _render(
+                                dimension.objective_template,
+                                competitor=competitor,
+                                dimension=dimension,
+                                decision_question=task.query,
+                            )
                         ),
                         competitor=competitor,
-                        dimension=dimension,
+                        dimension=dimension.evidence_dimension,
                         research_intent=research_intent,
                         query_hints=[
-                            f"{competitor} {dimension} 官方",
-                            f"{competitor} {dimension} 文档",
+                            _render(
+                                template,
+                                competitor=competitor,
+                                dimension=dimension,
+                                decision_question=task.query,
+                            )
+                            for template in dimension.query_templates
                         ],
                         seed_urls=[item["url"] for item in seed_sources],
                         snapshot_source_ids=[item["id"] for item in seed_sources],
@@ -160,9 +255,14 @@ class ResearchPlannerAgent(BaseAgent):
                             if covered
                             else "waiting_for_collector"
                         ),
-                        stop_condition=(
-                            "至少获得 1 条可追溯官方证据；若无公开信息，记录已检索范围与信息缺口。"
-                        ),
+                        stop_condition="；".join(dimension.completion_criteria),
+                        framework_id=framework.framework_id,
+                        framework_version=framework.version,
+                        framework_dimension_id=dimension.dimension_id,
+                        framework_content_hash=framework.content_hash,
+                        metadata={
+                            "framework_dimension_label": dimension.label,
+                        },
                     )
                 )
 
@@ -196,7 +296,13 @@ class ResearchPlannerAgent(BaseAgent):
             metadata={
                 "network_used": False,
                 "real_llm_used": False,
-                "planning_method": "deterministic_mock_v1",
+                "planning_method": "framework_registry_v1",
+                "framework_id": framework.framework_id,
+                "framework_version": framework.version,
+                "framework_content_hash": framework.content_hash,
+                "framework_dimension_ids": [
+                    item.dimension_id for item in dimensions
+                ],
                 "waiting_for_collector_count": len(waiting),
                 "competitor_discovery_required": competitor_discovery_required,
                 "competitor_discovery_strategy": "local_catalog_v1",

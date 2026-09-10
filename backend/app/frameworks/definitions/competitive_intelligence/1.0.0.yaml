@@ -1,0 +1,149 @@
+schema_version: framework_definition_v1
+framework_id: competitive_intelligence
+version: 1.0.0
+name: 通用竞品情报研究框架
+description: 面向可验证竞品分析的通用研究规划基线；默认采集五类基础事实，竞争差异优先由分析阶段基于跨对象证据归纳。
+default_dimension_ids:
+  - market_positioning
+  - product_capability
+  - commercial_strategy
+  - customer_experience
+  - ecosystem
+
+dimensions:
+  - dimension_id: market_positioning
+    label: 市场与产品定位
+    aliases: [positioning, market, 产品定位, 市场定位]
+    evidence_dimension: positioning
+    research_intent: market_positioning
+    objective_template: "采集并核实 {competitor} 的目标客户、核心场景与公开价值主张证据。"
+    research_questions:
+      - "{competitor} 面向哪些目标客户、核心场景与市场位置？"
+      - "{competitor} 的公开价值主张和产品类别是什么？"
+      - "如存在公开版本、地域或时间边界，其定位适用范围是什么？"
+    required_facts:
+      - 目标客户或核心使用场景
+      - 公开价值主张或产品类别
+    query_templates:
+      - "{competitor} 产品定位 官方"
+      - "{competitor} 目标客户 使用场景"
+    preferred_source_types: [official_site, docs, report]
+    comparability_basis: 使用相近客户、场景、地域和产品层级比较定位；无法完全对齐时记录边界差异。
+    completion_criteria:
+      - 至少获得一条可追溯的定位证据，并覆盖目标客户、核心场景或公开价值主张中的至少一项
+      - 对未公开的版本、地域或时间边界记录检索限制，不因此阻塞任务结束
+    priority: high
+
+  - dimension_id: product_capability
+    label: 产品能力
+    aliases: [feature, capability, 产品功能, 功能]
+    evidence_dimension: feature
+    research_intent: product_capability
+    objective_template: "采集并核实 {competitor} 的核心产品能力、主要使用场景与能力边界证据。"
+    research_questions:
+      - "{competitor} 当前提供哪些可验证的核心能力？"
+      - "这些能力主要适用于哪些场景，存在什么使用边界？"
+      - "如适用，是否存在版本、套餐、部署或交付方式限制？"
+    required_facts:
+      - 核心能力及其可追溯定义
+      - 核心能力的主要适用场景或使用边界
+    query_templates:
+      - "{competitor} 产品功能 官方"
+      - "{competitor} 核心能力 使用场景"
+    preferred_source_types: [docs, official_site]
+    comparability_basis: 使用相近产品层级、核心场景和能力边界比较；版本、套餐或部署差异仅在适用时纳入。
+    completion_criteria:
+      - 至少获得一条可追溯的当前核心能力证据
+      - 版本、套餐、部署或交付方式不适用或未公开时记录限制，不因此阻塞任务结束
+    priority: high
+
+  - dimension_id: competitive_differentiation
+    label: 竞争差异化
+    aliases: [differentiation, 差异化, 竞争优势]
+    evidence_dimension: other
+    research_intent: competitive_differentiation
+    objective_template: "在已有可比对象和事实基础上，补充核实 {competitor} 的可验证差异属性及其成立条件。"
+    research_questions:
+      - "{competitor} 相对其他解决路径有哪些可直接验证的差异属性？"
+      - "这些差异在哪些客户、场景和约束下成立？"
+    required_facts:
+      - 可直接验证的差异属性
+      - 差异适用的客户或场景条件
+    query_templates:
+      - "{competitor} 差异化 优势"
+      - "{competitor} 对比 替代方案"
+    preferred_source_types: [official_site, report, news]
+    comparability_basis: 仅在客户任务、产品层级和使用场景可比时判断差异；最终竞争差异优先由 Analyst 跨对象归纳。
+    completion_criteria:
+      - 至少获得一条可验证差异事实，或明确记录当前缺少直接对照证据
+      - 不要求 Research Agent 单独形成最终竞争优势结论
+    priority: medium
+
+  - dimension_id: commercial_strategy
+    label: 商业与定价策略
+    aliases: [pricing, commercial, business_model, 价格, 定价, 定价与成本, 商业模式]
+    evidence_dimension: pricing
+    research_intent: commercial_strategy
+    objective_template: "采集并核实 {competitor} 的公开价格、收费方式或商业模式证据。"
+    research_questions:
+      - "{competitor} 当前公开价格、收费方式或主要商业模式是什么？"
+      - "其核心套餐、服务范围或变现边界是什么？"
+      - "如适用，价格是否存在地域、版本、时间或合同条件差异？"
+    required_facts:
+      - 当前公开价格、收费方式或商业模式中的至少一种
+      - 核心套餐、服务范围或变现边界中的至少一种
+    query_templates:
+      - "{competitor} 定价 价格 官方"
+      - "{competitor} 收费 商业模式 套餐"
+    preferred_source_types: [pricing_page, official_site, docs]
+    comparability_basis: 优先在相同收费口径、服务范围和时间点比较；地域、币种、合同等差异仅在适用时纳入。
+    completion_criteria:
+      - 至少获得一条可追溯的当前价格、收费方式或商业模式证据
+      - 无公开价格或合同信息时记录公开信息边界，不因此阻塞任务结束
+    priority: high
+
+  - dimension_id: customer_experience
+    label: 客户与使用体验
+    aliases: [customer, user_feedback, customer_feedback, experience, usage, 用户反馈, 用户体验]
+    evidence_dimension: customer
+    research_intent: user_feedback
+    objective_template: "采集并核实 {competitor} 的真实用户体验、使用场景与主要反馈证据。"
+    research_questions:
+      - "{competitor} 的真实用户如何描述使用体验、收益与问题？"
+      - "这些反馈对应哪些用户角色和具体使用场景？"
+      - "如来源允许，是否存在不同立场或相互冲突的反馈？"
+    required_facts:
+      - 可追溯的真实体验描述
+      - 用户角色或具体使用场景
+    query_templates:
+      - "{competitor} 使用体验"
+      - "{competitor} 真实感受 用户评价"
+    preferred_source_types: [social, blog, report]
+    comparability_basis: 区分用户类型、使用场景和体验时间后再归纳反馈；版本差异仅在有明确证据时纳入。
+    completion_criteria:
+      - 至少获得一条包含具体体验事实的可追溯证据
+      - 不要求同时覆盖全部正面、负面和冲突观点，也不把单一用户观点外推为总体满意度
+    priority: high
+
+  - dimension_id: ecosystem
+    label: 生态与开放能力
+    aliases: [integration, 生态, 生态与集成, 集成, 开放能力]
+    evidence_dimension: ecosystem
+    research_intent: ecosystem
+    objective_template: "采集并核实 {competitor} 的生态、开放能力、集成方式或合作关系证据。"
+    research_questions:
+      - "{competitor} 存在哪些可验证的生态、集成、开放能力或合作关系？"
+      - "这些能力或关系的支持范围与适用边界是什么？"
+      - "如适用，是否存在接口、权限、版本、部署或运维限制？"
+    required_facts:
+      - 主要生态、集成、开放能力或合作关系
+      - 相关能力或关系的支持范围或适用边界
+    query_templates:
+      - "{competitor} 开放平台 API 集成 官方"
+      - "{competitor} 生态 合作伙伴 兼容"
+    preferred_source_types: [docs, official_site, report]
+    comparability_basis: 使用相近生态层级、开放范围和合作边界比较；接口、部署和运维限制仅在适用时纳入。
+    completion_criteria:
+      - 至少获得一条可追溯的生态、集成、开放能力或合作关系证据
+      - 产品不存在公开开放接口或相关信息未公开时记录边界，不因此阻塞任务结束
+    priority: medium

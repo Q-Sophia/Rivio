@@ -578,7 +578,7 @@ class ResearchReportingService:
             default_timeout_seconds=120,
             default_max_tokens=12000,
             temperature=0.2,
-            max_retries=0,
+            max_retries=2,
             retry_base_seconds=1.0,
         )
 

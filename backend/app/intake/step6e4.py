@@ -399,6 +399,7 @@ def build_step6e4_research_tasks(
         )
         tasks.append(
             ResearchTask(
+                schema_version=latest.schema_version,
                 id=gap_id,
                 task_id=task_id,
                 information_need_id=latest.information_need_id,
@@ -433,6 +434,10 @@ def build_step6e4_research_tasks(
                 collection_round=next_round,
                 parent_research_task_id=latest.id if latest else "",
                 research_gap_id=primary_gap.id,
+                framework_id=latest.framework_id,
+                framework_version=latest.framework_version,
+                framework_dimension_id=latest.framework_dimension_id,
+                framework_content_hash=latest.framework_content_hash,
                 metadata={
                     "source": "r1_bounded_coverage_supplement",
                     "trigger_competitor": competitor,

@@ -29,6 +29,14 @@ const state = {
   integrationStatus: null,
   evidenceFeed: [],
   evidenceFeedRefreshTimer: null,
+  productView: "brief",
+  productBriefPhase: "input",
+  productConfirmedTaskId: "",
+  productSelectedReportStatementId: "",
+  productReportEvidenceCollapsed: false,
+  productEvents: [],
+  productLastActivityCount: 0,
+  productWorkspaceRefreshTimer: null,
 };
 
 const views = {
@@ -93,10 +101,10 @@ const endpoints = {
   runCollectorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/collector/run-once`,
   runExtractorOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/extractor/run-once`,
   runCoverageOnce: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/coverage/run-once`,
-  startResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
-  stopResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run/stop`,
-  researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run`,
-  researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-agent/run/events/stream?after=${after}`,
+  startResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/pipeline/run`,
+  stopResearchLoop: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/pipeline/run/stop`,
+  researchLoopStatus: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/pipeline/run`,
+  researchLoopEvents: (taskId, after = 0) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/pipeline/run/events/stream?after=${after}`,
   researchAnalysis: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-analysis`,
   researchReporting: (taskId) => `/api/analysis-tasks/${encodeURIComponent(taskId)}/research-reporting`,
   evidenceFeed: (taskId) => `/tasks/${encodeURIComponent(taskId)}/evidence-feed`,
@@ -138,9 +146,10 @@ function normalizeWorkspaceData(payload = {}, taskId = "") {
     "qualityGates", "feedbackTasks", "contextBundles", "memoryItems", "guardrailChecks",
     "llmCalls", "llmOutputs", "analysisPortfolios", "briefAssessments", "competitorProfiles",
     "intelligenceQuestions", "informationNeeds", "evidenceCoverage", "comparabilityNotes",
-    "claimsV2", "researchGaps", "reportStatements", "researchTasks", "webPages",
+    "claimsV2", "researchGaps", "reportStatements", "researchTasks", "sourceChunks", "webPages",
     "collectionAttempts", "searchAttempts", "webSearchResults", "evidenceExtractionAttempts",
-    "analysisEvidenceCoverage", "analysisResearchGaps",
+    "analysisEvidenceCoverage", "analysisResearchGaps", "researchAgentActions",
+    "researchAgentObservations",
   ];
   const normalized = { ...payload, taskId: payload.taskId || taskId };
   emptyLists.forEach((key) => {
@@ -357,6 +366,7 @@ async function loadEvidenceFeed(taskId, { suppressError = false } = {}) {
     if (state.activeTaskId !== taskId) return;
     state.evidenceFeed = Array.isArray(payload.items) ? payload.items : [];
     renderEvidenceLibrary();
+    renderProductWorkspace();
   } catch (error) {
     if (!suppressError) {
       const status = qs("#evidence-library-status");
@@ -500,6 +510,7 @@ function renderIntentDraft(draft, call = null) {
   } else {
     resetExecutionPlanning();
   }
+  renderProductBriefSummary(draft);
 }
 
 async function loadRecentDrafts() {
@@ -612,8 +623,11 @@ function resetExecutionPlanning() {
   state.researchReporting = null;
   state.researchCanAnalyze = false;
   state.evidenceFeed = [];
+  state.productEvents = [];
+  state.productSelectedReportStatementId = "";
   qs("#research-planning").classList.add("hidden");
   renderEvidenceLibrary();
+  renderProductWorkspace();
 }
 
 function showPlanningShell(taskId) {
@@ -626,7 +640,7 @@ function showPlanningShell(taskId) {
   qs("#research-plan-status").textContent = "等待自动研究";
   qs("#build-research-plan-btn").disabled = false;
   qs("#build-research-plan-btn").textContent = "生成研究计划";
-  qs("#research-plan-copy").textContent = "开始自动研究后，后端会自动准备或复用 ResearchPlan / ResearchTask；用户无需单独生成计划。";
+  qs("#research-plan-copy").textContent = "开始自动流水线后，统一 Harness 会自动准备或复用 ResearchPlan / ResearchTask。";
   renderResearchLoopRuntime(null, []);
 }
 
@@ -684,12 +698,17 @@ function renderResearchPlan(payload) {
   `).join("");
   const loopStatus = state.researchLoopRun?.status || "";
   const loopActive = ["queued", "running", "stopping"].includes(loopStatus);
-  const loopTerminal = ["completed", "requires_human", "failed", "stopped"].includes(loopStatus);
+  const loopCompleted = loopStatus === "completed";
   const hasRunnableTask = waiting.length > 0;
+  const hasPipelineInput = (
+    hasRunnableTask
+    || canAnalyzeCurrentEvidence
+    || Boolean(state.researchAnalysis?.completed)
+  );
   qs("#run-collector-once-btn").disabled = loopActive || waiting.length === 0;
   qs("#run-extractor-once-btn").disabled = loopActive || !extractorReady;
   qs("#run-coverage-once-btn").disabled = loopActive || !coverageReady;
-  qs("#start-research-loop-btn").disabled = loopActive || loopTerminal || !hasRunnableTask;
+  qs("#start-research-loop-btn").disabled = loopActive || loopCompleted || !hasPipelineInput;
   qs("#run-research-analysis-btn").disabled = (
     loopActive
     || !canAnalyzeCurrentEvidence
@@ -759,12 +778,13 @@ async function runCoverageOnce() {
 function researchLoopStatusLabel(status) {
   return {
     queued: "排队中",
-    running: "自动研究中",
+    running: "自动流水线运行中",
     stopping: "正在中止",
     stopped: "已中止",
-    completed: "覆盖充分",
+    completed: "全流程完成",
     requires_human: "需要人工处理",
     failed: "执行失败",
+    interrupted: "执行已中断",
   }[status] || status || "等待启动";
 }
 
@@ -779,6 +799,22 @@ function researchAgentEventLabel(eventType) {
     stopped: "Research Agent 已中止",
     completed: "批量研究完成",
     failed: "批量研究失败",
+    pipeline_queued: "Pipeline 进入队列",
+    pipeline_started: "Pipeline 启动",
+    stage_started: "阶段开始",
+    stage_completed: "阶段完成",
+    stage_resumed: "从检查点恢复",
+    handoff_created: "Agent 交接",
+    pipeline_completed: "Pipeline 完成",
+    pipeline_failed: "Pipeline 失败",
+    pipeline_stopped: "Pipeline 已中止",
+    pipeline_interrupted: "Pipeline 意外中断",
+    research_queued: "Research Agent 进入队列",
+    research_started: "Research Agent 启动",
+    research_completed: "Research Agent 完成",
+    research_failed: "Research Agent 失败",
+    research_stopped: "Research Agent 中止",
+    agent_action: "Agent 公开行动",
   }[eventType] || eventType || "Research Agent R1";
 }
 
@@ -814,14 +850,14 @@ function renderResearchLoopRuntime(
     run?.progress_percent,
   );
   const active = ["queued", "running", "stopping"].includes(status);
-  const terminal = ["completed", "failed", "stopped"].includes(status);
+  const terminal = ["completed", "failed", "stopped", "interrupted"].includes(status);
 
   const statusElement = qs("#research-loop-status");
   statusElement.textContent = researchLoopStatusLabel(status);
   statusElement.className = `count-label tag ${
     status === "completed"
       ? "true"
-      : ["failed", "stopped"].includes(status)
+      : ["failed", "stopped", "interrupted"].includes(status)
         ? "false"
         : "warning"
   }`;
@@ -833,31 +869,33 @@ function renderResearchLoopRuntime(
     `${percent}%`;
 
   qs("#research-loop-progress-message").textContent =
-    run?.message || "等待启动 Research Agent R1";
+    run?.message || "等待启动统一多 Agent Pipeline";
 
   const startButton = qs("#start-research-loop-btn");
 
   if (!run) {
     startButton.disabled = false;
-    startButton.textContent = "开始自动研究";
+    startButton.textContent = "开始自动流水线";
   } else {
     startButton.disabled =
-      active || terminal || !state.researchPlan;
+      active || status === "completed" || !state.researchPlan;
 
     startButton.textContent =
       status === "queued"
-        ? "等待 Research Agent 后台领取"
+        ? "等待统一 Harness 后台领取"
         : status === "running"
-          ? "Research Agent 正在研究"
+          ? `Pipeline 正在执行${run?.current_stage ? ` · ${run.current_stage}` : ""}`
           : status === "completed"
-            ? "Research Agent 研究已完成"
+            ? "多 Agent 流水线已完成"
             : status === "failed"
-              ? "Research Agent 执行失败"
+              ? "从检查点恢复自动流水线"
               : status === "stopping"
-                ? "Research Agent 正在中止"
+                ? "Pipeline 正在安全中止"
                 : status === "stopped"
-                  ? "Research Agent 已中止"
-              : "开始自动研究";
+                  ? "从检查点恢复自动流水线"
+                  : status === "interrupted"
+                    ? "从检查点恢复自动流水线"
+                    : "开始自动流水线";
   }
 
   const stopButton = qs("#stop-research-loop-btn");
@@ -867,7 +905,7 @@ function renderResearchLoopRuntime(
     ? "正在安全中止…"
     : "中止任务";
 
-  // 正式产品路径已经迁移到 Research Agent R1。
+  // 正式产品路径已经迁移到统一 Pipeline Harness。
   // 旧 Collector / Extractor / Coverage 手动入口不再作为前端执行入口。
   qs("#run-collector-once-btn").disabled = true;
   qs("#run-extractor-once-btn").disabled = true;
@@ -940,9 +978,11 @@ function renderResearchLoopRuntime(
           .map((event) => {
             const eventClass =
               event.event_type === "failed"
+              || event.event_type === "pipeline_failed"
+              || event.event_type === "research_failed"
               || event.event_type === "research_task_failed"
                 ? "failed"
-                : event.event_type === "completed"
+                : ["completed", "pipeline_completed", "stage_completed"].includes(event.event_type)
                   ? "completed"
                   : "running";
 
@@ -966,15 +1006,15 @@ function renderResearchLoopRuntime(
                   </strong>
                   <small>${escapeHtml(event.message || "")}</small>
                 </div>
-                <span>R1</span>
+                <span>${escapeHtml(event.stage || "Pipeline")}</span>
               </article>
             `;
           })
           .join("")
       : `
         <div class="small-text">
-          启动后将实时显示 Research Agent R1 的
-          ResearchTask 调度、研究完成和失败事件。
+          启动后将实时显示统一 Pipeline 的阶段、Agent 交接和
+          ResearchTask 调度事件。
           单个 ResearchTask 内部执行
           SEARCH → FETCH → READ → SUBMIT_EVIDENCE → FINISH。
         </div>
@@ -985,21 +1025,21 @@ function renderResearchLoopRuntime(
   if (terminal) {
     if (status === "completed") {
       result.innerHTML = `
-        <strong>Research Agent R1 批量研究已完成。</strong>
+        <strong>统一多 Agent Pipeline 已完成。</strong>
         <br />
-        COMPLETE：${escapeHtml(outcomes.COMPLETE || 0)}
+        Research COMPLETE：${escapeHtml(outcomes.COMPLETE || 0)}
         · PARTIAL：${escapeHtml(outcomes.PARTIAL || 0)}
         · EXHAUSTED：${escapeHtml(outcomes.EXHAUSTED || 0)}
-        · 执行异常：${escapeHtml(failedTasks)}
+        · 执行异常：${escapeHtml(failedTasks)}；Analyst、Citation、Writer、Reviewer 与 QualityGate 已自动衔接。
       `;
     } else if (status === "stopped") {
       result.innerHTML = `
-        <strong>Research Agent 已由用户中止。</strong>
-        <br />已完成 ${escapeHtml(completedTasks)} 个 ResearchTask；已保存的来源与证据不会删除。
+        <strong>整个多 Agent Pipeline 已由用户中止。</strong>
+        <br />已完成 ${escapeHtml(completedTasks)} 个 ResearchTask；已保存的 Artifact 不会删除，可从 checkpoint 恢复。
       `;
     } else {
       result.innerHTML = `
-        <strong>Research Agent R1 批量研究执行失败。</strong>
+        <strong>统一多 Agent Pipeline 未完成，可从 checkpoint 恢复。</strong>
         ${
           run?.error
             ? `<br />${escapeHtml(run.error)}`
@@ -1012,6 +1052,7 @@ function renderResearchLoopRuntime(
   } else {
     result.classList.add("hidden");
   }
+  renderProductWorkspace();
 }
 
 function closeResearchLoopEventStream() {
@@ -1038,7 +1079,7 @@ function connectResearchLoopEventStream(taskId) {
   state.researchLoopEventSource = source;
 
   source.addEventListener(
-    "research-agent",
+    "pipeline",
     (message) => {
       const event = JSON.parse(message.data);
       state.researchLoopEventCursor = Math.max(
@@ -1046,9 +1087,34 @@ function connectResearchLoopEventStream(taskId) {
         Number(event.sequence || 0),
       );
 
+      if (!state.productEvents.some((item) => item.sequence === event.sequence)) {
+        state.productEvents.push(event);
+      }
+
       if (event.event_type === "evidence_added") {
         scheduleEvidenceFeedRefresh(taskId);
+        scheduleProductWorkspaceRefresh(taskId);
         return;
+      }
+
+      if (
+        event.event_type === "agent_action"
+        && ["SUBMIT_EVIDENCE", "FINISH"].includes(event.data?.action)
+      ) {
+        scheduleProductWorkspaceRefresh(taskId);
+      }
+
+      if (event.event_type === "stage_completed") {
+        if (event.stage === "planning") {
+          fetchJson(endpoints.researchPlan(taskId))
+            .then((payload) => renderResearchPlan(payload))
+            .catch(() => {});
+        } else if (event.stage === "analyzing") {
+          loadResearchAnalysis(taskId);
+        } else if (event.stage === "reporting") {
+          loadResearchReporting(taskId);
+        }
+        scheduleProductWorkspaceRefresh(taskId);
       }
 
       if (
@@ -1120,19 +1186,23 @@ function connectResearchLoopEventStream(taskId) {
       const processedTasks =
         completedTasks + failedTasks;
 
-      let status = "running";
+      let status = event.status || "running";
 
-      if (event.event_type === "queued") {
+      if (!event.status && event.event_type === "queued") {
         status = "queued";
-      } else if (event.event_type === "stop_requested") {
+      } else if (!event.status && event.event_type === "stop_requested") {
         status = "stopping";
-      } else if (event.event_type === "stopped") {
+      } else if (!event.status && event.event_type === "stopped") {
         status = "stopped";
       } else if (
+        !event.status
+        &&
         event.event_type === "completed"
       ) {
         status = "completed";
       } else if (
+        !event.status
+        &&
         event.event_type === "failed"
       ) {
         status = "failed";
@@ -1144,8 +1214,10 @@ function connectResearchLoopEventStream(taskId) {
       const progressPercent = clampResearchProgressPercent(
         ["completed", "failed"].includes(status)
           ? 100
-          : Number.isFinite(eventProgress)
-            ? eventProgress
+          : Number.isFinite(Number(event.progress_percent))
+            ? Number(event.progress_percent)
+            : Number.isFinite(eventProgress)
+              ? eventProgress
             : totalTasks > 0
               ? Math.floor(
                   100 * processedTasks / totalTasks,
@@ -1185,6 +1257,8 @@ function connectResearchLoopEventStream(taskId) {
         current_research_task_id:
           event.research_task_id
           || current.current_research_task_id,
+        current_stage:
+          event.stage || current.current_stage,
         message:
           event.message || current.message,
         error:
@@ -1199,8 +1273,9 @@ function connectResearchLoopEventStream(taskId) {
       );
 
       if (
-        ["completed", "failed", "stopped"].includes(status)
+        ["completed", "failed", "stopped", "interrupted"].includes(status)
       ) {
+        scheduleProductWorkspaceRefresh(taskId);
         closeResearchLoopEventStream();
 
         window.setTimeout(
@@ -1213,7 +1288,7 @@ function connectResearchLoopEventStream(taskId) {
 
   source.onerror = () => {
     if (
-      !["completed", "failed", "stopped"].includes(
+      !["completed", "failed", "stopped", "interrupted"].includes(
         state.researchLoopRun?.status,
       )
     ) {
@@ -1244,6 +1319,8 @@ async function loadResearchLoopStatus(taskId) {
         (event) => Number(event.sequence || 0),
       ),
     );
+
+    state.productEvents = payload.events || [];
 
     renderResearchLoopRuntime(
       payload.research_agent_coordinator_run,
@@ -1277,9 +1354,9 @@ async function startResearchLoop() {
   }
 
   const confirmed = window.confirm(
-    "Research Agent R1 将调用真实 DeepSeek，"
-    + "并执行 Tavily 搜索、网页读取与证据验证。"
-    + "确认启动本轮研究吗？",
+    "统一 Harness 将自动执行 Planner → Research → Analyst → Citation → "
+    + "Writer → Reviewer → QualityGate。Research、Analyst 与 Writer 会产生真实 "
+    + "DeepSeek 调用，并访问 Tavily、知乎及网页。确认启动完整流水线吗？",
   );
 
   if (!confirmed) {
@@ -1291,13 +1368,12 @@ async function startResearchLoop() {
 
   button.disabled = true;
   button.textContent =
-    "正在提交 Research Agent…";
+    "正在提交统一流水线…";
 
   qs(
     "#research-loop-progress-message",
   ).textContent =
-    "正在启动 Research Agent R1；"
-    + "本轮会产生真实 DeepSeek 调用和 Web 访问。";
+    "正在启动统一多 Agent Pipeline；已完成的阶段会从 checkpoint 跳过。";
 
   try {
     const payload = await fetchJson(
@@ -1334,7 +1410,7 @@ async function startResearchLoop() {
 
     button.disabled = false;
     button.textContent =
-      "开始自动研究";
+      "开始自动流水线";
   }
 }
 
@@ -1343,8 +1419,8 @@ async function stopResearchLoop() {
   if (!taskId) return;
 
   const confirmed = window.confirm(
-    "确认中止当前 Research Agent 任务吗？"
-    + "当前 ResearchTask 会在安全边界结束，已经保存的来源和证据会保留。",
+    "确认中止整个多 Agent Pipeline 吗？当前 Agent 会在安全边界结束，"
+    + "已经保存的来源、证据、分析或报告 Artifact 都会保留，可从 checkpoint 恢复。",
   );
   if (!confirmed) return;
 
@@ -1375,11 +1451,14 @@ function renderResearchAnalysis(payload) {
   state.researchAnalysis = payload;
   const completed = Boolean(payload?.completed);
   state.researchCanAnalyze = Boolean(payload?.can_analyze);
+  const pipelineActive = ["queued", "running", "stopping"].includes(
+    state.researchLoopRun?.status,
+  );
   const button = qs("#run-research-analysis-btn");
-  button.disabled = completed || !state.researchCanAnalyze;
+  button.disabled = completed || !state.researchCanAnalyze || pipelineActive;
   button.textContent = completed
     ? "DeepSeek 分析已经完成"
-    : "调用 DeepSeek 生成分析结论（通常 2 次）";
+    : "恢复 Analyst 阶段（兼容入口）";
   const result = qs("#research-analysis-result");
   if (completed) {
     const supported = (payload.citation_checks || []).filter((item) => item.status === "supported").length;
@@ -1391,7 +1470,7 @@ function renderResearchAnalysis(payload) {
   } else {
     result.classList.add("hidden");
     qs("#research-analysis-copy").textContent = state.researchCanAnalyze
-      ? `已有 ${payload.analyzable_evidence_count || 0} 条可追溯 Verified Evidence，可以生成阶段性分析；未完成的 ResearchTask 会作为 ResearchGap 保留。`
+      ? `已有 ${payload.analyzable_evidence_count || 0} 条可追溯 Verified Evidence；自动 Pipeline 会推进 Analyst，此处仅保留人工恢复入口。`
       : (payload.analysis_blocking_reason || "当前任务没有可分析的 Verified Evidence。");
   }
 }
@@ -1401,13 +1480,16 @@ function renderResearchReporting(payload) {
   const completed = Boolean(payload?.completed);
   const writerRequired = Boolean(payload?.writer_required);
   const analysisCompleted = Boolean(state.researchAnalysis?.completed);
+  const pipelineActive = ["queued", "running", "stopping"].includes(
+    state.researchLoopRun?.status,
+  );
   const button = qs("#run-research-reporting-btn");
-  button.disabled = completed || !analysisCompleted;
+  button.disabled = completed || !analysisCompleted || pipelineActive;
   button.textContent = completed
     ? "正式报告已生成"
     : writerRequired
-      ? "生成竞品分析报告（额外 1 次 DeepSeek）"
-      : "继续审查与质量闸门（不调用 DeepSeek）";
+      ? "恢复 Writer 阶段（兼容入口）"
+      : "恢复审查与质量闸门（兼容入口）";
 
   const result = qs("#research-reporting-result");
   const report = payload?.report;
@@ -1504,7 +1586,7 @@ async function runResearchAnalysis() {
   } catch (error) {
     qs("#research-analysis-copy").textContent = `DeepSeek 分析未完成：${error.message}`;
     button.disabled = false;
-    button.textContent = "调用 DeepSeek 生成分析结论（通常 2 次）";
+    button.textContent = "恢复 Analyst 阶段（兼容入口）";
   }
 }
 
@@ -1682,11 +1764,22 @@ async function loadTaskWorkspace(
   try {
     const workspace = await fetchJson(endpoints.workspace(taskId));
     if (loadSequence !== state.workspaceLoadSequence) return false;
+    const taskChanged = state.activeTaskId !== taskId;
+    if (taskChanged) {
+      closeResearchLoopEventStream();
+      state.researchLoopRun = null;
+      state.researchLoopEvents = [];
+      state.productEvents = [];
+      state.productSelectedReportStatementId = "";
+    }
     setActiveTaskContext(taskId, { historyMode });
     state.analysisTask = workspace.analysisTask || state.analysisTask;
     state.data = normalizeWorkspaceData(workspace, taskId);
     render();
     await loadEvidenceFeed(taskId, { suppressError: true });
+    if (taskChanged || state.researchLoopRun?.task_id !== taskId) {
+      await loadResearchLoopStatus(taskId);
+    }
     setStatus(`当前任务 · ${taskId}`, "ok");
     return true;
   } catch (error) {
@@ -1742,6 +1835,8 @@ function render() {
   renderReport();
   renderClaims();
   renderGovernance();
+  renderProductWorkspace();
+  renderProductReport();
 }
 
 function renderOverview() {
@@ -1807,7 +1902,7 @@ function renderOverview() {
     ? "本运行包含 BriefAssessment（简报评估）、竞品角色、KIQ（关键情报问题）、证据覆盖、V2 结论与检索缺口。"
     : "本运行仍使用第一版分析产物。";
   qs("#boundary-copy").textContent = taskWorkspace
-    ? `当前六个主页面只读取任务 ${state.activeTaskId} 已保存的 artifacts（产物）；缺失阶段显示空态，不会回退到历史 Demo。`
+    ? `Developer Console 的 8 个诊断模块继续按侧边导航独立切换；当前读取任务 ${state.activeTaskId} 的 artifacts（产物）。`
     : `${professionalCopy} 当前正在查看用户主动选择的历史 Run（调试运行）。`;
   qs("#run-story").textContent = taskWorkspace
     ? `当前任务 ${state.activeTaskId} 已有 ${sources.length} 个来源、${evidence.length} 条证据、${claims.length} 条结论。${savedSummary ? "已生成运行摘要。" : EMPTY_STAGE_COPY}`
@@ -2738,6 +2833,605 @@ function renderGovernance() {
     .join("") : `<article class="list-item"><div class="small-text">${EMPTY_STAGE_COPY}</div></article>`;
 }
 
+function setProductStatus(selector, text, variant = "") {
+  const element = qs(selector);
+  if (!element) return;
+  element.textContent = text;
+  element.className = `research-inline-status ${variant}`.trim();
+}
+
+function setProductBriefPhase(phase) {
+  state.productBriefPhase = phase;
+  qs("#product-brief-input-state")?.classList.toggle("active", phase === "input");
+  qs("#product-brief-confirm-state")?.classList.toggle("active", phase === "confirm");
+}
+
+function renderProductBriefSummary(draft = state.intentDraft) {
+  if (!draft) return;
+  const fields = {
+    "#product-brief-decision": draft.decision_question || "",
+    "#product-brief-competitors": (draft.competitors || []).join("、"),
+    "#product-brief-focus": (draft.focus_areas || []).join("、"),
+    "#product-brief-subject": draft.preferred_title || draft.report_subject || "",
+  };
+  Object.entries(fields).forEach(([selector, value]) => {
+    const element = qs(selector);
+    if (element && document.activeElement !== element) element.value = value;
+  });
+
+  const confirmed = draft.status === "confirmed";
+  const confirmedTaskId = draft.metadata?.confirmed_task_id || "";
+  if (confirmed && confirmedTaskId) {
+    state.productConfirmedTaskId = confirmedTaskId;
+    qs("#product-confirm-brief-btn")?.classList.add("hidden");
+    qs("#product-launch-research-btn")?.classList.remove("hidden");
+    setProductStatus(
+      "#product-brief-confirm-status",
+      "Research Brief 已保存；正在准备启动研究团队。",
+      "success",
+    );
+  } else {
+    qs("#product-confirm-brief-btn")?.classList.remove("hidden");
+    qs("#product-launch-research-btn")?.classList.add("hidden");
+  }
+}
+
+function getProductDraftEdits() {
+  const edits = getDraftEdits();
+  edits.decision_question = qs("#product-brief-decision")?.value.trim() || edits.decision_question;
+  edits.competitors = splitDraftList(
+    qs("#product-brief-competitors")?.value || edits.competitors.join("、"),
+  );
+  edits.focus_areas = splitDraftList(
+    qs("#product-brief-focus")?.value || edits.focus_areas.join("、"),
+  );
+  const reportSubject = qs("#product-brief-subject")?.value.trim();
+  if (reportSubject) {
+    edits.report_subject = reportSubject;
+    edits.preferred_title = reportSubject;
+  }
+  return edits;
+}
+
+function syncProductBriefToDeveloperDraft() {
+  if (!state.intentDraft) return;
+  const edits = getProductDraftEdits();
+  qs("#draft-decision").value = edits.decision_question;
+  qs("#draft-competitors").value = edits.competitors.join("\n");
+  qs("#draft-focus").value = edits.focus_areas.join("\n");
+  qs("#draft-subject").value = edits.report_subject;
+  qs("#draft-title").value = edits.preferred_title;
+  const ready = Boolean(edits.decision_question && edits.competitors.length);
+  qs("#product-confirm-brief-btn").disabled = !ready;
+  setProductStatus(
+    "#product-brief-confirm-status",
+    ready ? "Research Brief 可以确认。" : "请补全研究目标和至少一个研究对象。",
+    ready ? "" : "error",
+  );
+  updateDraftReadiness();
+}
+
+async function parseProductBrief() {
+  const requestText = qs("#product-research-request").value.trim();
+  if (requestText.length < 10) {
+    setProductStatus(
+      "#product-brief-input-status",
+      "请至少输入 10 个字符，并说明研究对象或决策目标。",
+      "error",
+    );
+    return;
+  }
+  const button = qs("#product-parse-brief-btn");
+  button.disabled = true;
+  button.textContent = "正在整理 Research Brief…";
+  setProductStatus(
+    "#product-brief-input-status",
+    "研究团队正在理解问题；这一步不会启动正式研究。",
+    "busy",
+  );
+  try {
+    const payload = await fetchJson(endpoints.parseTaskDraft, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ request_text: requestText }),
+    });
+    qs("#analysis-request").value = requestText;
+    state.productConfirmedTaskId = "";
+    renderIntentDraft(payload.draft, payload.llm_call);
+    renderProductBriefSummary(payload.draft);
+    setProductBriefPhase("confirm");
+    syncProductBriefToDeveloperDraft();
+    await loadRecentDrafts();
+  } catch (error) {
+    setProductStatus(
+      "#product-brief-input-status",
+      `Research Brief 生成失败：${error.message}`,
+      "error",
+    );
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '生成 Research Brief <span aria-hidden="true">→</span>';
+  }
+}
+
+async function confirmProductBrief() {
+  if (!state.intentDraft) return;
+  syncProductBriefToDeveloperDraft();
+  const edits = getProductDraftEdits();
+  if (!edits.decision_question || !edits.competitors.length) return;
+  const button = qs("#product-confirm-brief-btn");
+  button.disabled = true;
+  button.textContent = "正在确认并组建团队…";
+  setProductStatus(
+    "#product-brief-confirm-status",
+    "正在确认 Research Brief；任务创建后会立即启动研究团队。",
+    "busy",
+  );
+  try {
+    const payload = await fetchJson(endpoints.confirmTaskDraft(state.intentDraft.id), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(edits),
+    });
+    state.analysisTask = payload.analysis_task;
+    state.productConfirmedTaskId = payload.analysis_task.id;
+    setActiveTaskContext(payload.analysis_task.id, { historyMode: "push" });
+    renderIntentDraft(payload.draft);
+    await loadTaskWorkspace(payload.analysis_task.id, { historyMode: "none" });
+    renderProductBriefSummary(payload.draft);
+    await Promise.all([loadRecentDrafts(), loadRecentTasks()]);
+    await launchProductResearch(payload.analysis_task.id);
+  } catch (error) {
+    button.disabled = false;
+    setProductStatus(
+      "#product-brief-confirm-status",
+      `Research Brief 保存失败：${error.message}`,
+      "error",
+    );
+  } finally {
+    button.innerHTML = '确认并开始研究 <span aria-hidden="true">→</span>';
+  }
+}
+
+async function launchProductResearch(taskIdOverride = "") {
+  const taskId = taskIdOverride || state.productConfirmedTaskId || state.activeTaskId;
+  if (!taskId) return;
+  const button = qs("#product-launch-research-btn");
+  let started = false;
+  button.disabled = true;
+  button.textContent = "正在组建研究团队…";
+  setProductStatus(
+    "#product-brief-confirm-status",
+    "Planner 正在接管 Research Brief。",
+    "busy",
+  );
+  try {
+    const payload = await fetchJson(endpoints.startResearchLoop(taskId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "deepseek",
+        acknowledge_real_llm_call: true,
+      }),
+    });
+    if (payload.research_plan) renderResearchPlan(payload.research_plan);
+    state.productEvents = payload.events || [];
+    state.researchLoopEventCursor = 0;
+    renderResearchLoopRuntime(payload.research_agent_coordinator_run, payload.events || []);
+    connectResearchLoopEventStream(taskId);
+    navigateProduct("workspace");
+    await loadTaskWorkspace(taskId, { historyMode: "none", suppressError: true });
+    started = true;
+    button.classList.add("hidden");
+  } catch (error) {
+    button.disabled = false;
+    button.classList.remove("hidden");
+    setProductStatus(
+      "#product-brief-confirm-status",
+      `研究团队未能启动：${error.message}`,
+      "error",
+    );
+  } finally {
+    button.disabled = false;
+    button.innerHTML = '重新尝试启动研究 <span aria-hidden="true">→</span>';
+    if (!started) button.classList.remove("hidden");
+  }
+}
+
+function productProjection() {
+  return window.WorkspaceProjection?.build({
+    workspace: state.data || {},
+    run: state.researchLoopRun || state.data?.run || null,
+    events: state.productEvents.length ? state.productEvents : state.researchLoopEvents,
+  }) || { pipeline: { nodes: [], progress: 0 }, activities: [], evidence: [], evidenceByKey: new Map() };
+}
+
+function productStatusLabel(status) {
+  return {
+    pending: "等待任务",
+    confirmed: "Research Brief 已确认",
+    queued: "团队排队中",
+    running: "团队协作中",
+    stopping: "正在安全中止",
+    stopped: "研究已中止",
+    interrupted: "研究已中断",
+    failed: "需要处理",
+    completed: "研究已完成",
+  }[status] || status || "等待任务";
+}
+
+function formatProductTime(value) {
+  const date = new Date(value || "");
+  return Number.isNaN(date.getTime())
+    ? ""
+    : date.toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+
+function renderProductPipeline(projection) {
+  const gate = projection.pipeline.qualityGate;
+  qs("#product-agent-pipeline").innerHTML = projection.pipeline.nodes.length
+    ? projection.pipeline.nodes.map((node) => {
+        const marker = node.status === "done" ? "✓" : node.status === "working" ? "•" : node.status === "attention" ? "!" : "";
+        const gateCopy = node.id === "reviewer"
+          ? `<small class="quality-gate-substate">QualityGate · ${escapeHtml(
+              gate ? (gate.passed ? "通过" : gate.blocking ? "阻断" : "待检查") : "等待 Reviewer",
+            )}</small>`
+          : "";
+        return `
+          <article class="agent-pipeline-node ${escapeHtml(node.status)}">
+            <span class="agent-node-state">${escapeHtml(marker)}</span>
+            <strong>${escapeHtml(node.label)}</strong>
+            <small>${escapeHtml(node.detail)}</small>
+            ${gateCopy}
+          </article>
+        `;
+      }).join("")
+    : '<div class="activity-empty">等待 Research Brief 确认。</div>';
+  qs("#agent-pipeline-gate").textContent = gate
+    ? `QualityGate · ${gate.passed ? "passed" : gate.blocking ? "blocked" : gate.status}`
+    : "QualityGate · pending";
+}
+
+function renderProductActivities(projection) {
+  const stream = qs("#product-activity-stream");
+  const activities = projection.activities || [];
+  qs("#product-activity-count").textContent = `${activities.length} actions`;
+  stream.innerHTML = activities.length
+    ? activities.map((item) => {
+        const safeUrl = safeExternalUrl(item.sourceUrl);
+        const action = String(item.action || "UPDATE").toUpperCase();
+        const query = item.query
+          ? `<div class="activity-card-detail"><strong>Query</strong><br />${escapeHtml(item.query)}</div>`
+          : "";
+        const source = item.sourceTitle || item.sourceUrl
+          ? `<span>${safeUrl
+              ? `<a class="activity-source-link" href="${safeUrl}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.sourceTitle || "打开来源")} ↗</a>`
+              : escapeHtml(item.sourceTitle || "来源已记录")}</span>`
+          : "";
+        const evidence = item.evidenceRef
+          ? '<span class="activity-action-tag">Verified Evidence</span>'
+          : "";
+        return `
+          <article class="agent-activity-card ${escapeHtml(item.kind)}">
+            <span class="activity-agent-mark">${escapeHtml((item.agent || "AI").split(/\s+/).map((part) => part[0]).join("").slice(0, 2))}</span>
+            <div>
+              <div class="activity-card-top">
+                <strong>${escapeHtml(item.agent)}</strong>
+                <span class="activity-action-tag">${escapeHtml(action)}</span>
+                ${evidence}
+              </div>
+              <p class="activity-card-title">${escapeHtml(item.title || item.detail)}</p>
+              ${item.detail && item.detail !== item.title ? `<p class="activity-card-detail">${escapeHtml(item.detail)}</p>` : ""}
+              ${query}
+              <div class="activity-card-meta">${item.taskLabel ? `<span>${escapeHtml(item.taskLabel)}</span>` : ""}${source}</div>
+            </div>
+            <time class="activity-card-time">${escapeHtml(formatProductTime(item.createdAt))}</time>
+          </article>
+        `;
+      }).join("")
+    : '<div class="activity-empty">研究启动后，这里会实时显示 Agent 的公开行动摘要与团队交接。</div>';
+  if (activities.length > state.productLastActivityCount) {
+    stream.scrollTop = stream.scrollHeight;
+  }
+  state.productLastActivityCount = activities.length;
+}
+
+function renderWorkspaceEvidenceLinks(projection) {
+  const grouped = new Map();
+  (projection.evidence || []).forEach((item) => {
+    const groupKey = item.sourceUrl || item.source?.id || item.key;
+    const current = grouped.get(groupKey) || {
+      title: item.title || "已验证来源",
+      sourceUrl: item.sourceUrl || "",
+      sourceType: item.sourceType || "公开来源",
+      competitors: new Set(),
+      dimensions: new Set(),
+      evidenceCount: 0,
+    };
+    if (item.competitor) current.competitors.add(item.competitor);
+    if (item.dimension) current.dimensions.add(item.dimension);
+    current.evidenceCount += 1;
+    grouped.set(groupKey, current);
+  });
+  const links = [...grouped.values()].reverse();
+  qs("#product-workspace-evidence-count").textContent = `${links.length} links`;
+  qs("#product-selected-evidence-chain").innerHTML = links.length
+    ? links.map((item, index) => {
+        const safeUrl = safeExternalUrl(item.sourceUrl);
+        let host = item.sourceType;
+        if (safeUrl) {
+          try {
+            host = new URL(item.sourceUrl).hostname.replace(/^www\./, "");
+          } catch {
+            host = item.sourceType;
+          }
+        }
+        const content = `
+          <span class="workspace-source-link-index">${String(index + 1).padStart(2, "0")}</span>
+          <span class="workspace-source-link-copy">
+            <small>Verified Source · ${escapeHtml(host || "公开来源")}</small>
+            <strong>${escapeHtml(item.title)}</strong>
+            <em>${escapeHtml([...item.competitors, ...item.dimensions].join(" · ") || "已验证来源")} · ${escapeHtml(item.evidenceCount)} evidence</em>
+          </span>
+          <span class="workspace-source-link-arrow">↗</span>
+        `;
+        return safeUrl
+          ? `<a class="workspace-source-link-card" href="${safeUrl}" target="_blank" rel="noopener noreferrer">${content}</a>`
+          : `<article class="workspace-source-link-card unavailable">${content}</article>`;
+      }).join("")
+    : '<div class="evidence-empty">Research Agent 验证来源后，链接卡片会实时出现在这里。</div>';
+}
+
+function renderProductWorkspace() {
+  if (!qs("#product-agent-pipeline")) return;
+  const projection = productProjection();
+  const task = state.data?.analysisTask || state.analysisTask || {};
+  const request = task.metadata?.request_text || task.query || state.intentDraft?.request_text || "选择或启动一项研究任务。";
+  qs("#product-workspace-query").textContent = request;
+  const pipeline = projection.pipeline;
+  const progress = Number(pipeline.progress || 0);
+  qs("#product-workspace-status").textContent = productStatusLabel(pipeline.status);
+  qs("#product-workspace-progress").textContent = `${progress}%`;
+  qs("#product-workspace-progress-bar").style.width = `${progress}%`;
+  const active = ["queued", "running", "stopping"].includes(pipeline.status);
+  qs("#product-stop-research-btn").classList.toggle("hidden", !active);
+  renderProductPipeline(projection);
+  renderProductActivities(projection);
+  renderWorkspaceEvidenceLinks(projection);
+}
+
+function scheduleProductWorkspaceRefresh(taskId) {
+  if (state.productWorkspaceRefreshTimer) {
+    window.clearTimeout(state.productWorkspaceRefreshTimer);
+  }
+  state.productWorkspaceRefreshTimer = window.setTimeout(() => {
+    state.productWorkspaceRefreshTimer = null;
+    loadTaskWorkspace(taskId, { historyMode: "none", suppressError: true });
+  }, 220);
+}
+
+function productReportStatusText(statement) {
+  const status = statement.citation_status || "pending";
+  if (status === "pending" && statement.statement_kind === "profile") return "资料已关联";
+  if (status === "pending" && statement.statement_kind === "research_gap") return "待补充资料";
+  if (status === "pending" && statement.statement_kind === "comparability") return "方法判断";
+  return ({
+    supported: "证据支持",
+    weak: "弱支持",
+    unsupported: "不支持",
+    missing_evidence: "缺少证据",
+    invalid_evidence: "证据无效",
+    pending: "待检查",
+  }[status] || status);
+}
+
+function activateProductReportStatement(statementId) {
+  const {
+    reportStatements = [], claims = [], citationChecks = [], evidence = [], sources = [], researchGaps = [],
+  } = state.data || {};
+  const statement = reportStatements.find((item) => item.id === statementId);
+  if (!statement) return;
+  state.productSelectedReportStatementId = statementId;
+
+  const body = qs("#product-report-body");
+  body.querySelectorAll("[data-report-statement-id]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.reportStatementId === statementId);
+  });
+
+  const claimById = new Map(claims.map((item) => [item.id, item]));
+  const citationByClaimId = new Map(citationChecks.map((item) => [item.claim_id, item]));
+  const evidenceById = new Map(evidence.map((item) => [item.id, item]));
+  const sourceById = new Map(sources.map((item) => [item.id, item]));
+  const gapById = new Map(researchGaps.map((item) => [item.id, item]));
+  const boundClaims = (statement.claim_ids || []).map((id) => claimById.get(id)).filter(Boolean);
+  const boundEvidence = (statement.evidence_ids || []).map((id) => evidenceById.get(id)).filter(Boolean);
+  const boundGaps = (statement.research_gap_ids || []).map((id) => gapById.get(id)).filter(Boolean);
+  const status = statement.citation_status || "pending";
+  const statusText = productReportStatusText(statement);
+  qs("#product-report-evidence-status").textContent = `${statusText} · ${boundEvidence.length} 条证据`;
+
+  const claimHtml = boundClaims.map((claim) => {
+    const citation = citationByClaimId.get(claim.id);
+    const citationMessage = citation?.status === "supported"
+      ? `引用检查：${citation.evidence_ids?.length || 0} 条证据均可追溯到来源文档。`
+      : citation?.status === "weak"
+        ? `引用检查：${citation.evidence_ids?.length || 0} 条证据可以追溯，但其中包含弱来源，结论需保留限制。`
+        : "";
+    return `
+      <article class="trace-claim-card">
+        <div class="trace-section-label">Analysis Claim</div>
+        <p>${escapeHtml(readerFriendlyClaimText(claim.claim_text))}</p>
+        ${claim.metadata?.uncertainty ? `<div class="small-text"><strong>不确定性：</strong>${escapeHtml(claim.metadata.uncertainty)}</div>` : ""}
+        ${citationMessage ? `<div class="citation-message">${escapeHtml(citationMessage)}</div>` : ""}
+      </article>
+    `;
+  }).join("");
+
+  const evidenceHtml = boundEvidence.map((item) => {
+    const source = sourceById.get(item.source_id);
+    const sourceUrl = safeExternalUrl(source?.url);
+    const sourceLabel = source?.title || "来源文档待补充";
+    return `
+      <article class="trace-evidence-card">
+        <div class="item-head">
+          <span class="trace-section-label">Source Evidence</span>
+          <span class="tag">${escapeHtml(item.competitor || item.dimension)}</span>
+        </div>
+        <blockquote>${escapeHtml(item.snippet || item.normalized_fact)}</blockquote>
+        <div class="small-text">维度：${escapeHtml(item.dimension)} · 证据置信度：${Math.round((item.confidence || 0) * 100)}%</div>
+        <div class="trace-source-row">
+          <span>${escapeHtml(source?.source_type || "公开来源")}</span>
+          ${sourceUrl
+            ? `<a href="${sourceUrl}" target="_blank" rel="noreferrer">${escapeHtml(sourceLabel)} ↗</a>`
+            : `<span>${escapeHtml(sourceLabel)}</span>`}
+        </div>
+      </article>
+    `;
+  }).join("");
+
+  const gapHtml = boundGaps.map((gap) => `
+    <article class="trace-gap-card">
+      <div class="trace-section-label">Research Gap</div>
+      <p>${escapeHtml(gap.missing_information)}</p>
+      <div class="small-text"><strong>影响的决策：</strong>${escapeHtml(gap.decision_blocked)}</div>
+    </article>
+  `).join("");
+
+  const publicStatement = String(statement.text || "")
+    .replace(/\[[^\]]+\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  qs("#product-report-evidence-detail").innerHTML = `
+    <article class="trace-statement-card">
+      <div class="item-head">
+        <span class="trace-section-label">当前报告论点 · ${escapeHtml(statement.section)}</span>
+        <span class="tag ${escapeHtml(status)}">${escapeHtml(statusText)}</span>
+      </div>
+      <p>${escapeHtml(publicStatement)}</p>
+      <div class="item-meta">置信度 ${Math.round((statement.confidence || 0) * 100)}%</div>
+    </article>
+    ${claimHtml}
+    ${evidenceHtml || gapHtml || '<article class="trace-empty">这是方法性或上下文判断，当前没有直接绑定来源证据。</article>'}
+    ${evidenceHtml ? gapHtml : ""}
+  `;
+}
+
+function applyProductReportEvidenceVisibility() {
+  const layout = qs("#product-report-layout");
+  const panel = qs("#product-report-evidence-panel");
+  const button = qs("#product-report-evidence-toggle");
+  if (!layout || !panel || !button) return;
+  const collapsed = state.productReportEvidenceCollapsed;
+  layout.classList.toggle("evidence-collapsed", collapsed);
+  panel.setAttribute("aria-hidden", String(collapsed));
+  button.setAttribute("aria-expanded", String(!collapsed));
+  button.textContent = "收起";
+  button.setAttribute("aria-label", "收起证据追溯栏");
+}
+
+function toggleProductReportEvidence() {
+  state.productReportEvidenceCollapsed = !state.productReportEvidenceCollapsed;
+  applyProductReportEvidenceVisibility();
+}
+
+function revealProductReportEvidence() {
+  if (!state.productReportEvidenceCollapsed) return;
+  state.productReportEvidenceCollapsed = false;
+  applyProductReportEvidenceVisibility();
+  qs("#product-report-evidence-panel")?.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderProductReport() {
+  if (!qs("#product-report-body")) return;
+  const { report, reportStatements = [] } = state.data || {};
+  const body = qs("#product-report-body");
+  if (!report) {
+    qs("#product-report-title").textContent = "Research Report";
+    qs("#product-report-meta").textContent = "报告尚未生成。完成研究后，Writer 与 Reviewer 会在这里交付结果。";
+    body.innerHTML = '<div class="evidence-empty">研究报告正在等待团队完成。</div>';
+    qs("#product-report-evidence-detail").innerHTML = '<div class="evidence-empty">报告生成后，可从带“查看证据”标记的段落打开证据追溯。</div>';
+    qs("#product-report-evidence-status").textContent = "等待报告";
+    applyProductReportEvidenceVisibility();
+    return;
+  }
+
+  const statements = reportStatements.filter((item) => !item.report_id || item.report_id === report.id);
+  const writerVersion = report.sections?.report_version;
+  qs("#product-report-title").textContent = report.title || "Research Report";
+  qs("#product-report-meta").textContent = writerVersion
+    ? `${statements.length} 条可追溯论点 · Writer ${writerVersion}`
+    : `${statements.length} 条可追溯论点`;
+  body.innerHTML = reportMarkdownToHtml(report.markdown || "", statements);
+  applyProductReportEvidenceVisibility();
+
+  body.querySelectorAll("[data-report-statement-id]").forEach((element) => {
+    element.classList.add("product-report-statement");
+    const activate = () => activateProductReportStatement(element.dataset.reportStatementId);
+    const activateAndReveal = () => {
+      activate();
+      revealProductReportEvidence();
+    };
+    element.addEventListener("mouseenter", activate);
+    element.addEventListener("focus", activateAndReveal);
+    element.addEventListener("click", activateAndReveal);
+  });
+
+  const preferred = statements.some((item) => item.id === state.productSelectedReportStatementId)
+    ? state.productSelectedReportStatementId
+    : statements[0]?.id;
+  if (preferred) {
+    activateProductReportStatement(preferred);
+  } else {
+    qs("#product-report-evidence-status").textContent = "当前报告暂无映射";
+    qs("#product-report-evidence-detail").innerHTML = '<article class="trace-empty">当前报告尚未生成可追溯段落映射。</article>';
+  }
+}
+
+function navigateProduct(view) {
+  if (!["brief", "workspace", "report"].includes(view)) return;
+  state.productView = view;
+  qsa("[data-product-view]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.productView === view);
+  });
+  qsa(".research-page").forEach((page) => page.classList.remove("active"));
+  qs(`#product-${view}-view`)?.classList.add("active");
+  if (view === "workspace") renderProductWorkspace();
+  if (view === "report") renderProductReport();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openDeveloperConsole(open) {
+  qs("#research-product-app")?.classList.toggle("hidden", open);
+  qs("#diagnostics-app")?.classList.toggle("hidden", !open);
+  if (open) navigateTo(state.activeView || "overview");
+  else navigateProduct(state.productView || "brief");
+  window.scrollTo({ top: 0 });
+}
+
+function setupProductExperience() {
+  qsa("[data-product-view]").forEach((button) => {
+    button.addEventListener("click", () => navigateProduct(button.dataset.productView));
+  });
+  qs("#product-home-btn").addEventListener("click", () => navigateProduct("brief"));
+  qs("#open-diagnostics-btn").addEventListener("click", () => openDeveloperConsole(true));
+  qs("#exit-diagnostics-btn").addEventListener("click", () => openDeveloperConsole(false));
+  qs("#product-parse-brief-btn").addEventListener("click", parseProductBrief);
+  qs("#product-edit-brief-btn").addEventListener("click", () => setProductBriefPhase("input"));
+  qs("#product-confirm-brief-btn").addEventListener("click", confirmProductBrief);
+  qs("#product-launch-research-btn").addEventListener("click", () => launchProductResearch());
+  qs("#product-stop-research-btn").addEventListener("click", stopResearchLoop);
+  qs("#product-report-evidence-toggle").addEventListener("click", toggleProductReportEvidence);
+  qsa("[data-product-example]").forEach((button) => {
+    button.addEventListener("click", () => {
+      qs("#product-research-request").value = button.dataset.productExample;
+      qs("#product-research-request").focus();
+    });
+  });
+  qsa("#product-brief-confirm-state input, #product-brief-confirm-state textarea").forEach((input) => {
+    input.addEventListener("input", syncProductBriefToDeveloperDraft);
+  });
+}
+
 function setupNavigation() {
   qsa(".nav-item").forEach((button) => {
     button.addEventListener("click", () => {
@@ -2771,6 +3465,7 @@ function navigateTo(view) {
 }
 
 function setup() {
+  setupProductExperience();
   setupNavigation();
   qsa("[data-jump]").forEach((button) => {
     button.addEventListener("click", () => navigateTo(button.dataset.jump));
@@ -2806,7 +3501,9 @@ function setup() {
   loadIntegrationStatus();
   loadRecentTasks();
   loadRuns({ selectDefaultLegacy: false });
-  restoreTaskContext();
+  restoreTaskContext().then((restored) => {
+    if (restored && getTaskIdFromUrl()) navigateProduct("workspace");
+  });
 }
 
 setup();

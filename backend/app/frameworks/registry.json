@@ -1,0 +1,15 @@
+{
+  "frameworks": [
+    {
+      "id": "competitive_intelligence",
+      "default_version": "1.0.0",
+      "versions": [
+        {
+          "version": "1.0.0",
+          "status": "enabled",
+          "path": "definitions/competitive_intelligence/1.0.0.yaml"
+        }
+      ]
+    }
+  ]
+}

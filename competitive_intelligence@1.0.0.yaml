@@ -1,0 +1,148 @@
+Task: Implement Competitive Intelligence Framework Registry v1
+
+背景：
+
+当前项目已经完成：
+- Research Agent
+- Evidence Pipeline
+- Unified Pipeline Harness
+- ResearchTask
+- Planner
+
+现在开始引入 Framework-driven Research Planning。
+
+目标：
+
+将竞品分析方法论从 Planner 内部硬编码规则中抽离，
+建立版本化 Framework Registry。
+
+注意：
+不要实现 Analyst Feedback Loop。
+不要实现 ResearchGap 调度。
+不要修改 Harness 主流程。
+
+
+## 开始前必须执行：
+
+1. 检查当前代码：
+- Planner
+- ResearchTask schema
+- ResearchBrief
+- Agent handoff
+- Artifact storage
+
+确认已有实现。
+
+2. 输出当前实现与目标设计差距。
+
+
+## 实现内容：
+
+### 1. Framework Registry
+
+创建：
+
+- FrameworkDefinition schema
+- DimensionDefinition schema
+- FrameworkRegistry loader
+
+
+要求：
+
+当前使用 YAML 文件。
+
+但是接口设计需要支持未来 MySQL Registry。
+
+
+禁止业务代码直接读取 YAML。
+
+
+### 2. 创建 Framework Definition
+
+新增：
+
+competitive_intelligence@1.0.0
+
+内容来源：
+
+采用以下六个通用竞品分析维度：
+
+- market_positioning
+- product_capability
+- competitive_differentiation
+- commercial_strategy
+- customer_experience
+- ecosystem
+
+
+每个 dimension 至少包含：
+
+- dimension_id
+- label
+- research_intent
+- research_questions
+- required_facts
+- query_templates
+- preferred_source_types
+- completion_criteria
+
+
+### 3. ResearchTask 扩展
+
+不要创建新的 ResearchTask。
+
+扩展已有 schema：
+
+新增：
+
+- framework_id
+- framework_version
+- framework_dimension_id
+- framework_content_hash
+
+
+保持旧任务兼容。
+
+
+### 4. Planner 接入
+
+修改 Planner：
+
+由：
+
+硬编码 dimension/research rules
+
+变成：
+
+FrameworkRegistry 提供研究标准。
+
+
+Planner 输出 ResearchTask 时：
+
+自动携带 Framework provenance。
+
+
+### 5. 测试
+
+新增：
+
+- Framework load test
+- Planner generation test
+- backward compatibility test
+
+
+验证：
+
+旧 ResearchTask 仍能执行。
+
+
+输出：
+
+IMPLEMENTATION_REPORT.md
+
+包含：
+
+- 修改文件
+- 架构变化
+- 测试结果
+- 后续 Analyst Loop 接入建议
