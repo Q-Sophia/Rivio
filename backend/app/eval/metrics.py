@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from datetime import datetime, timezone
 from typing import Any
 
@@ -148,6 +149,313 @@ def collect_e2_metrics(
         "total_tokens": total_tokens,
         "tokens": total_tokens,
         "elapsed_ms": elapsed_ms,
+    }
+
+
+def _percentile(values: list[int], percentile: float) -> float | None:
+    """Return a linearly interpolated percentile from recorded values."""
+
+    if not values:
+        return None
+    ordered = sorted(values)
+    if len(ordered) == 1:
+        return float(ordered[0])
+    position = (len(ordered) - 1) * percentile
+    lower = math.floor(position)
+    upper = math.ceil(position)
+    if lower == upper:
+        return float(ordered[lower])
+    weight = position - lower
+    return ordered[lower] + (ordered[upper] - ordered[lower]) * weight
+
+
+def _context_section_metrics(
+    traces: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    section_names = sorted(
+        {
+            str(section)
+            for trace in traces
+            for section in trace.get("section_chars", {})
+        }
+        | {
+            str(section)
+            for trace in traces
+            for section in trace.get("section_estimated_tokens", {})
+        }
+    )
+    metrics: dict[str, dict[str, Any]] = {}
+    for section in section_names:
+        char_values = [
+            int(trace.get("section_chars", {})[section])
+            for trace in traces
+            if section in trace.get("section_chars", {})
+        ]
+        token_values = [
+            int(trace.get("section_estimated_tokens", {})[section])
+            for trace in traces
+            if section in trace.get("section_estimated_tokens", {})
+        ]
+        metrics[section] = {
+            "sample_count": len(char_values),
+            "total_chars": sum(char_values),
+            "avg_chars_per_action": (
+                sum(char_values) / len(char_values)
+                if char_values
+                else None
+            ),
+            "p50_chars": _percentile(char_values, 0.50),
+            "p95_chars": _percentile(char_values, 0.95),
+            "max_chars": max(char_values) if char_values else None,
+            "total_estimated_tokens": sum(token_values),
+            "avg_estimated_tokens_per_action": (
+                sum(token_values) / len(token_values)
+                if token_values
+                else None
+            ),
+        }
+    return metrics
+
+
+def _context_actual_input_tokens(
+    *,
+    traces: list[dict[str, Any]],
+    llm_calls: list[dict[str, Any]],
+) -> tuple[list[int] | None, int]:
+    """Return actual Research Action usage only when every trace has usage."""
+
+    calls_by_node = {
+        str(item.get("node_id") or ""): item
+        for item in llm_calls
+        if item.get("node_id")
+    }
+    values: list[int] = []
+    missing_count = 0
+    for trace in traces:
+        raw_value = trace.get("input_tokens")
+        trace_metadata = trace.get("metadata", {})
+        explicitly_available = trace_metadata.get("usage_available")
+        node_id = str(trace_metadata.get("node_id") or "")
+        call = calls_by_node.get(node_id)
+        if call is not None:
+            call_metadata = call.get("metadata", {})
+            call_input = call_metadata.get("input_tokens")
+            provider_result_available = bool(
+                int(call_metadata.get("attempts") or 0) > 0
+                and call_input is not None
+                and int(call_input or 0) > 0
+            )
+            if call_metadata.get("usage_available") is False:
+                provider_result_available = False
+            if explicitly_available is None:
+                explicitly_available = provider_result_available
+        available = bool(
+            raw_value is not None
+            and explicitly_available is not False
+            and (
+                call is None
+                or provider_result_available
+            )
+        )
+        if not available:
+            missing_count += 1
+            continue
+        values.append(int(raw_value))
+    if not traces or missing_count:
+        return None, missing_count or (1 if not traces else 0)
+    return values, 0
+
+
+def _failed_llm_diagnostics(
+    llm_calls: list[dict[str, Any]],
+) -> tuple[int, int, list[str]]:
+    failed = [
+        item
+        for item in llm_calls
+        if str(item.get("status") or "").casefold() == "failed"
+    ]
+    provider_markers = (
+        "provider",
+        "http 4",
+        "http 5",
+        "insufficient balance",
+        "timeout",
+        "timed out",
+        "transport",
+        "connection",
+        "network",
+        "模型接口",
+    )
+    provider_failed = [
+        item
+        for item in failed
+        if any(
+            marker in str(item.get("error") or "").casefold()
+            for marker in provider_markers
+        )
+    ]
+    errors = sorted(
+        {
+            str(item.get("error") or "").strip()
+            for item in failed
+            if str(item.get("error") or "").strip()
+        }
+    )
+    return len(failed), len(provider_failed), errors
+
+
+def collect_context_governance_metrics(
+    *,
+    store: ArtifactStore,
+    task_id: str,
+    case_id: str,
+    variant: str,
+    context_governance_enabled: bool,
+    elapsed_ms: int,
+    execution_error: str = "",
+) -> dict[str, Any]:
+    """Collect Research Action-only cost and persisted quality metrics."""
+
+    traces = store.load_many(task_id, "research_action_context_traces")
+    actions = store.load_many(task_id, "research_agent_actions")
+    llm_calls = store.load_many(task_id, "llm_calls")
+    task_failures = store.load_many(task_id, "research_task_failures")
+    evidence = store.load_many(task_id, "evidence")
+    covered, total, coverage_ratio = _need_coverage(store, task_id)
+    token_values, usage_missing_count = _context_actual_input_tokens(
+        traces=traces,
+        llm_calls=llm_calls,
+    )
+    latency_values = [
+        int(item.get("llm_latency_ms") or 0) for item in traces
+        if item.get("llm_latency_ms") is not None
+    ]
+    coordinator_runs = store.load_many(
+        task_id,
+        "research_agent_coordinator_runs",
+    )
+    final_run = coordinator_runs[-1] if coordinator_runs else {}
+    gap_value = final_run.get("research_gap_count")
+    final_gap_count = (
+        int(gap_value)
+        if gap_value is not None
+        else len(store.load_many(task_id, "research_gaps"))
+    )
+    trace_modes = sorted(
+        {
+            str(item.get("context_mode") or "")
+            for item in traces
+            if item.get("context_mode")
+        }
+    )
+    expected_trace_mode = (
+        "governed" if context_governance_enabled else "legacy"
+    )
+    recorded_context_flag = final_run.get(
+        "context_governance_enabled"
+    )
+    failed_llm_call_count, provider_failure_count, llm_errors = (
+        _failed_llm_diagnostics(llm_calls)
+    )
+    task_failure_errors = sorted(
+        {
+            str(
+                item.get("error_message")
+                or item.get("error")
+                or ""
+            ).strip()
+            for item in task_failures
+            if str(
+                item.get("error_message")
+                or item.get("error")
+                or ""
+            ).strip()
+        }
+    )
+    coordinator_status = str(final_run.get("status") or "")
+    coordinator_result_status = str(
+        final_run.get("result_status") or ""
+    )
+    coordinator_error = str(final_run.get("error") or "")
+    stop_reason = str(final_run.get("stop_reason") or "")
+    terminal_failure_reason = execution_error or coordinator_error
+    research_success = bool(
+        final_run
+        and coordinator_status == "completed"
+        and coordinator_result_status != "FAILED"
+        and not terminal_failure_reason
+    )
+    return {
+        "case": case_id,
+        "variant": variant,
+        "task_id": task_id,
+        "context_governance_enabled": context_governance_enabled,
+        "research_success": research_success,
+        "execution_error": terminal_failure_reason,
+        "failure_reason": terminal_failure_reason,
+        "total_input_tokens": (
+            sum(token_values) if token_values is not None else None
+        ),
+        "avg_input_tokens_per_action": (
+            sum(token_values) / len(token_values)
+            if token_values is not None and token_values
+            else None
+        ),
+        "p50_input_tokens": (
+            _percentile(token_values, 0.50)
+            if token_values is not None
+            else None
+        ),
+        "p95_input_tokens": (
+            _percentile(token_values, 0.95)
+            if token_values is not None
+            else None
+        ),
+        "max_input_tokens": (
+            max(token_values)
+            if token_values is not None and token_values
+            else None
+        ),
+        "actual_input_tokens_available": token_values is not None,
+        "input_token_usage_missing_count": usage_missing_count,
+        "llm_total_latency_ms": (
+            sum(latency_values)
+            if traces and len(latency_values) == len(traces)
+            else None
+        ),
+        "total_elapsed_ms": elapsed_ms,
+        "action_count": len(actions),
+        "successful_action_count": len(actions),
+        "context_trace_count": len(traces),
+        "trace_action_count_match": len(traces) == len(actions),
+        "failed_llm_call_count": failed_llm_call_count,
+        "provider_failure_count": provider_failure_count,
+        "llm_failure_errors": llm_errors,
+        "research_task_failure_count": len(task_failures),
+        "research_task_failure_errors": task_failure_errors,
+        "evidence_count": len(evidence),
+        "valid_evidence_count": _valid_evidence_count(evidence),
+        "coverage": coverage_ratio,
+        "covered_need_count": covered,
+        "total_need_count": total,
+        "final_gap_count": final_gap_count,
+        "stop_reason": stop_reason,
+        "coordinator_status": coordinator_status,
+        "coordinator_result_status": coordinator_result_status,
+        "coordinator_error": coordinator_error,
+        "coordinator_failed_task_count": int(
+            final_run.get("failed_tasks") or 0
+        ),
+        "coordinator_context_governance_enabled": (
+            recorded_context_flag
+        ),
+        "trace_context_modes": trace_modes,
+        "context_configuration_match": bool(
+            recorded_context_flag is context_governance_enabled
+            and trace_modes == [expected_trace_mode]
+        ),
+        "context_sections": _context_section_metrics(traces),
+        "live_web_nondeterminism": True,
     }
 
 

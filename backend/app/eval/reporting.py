@@ -7,7 +7,7 @@ from statistics import mean
 from typing import Any
 
 from app.eval.cases import EvalCase
-from app.eval.frozen import write_json
+from app.eval.frozen import read_json, write_json
 
 
 E2_CSV_FIELDS = (
@@ -39,6 +39,36 @@ E3_CSV_FIELDS = (
     "extra_llm_calls",
     "extra_tokens",
     "extra_elapsed_ms",
+)
+
+CONTEXT_GOVERNANCE_CSV_FIELDS = (
+    "case",
+    "variant",
+    "context_governance_enabled",
+    "research_success",
+    "total_input_tokens",
+    "avg_input_tokens_per_action",
+    "p50_input_tokens",
+    "p95_input_tokens",
+    "max_input_tokens",
+    "llm_total_latency_ms",
+    "total_elapsed_ms",
+    "action_count",
+    "context_trace_count",
+    "actual_input_tokens_available",
+    "input_token_usage_missing_count",
+    "failed_llm_call_count",
+    "provider_failure_count",
+    "evidence_count",
+    "valid_evidence_count",
+    "coverage",
+    "final_gap_count",
+    "stop_reason",
+    "coordinator_status",
+    "coordinator_result_status",
+    "coordinator_error",
+    "failure_reason",
+    "execution_error",
 )
 
 
@@ -125,6 +155,327 @@ def _format(value: Any, *, percent: bool = False) -> str:
     if isinstance(value, float):
         return f"{value * 100:.1f}%" if percent else f"{value:.3f}"
     return str(value)
+
+
+def _numeric_change(control: Any, treatment: Any) -> dict[str, Any]:
+    if not isinstance(control, (int, float)) or not isinstance(
+        treatment,
+        (int, float),
+    ):
+        return {
+            "control": control,
+            "governed": treatment,
+            "delta": None,
+            "reduction": None,
+            "reduction_ratio": None,
+        }
+    return {
+        "control": control,
+        "governed": treatment,
+        "delta": treatment - control,
+        "reduction": control - treatment,
+        "reduction_ratio": (
+            (control - treatment) / control if control else None
+        ),
+    }
+
+
+def _context_section_comparison(
+    control: dict[str, Any],
+    governed: dict[str, Any],
+    *,
+    calculate_changes: bool = True,
+) -> dict[str, Any]:
+    control_sections = control.get("context_sections", {})
+    governed_sections = governed.get("context_sections", {})
+    compared: dict[str, Any] = {}
+    for section in sorted(set(control_sections) | set(governed_sections)):
+        left = control_sections.get(section, {})
+        right = governed_sections.get(section, {})
+        compared[section] = {
+            "context_legacy": left,
+            "context_governed": right,
+            "changes": {
+                key: (
+                    _numeric_change(left.get(key), right.get(key))
+                    if calculate_changes
+                    else {
+                        "control": left.get(key),
+                        "governed": right.get(key),
+                        "delta": None,
+                        "reduction": None,
+                        "reduction_ratio": None,
+                    }
+                )
+                for key in (
+                    "total_chars",
+                    "avg_chars_per_action",
+                    "p50_chars",
+                    "p95_chars",
+                    "max_chars",
+                    "total_estimated_tokens",
+                    "avg_estimated_tokens_per_action",
+                )
+            },
+        }
+    return compared
+
+
+_CONTEXT_CRITICAL_METRICS = (
+    "total_input_tokens",
+    "avg_input_tokens_per_action",
+    "p50_input_tokens",
+    "p95_input_tokens",
+    "max_input_tokens",
+    "llm_total_latency_ms",
+    "total_elapsed_ms",
+    "action_count",
+    "evidence_count",
+    "valid_evidence_count",
+    "coverage",
+    "final_gap_count",
+)
+
+
+def _context_comparison_invalid_reasons(
+    control: dict[str, Any],
+    governed: dict[str, Any],
+) -> list[str]:
+    reasons: list[str] = []
+    for label, row in (
+        ("context_legacy", control),
+        ("context_governed", governed),
+    ):
+        if not row:
+            reasons.append(f"{label}:missing_metrics")
+            continue
+        coordinator_status = str(row.get("coordinator_status") or "")
+        result_status = str(row.get("coordinator_result_status") or "")
+        if coordinator_status != "completed":
+            reasons.append(
+                f"{label}:coordinator_status={coordinator_status or 'missing'}"
+            )
+        if result_status == "FAILED":
+            reasons.append(f"{label}:coordinator_result_status=FAILED")
+        if row.get("execution_error") or row.get("coordinator_error"):
+            reasons.append(f"{label}:execution_failure")
+        if int(row.get("provider_failure_count") or 0) > 0:
+            reasons.append(f"{label}:provider_failure")
+        elif int(row.get("failed_llm_call_count") or 0) > 0:
+            reasons.append(f"{label}:llm_call_failure")
+        if (
+            int(row.get("research_task_failure_count") or 0) > 0
+            or int(row.get("coordinator_failed_task_count") or 0) > 0
+        ):
+            reasons.append(f"{label}:research_task_failure")
+        if int(row.get("successful_action_count") or 0) <= 0:
+            reasons.append(f"{label}:no_successful_action")
+        if row.get("actual_input_tokens_available") is not True:
+            reasons.append(f"{label}:actual_input_tokens_unavailable")
+        if row.get("context_configuration_match") is not True:
+            reasons.append(f"{label}:context_configuration_mismatch")
+        missing_metrics = [
+            key
+            for key in _CONTEXT_CRITICAL_METRICS
+            if row.get(key) is None
+        ]
+        if missing_metrics:
+            reasons.append(
+                f"{label}:missing_metrics=" + ",".join(missing_metrics)
+            )
+    return reasons
+
+
+def generate_context_governance_outputs(
+    *,
+    run_dir: Path,
+) -> dict[str, Any]:
+    rows = _load_variant_metrics(run_dir, "context_governance")
+    write_json(run_dir / "context_governance_case_results.json", rows)
+    _write_csv(
+        run_dir / "context_governance_summary.csv",
+        rows,
+        CONTEXT_GOVERNANCE_CSV_FIELDS,
+    )
+    by_variant = {
+        str(item.get("variant") or ""): item for item in rows
+    }
+    control = by_variant.get("context_legacy", {})
+    governed = by_variant.get("context_governed", {})
+    requested_metric_keys = (
+        "total_input_tokens",
+        "avg_input_tokens_per_action",
+        "p50_input_tokens",
+        "p95_input_tokens",
+        "max_input_tokens",
+        "llm_total_latency_ms",
+        "total_elapsed_ms",
+        "action_count",
+        "evidence_count",
+        "valid_evidence_count",
+        "coverage",
+        "final_gap_count",
+    )
+    invalid_reasons = _context_comparison_invalid_reasons(
+        control,
+        governed,
+    )
+    comparison_valid = not invalid_reasons
+    case_id = str(
+        control.get("case")
+        or governed.get("case")
+        or (read_json(run_dir / "config.json").get("cases") or [""])[0]
+    )
+    comparison = {
+        "case": case_id,
+        "complete": bool(control and governed),
+        "comparison_valid": comparison_valid,
+        "invalid_reasons": invalid_reasons,
+        "only_changed_variable": "context_governance_enabled",
+        "metrics": {
+            key: (
+                _numeric_change(control.get(key), governed.get(key))
+                if comparison_valid
+                else {
+                    "control": control.get(key),
+                    "governed": governed.get(key),
+                    "delta": None,
+                    "reduction": None,
+                    "reduction_ratio": None,
+                }
+            )
+            for key in requested_metric_keys
+        },
+        "stop_reason": {
+            "context_legacy": control.get("stop_reason"),
+            "context_governed": governed.get("stop_reason"),
+        },
+        "context_sections": _context_section_comparison(
+            control,
+            governed,
+            calculate_changes=comparison_valid,
+        ),
+    }
+    write_json(
+        run_dir / "context_governance_comparison.json",
+        comparison,
+    )
+    core_table = _table(
+        rows,
+        [
+            ("Variant", "variant", False),
+            ("Input tokens", "total_input_tokens", False),
+            ("Avg/action", "avg_input_tokens_per_action", False),
+            ("P50", "p50_input_tokens", False),
+            ("P95", "p95_input_tokens", False),
+            ("Max", "max_input_tokens", False),
+            ("LLM latency ms", "llm_total_latency_ms", False),
+            ("Elapsed ms", "total_elapsed_ms", False),
+            ("Actions", "action_count", False),
+        ],
+    )
+    quality_table = _table(
+        rows,
+        [
+            ("Variant", "variant", False),
+            ("Evidence", "evidence_count", False),
+            ("Valid evidence", "valid_evidence_count", False),
+            ("Coverage", "coverage", True),
+            ("Final gaps", "final_gap_count", False),
+            ("Stop reason", "stop_reason", False),
+        ],
+    )
+    section_rows = []
+    for section, payload in comparison["context_sections"].items():
+        change = payload["changes"]["avg_chars_per_action"]
+        section_rows.append(
+            {
+                "section": section,
+                "legacy_avg_chars": change["control"],
+                "governed_avg_chars": change["governed"],
+                "reduction_ratio": change["reduction_ratio"],
+            }
+        )
+    section_table = _table(
+        section_rows,
+        [
+            ("Context section", "section", False),
+            ("Legacy avg chars/action", "legacy_avg_chars", False),
+            ("Governed avg chars/action", "governed_avg_chars", False),
+            ("Reduction", "reduction_ratio", True),
+        ],
+    )
+    run_config = read_json(run_dir / "config.json")
+    validity_text = (
+        "VALID"
+        if comparison_valid
+        else "INVALID\n\n- " + "\n- ".join(invalid_reasons)
+    )
+    conclusion_text = (
+        "The A/B comparison passed execution-validity checks. The tables "
+        "above report observed arithmetic changes only."
+        if comparison_valid
+        else "Not generated because the A/B comparison is invalid."
+    )
+    interpretation_text = (
+        "The report presents recorded values and arithmetic changes only. "
+        "It does not attribute quality differences to any policy change, "
+        "and it does not claim statistical significance from one Live Web case."
+        if comparison_valid
+        else "The report preserves raw variant metrics only. Arithmetic changes "
+        "and reduction ratios are suppressed because execution-validity checks failed."
+    )
+    summary = f"""# Research Context Governance R1 A/B
+
+This run is restricted to one frozen input: `{case_id}`. It is a mechanism check, not a statistical significance evaluation. `LIVE_WEB_NONDETERMINISM = true`.
+
+- Frozen input hash: `{run_config.get('control_config', {}).get('frozen_input_hash', '')}`
+- Control configuration hash: `{run_config.get('control_config_hash', '')}`
+- Only changed variable: `context_governance_enabled`
+- Execution order: A (`false`) then B (`true`)
+
+# Comparison Validity
+
+{validity_text}
+
+# Research Action Cost
+
+{core_table}
+
+# Research Quality
+
+{quality_table}
+
+# Model-visible Context Sections
+
+Section token figures in JSON are programmatic estimates; actual total input tokens come from persisted LLM call usage. `observed_terms` is a diagnostic subsection of `research_state`, so section totals must not be added together.
+
+{section_table}
+
+# Output Interpretation
+
+{interpretation_text}
+
+# Resume-safe Conclusion
+
+{conclusion_text}
+"""
+    (run_dir / "context_governance_summary.md").write_text(
+        summary,
+        encoding="utf-8",
+    )
+    return {
+        "context_result_count": len(rows),
+        "comparison_complete": comparison["complete"],
+        "comparison_valid": comparison_valid,
+        "invalid_reasons": invalid_reasons,
+        "summary_path": str(
+            run_dir / "context_governance_summary.md"
+        ),
+        "comparison_path": str(
+            run_dir / "context_governance_comparison.json"
+        ),
+    }
 
 
 def _table(rows: list[dict[str, Any]], columns: list[tuple[str, str, bool]]) -> str:

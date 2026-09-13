@@ -23,6 +23,25 @@ def _add_execution_args(parser: argparse.ArgumentParser) -> None:
     )
 
 
+def _add_context_ab_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        "--case",
+        default="case_01",
+        help="R1 单 case A/B，支持 case_01 或 case_05",
+    )
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=DEFAULT_WORKSPACE_ROOT,
+        help="Evaluation Workspace 根目录",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="覆盖显式复用 run 中已存在的 variant 输出",
+    )
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="python -m app.eval",
@@ -31,6 +50,7 @@ def build_parser() -> argparse.ArgumentParser:
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("prepare", "e2", "e3", "all"):
         _add_execution_args(commands.add_parser(name))
+    _add_context_ab_args(commands.add_parser("context-ab"))
     summary = commands.add_parser("summary")
     summary.add_argument(
         "--output-dir",
@@ -76,6 +96,15 @@ def main() -> None:
                 runner.run_all(
                     case_id=args.case,
                     limit=args.limit,
+                    force=args.force,
+                ).resolve()
+            )
+        }
+    elif args.command == "context-ab":
+        result = {
+            "run_dir": str(
+                runner.run_context_governance_ab(
+                    case_id=args.case,
                     force=args.force,
                 ).resolve()
             )

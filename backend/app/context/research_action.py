@@ -154,13 +154,20 @@ class ResearchActionContextViewBuilder:
             "recent_observations": observation_payload,
             "mission_context": [mission_context] if mission_context else [],
         }
+        measured_sections = {
+            **artifacts,
+            # This diagnostic subsection intentionally overlaps with
+            # research_state. It lets the A/B report attribute the largest
+            # R1 reduction without changing the model-visible payload.
+            "observed_terms": research_state.get("observed_terms", []),
+        }
         section_chars = {
             key: len(self._serialize(value))
-            for key, value in artifacts.items()
+            for key, value in measured_sections.items()
         }
         section_estimated_tokens = {
             key: self._estimate_tokens(self._serialize(value))
-            for key, value in artifacts.items()
+            for key, value in measured_sections.items()
         }
         serialized = self._serialize(artifacts)
         evidence_ids = {

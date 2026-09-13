@@ -421,6 +421,7 @@ def main() -> None:
                 "research_task",
                 "information_need",
                 "research_state",
+                "observed_terms",
                 "recent_observations",
                 "mission_context",
             },
@@ -430,6 +431,26 @@ def main() -> None:
             "prompt_summary" not in traces[1]
             and "artifacts" not in traces[1],
             "Context Trace 不得保存完整 prompt 或模型上下文",
+        )
+
+        missing_usage_client = FakeLLMClient(
+            input_tokens=0,
+            duration_ms=29,
+        )
+        missing_usage_decider = LLMResearchActionDecider(
+            llm_client=missing_usage_client,
+            store=store,
+            context_governance_enabled=True,
+        )
+        missing_usage_decider.decide(**common)
+        missing_usage_trace = store.load_many(
+            TASK_ID,
+            "research_action_context_traces",
+        )[-1]
+        require(
+            missing_usage_trace["input_tokens"] is None
+            and missing_usage_trace["metadata"]["usage_available"] is False,
+            "Provider 未返回 input usage 时实际 token 必须记录为 N/A",
         )
 
         default_service = ResearchEvidenceAgentService(store=store)

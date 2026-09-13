@@ -295,6 +295,11 @@ class LLMResearchActionDecider:
             if not isinstance(call, dict)
             else int(call.get("duration_ms") or 0)
         )
+        raw_input_tokens = metadata.get("input_tokens")
+        usage_available = bool(
+            raw_input_tokens is not None
+            and int(raw_input_tokens or 0) > 0
+        )
         trace = ResearchActionContextTrace(
             task_id=task_id,
             research_task_id=research_task_id,
@@ -309,7 +314,9 @@ class LLMResearchActionDecider:
             estimated_input_tokens=(
                 context_view.estimated_input_tokens
             ),
-            input_tokens=int(metadata.get("input_tokens") or 0),
+            input_tokens=(
+                int(raw_input_tokens) if usage_available else None
+            ),
             llm_latency_ms=duration_ms or fallback_latency_ms,
             observation_count=context_view.observation_count,
             candidate_count=context_view.candidate_count,
@@ -318,7 +325,10 @@ class LLMResearchActionDecider:
             ),
             evidence_count=context_view.evidence_count,
             observed_term_count=context_view.observed_term_count,
-            metadata={"node_id": node_id},
+            metadata={
+                "node_id": node_id,
+                "usage_available": usage_available,
+            },
         )
         self.store.append_many(
             task_id,

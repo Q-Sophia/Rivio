@@ -793,7 +793,7 @@ class ResearchActionContextTrace(SchemaModel):
     section_estimated_tokens: dict[str, int] = Field(default_factory=dict)
     total_chars: int = Field(default=0, ge=0)
     estimated_input_tokens: int = Field(default=0, ge=0)
-    input_tokens: int = Field(default=0, ge=0)
+    input_tokens: int | None = Field(default=None, ge=0)
     llm_latency_ms: int = Field(default=0, ge=0)
     observation_count: int = Field(default=0, ge=0)
     candidate_count: int = Field(default=0, ge=0)
