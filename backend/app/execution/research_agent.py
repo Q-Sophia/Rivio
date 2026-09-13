@@ -17,6 +17,11 @@ from app.collection.source_quality import (
     MIN_COLLECTION_SCORE,
     canonical_dimension,
 )
+from app.context.research_action import (
+    RESEARCH_ACTION_CONTEXT_TRACES_ARTIFACT,
+    ResearchActionContextView,
+    ResearchActionContextViewBuilder,
+)
 from app.harness.artifacts import ArtifactStore
 from app.llm import LLMClient, LLMConfig, build_deepseek_compatible_config
 from app.retrieval import (
@@ -46,6 +51,7 @@ from app.schemas import (
     ResearchAgentBudget,
     ResearchAgentObservation,
     ResearchAgentRun,
+    ResearchActionContextTrace,
     ResearchTask,
     ResearchTaskOutcome,
     RunStatus,
@@ -98,7 +104,7 @@ class ResearchActionDecider(Protocol):
         state: ResearchAgentRun,
         recent_observations: list[ResearchAgentObservation],
         mission_context: dict[str, Any] | None = None,
-        artifacts: dict[str, list],
+        artifacts: dict[str, list] | None = None,
     ) -> ResearchAgentAction: ...
 
 
@@ -111,10 +117,18 @@ class LLMResearchActionDecider:
         self,
         *,
         llm_client: LLMClient,
-        store: ArtifactStore,
+        store: ArtifactStore | None = None,
+        context_governance_enabled: bool = False,
+        context_view_builder: ResearchActionContextViewBuilder | None = None,
     ):
         self.llm_client = llm_client
         self.store = store
+        self.context_view_builder = (
+            context_view_builder
+            or ResearchActionContextViewBuilder(
+                enabled=context_governance_enabled
+            )
+        )
 
     def decide(
         self,
@@ -125,36 +139,22 @@ class LLMResearchActionDecider:
         state: ResearchAgentRun,
         recent_observations: list[ResearchAgentObservation],
         mission_context: dict[str, Any] | None = None,
-        artifacts: dict[str, list],
+        artifacts: dict[str, list] | None = None,
     ) -> ResearchAgentAction:
         step = state.step_count + 1
-        research_state = state.model_dump(mode="json")
-        for field in (
-            "attempted_queries",
-            "visited_urls",
-            "rejected_sources",
-        ):
-            research_state[field] = _compact_history_summary(
-                list(getattr(state, field))
-            )
-        artifacts = {
-            "research_task": [research_task.model_dump(mode="json")],
-            "information_need": (
-                [information_need.model_dump(mode="json")]
-                if information_need is not None else []
-            ),
-            "research_state": [research_state],
-            "recent_observations": [
-                item.model_dump(mode="json")
-                for item in recent_observations[-4:]
-            ],
-            "mission_context": [mission_context] if mission_context else [],
-        }
+        context_view = self.context_view_builder.build(
+            research_task=research_task,
+            information_need=information_need,
+            state=state,
+            recent_observations=recent_observations,
+            mission_context=mission_context,
+            available_artifacts=artifacts,
+        )
         return self._generate_action(
             task_id=task_id,
             research_task=research_task,
             step=step,
-            artifacts=artifacts,
+            context_view=context_view,
         )
 
     def _generate_action(
@@ -163,7 +163,7 @@ class LLMResearchActionDecider:
         task_id: str,
         research_task: ResearchTask,
         step: int,
-        artifacts: dict[str, list],
+        context_view: ResearchActionContextView,
     ) -> ResearchAgentAction:
         dimension = canonical_dimension(research_task.dimension)
         official_first_policy = (
@@ -228,19 +228,103 @@ class LLMResearchActionDecider:
             "PARTIAL 表示已有 Verified Evidence，但仍缺少会实质影响当前研究结论的核心事实；"
             "EXHAUSTED 表示经过合理检索后仍没有形成可用 Verified Evidence，或已无有效研究路径。"
         )
-        raw, _call, _output = self.llm_client.generate_structured(
-            task_id=task_id,
-            agent_role=AgentRole.RESEARCHER,
-            agent_run_id=f"run_research_agent_{research_task.id}",
-            node_id=f"research_agent_{research_task.id}_step_{step}",
-            context_bundle=None,
-            output_schema="ResearchAgentAction",
-            prompt_id="research_agent_action_v1",
-            prompt_version="v1",
-            prompt_summary=prompt_summary,
-            artifacts=artifacts,
-        )
+        agent_run_id = f"run_research_agent_{research_task.id}"
+        node_id = f"research_agent_{research_task.id}_step_{step}"
+        call = None
+        started_perf = time.perf_counter()
+        try:
+            raw, call, _output = self.llm_client.generate_structured(
+                task_id=task_id,
+                agent_role=AgentRole.RESEARCHER,
+                agent_run_id=agent_run_id,
+                node_id=node_id,
+                context_bundle=None,
+                output_schema="ResearchAgentAction",
+                prompt_id="research_agent_action_v1",
+                prompt_version="v1",
+                prompt_summary=prompt_summary,
+                artifacts=context_view.artifacts,
+            )
+        finally:
+            self._record_context_trace(
+                task_id=task_id,
+                research_task_id=research_task.id,
+                agent_run_id=agent_run_id,
+                node_id=node_id,
+                step=step,
+                context_view=context_view,
+                call=call,
+                fallback_latency_ms=int(
+                    (time.perf_counter() - started_perf) * 1000
+                ),
+            )
         return ResearchAgentAction(**raw["item"])
+
+    def _record_context_trace(
+        self,
+        *,
+        task_id: str,
+        research_task_id: str,
+        agent_run_id: str,
+        node_id: str,
+        step: int,
+        context_view: ResearchActionContextView,
+        call: Any,
+        fallback_latency_ms: int,
+    ) -> None:
+        if self.store is None:
+            return
+        if call is None:
+            call = next(
+                (
+                    item
+                    for item in reversed(
+                        self.store.load_many(task_id, "llm_calls")
+                    )
+                    if item.get("node_id") == node_id
+                ),
+                {},
+            )
+        metadata = (
+            dict(getattr(call, "metadata", {}) or {})
+            if not isinstance(call, dict)
+            else dict(call.get("metadata") or {})
+        )
+        duration_ms = (
+            int(getattr(call, "duration_ms", 0) or 0)
+            if not isinstance(call, dict)
+            else int(call.get("duration_ms") or 0)
+        )
+        trace = ResearchActionContextTrace(
+            task_id=task_id,
+            research_task_id=research_task_id,
+            agent_run_id=agent_run_id,
+            action_index=step,
+            context_mode=context_view.context_mode,
+            section_chars=context_view.section_chars,
+            section_estimated_tokens=(
+                context_view.section_estimated_tokens
+            ),
+            total_chars=context_view.total_chars,
+            estimated_input_tokens=(
+                context_view.estimated_input_tokens
+            ),
+            input_tokens=int(metadata.get("input_tokens") or 0),
+            llm_latency_ms=duration_ms or fallback_latency_ms,
+            observation_count=context_view.observation_count,
+            candidate_count=context_view.candidate_count,
+            available_candidate_count=(
+                context_view.available_candidate_count
+            ),
+            evidence_count=context_view.evidence_count,
+            observed_term_count=context_view.observed_term_count,
+            metadata={"node_id": node_id},
+        )
+        self.store.append_many(
+            task_id,
+            RESEARCH_ACTION_CONTEXT_TRACES_ARTIFACT,
+            [trace],
+        )
 
 def build_research_agent_llm_config() -> LLMConfig:
     return build_deepseek_compatible_config(
@@ -1943,8 +2027,16 @@ class ResearchEvidenceAgent(BaseAgent):
 
 
 class ResearchEvidenceAgentService:
-    def __init__(self, *, store: ArtifactStore | None = None):
+    def __init__(
+        self,
+        *,
+        store: ArtifactStore | None = None,
+        context_governance_enabled: bool = False,
+    ):
         self.store = store or ArtifactStore()
+        self.context_governance_enabled = bool(
+            context_governance_enabled
+        )
 
     def get_payload(self, task_id: str, research_task_id: str = "") -> dict[str, Any]:
         runs = self.store.load_many(task_id, "research_agent_runs")
@@ -2022,6 +2114,9 @@ class ResearchEvidenceAgentService:
             decider = LLMResearchActionDecider(
                 llm_client=LLMClient(config=config, store=self.store),
                 store=self.store,
+                context_governance_enabled=(
+                    self.context_governance_enabled
+                ),
             )
         task_items = self.store.load_many(task_id, "analysis_tasks")
         analysis_task = AnalysisTask(**task_items[-1]) if task_items else AnalysisTask(
@@ -2119,5 +2214,10 @@ class ResearchEvidenceAgentService:
         }
 
 
-def get_research_evidence_agent_service() -> ResearchEvidenceAgentService:
-    return ResearchEvidenceAgentService()
+def get_research_evidence_agent_service(
+    *,
+    context_governance_enabled: bool = False,
+) -> ResearchEvidenceAgentService:
+    return ResearchEvidenceAgentService(
+        context_governance_enabled=context_governance_enabled
+    )

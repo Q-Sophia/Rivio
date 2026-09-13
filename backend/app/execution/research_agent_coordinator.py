@@ -61,6 +61,7 @@ class ResearchAgentCoordinatorRun(BaseModel):
     status: str = "queued"
     mode: str = ExecutionMode.DEEPSEEK.value
     supplement_enabled: bool = True
+    context_governance_enabled: bool = False
 
     research_task_ids: list[str] = Field(default_factory=list)
     total_tasks: int = 0
@@ -149,8 +150,12 @@ class ResearchAgentCoordinator:
         coverage_service_factory: CoverageServiceFactory | None = None,
         mission_supervisor_factory: MissionSupervisorFactory | None = None,
         supplement_enabled: bool = True,
+        context_governance_enabled: bool = False,
     ):
         self.store = store or ArtifactStore()
+        self.context_governance_enabled = bool(
+            context_governance_enabled
+        )
         self._pool = ThreadPoolExecutor(
             max_workers=max_workers,
             thread_name_prefix="research-agent-coordinator",
@@ -159,7 +164,11 @@ class ResearchAgentCoordinator:
         self._futures: dict[str, Future] = {}
         self._stop_requested: set[str] = set()
         self._research_service_factory = research_service_factory or (
-            lambda _store: get_research_evidence_agent_service()
+            lambda _store: get_research_evidence_agent_service(
+                context_governance_enabled=(
+                    self.context_governance_enabled
+                ),
+            )
         )
         self._coverage_service_factory = coverage_service_factory or (
             lambda store: ResearchAgentBoundedRefreshService(store=store)
@@ -338,6 +347,9 @@ class ResearchAgentCoordinator:
                 ),
                 max_actions=max_actions,
                 supplement_enabled=self.supplement_enabled,
+                context_governance_enabled=(
+                    self.context_governance_enabled
+                ),
                 message=(
                     "Research Agent R1 已进入后台研究队列。"
                     + (
@@ -754,6 +766,10 @@ class ResearchAgentCoordinator:
                 max_failed_actions=min(3, remaining_actions),
             )
             service = self._research_service_factory(self.store)
+            if hasattr(service, "context_governance_enabled"):
+                service.context_governance_enabled = (
+                    self.context_governance_enabled
+                )
             payload = service.run_once(
                 started.task_id,
                 research_task_id=research_task_id,

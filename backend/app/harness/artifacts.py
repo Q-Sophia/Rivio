@@ -72,6 +72,7 @@ DEFAULT_ARTIFACT_TYPES = {
     "research_agent_runs",
     "research_agent_actions",
     "research_agent_observations",
+    "research_action_context_traces",
     "research_missions",
     "research_mission_states",
     "research_worker_contexts",

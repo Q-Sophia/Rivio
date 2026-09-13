@@ -15,6 +15,11 @@ from app.context.memory import (
     build_memory_items_from_artifacts,
     build_working_memory_from_artifacts,
 )
+from app.context.research_action import (
+    RESEARCH_ACTION_CONTEXT_TRACES_ARTIFACT,
+    ResearchActionContextView,
+    ResearchActionContextViewBuilder,
+)
 
 __all__ = [
     "CONTEXT_BUNDLES_ARTIFACT",
@@ -24,6 +29,9 @@ __all__ = [
     "ContextBuilder",
     "GuardrailChecker",
     "MemoryStore",
+    "RESEARCH_ACTION_CONTEXT_TRACES_ARTIFACT",
+    "ResearchActionContextView",
+    "ResearchActionContextViewBuilder",
     "build_context_memory_artifacts",
     "build_memory_items_from_artifacts",
     "build_working_memory_from_artifacts",

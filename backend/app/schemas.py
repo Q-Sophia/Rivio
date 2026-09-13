@@ -780,6 +780,29 @@ class ResearchAgentRun(SchemaModel):
     completed_at: datetime | None = None
 
 
+class ResearchActionContextTrace(SchemaModel):
+    """Lightweight size telemetry for one Research Agent LLM decision."""
+
+    id: str = Field(default_factory=lambda: new_id("researchcontexttrace"))
+    task_id: str
+    research_task_id: str
+    agent_run_id: str
+    action_index: int = Field(ge=1)
+    context_mode: str
+    section_chars: dict[str, int] = Field(default_factory=dict)
+    section_estimated_tokens: dict[str, int] = Field(default_factory=dict)
+    total_chars: int = Field(default=0, ge=0)
+    estimated_input_tokens: int = Field(default=0, ge=0)
+    input_tokens: int = Field(default=0, ge=0)
+    llm_latency_ms: int = Field(default=0, ge=0)
+    observation_count: int = Field(default=0, ge=0)
+    candidate_count: int = Field(default=0, ge=0)
+    available_candidate_count: int = Field(default=0, ge=0)
+    evidence_count: int = Field(default=0, ge=0)
+    observed_term_count: int = Field(default=0, ge=0)
+    created_at: datetime = Field(default_factory=utc_now)
+
+
 class ResearchMission(SchemaModel):
     """A deterministic coherent research scope for one competitor."""
 
