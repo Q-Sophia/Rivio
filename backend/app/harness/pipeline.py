@@ -260,6 +260,71 @@ class ResearchPipelineHarness:
             )
             return interrupted
 
+    def reconcile_completed_artifacts(self, task_id: str) -> PipelineRun | None:
+        """Close a failed run when manual stage recovery produced all final artifacts."""
+
+        with self._lock:
+            latest = self.get_latest_run(task_id)
+            if latest is None or _value(latest.status) in ACTIVE_PIPELINE_STATUSES:
+                return latest
+            if _value(latest.status) == "completed":
+                return latest
+            try:
+                reporting = self._reporting_service_factory(self.store).get_payload(
+                    task_id
+                )
+            except (LookupError, ValueError):
+                return latest
+            if not reporting.get("completed"):
+                return latest
+
+            completed_stages = list(latest.completed_stages)
+            for stage in (
+                PipelineStage.PLANNING,
+                PipelineStage.RESEARCHING,
+                PipelineStage.ANALYZING,
+                PipelineStage.REPORTING,
+            ):
+                stage_name = _value(stage)
+                if stage_name not in completed_stages:
+                    completed_stages.append(stage_name)
+            recovered = latest.model_copy(
+                update={
+                    "status": PipelineRunStatus.COMPLETED,
+                    "current_stage": PipelineStage.COMPLETED,
+                    "progress_percent": 100,
+                    "completed_stages": completed_stages,
+                    "message": (
+                        "Analyst/Writer 阶段已通过人工恢复完成，"
+                        "Reviewer 与 QualityGate 均已通过。"
+                    ),
+                    "error": "",
+                    "updated_at": utc_now(),
+                    "completed_at": utc_now(),
+                }
+            )
+            recovered = self._save_run(recovered)
+            checkpoint = self._checkpoint(
+                recovered,
+                PipelineStage.REPORTING,
+                REPORTING_OUTPUTS,
+            )
+            recovered = self._save_run(
+                recovered.model_copy(
+                    update={
+                        "last_checkpoint_id": checkpoint.id,
+                        "updated_at": utc_now(),
+                    }
+                )
+            )
+            self._append_event(
+                recovered,
+                event_type="pipeline_completed",
+                message=recovered.message,
+                data={"recovered_from_artifacts": True},
+            )
+            return recovered
+
     def get_latest_run(self, task_id: str) -> PipelineRun | None:
         items = self.store.load_many(task_id, PIPELINE_RUNS_ARTIFACT)
         return PipelineRun(**items[-1]) if items else None

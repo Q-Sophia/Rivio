@@ -307,9 +307,18 @@ def validate_analyst_assessment_stage(
             if candidate is None:
                 raise ValueError(f"Analyst 引用了未授权 Evidence: {evidence_id}")
             if candidate.competitor != item.competitor:
-                raise ValueError("Analyst Evidence competitor 与 assessment scope 不一致")
+                raise ValueError(
+                    f"dimension_assessment competitor={item.competitor} 引用了 "
+                    f"Evidence {evidence_id}，但该 Evidence 的精确 competitor="
+                    f"{candidate.competitor}；竞品标识不得拆分、合并或近似匹配"
+                )
             if str(candidate.dimension) != str(expected["evidence_dimension"]):
-                raise ValueError("Analyst Evidence dimension 与 Framework 映射不一致")
+                raise ValueError(
+                    f"dimension_assessment dimension={item.dimension_id} 引用了 "
+                    f"Evidence {evidence_id}，但该 Evidence dimension="
+                    f"{candidate.dimension}，预期 evidence_dimension="
+                    f"{expected['evidence_dimension']}"
+                )
         if item.status == DimensionAssessmentStatus.COVERED.value and (
             item.missing_facts or item.completion_criteria_unmet
         ):
@@ -338,9 +347,19 @@ def validate_analyst_assessment_stage(
         for evidence_id in insight.evidence_ids:
             candidate = evidence_by_id[evidence_id]
             if str(candidate.dimension) != str(dimension.evidence_dimension):
-                raise ValueError("AssessmentInsight Evidence dimension 不一致")
+                raise ValueError(
+                    f"AssessmentInsight dimension={insight.dimension_id} 引用了 "
+                    f"Evidence {evidence_id}，但该 Evidence dimension="
+                    f"{candidate.dimension}，预期 evidence_dimension="
+                    f"{dimension.evidence_dimension}"
+                )
             if insight.competitors and candidate.competitor not in insight.competitors:
-                raise ValueError("AssessmentInsight Evidence competitor 不一致")
+                raise ValueError(
+                    f"AssessmentInsight competitors={insight.competitors} 引用了 "
+                    f"Evidence {evidence_id}，但该 Evidence 的精确 competitor="
+                    f"{candidate.competitor}；若 insight 未明确评估该对象则移除该 "
+                    "Evidence，竞品标识不得拆分、合并或近似匹配"
+                )
     for gap in stage.research_gaps:
         if gap.dimension_id not in dimension_ids:
             raise ValueError("ResearchGap 引用了未知 Framework dimension")

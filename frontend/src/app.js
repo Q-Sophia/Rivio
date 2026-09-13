@@ -37,6 +37,8 @@ const state = {
   productEvents: [],
   productLastActivityCount: 0,
   productWorkspaceRefreshTimer: null,
+  productRecoveryStage: "",
+  productRecoveryMessage: "",
 };
 
 const views = {
@@ -91,7 +93,7 @@ const taskLabels = {
 
 const endpoints = {
   runs: "/api/runs",
-  analysisTasks: "/api/analysis-tasks?limit=20",
+  analysisTasks: "/api/analysis-tasks?limit=100",
   taskDrafts: "/api/task-drafts",
   integrations: "/api/integrations/status",
   parseTaskDraft: "/api/task-drafts/parse",
@@ -137,6 +139,7 @@ const endpoints = {
 
 const ACTIVE_TASK_STORAGE_KEY = "lastActiveTaskId";
 const LEGACY_ACTIVE_TASK_STORAGE_KEY = "competitive-intel-agents.activeTaskId";
+const PRODUCT_WORKSPACE_ORIGIN = "ai_research_team_workspace_v1";
 const EMPTY_STAGE_COPY = "当前任务尚未生成该阶段产物。";
 const TASK_WORKSPACE_VIEWS = new Set(["overview", "workflow", "llm", "claims", "report", "governance"]);
 
@@ -1282,6 +1285,9 @@ function connectResearchLoopEventStream(taskId) {
           () => loadResearchPlan(taskId),
           150,
         );
+        if (status === "completed") {
+          window.setTimeout(() => loadRecentTasks(), 350);
+        }
       }
     },
   );
@@ -1507,7 +1513,7 @@ function renderResearchReporting(payload) {
   } else if (report) {
     qs("#research-reporting-copy").textContent = "Writer 报告已保留，当前只需从 Reviewer 或 QualityGate 阶段恢复，不会重复调用 DeepSeek。";
   } else if (analysisCompleted) {
-    qs("#research-reporting-copy").textContent = "将复用当前任务已有 Analyst/Citation 产物；Writer 额外调用 1 次真实 DeepSeek，不会重新搜索、采集、抽取或分析。";
+    qs("#research-reporting-copy").textContent = "将复用当前任务已有 Analyst/Citation 产物；Writer 通常调用 1 次真实 DeepSeek，仅报告合同校验失败时最多再试 2 次。";
   }
 }
 
@@ -1536,7 +1542,7 @@ async function runResearchReporting() {
   if (!taskId || !state.researchAnalysis?.completed || current.completed) return;
   const writerRequired = Boolean(current.writer_required);
   const message = writerRequired
-    ? "本次会额外调用 1 次真实 DeepSeek Writer。只读取当前任务已有的 Analyst/Citation 产物，不会重新搜索、采集、抽取、分析或重跑 Citation。是否继续？"
+    ? "本次 Writer 通常调用 1 次真实 DeepSeek；仅报告合同校验失败时最多再试 2 次，总上限 3 次。只读取已有 Analyst/Citation 产物，不会重新搜索、采集或分析。是否继续？"
     : "已有 Writer 报告。本次只恢复 Reviewer 与 QualityGate，不会调用 DeepSeek。是否继续？";
   if (!window.confirm(message)) return;
 
@@ -1544,7 +1550,7 @@ async function runResearchReporting() {
   button.disabled = true;
   button.textContent = writerRequired ? "DeepSeek 正在写报告…" : "正在恢复质量阶段…";
   qs("#research-reporting-copy").textContent = writerRequired
-    ? "正在进行 1 次真实 DeepSeek Writer 调用；Writer 成功后会离线执行 Reviewer 与 QualityGate。"
+    ? "正在进行真实 DeepSeek Writer 调用；报告合同校验失败时最多自动再试 2 次，成功后会执行 Reviewer 与 QualityGate。"
     : "正在从已有报告恢复 Reviewer 与 QualityGate；不会产生新的模型费用。";
   try {
     const payload = await fetchJson(endpoints.researchReporting(taskId), {
@@ -1566,12 +1572,12 @@ async function runResearchReporting() {
 async function runResearchAnalysis() {
   const taskId = qs("#research-planning").dataset.taskId;
   if (!taskId || !state.researchCanAnalyze) return;
-  const confirmed = window.confirm("本次通常调用 2 次真实 DeepSeek Analyst；仅当某个结构化阶段因长度截断时允许重试 1 次，总计最多 4 次。不会重新搜索或采集网页。是否继续？");
+  const confirmed = window.confirm("本次将执行有界的真实 DeepSeek Analyst 调用：小型分析通常 3 次，较大 Framework scope 会按维度分片；发生长度截断的子阶段仅重试一次。不会重新搜索或采集网页。是否继续？");
   if (!confirmed) return;
   const button = qs("#run-research-analysis-btn");
   button.disabled = true;
   button.textContent = "DeepSeek 正在分析…";
-  qs("#research-analysis-copy").textContent = "正在进行两阶段真实 Analyst 调用（通常 2 次，截断重试时最多 4 次）；不会重新搜索、采集或调用 Writer。";
+  qs("#research-analysis-copy").textContent = "正在进行有界分阶段 Analyst 调用；较大 Framework scope 将按维度分片，发生长度截断的子阶段仅重试一次。不会重新搜索、采集或调用 Writer。";
   try {
     const payload = await fetchJson(endpoints.researchAnalysis(taskId), {
       method: "POST",
@@ -1661,11 +1667,62 @@ function renderRecentTasks() {
   }).join("");
 }
 
+function productTaskCompleted(task) {
+  return (
+    task.workspace_origin === PRODUCT_WORKSPACE_ORIGIN
+    && (
+      Number(task.progress_percent || 0) >= 100
+      || task.current_stage === "reviewed"
+      || task.stage === "reviewed"
+    )
+  );
+}
+
+function formatProductHistoryDate(value) {
+  const date = new Date(value || "");
+  return Number.isNaN(date.getTime())
+    ? "已完成"
+    : date.toLocaleDateString("zh-CN", { year: "numeric", month: "short", day: "numeric" });
+}
+
+function renderProductCompletedTasks() {
+  const container = qs("#product-completed-task-list");
+  const count = qs("#product-history-count");
+  if (!container || !count) return;
+  const tasks = state.recentTasks.filter(productTaskCompleted);
+  count.textContent = String(tasks.length);
+  container.innerHTML = tasks.length
+    ? tasks.map((task) => `
+        <button class="product-history-task" type="button" data-product-history-task="${escapeHtml(task.task_id)}" aria-label="打开已完成研究：${escapeHtml(task.title || task.request_text)}">
+          <span>
+            <strong>${escapeHtml(task.title || task.request_text || "已完成研究")}</strong>
+            <small>${escapeHtml(formatProductHistoryDate(task.updated_at))}</small>
+          </span>
+          <em>查看报告 →</em>
+        </button>
+      `).join("")
+    : '<p class="product-history-empty">从新 Workspace 完成的研究会保存在这里。</p>';
+  qsa("#product-completed-task-list [data-product-history-task]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      const taskId = button.dataset.productHistoryTask;
+      button.disabled = true;
+      button.querySelector("em").textContent = "正在打开…";
+      const loaded = await loadTaskWorkspace(taskId, { historyMode: "push" });
+      if (loaded) navigateProduct("report");
+      else {
+        button.disabled = false;
+        button.querySelector("em").textContent = "重试 →";
+      }
+    });
+  });
+}
+
 async function loadRecentTasks() {
   try {
     const payload = await fetchJson(endpoints.analysisTasks);
     state.recentTasks = payload.tasks || [];
     renderRecentTasks();
+    renderProductCompletedTasks();
   } catch (error) {
     const container = qs("#recent-task-list");
     if (container) {
@@ -1771,6 +1828,8 @@ async function loadTaskWorkspace(
       state.researchLoopEvents = [];
       state.productEvents = [];
       state.productSelectedReportStatementId = "";
+      state.productRecoveryStage = "";
+      state.productRecoveryMessage = "";
     }
     setActiveTaskContext(taskId, { historyMode });
     state.analysisTask = workspace.analysisTask || state.analysisTask;
@@ -2878,6 +2937,7 @@ function renderProductBriefSummary(draft = state.intentDraft) {
 
 function getProductDraftEdits() {
   const edits = getDraftEdits();
+  edits.workspace_origin = PRODUCT_WORKSPACE_ORIGIN;
   edits.decision_question = qs("#product-brief-decision")?.value.trim() || edits.decision_question;
   edits.competitors = splitDraftList(
     qs("#product-brief-competitors")?.value || edits.competitors.join("、"),
@@ -3092,6 +3152,149 @@ function renderProductPipeline(projection) {
     : "QualityGate · pending";
 }
 
+function productStageCompletion() {
+  const workspace = state.data || {};
+  const analysisCompleted = Boolean(
+    state.researchAnalysis?.completed
+    || (workspace.claimsV2 || []).length
+    || (workspace.analysisPortfolios || []).length,
+  );
+  const reportExists = Boolean(workspace.report || state.researchReporting?.report);
+  const reportingCompleted = Boolean(
+    state.researchReporting?.completed
+    || (reportExists && workspace.review && (workspace.qualityGates || []).length),
+  );
+  return { analysisCompleted, reportExists, reportingCompleted };
+}
+
+function renderProductRecoveryControls(projection) {
+  const analystButton = qs("#product-recover-analyst-btn");
+  const writerButton = qs("#product-recover-writer-btn");
+  const status = qs("#product-recovery-status");
+  if (!analystButton || !writerButton || !status) return;
+
+  const { analysisCompleted, reportExists, reportingCompleted } = productStageCompletion();
+  const pipelineActive = ["queued", "running", "stopping"].includes(projection.pipeline.status);
+  const hasEvidence = Boolean((state.data?.evidence || []).length);
+  const busy = Boolean(state.productRecoveryStage);
+
+  analystButton.disabled = busy || pipelineActive || analysisCompleted || !hasEvidence;
+  writerButton.disabled = busy || pipelineActive || !analysisCompleted || reportingCompleted;
+  analystButton.textContent = state.productRecoveryStage === "analyst"
+    ? "Analyst 正在恢复…"
+    : analysisCompleted
+      ? "Analyst 已完成"
+      : "恢复 Analyst";
+  writerButton.textContent = state.productRecoveryStage === "writer"
+    ? (reportExists ? "质量阶段正在恢复…" : "Writer 正在恢复…")
+    : reportingCompleted
+      ? "Writer 已完成"
+      : reportExists
+        ? "恢复 Reviewer / QualityGate"
+        : "恢复 Writer";
+
+  if (state.productRecoveryMessage) {
+    status.textContent = state.productRecoveryMessage;
+  } else if (pipelineActive) {
+    status.textContent = "自动 Pipeline 正在执行，无需手动介入。";
+  } else if (reportingCompleted) {
+    status.textContent = "Analyst、Writer、Reviewer 和 QualityGate 均已完成。";
+  } else if (!analysisCompleted) {
+    status.textContent = hasEvidence
+      ? "已保留 Verified Evidence，可从 Analyst 阶段恢复。"
+      : "需要先获得 Verified Evidence，才能恢复 Analyst。";
+  } else if (!reportExists) {
+    status.textContent = "Analyst / Citation 已完成；Writer 合同校验失败时最多自动重试 2 次。";
+  } else {
+    status.textContent = "Writer 报告已保留；恢复只会继续 Reviewer 与 QualityGate。";
+  }
+}
+
+function productRecoveryFailureMessage(stage, error) {
+  const message = String(error?.message || error || "");
+  if (message.includes("ResearchGap") || message.includes("报告正文")) {
+    return "Writer 输出未通过报告完整性校验；断点已保留，可再次恢复。";
+  }
+  if (/429|timeout|超时|transport|5\d\d/i.test(message)) {
+    return "DeepSeek 服务在有限重试后仍不可用；断点已保留，稍后可重试当前阶段。";
+  }
+  return stage === "analyst"
+    ? "Analyst 恢复未完成；已保存的证据不会丢失。"
+    : "Writer 恢复未完成；已保存的分析产物不会丢失。";
+}
+
+async function runProductAnalystRecovery() {
+  const taskId = state.activeTaskId;
+  const { analysisCompleted } = productStageCompletion();
+  if (!taskId || analysisCompleted || !(state.data?.evidence || []).length) return;
+  const confirmed = window.confirm(
+    "将从已保存的 Verified Evidence 恢复 Analyst。"
+    + "小型分析通常调用 3 次真实 DeepSeek Analyst；较大 Framework scope 会按维度分片，发生长度截断的子阶段仅重试一次。"
+    + "不会重新搜索或采集网页。是否继续？",
+  );
+  if (!confirmed) return;
+
+  state.productRecoveryStage = "analyst";
+  state.productRecoveryMessage = "Analyst 正在读取已验证证据并重建结论。";
+  renderProductWorkspace();
+  try {
+    await fetchJson(endpoints.researchAnalysis(taskId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode: "deepseek", acknowledge_real_llm_call: true }),
+    });
+    await loadTaskWorkspace(taskId, { historyMode: "none", suppressError: true });
+    await loadResearchAnalysis(taskId);
+    state.productRecoveryMessage = "Analyst 与 Citation 已恢复完成，可继续 Writer。";
+  } catch (error) {
+    state.productRecoveryMessage = productRecoveryFailureMessage("analyst", error);
+  } finally {
+    state.productRecoveryStage = "";
+    renderProductWorkspace();
+  }
+}
+
+async function runProductWriterRecovery() {
+  const taskId = state.activeTaskId;
+  const { analysisCompleted, reportExists, reportingCompleted } = productStageCompletion();
+  if (!taskId || !analysisCompleted || reportingCompleted) return;
+  const confirmed = window.confirm(reportExists
+    ? "Writer 报告已保留。本次只恢复 Reviewer 与 QualityGate，不会调用 DeepSeek。是否继续？"
+    : "将从已保存的 Analyst / Citation 产物恢复 Writer。"
+      + "通常调用 1 次真实 DeepSeek Writer；仅报告完整性校验失败时最多自动再试 2 次，总上限 3 次。"
+      + "是否继续？");
+  if (!confirmed) return;
+
+  state.productRecoveryStage = "writer";
+  state.productRecoveryMessage = reportExists
+    ? "正在从已有报告恢复 Reviewer 与 QualityGate。"
+    : "Writer 正在生成报告；校验失败时会在有界预算内自动修复。";
+  renderProductWorkspace();
+  try {
+    const payload = await fetchJson(endpoints.researchReporting(taskId), {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        mode: "deepseek",
+        acknowledge_real_llm_call: !reportExists,
+      }),
+    });
+    await loadTaskWorkspace(taskId, { historyMode: "none", suppressError: true });
+    await loadResearchReporting(taskId);
+    const attempts = Number(payload.writer_attempts_this_run || 0);
+    state.productRecoveryMessage = attempts > 1
+      ? `Writer 在第 ${attempts} 次有界尝试后通过校验，Reviewer 与 QualityGate 已完成。`
+      : "Writer、Reviewer 与 QualityGate 已恢复完成。";
+    window.setTimeout(() => loadRecentTasks(), 250);
+  } catch (error) {
+    state.productRecoveryMessage = productRecoveryFailureMessage("writer", error);
+    await loadTaskWorkspace(taskId, { historyMode: "none", suppressError: true });
+  } finally {
+    state.productRecoveryStage = "";
+    renderProductWorkspace();
+  }
+}
+
 function renderProductActivities(projection) {
   const stream = qs("#product-activity-stream");
   const activities = projection.activities || [];
@@ -3196,6 +3399,7 @@ function renderProductWorkspace() {
   const active = ["queued", "running", "stopping"].includes(pipeline.status);
   qs("#product-stop-research-btn").classList.toggle("hidden", !active);
   renderProductPipeline(projection);
+  renderProductRecoveryControls(projection);
   renderProductActivities(projection);
   renderWorkspaceEvidenceLinks(projection);
 }
@@ -3420,6 +3624,8 @@ function setupProductExperience() {
   qs("#product-confirm-brief-btn").addEventListener("click", confirmProductBrief);
   qs("#product-launch-research-btn").addEventListener("click", () => launchProductResearch());
   qs("#product-stop-research-btn").addEventListener("click", stopResearchLoop);
+  qs("#product-recover-analyst-btn").addEventListener("click", runProductAnalystRecovery);
+  qs("#product-recover-writer-btn").addEventListener("click", runProductWriterRecovery);
   qs("#product-report-evidence-toggle").addEventListener("click", toggleProductReportEvidence);
   qsa("[data-product-example]").forEach((button) => {
     button.addEventListener("click", () => {

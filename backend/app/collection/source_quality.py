@@ -552,8 +552,7 @@ def _confirmed_domains(
     domains = {
         registrable_domain(item)
         for item in (
-            list(research_task.preferred_domains)
-            + _metadata_domains(research_task, "official_domains")
+            _metadata_domains(research_task, "official_domains")
             + _metadata_domains(research_task, "confirmed_official_domains")
         )
         if registrable_domain(item)
@@ -577,7 +576,18 @@ def _confirmed_domains(
 def _probable_domains(research_task: ResearchTask) -> set[str]:
     return {
         registrable_domain(item)
-        for item in _metadata_domains(research_task, "probable_official_domains")
+        for item in (
+            list(research_task.preferred_domains)
+            + _metadata_domains(research_task, "probable_official_domains")
+        )
+        if registrable_domain(item)
+    }
+
+
+def _rejected_domains(research_task: ResearchTask) -> set[str]:
+    return {
+        registrable_domain(item)
+        for item in _metadata_domains(research_task, "rejected_official_domains")
         if registrable_domain(item)
     }
 
@@ -587,11 +597,14 @@ def _official_confidence(
     research_task: ResearchTask,
     confirmed_domains: set[str],
     probable_domains: set[str],
+    rejected_domains: set[str],
 ) -> OfficialConfidence:
     host = hostname(result.url)
     registered = registrable_domain(host)
     if any(_domain_matches(host, item) for item in confirmed_domains):
         return OfficialConfidence.CONFIRMED
+    if any(_domain_matches(host, item) for item in rejected_domains):
+        return OfficialConfidence.REJECTED
     if any(_domain_matches(host, item) for item in probable_domains):
         return OfficialConfidence.PROBABLE
     forms = _target_forms(research_task.competitor)
@@ -755,7 +768,7 @@ def _source_role(
         return SourceRole.LOW_QUALITY
     if (
         signals["seo_tutorial"]
-        and confidence == OfficialConfidence.UNKNOWN
+        and confidence != OfficialConfidence.CONFIRMED
         and not signals["experience_objective"]
     ):
         return SourceRole.LOW_QUALITY
@@ -789,7 +802,7 @@ def _relevance_score(
         score += 24.0
     elif signals["target_snippet"]:
         score += 18.0
-    elif confidence != OfficialConfidence.UNKNOWN:
+    elif confidence == OfficialConfidence.CONFIRMED:
         score += 20.0
 
     expected = Counter(
@@ -961,7 +974,7 @@ def _penalties(
     values: list[tuple[str, float]] = []
     associated_domains = _metadata_domains(research_task, "associated_domains")
     reasonable_association = (
-        confidence != OfficialConfidence.UNKNOWN
+        confidence == OfficialConfidence.CONFIRMED
         or any(_domain_matches(hostname(result.url), item) for item in associated_domains)
     )
     if not signals["target_present"] and not reasonable_association:
@@ -969,16 +982,16 @@ def _penalties(
     if signals["generic_tutorial"] and not signals["target_present"]:
         values.append(("generic_tutorial_or_template", -30.0))
     if signals["aggregate"] and not (
-        confidence != OfficialConfidence.UNKNOWN and signals["official_surface"]
+        confidence == OfficialConfidence.CONFIRMED and signals["official_surface"]
     ):
         values.append(("aggregator_navigation_or_seo", -22.0))
     if (
         signals["seo_tutorial"]
-        and confidence == OfficialConfidence.UNKNOWN
+        and confidence != OfficialConfidence.CONFIRMED
         and not signals["experience_objective"]
     ):
         values.append(("third_party_tutorial_without_primary_provenance", -25.0))
-    if signals["repost"] and confidence == OfficialConfidence.UNKNOWN:
+    if signals["repost"] and confidence != OfficialConfidence.CONFIRMED:
         values.append(("repost_without_primary_provenance", -15.0))
     if relevance < 12.0:
         values.append(("objective_relevance_very_weak", -15.0))
@@ -1008,12 +1021,12 @@ def _relevance_gate_reason(
         and not signals["task_asks_tutorial"]
         and not signals["experience_objective"]
     ):
-        if confidence == OfficialConfidence.UNKNOWN:
+        if confidence != OfficialConfidence.CONFIRMED:
             return "third_party_tutorial_not_requested"
         if not signals["official_surface"]:
             return "official_domain_generic_tutorial_not_requested"
     if signals["aggregate"] and not (
-        confidence != OfficialConfidence.UNKNOWN and signals["official_surface"]
+        confidence == OfficialConfidence.CONFIRMED and signals["official_surface"]
     ):
         return "aggregate_page_not_task_evidence"
     return ""
@@ -1089,11 +1102,13 @@ class SourceCandidateRanker:
         sources = existing_sources or []
         confirmed = _confirmed_domains(research_task, sources)
         probable = _probable_domains(research_task)
+        rejected = _rejected_domains(research_task)
         confidence = _official_confidence(
             result,
             research_task,
             confirmed,
             probable,
+            rejected,
         )
         signals = _signals(result, research_task)
         role = _source_role(confidence, signals)

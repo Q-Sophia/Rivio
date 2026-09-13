@@ -1921,6 +1921,23 @@ button {
 .research-inline-status.success { color: #1d7755; }
 .research-inline-status.busy { color: #956a1b; }
 
+.product-history-window { margin-top: 20px; padding: 15px 16px 16px; border: 1px solid #dce5de; border-radius: 16px; background: rgba(255,255,255,.66); }
+.product-history-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.product-history-heading .research-eyebrow { margin-bottom: 4px; }
+.product-history-heading h2 { margin: 0; color: #2a3d32; font-size: 14px; }
+.product-history-heading > span { display: grid; min-width: 25px; height: 25px; place-items: center; border-radius: 99px; color: #397459; background: #e7f1ea; font-size: 11px; font-weight: 800; }
+.product-completed-task-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-height: 178px; margin-top: 12px; overflow: auto; }
+.product-history-task { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 12px; border: 1px solid #e0e7e1; border-radius: 11px; color: inherit; background: rgba(255,255,255,.9); text-align: left; }
+.product-history-task:hover { border-color: #8db09b; background: #f2f8f4; }
+.product-history-task > span { min-width: 0; }
+.product-history-task strong,
+.product-history-task small { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.product-history-task strong { color: #2c4035; font-size: 12px; }
+.product-history-task small { margin-top: 5px; color: #839087; font-size: 10px; }
+.product-history-task em { flex: 0 0 auto; color: #3f795d; font-size: 10px; font-style: normal; font-weight: 750; }
+.product-history-task:disabled { cursor: wait; opacity: .6; }
+.product-history-empty { grid-column: 1 / -1; margin: 0; padding: 10px 2px 2px; color: #86928b; font-size: 11px; }
+
 .research-back-button { margin-bottom: 28px; padding: 0; font-size: 13px; }
 .research-back-button:hover { color: #174d36; }
 .research-brief-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; margin-top: 30px; overflow: hidden; border: 1px solid #dde6df; border-radius: 18px; background: #dde6df; box-shadow: var(--shadow); }
@@ -1980,6 +1997,34 @@ button {
 .done .agent-node-state { color: #fff; background: #2e7d58; }
 .working .agent-node-state { color: #fff; background: #478764; animation: research-pulse 1.5s infinite; }
 .attention .agent-node-state { color: #8b5e19; background: #f6dda9; }
+
+.workspace-stage-recovery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 17px;
+  padding-top: 15px;
+  border-top: 1px solid #e8ede9;
+}
+.workspace-stage-recovery-copy { min-width: 0; }
+.workspace-stage-recovery-copy strong,
+.workspace-stage-recovery-copy span { display: block; }
+.workspace-stage-recovery-copy strong { color: #34463c; font-size: 12px; }
+.workspace-stage-recovery-copy span { margin-top: 4px; color: #7a8880; font-size: 11px; line-height: 1.5; }
+.workspace-stage-recovery-actions { display: flex; flex: 0 0 auto; gap: 8px; }
+.research-recovery-button {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 1px solid #cbd9cf;
+  border-radius: 9px;
+  color: #2c684b;
+  background: #f6faf7;
+  font-size: 11px;
+  font-weight: 750;
+}
+.research-recovery-button:hover:not(:disabled) { border-color: #6f9f83; background: #edf6f0; }
+.research-recovery-button:disabled { cursor: not-allowed; color: #98a29c; background: #f6f7f5; opacity: .72; }
 
 .workspace-product-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(380px, .75fr); align-items: start; gap: 18px; padding: 0 36px 36px; }
 .activity-stream-panel,
@@ -2103,6 +2148,9 @@ button {
   .research-nav { order: 3; grid-column: 1 / -1; overflow-x: auto; justify-content: flex-start; padding-top: 6px; }
   .workspace-product-header { align-items: stretch; flex-direction: column; }
   .workspace-header-status { width: 100%; }
+  .workspace-stage-recovery { align-items: stretch; flex-direction: column; }
+  .workspace-stage-recovery-actions { width: 100%; }
+  .workspace-stage-recovery-actions .research-recovery-button { flex: 1; }
   .agent-pipeline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .agent-pipeline-node:nth-child(3)::after { display: none; }
   .workspace-product-grid { grid-template-columns: minmax(0, 1.4fr) minmax(270px, .8fr); }
@@ -2119,6 +2167,7 @@ button {
   .research-confirm-actions { align-items: stretch; flex-direction: column; }
   .research-prompt-footer > span { align-self: flex-start; }
   .research-primary-button { width: 100%; }
+  .product-completed-task-list { grid-template-columns: 1fr; }
   .research-brief-summary { grid-template-columns: 1fr; }
   .agent-pipeline { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .agent-pipeline-node:nth-child(2n)::after { display: none; }

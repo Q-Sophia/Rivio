@@ -489,6 +489,7 @@ def _refresh_bounded_gap_state(
     coverage: list[EvidenceCoverage],
     total_source_count: int,
     publish_research_tasks,
+    supplement_enabled: bool = True,
 ) -> dict[str, Any]:
     """Reuse the V1 Coverage -> Gap -> bounded ResearchTask state machine."""
     plans = [
@@ -533,14 +534,16 @@ def _refresh_bounded_gap_state(
         if item.get("metadata", {}).get("source")
         == "step6e4_coverage_gap_v1"
     ]
-    new_tasks = build_step6e4_research_tasks(
+    proposed_tasks = build_step6e4_research_tasks(
         task_id,
         current_step6e4_gaps,
         existing_tasks=existing_tasks,
         max_collection_rounds=max_rounds,
         total_source_budget_reached=total_source_budget_reached,
     )
-    publish_research_tasks(task_id, new_tasks)
+    new_tasks = proposed_tasks if supplement_enabled else []
+    if supplement_enabled:
+        publish_research_tasks(task_id, new_tasks)
 
     exhausted_gap_ids = []
     for gap in current_step6e4_gaps:
@@ -609,8 +612,15 @@ def _refresh_bounded_gap_state(
     all_tasks = existing_tasks + new_tasks
     return {
         "research_gap_count": len(merged_gaps),
+        "research_gap_ids": [
+            item["id"] for item in merged_gaps if item.get("id")
+        ],
         "new_research_task_count": len(new_tasks),
         "new_research_task_ids": [item.id for item in new_tasks],
+        "supplement_enabled": supplement_enabled,
+        "suppressed_supplement_task_count": (
+            0 if supplement_enabled else len(proposed_tasks)
+        ),
         "max_collection_rounds": max_rounds,
         "current_collection_round": max(
             [item.collection_round for item in all_tasks],
@@ -634,7 +644,12 @@ class Step6E4RefreshService:
     def __init__(self, *, store: ArtifactStore | None = None):
         self.store = store or ArtifactStore()
 
-    def refresh(self, task_id: str) -> dict[str, Any]:
+    def refresh(
+        self,
+        task_id: str,
+        *,
+        supplement_enabled: bool = True,
+    ) -> dict[str, Any]:
         sources = [SourceDocument(**item) for item in self.store.load_many(task_id, "sources")]
         evidence = [SourceEvidence(**item) for item in self.store.load_many(task_id, "evidence")]
         if not sources:
@@ -665,6 +680,7 @@ class Step6E4RefreshService:
             coverage=coverage,
             total_source_count=len(sources),
             publish_research_tasks=self._publish_research_tasks,
+            supplement_enabled=supplement_enabled,
         )
         return {
             "task_id": task_id,
@@ -770,7 +786,12 @@ class ResearchAgentBoundedRefreshService:
         )
         self.queue_service = Step6E4RefreshService(store=self.store)
 
-    def refresh(self, task_id: str) -> dict[str, Any]:
+    def refresh(
+        self,
+        task_id: str,
+        *,
+        supplement_enabled: bool = True,
+    ) -> dict[str, Any]:
         projection = self.projection_service.project(task_id)
         coverage = [
             EvidenceCoverage(**item)
@@ -812,6 +833,7 @@ class ResearchAgentBoundedRefreshService:
             coverage=coverage,
             total_source_count=len(self.store.load_many(task_id, "sources")),
             publish_research_tasks=self.queue_service._publish_research_tasks,
+            supplement_enabled=supplement_enabled,
         )
         return {
             "task_id": task_id,

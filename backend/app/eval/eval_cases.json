@@ -1,0 +1,27 @@
+[
+  {
+    "id": "case_01",
+    "request": "对豆包和通义千问做一次竞品分析调研。",
+    "category": "AI 助手"
+  },
+  {
+    "id": "case_02",
+    "request": "对 Trae 和 Cursor 做一次竞品分析调研。",
+    "category": "AI Coding"
+  },
+  {
+    "id": "case_03",
+    "request": "对淘宝和京东做竞品分析。",
+    "category": "电商"
+  },
+  {
+    "id": "case_04",
+    "request": "对小红书和抖音做一次竞品分析调研。",
+    "category": "内容平台"
+  },
+  {
+    "id": "case_05",
+    "request": "对 DeepSeek 和智谱在企业大模型服务场景下做竞品分析。",
+    "category": "企业大模型服务"
+  }
+]

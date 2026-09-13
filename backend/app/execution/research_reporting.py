@@ -37,6 +37,23 @@ from app.workflow.trace import TraceRecorder
 WRITER_TASK_KEY = "build_report"
 REVIEWER_TASK_KEY = "review_report"
 QUALITY_GATE_TASK_KEY = "quality_gate_report"
+WRITER_MAX_ATTEMPTS = 3
+
+WRITER_RETRYABLE_VALIDATION_MARKERS = (
+    "报告标题与任务不一致",
+    "Markdown 一级标题与 report.title 不一致",
+    "缺少专业报告章节",
+    "专业报告正文信息量不足",
+    "执行摘要信息量不足",
+    "核心维度对比信息量不足",
+    "决策建议信息量不足",
+    "报告引用未知 claim_id",
+    "报告正文缺少 claim_id",
+    "有效 Claim 主要停留在引用索引",
+    "核心维度对比未形成跨竞品综合",
+    "报告引用未知 ResearchGap",
+    "报告正文缺少 ResearchGap 引用",
+)
 
 WRITER_INPUT_REFS = [
     "brief_assessments",
@@ -100,6 +117,7 @@ class ResearchReportingService:
             "quality_gate": gates[-1] if gates else None,
             "feedback_tasks": self.store.load_many(task_id, "feedback_tasks"),
             "writer_llm_calls": writer_calls,
+            "writer_max_attempts": WRITER_MAX_ATTEMPTS,
         }
 
     def run(
@@ -123,6 +141,9 @@ class ResearchReportingService:
                     **initial,
                     "status": "completed",
                     "real_llm_calls_this_run": 0,
+                    "writer_attempts_this_run": 0,
+                    "writer_retry_count": 0,
+                    "writer_max_attempts": WRITER_MAX_ATTEMPTS,
                     "resumed_from": "completed",
                     "message": "报告、审查和质量闸门均已存在；未重复调用 Writer。",
                 }
@@ -130,19 +151,46 @@ class ResearchReportingService:
             recorder = self._load_recorder(task_id)
             tools = build_snapshot_tool_registry(store=self.store, recorder=recorder)
             writer_calls_this_run = 0
+            writer_attempts_this_run = 0
+            writer_retry_count = 0
             resumed_from = initial["stage"]
 
             if initial["writer_required"]:
                 if not acknowledge_real_llm_call:
-                    raise ValueError("必须明确确认本次会产生 1 次真实 DeepSeek Writer 调用。")
+                    raise ValueError(
+                        "必须明确确认本次通常产生 1 次真实 DeepSeek "
+                        "Writer 调用；仅报告合同校验失败时最多再试 2 次。"
+                    )
                 llm_client = self._writer_llm_client()
                 before_calls = len(self.store.load_many(task_id, "llm_calls"))
-                self._run_writer(task, recorder, tools, llm_client)
+                recovery_feedback = ""
+                for attempt in range(1, WRITER_MAX_ATTEMPTS + 1):
+                    writer_attempts_this_run = attempt
+                    try:
+                        self._run_writer(
+                            task,
+                            recorder,
+                            tools,
+                            llm_client,
+                            attempt=attempt,
+                            recovery_feedback=recovery_feedback,
+                        )
+                        break
+                    except RuntimeError as exc:
+                        if (
+                            attempt >= WRITER_MAX_ATTEMPTS
+                            or not self._is_retryable_writer_validation_error(str(exc))
+                        ):
+                            raise
+                        writer_retry_count += 1
+                        recovery_feedback = str(exc)
                 writer_calls_this_run = (
                     len(self.store.load_many(task_id, "llm_calls")) - before_calls
                 )
-                if writer_calls_this_run != 1:
-                    raise RuntimeError("Reporting Writer 必须且只能记录 1 次 LLM 调用。")
+                if writer_calls_this_run != writer_attempts_this_run:
+                    raise RuntimeError(
+                        "Reporting Writer 调用记录与有界尝试次数不一致。"
+                    )
 
             self._ensure_report_statements(task_id)
 
@@ -160,6 +208,9 @@ class ResearchReportingService:
                 **payload,
                 "status": "completed",
                 "real_llm_calls_this_run": writer_calls_this_run,
+                "writer_attempts_this_run": writer_attempts_this_run,
+                "writer_retry_count": writer_retry_count,
+                "writer_max_attempts": WRITER_MAX_ATTEMPTS,
                 "resumed_from": resumed_from,
                 "message": "当前任务已生成正式报告，并完成 Reviewer 与质量闸门。",
             }
@@ -170,6 +221,9 @@ class ResearchReportingService:
         recorder: TraceRecorder,
         tools,
         llm_client: LLMClient,
+        *,
+        attempt: int = 1,
+        recovery_feedback: str = "",
     ) -> None:
         task_id = task.id
         dependency = self._completed_citation_dependency(task_id)
@@ -187,6 +241,8 @@ class ResearchReportingService:
             metadata={
                 "source": "task_centric_research_reporting",
                 "real_llm_calls_authorized": 1,
+                "writer_attempt": attempt,
+                "writer_max_attempts": WRITER_MAX_ATTEMPTS,
             },
         )
         self.board_store.upsert_record(task_id, record)
@@ -233,6 +289,9 @@ class ResearchReportingService:
                 metadata={
                     "source": "task_centric_research_reporting",
                     "explicit_real_llm_authorization": True,
+                    "writer_attempt": attempt,
+                    "writer_max_attempts": WRITER_MAX_ATTEMPTS,
+                    "writer_recovery_feedback": recovery_feedback,
                 },
             ),
             node=node,
@@ -265,6 +324,12 @@ class ResearchReportingService:
             claimed_by_agent="professional_research_writer_agent",
             node_id=node.id,
         )
+
+    @staticmethod
+    def _is_retryable_writer_validation_error(error: str) -> bool:
+        """Retry only model-authored report contract failures, never configuration errors."""
+
+        return any(marker in error for marker in WRITER_RETRYABLE_VALIDATION_MARKERS)
 
     def _run_reviewer(self, task: AnalysisTask, recorder: TraceRecorder, tools) -> None:
         task_id = task.id

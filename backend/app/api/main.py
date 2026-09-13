@@ -444,6 +444,7 @@ def build_task_navigation_item(task_dir: Path) -> dict[str, Any] | None:
         "task_id": task_dir.name,
         "title": title,
         "request_text": request_text or title,
+        "workspace_origin": str(task_metadata.get("workspace_origin") or ""),
         "analysis_task_status": str(analysis_task.get("status") or "pending"),
         "status": status,
         "stage": workspace_stage,
@@ -1197,6 +1198,7 @@ async def stream_research_agent_coordinator_events(
 def research_pipeline_status_payload(task_id: str) -> dict[str, Any]:
     harness = get_research_pipeline_harness()
     run = harness.reconcile_interrupted(task_id)
+    run = harness.reconcile_completed_artifacts(task_id) or run
     if run is None:
         raise HTTPException(
             status_code=404,

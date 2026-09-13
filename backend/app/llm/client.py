@@ -316,6 +316,9 @@ class LLMClient:
                             prompt_summary
                             + "\n结构化输出重试：只返回符合原 json_schema 的合法 JSON；"
                             "不要输出 markdown、代码围栏或解释文本。"
+                            + self._structured_retry_validation_feedback(
+                                initial_failure
+                            )
                         ),
                         system_context=system_context,
                         artifacts=artifacts,
@@ -610,6 +613,23 @@ class LLMClient:
             return True
         return isinstance(failure.error, LLMProviderResponseError) and bool(
             getattr(failure.error, "raw_output_text", "")
+        )
+
+    @staticmethod
+    def _structured_retry_validation_feedback(
+        failure: _StructuredAttemptFailure,
+    ) -> str:
+        """Give the single repair attempt an actionable, bounded validation error."""
+
+        if failure.phase != "validation":
+            return ""
+        feedback = " ".join(str(failure.error).split())[:1200]
+        if not feedback:
+            return ""
+        return (
+            "\n上一次输出未通过验证："
+            + feedback
+            + "。仅修复该错误，同时重新检查所有同类引用；不得放宽或绕过原约束。"
         )
 
     @staticmethod

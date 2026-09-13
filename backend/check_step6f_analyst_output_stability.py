@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from app.harness.artifacts import ArtifactStore
+from app.frameworks import load_framework
 from app.llm import LLMClient, LLMConfig
 from app.llm.client import LLMOutputTruncatedError, LLMStructuredOutputError
 from app.llm.provider import (
@@ -308,6 +309,48 @@ def prepare_store(root: Path) -> tuple[ArtifactStore, AnalysisTask]:
     return store, task
 
 
+def prepare_large_scope_store(root: Path) -> tuple[ArtifactStore, AnalysisTask]:
+    store, task = prepare_store(root)
+    competitors = ["ClassIn", "BigBlueButton", "Gamma", "Delta"]
+    task = task.model_copy(update={"competitors": competitors, "focus_areas": []})
+    framework = load_framework("competitive_intelligence", "1.0.0")
+    research_tasks = []
+    for competitor in competitors:
+        for dimension in framework.dimensions:
+            if dimension.dimension_id not in framework.default_dimension_ids:
+                continue
+            research_tasks.append(
+                ResearchTask(
+                    schema_version="v2",
+                    id=(
+                        "researchtask_large_"
+                        f"{competitor.lower()}_{dimension.dimension_id}"
+                    ),
+                    task_id=TASK_ID,
+                    information_need_id=(
+                        "need_large_"
+                        f"{competitor.lower()}_{dimension.dimension_id}"
+                    ),
+                    title=f"核实 {competitor} 的{dimension.label}",
+                    objective=dimension.objective_template.format(
+                        competitor=competitor
+                    ),
+                    competitor=competitor,
+                    dimension=dimension.evidence_dimension,
+                    research_intent=dimension.research_intent,
+                    stop_condition="；".join(dimension.completion_criteria),
+                    framework_id=framework.framework_id,
+                    framework_version=framework.version,
+                    framework_dimension_id=dimension.dimension_id,
+                    framework_content_hash=framework.content_hash,
+                )
+            )
+    require(len(research_tasks) == 20, "large fixture 应形成 20 个 scope pair")
+    store.save_many(TASK_ID, "analysis_tasks", [task])
+    store.save_many(TASK_ID, "research_tasks", research_tasks)
+    return store, task
+
+
 def config() -> LLMConfig:
     return LLMConfig(
         provider=LLMProvider.MOCK,
@@ -475,6 +518,95 @@ def check_successful_assembly(root: Path) -> None:
         portfolio.metadata["raw_evidence_count"] == 4
         and portfolio.metadata["deduped_evidence_count"] == 3,
         "同一 evidence_id 应在送入模型前去重",
+    )
+    require(
+        portfolio.metadata["assessment_shard_count"] == 1,
+        "小型 assessment 必须保持单次生成路径",
+    )
+
+
+def check_large_assessment_is_sharded(root: Path) -> None:
+    store, task = prepare_large_scope_store(root / "success")
+    provider = build_provider(store)
+    result = run_agent(store, task, provider)
+    require(result.status == RunStatus.COMPLETED, "大 scope 分片分析应成功")
+    assessment_requests = [
+        request
+        for request in provider.requests
+        if request["output_schema"] == "AnalystAssessmentStage"
+    ]
+    require(
+        len(assessment_requests) == 5,
+        "20 个 scope pair 应按五个 Framework 维度拆成 5 片",
+    )
+    covered_pairs = []
+    for request in assessment_requests:
+        scope = request["artifacts"]["assessment_scope"]
+        dimension_ids = {item["dimension_id"] for item in scope}
+        require(
+            len(scope) == 4 and len(dimension_ids) == 1,
+            "每个 assessment shard 应包含单一维度下的四个竞品",
+        )
+        require(
+            "competitor 是不可拆分、不可合并、不可近似匹配的精确标识"
+            in request["prompt_summary"],
+            "assessment shard 必须约束组合名称与单体 competitor 的精确归属",
+        )
+        allowed_evidence_pairs = {
+            (item["competitor"], item["evidence_dimension"])
+            for item in scope
+        }
+        require(
+            all(
+                (item["competitor"], item["dimension"])
+                in allowed_evidence_pairs
+                for item in request["artifacts"]["evidence"]
+            ),
+            "assessment shard 不得接收其他维度 Evidence",
+        )
+        covered_pairs.extend(
+            (item["competitor"], item["dimension_id"])
+            for item in scope
+        )
+    require(
+        len(covered_pairs) == len(set(covered_pairs)) == 20,
+        "assessment shards 必须无重复覆盖完整 scope",
+    )
+    assessment = store.load_many(TASK_ID, "analysis_assessments")[-1]
+    require(
+        len(assessment["dimension_assessments"]) == 20,
+        "Python 组装后必须保留全部 20 个 dimension assessment",
+    )
+    portfolio = store.load_many(TASK_ID, "analysis_portfolios")[-1]
+    require(
+        portfolio["metadata"]["assessment_shard_count"] == 5
+        and portfolio["metadata"]["assessment_scope_pair_count"] == 20
+        and portfolio["metadata"]["assessment_scope_output_units"] == 100
+        and portfolio["metadata"]["llm_call_count"] == 7,
+        "Portfolio 必须记录确定性的分片与调用审计",
+    )
+
+    retry_store, retry_task = prepare_large_scope_store(root / "retry")
+    retry_provider = build_provider(
+        retry_store,
+        truncate_counts={"AnalystAssessmentStage": 1},
+    )
+    retry_result = run_agent(retry_store, retry_task, retry_provider)
+    require(retry_result.status == RunStatus.COMPLETED, "单个 shard 截断后应恢复")
+    retry_requests = [
+        request
+        for request in retry_provider.requests
+        if request["output_schema"] == "AnalystAssessmentStage"
+    ]
+    require(
+        len(retry_requests) == 6
+        and retry_requests[0]["artifacts"]["assessment_scope"]
+        == retry_requests[1]["artifacts"]["assessment_scope"],
+        "截断只应重试当前 shard，且不扩大其 scope",
+    )
+    require(
+        "被截断后的唯一重试" in retry_requests[1]["prompt_summary"],
+        "length retry 必须追加压缩指令",
     )
 
 
@@ -974,6 +1106,7 @@ def main() -> None:
         / "step6f_output_stability"
     )
     check_successful_assembly(root / "success")
+    check_large_assessment_is_sharded(root / "large_scope")
     check_assessment_source_boundary_guard(root / "assessment_boundary")
     check_research_agent_bridge_without_product_cards(root / "ra_bridge")
     check_no_evidence_is_blocked(root / "no_evidence")
@@ -985,9 +1118,10 @@ def main() -> None:
     check_structured_repair(root / "structured_repair")
     check_finish_reason_is_authoritative()
     print("STEP6F_ANALYST_OUTPUT_STABILITY_CHECK_PASS")
-    print("stages=brief_profiles,framework_assessment,claims")
-    print("normal_calls=3")
-    print("max_calls=6")
+    print("stages=brief_profiles,framework_assessment_shards,claims")
+    print("small_scope_normal_calls=3")
+    print("large_scope_calls=2+assessment_shard_count")
+    print("per_substage_length_attempts_max=2")
     print("finish_reason_length=recognized")
     print("malformed_json_central_retry=bounded_once")
     print("stage_schema_central_retry=bounded_once")

@@ -191,6 +191,7 @@ class IntentDraftService:
             status=RunStatus.PENDING,
             metadata={
                 "source_draft_id": normalized.id,
+                "workspace_origin": edited.workspace_origin,
                 "request_text": normalized.request_text,
                 "target_customers": normalized.target_customers,
                 "core_scenarios": normalized.core_scenarios,
@@ -234,6 +235,7 @@ class IntentDraftService:
                 "metadata": {
                     **normalized.metadata,
                     "confirmed_task_id": task.id,
+                    "workspace_origin": edited.workspace_origin,
                     "execution_started": False,
                 },
             }

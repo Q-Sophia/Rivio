@@ -73,6 +73,11 @@ _WRITER_INTERNAL_REFERENCE_FIELDS = {
     "supporting_artifact_ids",
 }
 
+_ASSESSMENT_SINGLE_CALL_MAX_OUTPUT_UNITS = 60
+_ASSESSMENT_SHARD_MAX_OUTPUT_UNITS = 40
+_ASSESSMENT_MAX_INSIGHTS = 12
+_ASSESSMENT_MAX_RESEARCH_GAPS = 24
+
 
 def _strip_writer_internal_references(value):
     """Keep governed semantics while hiding source/evidence identifier names from LLMs."""
@@ -547,6 +552,13 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             research_tasks=research_tasks,
             framework_payload=context.metadata.get("framework_definition"),
         )
+        assessment_scope_output_units = self._assessment_scope_output_units(
+            binding.scope
+        )
+        assessment_scope_shards = self._assessment_scope_shards(
+            framework=binding.framework,
+            scope=binding.scope,
+        )
         evidence_batch_hash = str(
             context.metadata.get("evidence_batch_hash")
             or compute_evidence_batch_hash(deduped_evidence)
@@ -571,36 +583,89 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         )
         assessment_call_count = 0
         assessment_input_count = 0
+        assessment_shard_input_counts: list[int] = []
+        assessment_reused = assessment is not None
         if assessment is None:
             assessment_prompt = self.prompt_registry.load(
                 "competitive_analysis_assessment",
                 allow_candidate=True,
             )
-            assessment_raw, assessment_call_count, assessment_input_count = (
-                self._run_analysis_stage(
-                    context=context,
-                    bundle=bundle,
-                    prompt=assessment_prompt,
-                    stage="framework_assessment",
-                    output_schema="AnalystAssessmentStage",
-                    prompt_summary=assessment_prompt.build_runtime_prompt(task),
-                    artifact_factory=lambda strict: (
-                        self._assessment_stage_artifacts(
-                            task=task,
-                            evidence=self._select_stage_evidence(
-                                deduped_evidence,
-                                max_per_competitor=12 if strict else 20,
-                                max_total=48 if strict else 80,
-                            ),
-                            research_tasks=research_tasks,
-                            framework=binding.framework,
-                            scope=binding.scope,
-                        )
-                    ),
+            assessment_stages: list[AnalystAssessmentStage] = []
+            assessment_prompt_summary = assessment_prompt.build_runtime_prompt(task)
+            shard_count = len(assessment_scope_shards)
+            for shard_index, shard_scope in enumerate(
+                assessment_scope_shards,
+                start=1,
+            ):
+                shard_prompt_summary = assessment_prompt_summary
+                if shard_count > 1:
+                    insight_limit = self._partitioned_limit(
+                        _ASSESSMENT_MAX_INSIGHTS,
+                        shard_index,
+                        shard_count,
+                    )
+                    gap_limit = self._partitioned_limit(
+                        _ASSESSMENT_MAX_RESEARCH_GAPS,
+                        shard_index,
+                        shard_count,
+                    )
+                    shard_prompt_summary += (
+                        "\n本次是 Framework assessment 的有界子阶段 "
+                        f"{shard_index}/{shard_count}。只评估输入 assessment_scope "
+                        "中的组合；每个组合恰好输出一个 dimension_assessment。"
+                        f"当前子阶段最多输出 {insight_limit} 个 insights 和 "
+                        f"{gap_limit} 个 research_gaps。不得补写其他维度或竞品。"
+                        "competitor 是不可拆分、不可合并、不可近似匹配的精确标识；"
+                        "例如组合名称不等于其中任一单体。dimension_assessment 的每条 "
+                        "Evidence 必须属于该 assessment 的精确 competitor；insight "
+                        "引用的每条 Evidence，其精确 competitor 必须列在 insight."
+                        "competitors 中，否则不要引用该 Evidence。"
+                    )
+                assessment_raw, shard_call_count, shard_input_count = (
+                    self._run_analysis_stage(
+                        context=context,
+                        bundle=bundle,
+                        prompt=assessment_prompt,
+                        stage=(
+                            "framework_assessment"
+                            if shard_count == 1
+                            else (
+                                "framework_assessment_shard_"
+                                f"{shard_index}_of_{shard_count}"
+                            )
+                        ),
+                        output_schema="AnalystAssessmentStage",
+                        prompt_summary=shard_prompt_summary,
+                        artifact_factory=lambda strict: (
+                            self._assessment_stage_artifacts(
+                                task=task,
+                                evidence=self._select_stage_evidence(
+                                    self._assessment_shard_evidence(
+                                        deduped_evidence,
+                                        shard_scope,
+                                        enabled=shard_count > 1,
+                                    ),
+                                    max_per_competitor=(12 if strict else 20),
+                                    max_total=48 if strict else 80,
+                                ),
+                                research_tasks=research_tasks,
+                                framework=binding.framework,
+                                scope=shard_scope,
+                            )
+                        ),
+                    )
                 )
-            )
-            assessment_stage = AnalystAssessmentStage(
-                **assessment_raw.get("item", {})
+                assessment_call_count += shard_call_count
+                assessment_input_count += shard_input_count
+                assessment_shard_input_counts.append(shard_input_count)
+                assessment_stages.append(
+                    AnalystAssessmentStage(**assessment_raw.get("item", {}))
+                )
+            assessment_stage = self._assemble_assessment_stages(
+                task_id=task.id,
+                stages=assessment_stages,
+                scope=binding.scope,
+                framework=binding.framework,
             )
             assessment_round = int(
                 context.metadata.get("assessment_round")
@@ -688,6 +753,15 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                 "source": "step6f_research_analysis",
                 "assembly": "python_deterministic_v1",
                 "llm_stage_count": 3,
+                "assessment_shard_count": len(assessment_scope_shards),
+                "assessment_scope_pair_count": len(binding.scope),
+                "assessment_scope_output_units": (
+                    assessment_scope_output_units
+                ),
+                "assessment_reused": assessment_reused,
+                "assessment_shard_input_evidence_counts": (
+                    assessment_shard_input_counts
+                ),
                 "llm_call_count": (
                     brief_call_count
                     + assessment_call_count
@@ -753,7 +827,7 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
         return self.make_result(
             context,
             output_summary=(
-                f"通过 3 个有界结构化阶段组装专业分析："
+                f"通过 3 类有界结构化阶段组装专业分析："
                 f"{len(portfolio.competitor_profiles)} 个竞品画像、"
                 f"{len(portfolio.items)} 个 V2 结论；"
                 "Framework 评估状态 "
@@ -813,7 +887,6 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
                         f"分析子阶段在 2 次有限尝试后仍因 finish_reason=length 截断；{exc}",
                     ) from exc
                 retry_kind = "length"
-                retry_kind = "structured"
         raise AssertionError("unreachable")
 
     @staticmethod
@@ -924,6 +997,191 @@ class LLMProfessionalAnalystAgent(LLMSnapshotAgent, AnalystAgent):
             ],
             "evidence": [item.model_dump(mode="json") for item in evidence],
         }
+
+    @staticmethod
+    def _assessment_scope_output_units(scope: list[dict]) -> int:
+        """Estimate required output fan-out without relying on prompt length."""
+
+        return sum(
+            1
+            + len(item.get("required_facts", []))
+            + len(item.get("completion_criteria_refs", []))
+            for item in scope
+        )
+
+    @classmethod
+    def _assessment_scope_shards(
+        cls,
+        *,
+        framework: FrameworkDefinition,
+        scope: list[dict],
+    ) -> list[list[dict]]:
+        """Keep small assessments single-shot and bound larger ones by dimension."""
+
+        if not scope:
+            raise ValueError("Framework assessment scope 不能为空")
+        if (
+            cls._assessment_scope_output_units(scope)
+            <= _ASSESSMENT_SINGLE_CALL_MAX_OUTPUT_UNITS
+        ):
+            return [list(scope)]
+
+        by_dimension: dict[str, list[dict]] = {}
+        for item in scope:
+            by_dimension.setdefault(str(item.get("dimension_id") or ""), []).append(
+                item
+            )
+        dimension_order = [item.dimension_id for item in framework.dimensions]
+        dimension_order.extend(
+            sorted(set(by_dimension) - set(dimension_order))
+        )
+
+        shards: list[list[dict]] = []
+        for dimension_id in dimension_order:
+            dimension_scope = by_dimension.get(dimension_id, [])
+            current: list[dict] = []
+            current_units = 0
+            for item in dimension_scope:
+                item_units = cls._assessment_scope_output_units([item])
+                if (
+                    current
+                    and current_units + item_units
+                    > _ASSESSMENT_SHARD_MAX_OUTPUT_UNITS
+                ):
+                    shards.append(current)
+                    current = []
+                    current_units = 0
+                current.append(item)
+                current_units += item_units
+            if current:
+                shards.append(current)
+        if not shards or sum(len(item) for item in shards) != len(scope):
+            raise ValueError("Framework assessment scope 分片不完整")
+        return shards
+
+    @staticmethod
+    def _assessment_shard_evidence(
+        evidence: list[SourceEvidence],
+        scope: list[dict],
+        *,
+        enabled: bool,
+    ) -> list[SourceEvidence]:
+        if not enabled:
+            return evidence
+        allowed_pairs = {
+            (
+                str(item.get("competitor") or ""),
+                str(item.get("evidence_dimension") or ""),
+            )
+            for item in scope
+        }
+        return [
+            item
+            for item in evidence
+            if (item.competitor, str(item.dimension)) in allowed_pairs
+        ]
+
+    @staticmethod
+    def _partitioned_limit(total: int, index: int, count: int) -> int:
+        quotient, remainder = divmod(total, count)
+        return quotient + (1 if index <= remainder else 0)
+
+    @classmethod
+    def _assemble_assessment_stages(
+        cls,
+        *,
+        task_id: str,
+        stages: list[AnalystAssessmentStage],
+        scope: list[dict],
+        framework: FrameworkDefinition,
+    ) -> AnalystAssessmentStage:
+        if not stages:
+            raise ValueError("Framework assessment 至少需要一个已验证子阶段")
+        if len(stages) == 1:
+            return stages[0]
+
+        assessment_by_pair = {}
+        for stage in stages:
+            for item in stage.dimension_assessments:
+                key = (item.competitor, item.dimension_id)
+                if key in assessment_by_pair:
+                    raise ValueError(
+                        "Framework assessment 子阶段包含重复 competitor/dimension: "
+                        f"{item.competitor}/{item.dimension_id}"
+                    )
+                assessment_by_pair[key] = item
+        expected_pairs = [
+            (
+                str(item.get("competitor") or ""),
+                str(item.get("dimension_id") or ""),
+            )
+            for item in scope
+        ]
+        if set(assessment_by_pair) != set(expected_pairs):
+            raise ValueError("Framework assessment 子阶段未完整覆盖全量 scope")
+
+        dimension_order = {
+            item.dimension_id: index
+            for index, item in enumerate(framework.dimensions)
+        }
+        unique_insights = {}
+        unique_gaps = {}
+        for stage in stages:
+            for item in stage.insights:
+                key = (
+                    item.dimension_id,
+                    tuple(sorted(item.competitors)),
+                    tuple(sorted(item.evidence_ids)),
+                    item.summary.strip(),
+                )
+                existing = unique_insights.get(key)
+                if existing is None or item.confidence > existing.confidence:
+                    unique_insights[key] = item
+            for item in stage.research_gaps:
+                key = (
+                    item.dimension_id,
+                    tuple(sorted(item.competitors)),
+                    str(getattr(item.gap_type, "value", item.gap_type)),
+                    tuple(sorted(item.missing_facts)),
+                )
+                unique_gaps.setdefault(key, item)
+
+        insights = sorted(
+            unique_insights.values(),
+            key=lambda item: (
+                -item.confidence,
+                dimension_order.get(item.dimension_id, len(dimension_order)),
+                tuple(item.competitors),
+                item.summary,
+            ),
+        )[:_ASSESSMENT_MAX_INSIGHTS]
+        impact_order = {
+            "critical": 0,
+            "high": 1,
+            "medium": 2,
+            "low": 3,
+        }
+        gaps = sorted(
+            unique_gaps.values(),
+            key=lambda item: (
+                impact_order.get(
+                    str(getattr(item.impact, "value", item.impact)),
+                    len(impact_order),
+                ),
+                not item.blocks_decision,
+                dimension_order.get(item.dimension_id, len(dimension_order)),
+                tuple(item.competitors),
+                item.missing_information,
+            ),
+        )[:_ASSESSMENT_MAX_RESEARCH_GAPS]
+        return AnalystAssessmentStage(
+            task_id=task_id,
+            dimension_assessments=[
+                assessment_by_pair[pair] for pair in expected_pairs
+            ],
+            insights=insights,
+            research_gaps=gaps,
+        )
 
 
 class LLMWriterAgent(LLMSnapshotAgent, WriterAgent):
@@ -1041,6 +1299,15 @@ class LLMProfessionalWriterAgent(LLMSnapshotAgent, WriterAgent):
             task,
             resolved_title=resolved_title,
         )
+        recovery_feedback = str(
+            context.metadata.get("writer_recovery_feedback") or ""
+        ).strip()
+        if recovery_feedback:
+            runtime_prompt += (
+                "\n\n上一次 Writer 输出未通过报告合同校验。"
+                "本次仅修复以下可验证问题，不得新增事实或引用：\n"
+                + recovery_feedback
+            )
         llm_artifacts = {
             **_strip_writer_internal_references(raw),
             "analysis_task": [task.model_dump(mode="json")],

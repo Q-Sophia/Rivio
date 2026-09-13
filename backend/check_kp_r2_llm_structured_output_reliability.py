@@ -212,6 +212,12 @@ def check_schema_retry(root: Path) -> None:
     )
     require(len(provider.calls) == 2, "schema failure 未严格 retry 一次")
     require(
+        "上一次输出未通过验证" in provider.calls[1]["prompt_summary"]
+        and "finish_status" in provider.calls[1]["prompt_summary"]
+        and "不得放宽或绕过原约束" in provider.calls[1]["prompt_summary"],
+        "schema retry 没有收到可执行且有界的 validation feedback",
+    )
+    require(
         call.metadata["structured_schema_error"]
         and not call.metadata["structured_parse_error"]
         and call.metadata["structured_retry_result"] == "succeeded",

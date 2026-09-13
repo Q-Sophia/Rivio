@@ -12,6 +12,7 @@ from app.agents.base import BaseAgent
 from app.agents.runtime import AgentRuntime
 from app.agents.web_evidence import verify_candidate_evidence
 from app.collection import CollectorQueueService
+from app.collection.service import competitor_context_matches
 from app.collection.source_quality import (
     MIN_COLLECTION_SCORE,
     canonical_dimension,
@@ -378,7 +379,7 @@ def _task_associated_domains(
             OfficialDomainContext(**value)
             for value in store.load_many(task_id, "official_domain_contexts")
         )
-        if item.competitor.casefold() == task.competitor.casefold()
+        if competitor_context_matches(item.competitor, task.competitor)
     )
     domains: set[str] = set()
     for value in values:
@@ -786,8 +787,10 @@ class ProductionResearchTools:
         domain_contexts = [
             OfficialDomainContext(**value)
             for value in self.store.load_many(task_id, "official_domain_contexts")
-            if str(value.get("competitor") or "").casefold()
-            == research_task.competitor.casefold()
+            if competitor_context_matches(
+                str(value.get("competitor") or ""),
+                research_task.competitor,
+            )
         ]
         official_domains = [
             item.domain

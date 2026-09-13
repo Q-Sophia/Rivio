@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import re
 import time
+from datetime import datetime, timedelta, timezone
 from urllib.parse import urlparse
 
 from app.collection.source_quality import (
@@ -99,6 +100,54 @@ _NON_OFFICIAL_HOST_SUFFIXES = (
     "163.com",
 )
 
+_OFFICIAL_DOMAIN_REGISTRY_TASK_ID = "official_domains"
+_OFFICIAL_DOMAIN_CACHE_TTL_DAYS = 90
+_OFFICIAL_SURFACE_LABELS = {
+    "about",
+    "api",
+    "developer",
+    "developers",
+    "doc",
+    "docs",
+    "help",
+    "investor",
+    "investors",
+    "ir",
+    "open",
+    "platform",
+    "pricing",
+    "product",
+    "products",
+    "support",
+}
+_EDITORIAL_PATH_LABELS = {
+    "article",
+    "articles",
+    "blog",
+    "blogs",
+    "evaluating",
+    "news",
+    "post",
+    "posts",
+    "review",
+    "reviews",
+    "ucd",
+}
+_EDITORIAL_TITLE_MARKERS = (
+    "一文",
+    "产品分析",
+    "体验报告",
+    "对比评测",
+    "深度剖析",
+    "竞品分析",
+    "评测",
+    "测评",
+    "盘点",
+    "hands-on",
+    "independent review",
+)
+_COMMUNITY_PROVIDER_NAMES = {"zhihu", "zhihu_search", "zhihu_mcp"}
+
 
 def _is_official_first_task(research_task: ResearchTask) -> bool:
     dimension = canonical_dimension(research_task.dimension)
@@ -111,13 +160,14 @@ def _is_official_first_task(research_task: ResearchTask) -> bool:
 def _official_discovery_queries(research_task: ResearchTask) -> list[str]:
     if not _is_official_first_task(research_task):
         return []
-    target = " ".join(research_task.competitor.split())
     dimension = canonical_dimension(research_task.dimension)
-    values = [
-        f"{target} 官网 官方文档",
-        f"{target} {_OFFICIAL_DISCOVERY_TERMS[dimension]}",
-    ]
-    return list(dict.fromkeys(" ".join(item.split()) for item in values))[:3]
+    targets = competitor_entities(research_task.competitor)
+    values = [f"{target} 官网 官方文档" for target in targets]
+    values.extend(
+        f"{target} {_OFFICIAL_DISCOVERY_TERMS[dimension]}"
+        for target in targets
+    )
+    return list(dict.fromkeys(" ".join(item.split()) for item in values))[:6]
 
 
 def _official_targeted_query(research_task: ResearchTask, host: str) -> str:
@@ -176,6 +226,109 @@ def _is_known_non_official_host(host: str) -> bool:
     )
 
 
+def competitor_entities(value: str) -> list[str]:
+    """Split comparison labels without coupling domain discovery to known brands."""
+
+    normalized = " ".join(str(value or "").split())
+    if not normalized:
+        return []
+    values = re.split(
+        r"\s*(?:、|，|,|；|;|\||\bvs\.?\b|\bversus\b)\s*",
+        normalized,
+        flags=re.IGNORECASE,
+    )
+    return list(dict.fromkeys(item.strip() for item in values if item.strip()))
+
+
+def competitor_context_matches(context_competitor: str, task_competitor: str) -> bool:
+    context_values = {item.casefold() for item in competitor_entities(context_competitor)}
+    task_values = {item.casefold() for item in competitor_entities(task_competitor)}
+    return bool(context_values & task_values)
+
+
+def _result_is_community_channel(candidate: WebSearchResult) -> bool:
+    provider = str(candidate.provider or "").strip().casefold()
+    source_tool = str(candidate.metadata.get("source_tool") or "").strip().casefold()
+    channel = str(candidate.metadata.get("channel") or "").strip().casefold()
+    return bool(
+        provider in _COMMUNITY_PROVIDER_NAMES
+        or source_tool in _COMMUNITY_PROVIDER_NAMES
+        or channel == "zhihu"
+    )
+
+
+def _target_latin_tokens(target: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[a-z0-9]{3,}", str(target or "").casefold())
+        if token not in {"and", "the", "with"}
+    }
+
+
+def _looks_editorial_candidate(candidate: WebSearchResult) -> bool:
+    parsed = urlparse(candidate.url)
+    path_labels = {
+        item.casefold()
+        for item in parsed.path.strip("/").split("/")
+        if item
+    }
+    title = " ".join(str(candidate.title or "").casefold().split())
+    return bool(
+        path_labels & _EDITORIAL_PATH_LABELS
+        or any(marker in title for marker in _EDITORIAL_TITLE_MARKERS)
+    )
+
+
+def _official_identity_signals(
+    candidate: WebSearchResult,
+    *,
+    target: str,
+) -> dict[str, bool]:
+    host = _normalized_official_host(candidate.url)
+    registered = registrable_domain(host)
+    parsed = urlparse(candidate.url)
+    path_labels = {
+        item.casefold()
+        for item in parsed.path.strip("/").split("/")
+        if item
+    }
+    host_labels = set(host.split("."))
+    main_label = registered.split(".")[0] if registered else ""
+    latin_tokens = _target_latin_tokens(target)
+    site_name = " ".join(str(candidate.site_name or "").casefold().split())
+    normalized_host = host.casefold().removeprefix("www.")
+    site_identity = bool(
+        site_name
+        and site_name not in {host.casefold(), normalized_host, registered.casefold()}
+        and _contains_target_name(site_name, target)
+    )
+    title_identity = _contains_target_name(candidate.title, target)
+    title_starts_target = str(candidate.title or "").strip().casefold().startswith(
+        str(target or "").strip().casefold()
+    )
+    host_identity = bool(
+        latin_tokens
+        and (
+            main_label in latin_tokens
+            or any(token in host_labels for token in latin_tokens)
+            or any(token in main_label for token in latin_tokens)
+        )
+    )
+    platform_surface = bool(
+        not parsed.path.strip("/")
+        or path_labels & _OFFICIAL_SURFACE_LABELS
+        or host_labels & _OFFICIAL_SURFACE_LABELS
+    )
+    return {
+        "host_identity": host_identity,
+        "site_identity": site_identity,
+        "title_identity": title_identity,
+        "title_starts_target": title_starts_target,
+        "platform_surface": platform_surface,
+        "editorial": _looks_editorial_candidate(candidate),
+    }
+
+
 def _probable_official_host(
     candidate: WebSearchResult,
     *,
@@ -184,6 +337,8 @@ def _probable_official_host(
     """Infer only a probable host from bounded local SearchResult signals."""
 
     if candidate.rank < 1 or candidate.rank > 10:
+        return ""
+    if _result_is_community_channel(candidate):
         return ""
     searchable_text = f"{candidate.title}\n{candidate.snippet}"
     if not _contains_target_name(searchable_text, target):
@@ -194,7 +349,138 @@ def _probable_official_host(
     host = _normalized_official_host(candidate.url)
     if not host or _is_known_non_official_host(host):
         return ""
+    signals = _official_identity_signals(candidate, target=target)
+    if signals["editorial"]:
+        return ""
+    if not signals["platform_surface"]:
+        return ""
+    if not (
+        signals["host_identity"]
+        or signals["site_identity"]
+        or signals["title_starts_target"]
+    ):
+        return ""
     return host
+
+
+def _confirmed_official_host(
+    candidate: WebSearchResult,
+    *,
+    target: str,
+) -> str:
+    """Confirm only direct domain/site identity; title text alone is insufficient."""
+
+    host = _probable_official_host(candidate, target=target)
+    if not host:
+        return ""
+    signals = _official_identity_signals(candidate, target=target)
+    if signals["host_identity"] or signals["site_identity"]:
+        return host
+    return ""
+
+
+def _candidate_official_host(
+    candidate: WebSearchResult,
+    *,
+    target: str,
+) -> str:
+    """Use text only to discover a candidate; never to grant official authority."""
+
+    if candidate.rank < 1 or candidate.rank > 10:
+        return ""
+    if _result_is_community_channel(candidate):
+        return ""
+    searchable_text = f"{candidate.title}\n{candidate.snippet}"
+    if not _contains_target_name(searchable_text, target):
+        return ""
+    signals = _official_identity_signals(candidate, target=target)
+    has_official_text = any(
+        signal in searchable_text.casefold()
+        for signal in _FIRST_PARTY_TEXT_SIGNALS
+    )
+    # A brand-titled home/product surface may enter verification without the
+    # word "official".  This only discovers a probable candidate; ownership is
+    # still decided later from direct identity or multiple structural signals.
+    if not has_official_text and not (
+        signals["title_starts_target"]
+        and signals["platform_surface"]
+        and not signals["editorial"]
+    ):
+        return ""
+    return _normalized_official_host(candidate.url)
+
+
+def _domain_resolution_confidence(
+    *,
+    domain: str,
+    target: str,
+    candidates: list[WebSearchResult],
+) -> OfficialConfidence:
+    """Resolve one Web candidate domain from independent structural signals."""
+
+    matching = [
+        item
+        for item in candidates
+        if _url_is_within_domain(item.url, domain)
+        and not _result_is_community_channel(item)
+    ]
+    if not matching or _is_known_non_official_host(domain):
+        return OfficialConfidence.REJECTED
+
+    non_editorial = [item for item in matching if not _looks_editorial_candidate(item)]
+    if not non_editorial:
+        return OfficialConfidence.REJECTED
+
+    signals = [
+        _official_identity_signals(item, target=target)
+        for item in non_editorial
+    ]
+    direct_identity = any(
+        item["host_identity"] or item["site_identity"]
+        for item in signals
+    )
+    official_surfaces = [
+        item
+        for item, item_signals in zip(non_editorial, signals)
+        if item_signals["platform_surface"]
+        and item_signals["title_identity"]
+    ]
+    surface_kinds: set[str] = set()
+    ownership_surface = False
+    for item in official_surfaces:
+        parsed = urlparse(item.url)
+        labels = {
+            value.casefold()
+            for value in (
+                [*parsed.hostname.split(".")] if parsed.hostname else []
+            )
+        }
+        labels.update(
+            value.casefold()
+            for value in parsed.path.strip("/").split("/")
+            if value
+        )
+        if labels & {"about", "company", "legal", "privacy", "terms"}:
+            surface_kinds.add("ownership")
+            ownership_surface = True
+        if labels & {"api", "developer", "developers", "doc", "docs"}:
+            surface_kinds.add("documentation")
+        if labels & {"open", "platform", "product", "products", "pricing"}:
+            surface_kinds.add("product")
+        if not parsed.path.strip("/"):
+            surface_kinds.add("home")
+
+    distinct_urls = {item.url for item in official_surfaces}
+    structural_consensus = bool(
+        len(distinct_urls) >= 2
+        and len(surface_kinds) >= 2
+        and (ownership_surface or "documentation" in surface_kinds)
+    )
+    if direct_identity and official_surfaces:
+        return OfficialConfidence.CONFIRMED
+    if structural_consensus:
+        return OfficialConfidence.CONFIRMED
+    return OfficialConfidence.PROBABLE
 
 
 class CollectorQueueService:
@@ -222,6 +508,9 @@ class CollectorQueueService:
             self.search_transport = None
         self.source_ranker = source_ranker or SourceCandidateRanker()
         self.board_store = TaskBoardStore(self.store)
+        self.official_domain_registry = ArtifactStore(
+            self.store.root_dir.parent / "cache"
+        )
 
     def close(self) -> None:
         self.web_tool.close()
@@ -245,7 +534,7 @@ class CollectorQueueService:
         task_id: str,
         research_task: ResearchTask,
     ) -> list[str]:
-        raw_domains: list[str] = list(research_task.preferred_domains)
+        raw_domains: list[str] = []
         for key in ("official_domains", "confirmed_official_domains"):
             values = research_task.metadata.get(key, [])
             if isinstance(values, str):
@@ -260,9 +549,16 @@ class CollectorQueueService:
                     "official_domain_contexts",
                 )
             )
-            if item.competitor.casefold()
-            == research_task.competitor.casefold()
+            if competitor_context_matches(
+                item.competitor,
+                research_task.competitor,
+            )
             and item.confidence == OfficialConfidence.CONFIRMED.value
+        )
+        raw_domains.extend(
+            item.domain
+            for item in self._cached_official_domain_contexts(research_task)
+            if item.confidence == OfficialConfidence.CONFIRMED.value
         )
         domains: list[str] = []
         for value in raw_domains:
@@ -271,13 +567,41 @@ class CollectorQueueService:
                 domains.append(domain)
         return domains[:3]
 
+    def _confirmed_official_entities(
+        self,
+        *,
+        task_id: str,
+        research_task: ResearchTask,
+    ) -> set[str]:
+        entities = competitor_entities(research_task.competitor)
+        contexts = [
+            OfficialDomainContext(**value)
+            for value in self.store.load_many(task_id, "official_domain_contexts")
+        ]
+        contexts.extend(self._cached_official_domain_contexts(research_task))
+        confirmed = {
+            entity.casefold()
+            for entity in entities
+            if any(
+                item.confidence == OfficialConfidence.CONFIRMED.value
+                and competitor_context_matches(item.competitor, entity)
+                for item in contexts
+            )
+        }
+        if len(entities) == 1 and self._confirmed_official_domains(
+            task_id=task_id,
+            research_task=research_task,
+        ):
+            confirmed.add(entities[0].casefold())
+        return confirmed
+
     def _probable_official_domains(
         self,
         *,
         task_id: str,
         research_task: ResearchTask,
     ) -> list[str]:
-        raw_domains: list[str] = []
+        raw_domains: list[str] = list(research_task.preferred_domains)
         values = research_task.metadata.get("probable_official_domains", [])
         if isinstance(values, str):
             values = [values]
@@ -291,9 +615,16 @@ class CollectorQueueService:
                     "official_domain_contexts",
                 )
             )
-            if item.competitor.casefold()
-            == research_task.competitor.casefold()
+            if competitor_context_matches(
+                item.competitor,
+                research_task.competitor,
+            )
             and item.confidence == OfficialConfidence.PROBABLE.value
+        )
+        raw_domains.extend(
+            item.domain
+            for item in self._cached_official_domain_contexts(research_task)
+            if item.confidence == OfficialConfidence.PROBABLE.value
         )
         domains: list[str] = []
         for value in raw_domains:
@@ -302,12 +633,207 @@ class CollectorQueueService:
                 domains.append(domain)
         return domains[:3]
 
+    def _rejected_official_domains(
+        self,
+        *,
+        task_id: str,
+        research_task: ResearchTask,
+    ) -> list[str]:
+        contexts = [
+            OfficialDomainContext(**value)
+            for value in self.store.load_many(task_id, "official_domain_contexts")
+        ]
+        contexts.extend(self._cached_official_domain_contexts(research_task))
+        domains: list[str] = []
+        for item in contexts:
+            if not competitor_context_matches(
+                item.competitor,
+                research_task.competitor,
+            ):
+                continue
+            if item.confidence != OfficialConfidence.REJECTED.value:
+                continue
+            domain = registrable_domain(item.domain)
+            if domain and domain not in domains:
+                domains.append(domain)
+        return domains
+
+    def _resolve_and_record_official_domains(
+        self,
+        *,
+        task_id: str,
+        research_task: ResearchTask,
+        candidates: list[WebSearchResult],
+        verification_method: str,
+    ) -> dict[str, list[str]]:
+        resolved: dict[str, list[str]] = {
+            OfficialConfidence.CONFIRMED.value: [],
+            OfficialConfidence.PROBABLE.value: [],
+            OfficialConfidence.REJECTED.value: [],
+        }
+        for competitor in competitor_entities(research_task.competitor):
+            candidate_domains: list[str] = []
+            for item in sorted(candidates, key=lambda value: (value.rank, value.id)):
+                host = _candidate_official_host(item, target=competitor)
+                domain = registrable_domain(host)
+                if domain and domain not in candidate_domains:
+                    candidate_domains.append(domain)
+                if len(candidate_domains) >= 3:
+                    break
+            for domain in candidate_domains:
+                related = [
+                    item
+                    for item in candidates
+                    if _url_is_within_domain(item.url, domain)
+                ]
+                confidence = _domain_resolution_confidence(
+                    domain=domain,
+                    target=competitor,
+                    candidates=related,
+                )
+                self._record_official_domains(
+                    task_id=task_id,
+                    research_task=research_task,
+                    domain_results={
+                        domain: [item.id for item in related]
+                    },
+                    confidence=confidence,
+                    competitor=competitor,
+                    verification_method=verification_method,
+                )
+                value = confidence.value
+                if domain not in resolved[value]:
+                    resolved[value].append(domain)
+        return resolved
+
+    def _cached_official_domain_contexts(
+        self,
+        research_task: ResearchTask,
+    ) -> list[OfficialDomainContext]:
+        now = utc_now()
+        contexts: list[OfficialDomainContext] = []
+        for raw in self.official_domain_registry.load_many(
+            _OFFICIAL_DOMAIN_REGISTRY_TASK_ID,
+            "official_domain_contexts",
+        ):
+            item = OfficialDomainContext(**raw)
+            if not competitor_context_matches(
+                item.competitor,
+                research_task.competitor,
+            ):
+                continue
+            expires_at = str(item.metadata.get("expires_at") or "").strip()
+            if expires_at:
+                try:
+                    parsed = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+                except ValueError:
+                    continue
+                if parsed.tzinfo is None:
+                    parsed = parsed.replace(tzinfo=timezone.utc)
+                if parsed <= now:
+                    continue
+            contexts.append(item)
+        return contexts
+
+    @staticmethod
+    def _stronger_official_confidence(
+        current: OfficialConfidence | str,
+        candidate: OfficialConfidence | str,
+    ) -> OfficialConfidence:
+        priority = {
+            OfficialConfidence.UNKNOWN.value: 0,
+            OfficialConfidence.PROBABLE.value: 1,
+            OfficialConfidence.REJECTED.value: 2,
+            OfficialConfidence.CONFIRMED.value: 3,
+        }
+        current_value = str(getattr(current, "value", current))
+        candidate_value = str(getattr(candidate, "value", candidate))
+        selected = (
+            candidate_value
+            if priority.get(candidate_value, 0) > priority.get(current_value, 0)
+            else current_value
+        )
+        return OfficialConfidence(selected)
+
+    def _save_official_domain_registry(
+        self,
+        context: OfficialDomainContext,
+    ) -> None:
+        contexts = [
+            OfficialDomainContext(**item)
+            for item in self.official_domain_registry.load_many(
+                _OFFICIAL_DOMAIN_REGISTRY_TASK_ID,
+                "official_domain_contexts",
+            )
+        ]
+        key = (context.competitor.casefold(), context.domain)
+        existing = next(
+            (
+                item
+                for item in contexts
+                if (item.competitor.casefold(), item.domain) == key
+            ),
+            None,
+        )
+        registry_id = (
+            "officialdomain_"
+            + hashlib.sha256(
+                f"registry|{context.competitor.casefold()}|{context.domain}".encode(
+                    "utf-8"
+                )
+            ).hexdigest()[:12]
+        )
+        if existing is None:
+            contexts.append(
+                context.model_copy(
+                    update={
+                        "id": registry_id,
+                        "task_id": _OFFICIAL_DOMAIN_REGISTRY_TASK_ID,
+                    }
+                )
+            )
+        else:
+            confidence = self._stronger_official_confidence(
+                existing.confidence,
+                context.confidence,
+            )
+            contexts[contexts.index(existing)] = existing.model_copy(
+                update={
+                    "confidence": confidence,
+                    "research_task_ids": list(
+                        dict.fromkeys(
+                            [
+                                *existing.research_task_ids,
+                                *context.research_task_ids,
+                            ]
+                        )
+                    ),
+                    "search_result_ids": list(
+                        dict.fromkeys(
+                            [
+                                *existing.search_result_ids,
+                                *context.search_result_ids,
+                            ]
+                        )
+                    ),
+                    "metadata": {**existing.metadata, **context.metadata},
+                }
+            )
+        self.official_domain_registry.save_many(
+            _OFFICIAL_DOMAIN_REGISTRY_TASK_ID,
+            "official_domain_contexts",
+            contexts,
+        )
+
     def _record_official_domains(
         self,
         *,
         task_id: str,
         research_task: ResearchTask,
         domain_results: dict[str, list[str]],
+        confidence: OfficialConfidence = OfficialConfidence.PROBABLE,
+        competitor: str | None = None,
+        verification_method: str = "web_search_candidate",
     ) -> None:
         if not domain_results:
             return
@@ -319,27 +845,43 @@ class CollectorQueueService:
             (item.competitor.casefold(), item.domain): item
             for item in contexts
         }
+        resolved_competitor = competitor or research_task.competitor
+        verified_at = utc_now()
+        expires_at = verified_at + timedelta(days=_OFFICIAL_DOMAIN_CACHE_TTL_DAYS)
         for raw_domain, result_ids in domain_results.items():
-            domain = self._official_context_domain(raw_domain)
+            if confidence == OfficialConfidence.REJECTED:
+                rejected_host = _normalized_official_host(raw_domain)
+                if not rejected_host and "://" not in raw_domain:
+                    rejected_host = _normalized_official_host(
+                        f"https://{raw_domain}"
+                    )
+                domain = registrable_domain(rejected_host)
+            else:
+                domain = self._official_context_domain(raw_domain)
             if not domain:
                 continue
-            key = (research_task.competitor.casefold(), domain)
+            key = (resolved_competitor.casefold(), domain)
             existing = by_key.get(key)
             if existing is None:
-                identity = f"{task_id}|{research_task.competitor.casefold()}|{domain}"
+                identity = f"{task_id}|{resolved_competitor.casefold()}|{domain}"
                 existing = OfficialDomainContext(
                     id=(
                         "officialdomain_"
                         + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
                     ),
                     task_id=task_id,
-                    competitor=research_task.competitor,
+                    competitor=resolved_competitor,
                     domain=domain,
-                    confidence=OfficialConfidence.PROBABLE,
+                    confidence=confidence,
                 )
                 contexts.append(existing)
+            resolved_confidence = self._stronger_official_confidence(
+                existing.confidence,
+                confidence,
+            )
             updated = existing.model_copy(
                 update={
+                    "confidence": resolved_confidence,
                     "research_task_ids": list(
                         dict.fromkeys(
                             [*existing.research_task_ids, research_task.id]
@@ -350,10 +892,22 @@ class CollectorQueueService:
                             [*existing.search_result_ids, *result_ids]
                         )
                     ),
+                    "metadata": {
+                        **existing.metadata,
+                        "provider": (
+                            self.search_transport.provider_name
+                            if self.search_transport is not None
+                            else ""
+                        ),
+                        "verification_method": verification_method,
+                        "verified_at": verified_at.isoformat(),
+                        "expires_at": expires_at.isoformat(),
+                    },
                 }
             )
             contexts[contexts.index(existing)] = updated
             by_key[key] = updated
+            self._save_official_domain_registry(updated)
         self.store.save_many(task_id, "official_domain_contexts", contexts)
 
     def _associate_reused_source(
@@ -957,6 +1511,14 @@ class CollectorQueueService:
             task_id=task_id,
             research_task=research_task,
         )
+        rejected_official_hosts_context = self._rejected_official_domains(
+            task_id=task_id,
+            research_task=research_task,
+        )
+        tavily_official_resolution = (
+            self.search_transport is not None
+            and self.search_transport.provider_name.casefold() == "tavily"
+        )
         recorder = TraceRecorder(store=self.store, task_id=task_id)
         recorder.tool_calls = [
             ToolCall(**item)
@@ -1111,12 +1673,13 @@ class CollectorQueueService:
                     self.web_tool.url_policy.validate(candidate.url)
                 except Exception:
                     continue
-                host = _probable_official_host(
-                    candidate,
-                    target=research_task.competitor,
-                )
-                if host and host not in hosts:
-                    hosts.append(host)
+                for target in competitor_entities(research_task.competitor):
+                    host = _probable_official_host(
+                        candidate,
+                        target=target,
+                    )
+                    if host and host not in hosts:
+                        hosts.append(host)
                 if len(hosts) >= 3:
                     break
             return hosts
@@ -1181,9 +1744,23 @@ class CollectorQueueService:
             )
 
         def qualified_first_party_url_count(hosts: list[str]) -> int:
+            provisional_task = research_task.model_copy(
+                update={
+                    "metadata": {
+                        **research_task.metadata,
+                        "confirmed_official_domains": hosts,
+                        "probable_official_domains": (
+                            probable_official_hosts_context
+                        ),
+                        "rejected_official_domains": (
+                            rejected_official_hosts_context
+                        ),
+                    }
+                }
+            )
             provisional = self.source_ranker.rank(
                 current_results,
-                research_task,
+                provisional_task,
                 existing_sources=existing_sources,
             )
             qualified_urls: set[str] = set()
@@ -1220,9 +1797,94 @@ class CollectorQueueService:
                     break
             return len(qualified_urls)
 
+        def merge_resolution(values: dict[str, list[str]]) -> None:
+            for domain in values.get(OfficialConfidence.CONFIRMED.value, []):
+                if domain not in confirmed_official_hosts:
+                    confirmed_official_hosts.append(domain)
+                if domain in probable_official_hosts_context:
+                    probable_official_hosts_context.remove(domain)
+                if domain in rejected_official_hosts_context:
+                    rejected_official_hosts_context.remove(domain)
+            for domain in values.get(OfficialConfidence.REJECTED.value, []):
+                if domain in confirmed_official_hosts:
+                    continue
+                if domain not in rejected_official_hosts_context:
+                    rejected_official_hosts_context.append(domain)
+                if domain in probable_official_hosts_context:
+                    probable_official_hosts_context.remove(domain)
+            for domain in values.get(OfficialConfidence.PROBABLE.value, []):
+                if (
+                    domain not in confirmed_official_hosts
+                    and domain not in rejected_official_hosts_context
+                    and domain not in probable_official_hosts_context
+                ):
+                    probable_official_hosts_context.append(domain)
+
+        def resolve_tavily_domains(method: str) -> None:
+            if not (
+                tavily_official_resolution
+                and acquisition_mode == "auto"
+                and _is_official_first_task(research_task)
+            ):
+                return
+            merge_resolution(
+                self._resolve_and_record_official_domains(
+                    task_id=task_id,
+                    research_task=research_task,
+                    candidates=current_results,
+                    verification_method=method,
+                )
+            )
+
+        validated_domains: set[str] = set()
+
+        def validate_probable_tavily_domains() -> None:
+            if not tavily_official_resolution:
+                return
+            contexts = [
+                OfficialDomainContext(**item)
+                for item in self.store.load_many(
+                    task_id,
+                    "official_domain_contexts",
+                )
+            ]
+            for domain in list(probable_official_hosts_context)[:3]:
+                if (
+                    domain in confirmed_official_hosts
+                    or domain in rejected_official_hosts_context
+                    or domain in validated_domains
+                ):
+                    continue
+                context = next(
+                    (
+                        item
+                        for item in reversed(contexts)
+                        if item.domain == domain
+                        and item.confidence == OfficialConfidence.PROBABLE.value
+                        and competitor_context_matches(
+                            item.competitor,
+                            research_task.competitor,
+                        )
+                    ),
+                    None,
+                )
+                if context is None:
+                    continue
+                validated_domains.add(domain)
+                run_query(
+                    (
+                        f"{context.competitor} 官网 About 隐私政策 "
+                        "开发者文档"
+                    ),
+                    stage="official_domain_validation",
+                    domain_filter=domain,
+                )
+            if validated_domains:
+                resolve_tavily_domains("tavily_domain_validation")
+
         discovery_queries = (
             _official_discovery_queries(research_task)
-            if acquisition_mode == "auto" and not policy_query_only
+            if acquisition_mode == "auto"
             else []
         )
         for query in discovery_queries:
@@ -1241,19 +1903,24 @@ class CollectorQueueService:
                     probable_official_hosts_context.append(domain)
                 if len(probable_official_hosts_context) >= 3:
                     break
-            self._record_official_domains(
-                task_id=task_id,
-                research_task=research_task,
-                domain_results={
-                    domain: [
-                        item.id
-                        for item in query_results
-                        if _url_is_within_domain(item.url, domain)
-                    ]
-                    for domain in discovered
-                },
-            )
+            if not tavily_official_resolution:
+                self._record_official_domains(
+                    task_id=task_id,
+                    research_task=research_task,
+                    domain_results={
+                        domain: [
+                            item.id
+                            for item in query_results
+                            if _url_is_within_domain(item.url, domain)
+                        ]
+                        for domain in discovered
+                    },
+                )
 
+        resolve_tavily_domains("tavily_official_discovery")
+        validate_probable_tavily_domains()
+
+        targeted_domains: set[str] = set()
         if not policy_query_only:
             for host in confirmed_official_hosts[:3]:
                 run_query(
@@ -1261,13 +1928,24 @@ class CollectorQueueService:
                     stage="official_targeted",
                     domain_filter=host,
                 )
+                targeted_domains.add(host)
 
         current_coverage_state = coverage_state()
         general_search_reason = ""
+        unresolved_official_entities = [
+            item
+            for item in competitor_entities(research_task.competitor)
+            if item.casefold()
+            not in self._confirmed_official_entities(
+                task_id=task_id,
+                research_task=research_task,
+            )
+        ]
         if (
             policy_query_only
             and acquisition_mode == "auto"
             and confirmed_official_hosts
+            and not unresolved_official_entities
         ):
             for query in research_task.query_hints[:3]:
                 for host in confirmed_official_hosts[:3]:
@@ -1276,8 +1954,13 @@ class CollectorQueueService:
                         stage="research_agent_official_domain",
                         domain_filter=host,
                     )
+                    targeted_domains.add(host)
         elif policy_query_only:
-            general_search_reason = "research_agent_policy_query"
+            general_search_reason = (
+                "unresolved_competitor_official_domain"
+                if unresolved_official_entities
+                else "research_agent_policy_query"
+            )
         elif acquisition_mode in {"general", "community"}:
             general_search_reason = f"research_agent_{acquisition_mode}"
         elif not _is_official_first_task(research_task):
@@ -1314,9 +1997,34 @@ class CollectorQueueService:
                 )
                 if qualified_url_count() >= limit:
                     break
-        # Discovery can add probable candidates, but cannot grant first-party
-        # authority or trigger a domain-restricted search.
         if acquisition_mode == "auto" and _is_official_first_task(research_task):
+            resolve_tavily_domains("tavily_general_discovery")
+            validate_probable_tavily_domains()
+            for host in confirmed_official_hosts[:3]:
+                if host in targeted_domains:
+                    continue
+                queries = (
+                    research_task.query_hints[:1]
+                    if policy_query_only
+                    else [_official_targeted_query(research_task, host)]
+                )
+                for query in queries:
+                    run_query(
+                        query,
+                        stage=(
+                            "research_agent_official_domain"
+                            if policy_query_only
+                            else "official_targeted"
+                        ),
+                        domain_filter=host,
+                    )
+                targeted_domains.add(host)
+
+        if (
+            not tavily_official_resolution
+            and acquisition_mode == "auto"
+            and _is_official_first_task(research_task)
+        ):
             refreshed_hosts = probable_official_hosts(current_results)
             for host in refreshed_hosts:
                 domain = self._official_context_domain(host)
@@ -1352,6 +2060,7 @@ class CollectorQueueService:
                     **research_task.metadata,
                     "confirmed_official_domains": confirmed_official_hosts,
                     "probable_official_domains": probable_official_hosts_context,
+                    "rejected_official_domains": rejected_official_hosts_context,
                 }
             }
         )
@@ -1384,6 +2093,23 @@ class CollectorQueueService:
                 candidate.quality_rank,
             ),
         )
+        final_confirmed_entities = self._confirmed_official_entities(
+            task_id=task_id,
+            research_task=research_task,
+        )
+        final_unresolved_entities = [
+            item
+            for item in competitor_entities(research_task.competitor)
+            if item.casefold() not in final_confirmed_entities
+        ]
+        strict_first_party_available = bool(
+            acquisition_mode == "auto"
+            and _is_official_first_task(research_task)
+            and confirmed_official_hosts
+            and current_coverage_state != "insufficient"
+            and not final_unresolved_entities
+            and qualified_first_party_url_count(confirmed_official_hosts) > 0
+        )
         result_updates: dict[str, WebSearchResult] = {}
         new_selection_runs: list[SourceSelectionRun] = []
         for candidate in ranked:
@@ -1402,8 +2128,7 @@ class CollectorQueueService:
                         f"{candidate.final_score:g}<{MIN_COLLECTION_SCORE:g}"
                     )
                 elif (
-                    confirmed_official_hosts
-                    and not general_search_reason
+                    strict_first_party_available
                     and not candidate_is_first_party(
                         candidate.result.url,
                         confirmed_official_hosts,

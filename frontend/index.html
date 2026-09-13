@@ -42,13 +42,25 @@
                 <button type="button" data-product-example="研究 Notion、Obsidian 和飞书知识库的核心场景与产品路线，识别知识管理产品的机会。">知识管理产品机会</button>
               </div>
               <p id="product-brief-input-status" class="research-inline-status" aria-live="polite"></p>
+              <section class="product-history-window" aria-labelledby="product-history-title">
+                <div class="product-history-heading">
+                  <div>
+                    <p class="research-eyebrow">RECENT RESEARCH</p>
+                    <h2 id="product-history-title">过往已完成的任务</h2>
+                  </div>
+                  <span id="product-history-count">0</span>
+                </div>
+                <div id="product-completed-task-list" class="product-completed-task-list" aria-live="polite">
+                  <p class="product-history-empty">从新 Workspace 完成的研究会保存在这里。</p>
+                </div>
+              </section>
             </div>
 
             <div id="product-brief-confirm-state" class="research-brief-state" aria-live="polite">
               <button id="product-edit-brief-btn" class="research-back-button" type="button">← 修改研究问题</button>
               <p class="research-eyebrow">RESEARCH BRIEF</p>
               <h1>确认团队要解决的问题</h1>
-              <p class="research-brief-intro">这里只确认研究边界；确认后任务会保存，但不会自动启动。</p>
+              <p class="research-brief-intro">这里只确认研究边界；确认后会立即组建 Agent 团队并进入 Workspace。</p>
               <article class="research-brief-summary">
                 <label><span>研究目标</span><textarea id="product-brief-decision" rows="3" aria-label="研究目标"></textarea></label>
                 <label><span>研究对象</span><input id="product-brief-competitors" type="text" aria-label="研究对象" /></label>
@@ -81,6 +93,16 @@
           <section class="agent-pipeline-panel" aria-labelledby="agent-pipeline-title">
             <div class="workspace-section-heading"><div><p class="research-eyebrow">TEAM PIPELINE</p><h2 id="agent-pipeline-title">Agent Pipeline</h2></div><span id="agent-pipeline-gate"></span></div>
             <div id="product-agent-pipeline" class="agent-pipeline"></div>
+            <div class="workspace-stage-recovery" aria-labelledby="workspace-recovery-title">
+              <div class="workspace-stage-recovery-copy">
+                <strong id="workspace-recovery-title">阶段恢复</strong>
+                <span id="product-recovery-status" aria-live="polite">自动 Pipeline 中断时，可从已保存的证据或分析产物恢复。</span>
+              </div>
+              <div class="workspace-stage-recovery-actions">
+                <button id="product-recover-analyst-btn" class="research-recovery-button" type="button" disabled>恢复 Analyst</button>
+                <button id="product-recover-writer-btn" class="research-recovery-button" type="button" disabled>恢复 Writer</button>
+              </div>
+            </div>
           </section>
 
           <div class="workspace-product-grid">

@@ -4,6 +4,7 @@ import hashlib
 from typing import Any
 
 from app.agents.web_evidence import normalize_dimension
+from app.collection.service import competitor_context_matches
 from app.harness.artifacts import ArtifactStore
 from app.tools.router import research_intent_for_dimension
 from app.schemas import (
@@ -323,7 +324,7 @@ class ResearchMissionService:
                     task_id, "official_domain_contexts"
                 )
             )
-            if item.competitor.casefold() == mission.competitor.casefold()
+            if competitor_context_matches(item.competitor, mission.competitor)
             and item.confidence == OfficialConfidence.CONFIRMED.value
         ]
         outcome_by_need = dict(state.outcome_by_need)

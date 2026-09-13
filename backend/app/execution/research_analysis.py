@@ -95,7 +95,9 @@ class ResearchAnalysisService:
             raise ValueError("Step6F 当前只接受显式 DeepSeek（真实）分析模式。")
         if not acknowledge_real_llm_call:
             raise ValueError(
-                "必须明确确认本次通常产生 3 次、仅截断时最多 6 次真实 DeepSeek Analyst 调用。"
+                "必须明确确认本次将执行有界真实 DeepSeek Analyst 调用："
+                "小型 assessment 通常 3 次，较大 scope 会按 Framework 维度分片；"
+                "每个子阶段仅允许一次截断重试。"
             )
 
         with self._lock:
@@ -218,10 +220,31 @@ class ResearchAnalysisService:
 
             after_call_count = len(self.store.load_many(task_id, "llm_calls"))
             call_count = after_call_count - before_call_count
-            if not 2 <= call_count <= 6:
+            portfolios = [
+                item
+                for item in self.store.load_many(task_id, "analysis_portfolios")
+                if item.get("metadata", {}).get("source")
+                == "step6f_research_analysis"
+            ]
+            if not portfolios:
+                raise RuntimeError("Step6F Analyst 完成后没有生成 AnalysisPortfolio。")
+            portfolio_metadata = portfolios[-1].get("metadata", {})
+            assessment_shard_count = max(
+                1,
+                int(portfolio_metadata.get("assessment_shard_count") or 1),
+            )
+            assessment_reused = bool(
+                portfolio_metadata.get("assessment_reused", False)
+            )
+            expected_stage_count = 2 + (
+                0 if assessment_reused else assessment_shard_count
+            )
+            if not expected_stage_count <= call_count <= expected_stage_count * 2:
                 raise RuntimeError(
-                    "Step6F Analyst 必须记录 2 至 6 次有限 LLM 调用；"
-                    "2 次仅允许复用已持久化的相同 Framework/Evidence assessment。"
+                    "Step6F Analyst 的有限 LLM 调用数与 assessment 分片不一致；"
+                    f"expected={expected_stage_count}..{expected_stage_count * 2}；"
+                    f"actual={call_count}；assessment_shards={assessment_shard_count}；"
+                    f"assessment_reused={assessment_reused}。"
                 )
             if self.store.load_many(task_id, "evidence_coverage") != deterministic_coverage:
                 raise RuntimeError("确定性 EvidenceCoverage 被 Analyst 覆盖。")

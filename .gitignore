@@ -45,3 +45,6 @@ backend/eval_outputs/
 backend/app/*.zip
 backend/app/data/runs.zip
 backend/taskkill
+backend/eval_workspace/
+backend/app/data/cache/
+Rivio-review.zip

@@ -60,6 +60,7 @@ class ResearchAgentCoordinatorRun(BaseModel):
     task_id: str
     status: str = "queued"
     mode: str = ExecutionMode.DEEPSEEK.value
+    supplement_enabled: bool = True
 
     research_task_ids: list[str] = Field(default_factory=list)
     total_tasks: int = 0
@@ -147,6 +148,7 @@ class ResearchAgentCoordinator:
         research_service_factory: ResearchServiceFactory | None = None,
         coverage_service_factory: CoverageServiceFactory | None = None,
         mission_supervisor_factory: MissionSupervisorFactory | None = None,
+        supplement_enabled: bool = True,
     ):
         self.store = store or ArtifactStore()
         self._pool = ThreadPoolExecutor(
@@ -165,6 +167,7 @@ class ResearchAgentCoordinator:
         self._mission_supervisor_factory = mission_supervisor_factory or (
             lambda store: build_llm_mission_supervisor(store=store)
         )
+        self.supplement_enabled = supplement_enabled
 
     def get_latest_run(
         self,
@@ -334,6 +337,7 @@ class ResearchAgentCoordinator:
                     self.store.load_many(task_id, "research_agent_actions")
                 ),
                 max_actions=max_actions,
+                supplement_enabled=self.supplement_enabled,
                 message=(
                     "Research Agent R1 已进入后台研究队列。"
                     + (
@@ -605,15 +609,25 @@ class ResearchAgentCoordinator:
                     if self._stop_if_requested(current):
                         return
 
-                coverage_summary = self._coverage_service_factory(
-                    self.store
-                ).refresh(run.task_id)
+                coverage_service = self._coverage_service_factory(self.store)
+                coverage_summary = (
+                    coverage_service.refresh(run.task_id)
+                    if run.supplement_enabled
+                    else coverage_service.refresh(
+                        run.task_id,
+                        supplement_enabled=False,
+                    )
+                )
                 ResearchMissionService(store=self.store).refresh_coverage(
                     run.task_id
                 )
                 current = self._refresh_snapshot(current)
-                supervisor_decisions = self._supervise_missions(
-                    current, completed_round=round_number
+                supervisor_decisions = (
+                    self._supervise_missions(
+                        current, completed_round=round_number
+                    )
+                    if run.supplement_enabled
+                    else []
                 )
                 all_task_ids = [
                     item.id

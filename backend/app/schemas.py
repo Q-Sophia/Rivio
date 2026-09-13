@@ -102,6 +102,7 @@ class SourceRole(str, Enum):
 class OfficialConfidence(str, Enum):
     CONFIRMED = "confirmed"
     PROBABLE = "probable"
+    REJECTED = "rejected"
     UNKNOWN = "unknown"
 
 
@@ -370,6 +371,7 @@ class ConfirmAnalysisTaskRequest(BaseModel):
     constraints: list[str] = Field(default_factory=list)
     report_subject: str = ""
     preferred_title: str = ""
+    workspace_origin: str = ""
 
 
 class AnalysisTask(SchemaModel):
