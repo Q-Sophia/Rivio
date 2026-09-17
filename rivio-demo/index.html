@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="由 AI Research Team 协作完成、证据可追溯的竞品研究工作区。" />
+    <title>Rivio · Demo Replay</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div id="research-product-app" class="research-product-shell">
+      <header class="research-topbar">
+        <button id="product-home-btn" class="research-brand" type="button" aria-label="返回 Research Brief">
+          <span class="research-brand-mark">R</span>
+          <span><strong>Research Team</strong><small>Evidence-first workspace</small></span>
+        </button>
+        <nav class="research-nav" aria-label="研究流程">
+          <button class="research-nav-item active" type="button" data-product-view="brief">Research Brief</button>
+          <button class="research-nav-item" type="button" data-product-view="workspace">Team Workspace</button>
+          <button class="research-nav-item" type="button" data-product-view="report">Research Report</button>
+        </nav>
+        <button id="open-diagnostics-btn" class="research-diagnostics-button" type="button">Developer Console</button>
+      </header>
+
+      <main class="research-main">
+        <section id="product-brief-view" class="research-page active" aria-labelledby="product-brief-title">
+          <div class="research-brief-shell">
+            <div id="product-brief-input-state" class="research-brief-state active">
+              <p class="research-eyebrow">AI RESEARCH TEAM</p>
+              <h1 id="product-brief-title">把一个研究问题，交给一支 AI 团队</h1>
+              <p class="research-brief-intro">Planner 拆解问题，Research Agent 搜集证据，Analyst 与 Citation 形成可验证结论，Writer 和 Reviewer 完成报告。</p>
+              <div class="research-prompt-card">
+                <textarea id="product-research-request" rows="7" placeholder="描述你想研究的市场、产品或竞争问题，以及这项研究需要帮助你做出的决策。"></textarea>
+                <div class="research-prompt-footer">
+                  <span>公开来源 · 逐条验证 · 结论可追溯</span>
+                  <button id="product-parse-brief-btn" class="research-primary-button" type="button">生成 Research Brief <span aria-hidden="true">→</span></button>
+                </div>
+              </div>
+              <div class="research-examples" aria-label="研究示例">
+                <button type="button" data-product-example="对比豆包与千问的产品能力、商业模式与生态，帮助企业产品团队判断自研 AI 助手的差异化机会。">AI 助手竞争格局</button>
+                <button type="button" data-product-example="分析飞书、钉钉和企业微信在企业协作场景中的功能基线、技术接入和商业模式。">企业协作产品对标</button>
+                <button type="button" data-product-example="研究 Notion、Obsidian 和飞书知识库的核心场景与产品路线，识别知识管理产品的机会。">知识管理产品机会</button>
+              </div>
+              <p id="product-brief-input-status" class="research-inline-status" aria-live="polite"></p>
+              <section class="product-history-window" aria-labelledby="product-history-title">
+                <div class="product-history-heading">
+                  <div>
+                    <p class="research-eyebrow">RECENT RESEARCH</p>
+                    <h2 id="product-history-title">过往已完成的任务</h2>
+                  </div>
+                  <span id="product-history-count">0</span>
+                </div>
+                <div id="product-completed-task-list" class="product-completed-task-list" aria-live="polite">
+                  <p class="product-history-empty">从新 Workspace 完成的研究会保存在这里。</p>
+                </div>
+              </section>
+            </div>
+
+            <div id="product-brief-confirm-state" class="research-brief-state" aria-live="polite">
+              <button id="product-edit-brief-btn" class="research-back-button" type="button">← 修改研究问题</button>
+              <p class="research-eyebrow">RESEARCH BRIEF</p>
+              <h1>确认团队要解决的问题</h1>
+              <p class="research-brief-intro">这里只确认研究边界；确认后会立即组建 Agent 团队并进入 Workspace。</p>
+              <article class="research-brief-summary">
+                <label><span>研究目标</span><textarea id="product-brief-decision" rows="3" aria-label="研究目标"></textarea></label>
+                <label><span>研究对象</span><input id="product-brief-competitors" type="text" aria-label="研究对象" /></label>
+                <label><span>关注重点</span><input id="product-brief-focus" type="text" aria-label="关注重点" /></label>
+                <label><span>报告主题</span><input id="product-brief-subject" type="text" aria-label="报告主题" /></label>
+              </article>
+              <div class="research-confirm-actions">
+                <p id="product-brief-confirm-status" class="research-inline-status">请检查 Research Brief 后确认。</p>
+                <button id="product-confirm-brief-btn" class="research-primary-button" type="button">确认并开始研究 <span aria-hidden="true">→</span></button>
+                <button id="product-launch-research-btn" class="research-primary-button hidden" type="button">重新尝试启动研究 <span aria-hidden="true">→</span></button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="product-workspace-view" class="research-page" aria-labelledby="workspace-title">
+          <div class="workspace-product-header">
+            <div>
+              <p class="research-eyebrow">LIVE TEAM WORKSPACE</p>
+              <h1 id="workspace-title">AI Research Team Workspace</h1>
+              <p id="product-workspace-query">选择或启动一项研究任务。</p>
+            </div>
+            <div class="workspace-header-status">
+              <div class="workspace-progress-copy"><span id="product-workspace-status">等待任务</span><strong id="product-workspace-progress">0%</strong></div>
+              <div class="workspace-progress-track"><span id="product-workspace-progress-bar"></span></div>
+              <button id="product-stop-research-btn" class="research-secondary-button hidden" type="button">中止研究</button>
+            </div>
+          </div>
+
+          <section class="agent-pipeline-panel" aria-labelledby="agent-pipeline-title">
+            <div class="workspace-section-heading"><div><p class="research-eyebrow">TEAM PIPELINE</p><h2 id="agent-pipeline-title">Agent Pipeline</h2></div><span id="agent-pipeline-gate"></span></div>
+            <div id="product-agent-pipeline" class="agent-pipeline"></div>
+            <div class="workspace-stage-recovery" aria-labelledby="workspace-recovery-title">
+              <div class="workspace-stage-recovery-copy">
+                <strong id="workspace-recovery-title">阶段恢复</strong>
+                <span id="product-recovery-status" aria-live="polite">自动 Pipeline 中断时，可从已保存的证据或分析产物恢复。</span>
+              </div>
+              <div class="workspace-stage-recovery-actions">
+                <button id="product-recover-analyst-btn" class="research-recovery-button" type="button" disabled>恢复 Analyst</button>
+                <button id="product-recover-writer-btn" class="research-recovery-button" type="button" disabled>恢复 Writer</button>
+              </div>
+            </div>
+          </section>
+
+          <div class="workspace-product-grid">
+            <section class="activity-stream-panel" aria-labelledby="activity-stream-title">
+              <div class="workspace-section-heading sticky-heading"><div><p class="research-eyebrow">LIVE ACTIONS</p><h2 id="activity-stream-title">Agent Activity Stream</h2></div><span id="product-activity-count">0 actions</span></div>
+              <div id="product-activity-stream" class="agent-activity-stream" aria-live="polite"></div>
+            </section>
+
+            <aside class="evidence-workbench workspace-evidence-links" aria-label="Selected Evidence Chain">
+              <section class="selected-evidence-section">
+                <div class="workspace-section-heading sticky-heading"><div><p class="research-eyebrow">LIVE SOURCES</p><h2>Selected Evidence Chain</h2></div><span id="product-workspace-evidence-count">0 links</span></div>
+                <div id="product-selected-evidence-chain" class="selected-evidence-chain workspace-evidence-link-list" aria-live="polite"></div>
+              </section>
+            </aside>
+          </div>
+        </section>
+
+        <section id="product-report-view" class="research-page" aria-labelledby="product-report-title">
+          <div id="product-report-layout" class="product-report-layout">
+            <article class="product-report-document">
+              <header class="product-report-header">
+                <p class="research-eyebrow">RESEARCH REPORT</p>
+                <h1 id="product-report-title">Research Report</h1>
+                <p id="product-report-meta">报告尚未生成。</p>
+              </header>
+              <p class="product-report-reading-guide">带“查看证据”标记的段落支持鼠标悬停、点击和键盘聚焦；证据栏收起后，点击任意可追溯段落会自动重新展开。内部审计编号不会出现在报告正文中。</p>
+              <div id="product-report-body" class="product-report-body report-markdown"></div>
+            </article>
+            <aside id="product-report-evidence-panel" class="product-report-evidence-panel">
+              <div class="workspace-section-heading sticky-heading product-report-evidence-heading">
+                <div><p class="research-eyebrow">EVIDENCE TRACE</p><h2>证据追溯</h2></div>
+                <button id="product-report-evidence-toggle" class="evidence-toggle" type="button" aria-expanded="true" aria-controls="product-report-evidence-detail" aria-label="收起证据追溯栏">收起</button>
+              </div>
+              <div class="product-report-trace-status"><span id="product-report-evidence-status">未选择</span></div>
+              <div id="product-report-evidence-detail" class="product-report-evidence-detail report-evidence-detail" aria-live="polite">
+                将鼠标移到报告中的关键论点上，右侧会显示对应的分析结论、证据摘录和来源链接。
+              </div>
+            </aside>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="diagnostics-app" class="app-shell hidden">
+      <button id="exit-diagnostics-btn" class="diagnostics-exit-button" type="button">← 退出 Developer Console</button>
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">CI</div>
+          <div>
+            <h1>竞品分析助手</h1>
+            <p>Evidence-first（证据优先）</p>
+          </div>
+        </div>
+
+        <div class="stage-card">
+          <span>当前阶段</span>
+          <strong id="stage-name">正在识别</strong>
+          <small id="stage-detail">将根据所选运行自动判断</small>
+        </div>
+
+        <label class="field-label" for="run-id">历史 Run（调试入口，主动切换）</label>
+        <select id="run-id" class="run-select" aria-label="历史 Run（调试入口）">
+          <option value="">正在发现历史运行……</option>
+        </select>
+
+        <label class="field-label" for="task-id">Task ID（任务编号）</label>
+        <div class="task-row">
+          <input id="task-id" type="text" value="" placeholder="尚未选择任务" readonly />
+          <button id="refresh-btn" type="button" title="重新读取 artifacts">刷新</button>
+        </div>
+
+        <section class="recent-tasks-panel" aria-labelledby="recent-tasks-title">
+          <div class="recent-tasks-heading">
+            <strong id="recent-tasks-title">最近任务</strong>
+            <small>仅切换 Workspace</small>
+          </div>
+          <div id="recent-task-list" class="recent-task-list" aria-live="polite">
+            <div class="recent-task-empty">正在读取任务……</div>
+          </div>
+        </section>
+
+        <nav class="nav-list" aria-label="页面栏目">
+          <button class="nav-item" type="button" data-view="intake"><span>01</span>新建分析</button>
+          <button class="nav-item active" type="button" data-view="overview"><span>02</span>项目总览</button>
+          <button class="nav-item" type="button" data-view="workflow"><span>03</span>任务协作</button>
+          <button class="nav-item" type="button" data-view="llm"><span>04</span>LLM 链路</button>
+          <button class="nav-item" type="button" data-view="step6c"><span>05</span>专业分析实验</button>
+          <button class="nav-item" type="button" data-view="claims"><span>06</span>结论与证据</button>
+          <button class="nav-item" type="button" data-view="report"><span>07</span>分析报告</button>
+          <button class="nav-item" type="button" data-view="governance"><span>08</span>质量治理</button>
+        </nav>
+
+        <div class="sidebar-note">
+          <strong>演示边界</strong>
+          <span id="boundary-copy">当前只读取本地 artifacts（产物），不会从页面发起模型调用、自动爬虫或在线任务。</span>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div>
+            <p id="active-research-request" class="eyebrow">研究需求：尚未选择任务</p>
+            <h2 id="page-title">项目总览</h2>
+          </div>
+          <div class="topbar-actions">
+            <span id="runtime-pill" class="status-pill neutral">mock LLM</span>
+            <span id="status-pill" class="status-pill">等待读取</span>
+          </div>
+        </header>
+
+        <section id="error-panel" class="error-panel hidden"></section>
+
+        <section id="intake-view" class="view">
+          <section class="intake-hero">
+            <div>
+              <p class="panel-kicker">Step 6D · Task Intake（任务入口）</p>
+              <h3>先把“我想分析什么”变成一份可确认的任务</h3>
+              <p>Intent Agent（意图智能体）只负责理解需求并形成结构化草稿，不会在这里直接检索、写报告或启动完整工作流。</p>
+            </div>
+            <div class="intake-boundary">
+              <strong>本步骤的执行边界</strong>
+              <span>点击“解析需求”才会调用一次 DeepSeek；刷新页面不会调用。</span>
+              <span>点击“确认任务”只保存任务，仍不会开始分析。</span>
+            </div>
+          </section>
+
+          <section class="panel integration-status-panel">
+            <div class="panel-heading">
+              <div><p class="panel-kicker">Backend integrations（后端外部服务）</p><h3>网页实际连接的 API 状态</h3></div>
+              <button id="refresh-integrations-btn" class="secondary-action" type="button">刷新状态</button>
+            </div>
+            <div class="integration-status-grid">
+              <div class="integration-status-card">
+                <span>DeepSeek · 需求／分析／写作</span>
+                <strong id="deepseek-integration-status">正在读取后端…</strong>
+                <small id="deepseek-integration-detail">不会在状态检查时调用模型。</small>
+              </div>
+              <div class="integration-status-card">
+                <span>智谱 · 网页搜索</span>
+                <strong id="search-integration-status">正在读取后端…</strong>
+                <small id="search-integration-detail">不会在状态检查时发起搜索。</small>
+              </div>
+            </div>
+            <p id="integration-status-note" class="intake-status">这里的数据直接来自 FastAPI 后端配置，不包含或展示 API Key。</p>
+          </section>
+
+          <section class="panel intake-request-panel">
+            <div class="panel-heading">
+              <div><p class="panel-kicker">Natural-language brief（自然语言需求）</p><h3>你希望比较什么，最终要帮助你做什么决策？</h3></div>
+              <span id="intent-provider" class="count-label">等待解析</span>
+            </div>
+            <textarea id="analysis-request" class="intake-textarea" rows="6" placeholder="示例：请对比 ClassIn、腾讯会议和 BigBlueButton 在在线教学场景中的产品能力、价格和生态，帮助高校选择教学云平台。"></textarea>
+            <div class="intake-action-row">
+              <div>
+                <label class="field-label" for="recent-draft">最近保存的草稿</label>
+                <div class="recent-draft-row">
+                  <select id="recent-draft" class="run-select"><option value="">暂无草稿</option></select>
+                  <button id="load-draft-btn" class="secondary-action" type="button">加载草稿</button>
+                </div>
+              </div>
+              <button id="parse-intent-btn" class="primary-action" type="button">解析需求</button>
+            </div>
+            <p id="intent-status" class="intake-status">输入需求后，系统会先生成草稿供你检查，不会直接开始分析。</p>
+            <div id="intent-call-record" class="confirmed-task hidden"></div>
+          </section>
+
+          <section id="draft-editor" class="panel draft-editor hidden">
+            <div class="panel-heading">
+              <div><p class="panel-kicker">AnalysisTaskDraft（分析任务草稿）</p><h3>确认前可以继续修改</h3></div>
+              <span id="draft-readiness" class="count-label">等待草稿</span>
+            </div>
+            <div class="draft-grid">
+              <label class="draft-field draft-field-wide">决策问题<textarea id="draft-decision" rows="3"></textarea></label>
+              <label class="draft-field">所属行业<input id="draft-industry" type="text" /></label>
+              <label class="draft-field">比较对象（每行一个）<textarea id="draft-competitors" rows="4"></textarea></label>
+              <label class="draft-field">目标客户（每行一个）<textarea id="draft-customers" rows="3"></textarea></label>
+              <label class="draft-field">核心场景（每行一个）<textarea id="draft-scenarios" rows="3"></textarea></label>
+              <label class="draft-field">关注维度（每行一个）<textarea id="draft-focus" rows="3"></textarea></label>
+              <label class="draft-field">约束条件（每行一个）<textarea id="draft-constraints" rows="3"></textarea></label>
+              <label class="draft-field">报告主题<input id="draft-subject" type="text" /></label>
+              <label class="draft-field">自定义报告标题（可选）<input id="draft-title" type="text" /></label>
+            </div>
+            <div class="draft-review-grid">
+              <div class="draft-check-card">
+                <strong>缺失信息与补充建议</strong>
+                <div id="draft-questions" class="question-list"></div>
+              </div>
+              <div class="draft-check-card">
+                <strong>标题预览</strong>
+                <p id="draft-title-preview">等待生成报告主题</p>
+                <small>真正生成报告时会优先采用用户确认的标题，否则根据任务主题命名。</small>
+              </div>
+            </div>
+            <div class="confirm-row">
+              <p>确认后会保存 AnalysisTask（分析任务）；点击“开始自动流水线”后，统一 Harness 会自动推进研究、分析、引用检查、写作、审查和质量闸门。</p>
+              <button id="confirm-draft-btn" class="primary-action" type="button" disabled>确认任务（不启动分析）</button>
+            </div>
+            <div id="confirmed-task" class="confirmed-task hidden"></div>
+          </section>
+
+          <section id="research-planning" class="panel research-planning-panel hidden">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">Step6E.1 · Research Planner（研究规划智能体）</p>
+                <h3>把用户需求拆成关键问题和动态研究任务</h3>
+              </div>
+              <span id="research-plan-status" class="count-label">尚未规划</span>
+            </div>
+            <div class="planning-boundary">
+              <p id="research-plan-copy">开始自动流水线后，后端会自动准备或复用 ResearchPlan / ResearchTask；用户无需单独生成计划。</p>
+              <button id="build-research-plan-btn" class="primary-action hidden" type="button" aria-hidden="true" tabindex="-1">生成研究计划（兼容入口）</button>
+            </div>
+            <div id="research-plan-result" class="hidden">
+              <div id="research-plan-facts" class="compatibility-facts"></div>
+              <div class="planning-grid">
+                <article class="planning-card"><strong>KIQ（关键情报问题）</strong><div id="research-kiq-list" class="planning-copy"></div></article>
+                <article class="planning-card"><strong>动态 ResearchTask（研究任务）</strong><div id="research-task-list" class="planning-copy"></div></article>
+              </div>
+              <div class="planning-boundary hidden" aria-hidden="true">
+                <p id="collector-run-copy">Collector（采集智能体）会先采集 Seed URL（种子网址）；动态页面会启用 Browser Fallback（浏览器渲染回退），缺少网址时可通过智谱 SearchProvider（搜索供应商）自动发现。</p>
+                <button id="run-collector-once-btn" class="secondary-action" type="button">采集下一项任务</button>
+                <button id="run-extractor-once-btn" class="secondary-action" type="button" disabled>抽取下一项证据</button>
+                <button id="run-coverage-once-btn" class="secondary-action" type="button" disabled>更新覆盖并判断补采</button>
+              </div>
+              <div class="research-runtime-layout">
+              <section id="research-loop-runtime" class="research-loop-runner">
+                <div class="panel-heading">
+                  <div>
+                    <p class="panel-kicker">Multi-Agent Pipeline（统一多智能体流水线）</p>
+                    <h3>从研究计划自动推进到报告质量闸门</h3>
+                  </div>
+                  <span id="research-loop-status" class="count-label">等待启动</span>
+                </div>
+                <div class="runner-controls">
+                  <p class="queue-boundary-note">统一 Harness 管理 Planner、Research、Analyst、Citation、Writer、Reviewer 的生命周期、结构化交接与 checkpoint；ResearchTask 仍受步骤和来源预算约束。</p>
+                  <div class="runner-actions">
+                    <button id="start-research-loop-btn" class="primary-action" type="button">开始自动流水线</button>
+                    <button id="stop-research-loop-btn" class="danger-action hidden" type="button" disabled>中止任务</button>
+                  </div>
+                </div>
+                <div class="execution-progress" aria-label="多智能体流水线进度">
+                  <div id="research-loop-progress-bar" class="execution-progress-bar" style="width: 0%"></div>
+                </div>
+                <div class="execution-progress-copy">
+                  <strong id="research-loop-progress-percent">0%</strong>
+                  <span id="research-loop-progress-message">等待用户启动</span>
+                </div>
+                <div id="research-loop-facts" class="compatibility-facts"></div>
+                <div id="research-loop-event-list" class="execution-event-list"></div>
+                <div id="research-loop-result" class="confirmed-task hidden"></div>
+                <div class="planning-boundary">
+                  <p id="research-analysis-copy">自动流水线会在研究结束后运行 Analyst 与 Citation；此按钮保留为故障恢复和兼容入口。</p>
+                  <button id="run-research-analysis-btn" class="primary-action" type="button" disabled>恢复 Analyst 阶段（兼容入口）</button>
+                </div>
+                <div id="research-analysis-result" class="confirmed-task hidden"></div>
+                <div class="planning-boundary">
+                  <p id="research-reporting-copy">自动流水线会继续运行 Writer、Reviewer 与 QualityGate；此按钮保留为故障恢复和兼容入口。</p>
+                  <button id="run-research-reporting-btn" class="primary-action" type="button" disabled>恢复 Reporting 阶段（兼容入口）</button>
+                </div>
+                <div id="research-reporting-result" class="confirmed-task hidden"></div>
+              </section>
+
+              <aside id="evidence-library" class="panel evidence-library-panel" aria-labelledby="evidence-library-title">
+                <div class="panel-heading evidence-library-heading">
+                  <div>
+                    <p class="panel-kicker">Evidence Library（实时证据库）</p>
+                    <h3 id="evidence-library-title">证据库</h3>
+                  </div>
+                  <span id="evidence-library-count" class="count-label">0</span>
+                </div>
+                <p id="evidence-library-status" class="evidence-library-status">创建或选择任务后显示实时来源。</p>
+                <div id="evidence-library-list" class="evidence-library-list" aria-live="polite">
+                  <div class="evidence-library-empty">尚未发现证据来源。</div>
+                </div>
+              </aside>
+              </div>
+            </div>
+          </section>
+
+        </section>
+
+        <section id="overview-view" class="view active">
+          <section class="hero-panel">
+            <div>
+              <p class="hero-kicker">这次运行做成了什么？</p>
+              <h3>把公开材料逐层变成<br /><em>可验证的竞品结论</em></h3>
+              <p id="run-story" class="hero-copy">正在读取运行结果……</p>
+              <div class="hero-actions">
+                <button class="primary-action" type="button" data-jump="report">查看最终报告</button>
+                <button class="secondary-action" type="button" data-jump="workflow">查看 Agent 如何协作</button>
+              </div>
+            </div>
+            <div class="trust-card">
+              <div class="trust-score">
+                <span>报告可信度</span>
+                <strong id="hero-review-score">—</strong>
+                <small>/ 10 审查分</small>
+              </div>
+              <div class="trust-row"><span>最终状态</span><strong id="hero-pipeline-status">等待中</strong></div>
+              <div class="trust-row"><span>质量闸门</span><strong id="hero-gate-status">等待中</strong></div>
+              <div class="trust-row"><span>安全护栏失败</span><strong id="hero-guardrail-status">—</strong></div>
+            </div>
+          </section>
+          <div id="summary-grid" class="summary-grid"></div>
+          <section class="panel chain-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="panel-kicker">Evidence-first pipeline（证据优先链路）</p>
+                <h3>一条结论怎样获得可信度</h3>
+              </div>
+              <span id="chain-status" class="count-label">等待数据</span>
+            </div>
+            <div id="evidence-chain" class="evidence-chain"></div>
+          </section>
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading">
+                <h3>ProductCard（产品卡片）</h3>
+                <span id="product-count" class="count-label">0</span>
+              </div>
+              <div id="product-list" class="stack-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <h3>CitationCheck（引用检查）</h3>
+                <span id="citation-count" class="count-label">0</span>
+              </div>
+              <div id="citation-list" class="stack-list compact"></div>
+            </section>
+          </div>
+          <section class="value-grid">
+            <article class="value-card"><span class="value-index">01</span><h3>不是让模型自由写报告</h3><p>每条分析结论先绑定证据编号，再进入引用检查、报告和审查。</p></article>
+            <article class="value-card"><span class="value-index">02</span><h3>每个 Agent 都有执行记录</h3><p>任务、依赖、输入、输出、耗时和工具调用都能追踪，不再是黑盒。</p></article>
+            <article class="value-card"><span class="value-index">03</span><h3>质量问题会留下后续任务</h3><p>弱引用不会被悄悄忽略，Quality Gate（质量闸门）会生成补充分析任务。</p></article>
+          </section>
+        </section>
+
+        <section id="workflow-view" class="view">
+          <section class="section-intro">
+            <div><p class="panel-kicker">TaskBoard + Dynamic DAG（任务板 + 动态任务图）</p><h3>谁在做什么，现在进行到哪</h3><p>任务板维护依赖和状态，执行器只调度已经就绪的任务。</p></div>
+            <div id="board-summary" class="inline-stats"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading"><h3>任务推进链</h3><span id="task-count" class="count-label">0 tasks</span></div>
+            <div id="task-board-list" class="task-board-list"></div>
+          </section>
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading"><h3>DAGNode（流程节点）</h3><span id="dag-count" class="count-label">0</span></div>
+              <div id="dag-list" class="timeline"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>AgentRun（智能体执行记录）</h3><span id="agent-run-count" class="count-label">0</span></div>
+              <div id="agent-run-list" class="stack-list compact"></div>
+            </section>
+          </div>
+          <section class="panel tool-panel">
+            <div class="panel-heading"><h3>ToolCall（工具调用记录）</h3><span id="tool-call-count" class="count-label">0</span></div>
+            <div id="tool-call-list" class="tool-grid"></div>
+          </section>
+        </section>
+
+        <section id="llm-view" class="view">
+          <section class="section-intro llm-intro">
+            <div><p id="llm-stage-kicker" class="panel-kicker">Step6B.2 · Real Structured Output（真实结构化输出）</p><h3>大模型在哪里参与，输出是否可信</h3><p id="llm-stage-copy">正在读取所选运行的模型信息……</p></div>
+            <div id="llm-summary" class="inline-stats"></div>
+          </section>
+          <div id="llm-call-list" class="llm-call-grid"></div>
+          <section class="panel">
+            <div class="panel-heading"><div><p class="panel-kicker">Validation（结构校验）</p><h3>LLM Output（大模型输出）</h3></div><span id="llm-output-count" class="count-label">0</span></div>
+            <div id="llm-output-list" class="output-list"></div>
+          </section>
+        </section>
+
+        <section id="step6c-view" class="view">
+          <section class="section-intro step6c-intro">
+            <div>
+              <p class="panel-kicker">Step 6C · Professional Analysis（专业分析）</p>
+              <h3>模型不再只复述材料，而是先定义问题、比较口径和证据缺口</h3>
+              <p>这里同时展示所选工作流的 V2 artifacts（第二版产物）与最近一次真实 DeepSeek 实验。实验失败时只供诊断，不会冒充已批准报告。</p>
+            </div>
+            <div id="step6c-summary" class="inline-stats"></div>
+          </section>
+
+          <section id="experiment-banner" class="experiment-banner">
+            <div>
+              <p class="panel-kicker">Latest real pilot（最近一次真实模型试跑）</p>
+              <h3 id="experiment-title">正在读取实验状态……</h3>
+              <p id="experiment-copy">真实实验与正式运行分开保存，Quality Gate（质量闸门）失败的结果不会进入正式报告。</p>
+            </div>
+            <div id="experiment-facts" class="experiment-facts"></div>
+          </section>
+
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading"><h3>BriefAssessment（任务简报评估）</h3><span id="brief-status" class="count-label">等待数据</span></div>
+              <div id="brief-panel" class="stack-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>KIQ（关键情报问题）</h3><span id="kiq-count" class="count-label">0</span></div>
+              <div id="kiq-list" class="stack-list compact"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading"><h3>CompetitorProfile（竞品角色画像）</h3><span id="profile-count" class="count-label">0</span></div>
+            <div id="profile-list" class="profile-grid"></div>
+          </section>
+
+          <div class="section-layout two-columns step6c-secondary-grid">
+            <section class="panel">
+              <div class="panel-heading"><h3>EvidenceCoverage（证据覆盖）</h3><span id="coverage-status" class="count-label">0</span></div>
+              <div id="coverage-list" class="coverage-grid"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>ComparabilityNote（可比性说明）</h3><span id="comparability-count" class="count-label">0</span></div>
+              <div id="comparability-list" class="stack-list compact"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-heading"><h3>AnalysisClaimV2（专业分析结论）</h3><span id="claim-v2-count" class="count-label">0</span></div>
+            <div id="claim-v2-list" class="stack-list"></div>
+          </section>
+
+          <section class="panel research-gap-panel">
+            <div class="panel-heading"><h3>ResearchGap（后续检索缺口）</h3><span id="gap-count" class="count-label">0</span></div>
+            <div id="gap-list" class="gap-grid"></div>
+          </section>
+        </section>
+
+        <section id="report-view" class="view">
+          <div class="report-layout">
+            <section class="panel report-panel">
+              <div class="panel-heading">
+                <h3 id="report-title">CompetitiveReport（竞品分析报告）</h3>
+                <div class="report-heading-actions">
+                  <span id="report-claim-count" class="count-label">0 条可追溯论点</span>
+                </div>
+              </div>
+              <p class="report-reading-guide">带“查看证据”标记的段落支持鼠标悬停、点击和键盘聚焦；证据栏收起后，点击任意可追溯段落会自动重新展开。内部审计编号不会出现在报告正文中。</p>
+              <article id="report-markdown" class="report-markdown"></article>
+            </section>
+            <aside id="report-evidence-panel" class="panel report-evidence-panel">
+              <div class="panel-heading">
+                <div class="report-evidence-heading-row">
+                  <h3>Evidence Trace（证据追溯）</h3>
+                  <button id="report-evidence-toggle" class="evidence-toggle" type="button" aria-expanded="true" aria-controls="report-evidence-detail" aria-label="收起证据追溯栏">收起</button>
+                </div>
+                <span id="report-trace-status" class="count-label">未选择</span>
+              </div>
+              <div id="report-evidence-detail" class="report-evidence-detail">
+                将鼠标移到报告中的关键论点上，右侧会显示对应的分析结论、证据摘录和来源链接。
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section id="claims-view" class="view">
+          <div class="section-layout claims-layout">
+            <section class="panel">
+              <div class="panel-heading">
+                <h3>AnalysisClaim（分析结论）</h3>
+                <span id="claim-count" class="count-label">0</span>
+              </div>
+              <div id="claim-list" class="stack-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading">
+                <h3>Evidence（证据）</h3>
+                <span id="evidence-count" class="count-label">0</span>
+              </div>
+              <div id="evidence-detail" class="evidence-detail">
+                选择一条 claim（分析结论）查看它绑定的 evidence_ids（证据编号）。
+              </div>
+            </section>
+          </div>
+        </section>
+
+        <section id="governance-view" class="view">
+          <section class="section-intro">
+            <div><p class="panel-kicker">Quality + Context + Guardrails（质量 + 上下文 + 护栏）</p><h3>系统为什么允许这份报告交付</h3><p>这里汇总审查、评测、质量闸门、上下文记忆和安全护栏。</p></div>
+          </section>
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading"><h3>Quality Gate（质量闸门）</h3><span id="gate-status" class="count-label">unknown</span></div>
+              <div id="quality-gate-list" class="stack-list"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>Feedback Task（反馈任务）</h3><span id="feedback-count" class="count-label">0</span></div>
+              <div id="feedback-task-list" class="stack-list"></div>
+            </section>
+          </div>
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading"><h3>Guardrails（安全护栏）</h3><span id="guardrail-count" class="count-label">0</span></div>
+              <div id="guardrail-list" class="stack-list compact"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>Context Bundle（上下文包）</h3><span id="context-count" class="count-label">0</span></div>
+              <div id="context-list" class="stack-list compact"></div>
+            </section>
+          </div>
+          <div class="section-layout two-columns">
+            <section class="panel">
+              <div class="panel-heading"><h3>Memory（运行记忆）</h3><span id="memory-count" class="count-label">0</span></div>
+              <div id="memory-list" class="stack-list compact"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-heading"><h3>ReviewFeedback（审查反馈）</h3><span id="review-status" class="count-label">unknown</span></div>
+              <div id="review-panel" class="review-panel"></div>
+            </section>
+          </div>
+          <div class="section-layout two-columns">
+            <section class="panel full-span">
+              <div class="panel-heading">
+                <h3>Evaluation Harness（评估框架）</h3>
+                <span id="eval-status" class="count-label">unknown</span>
+              </div>
+              <div id="eval-list" class="metric-list"></div>
+            </section>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./src/workspace-projection.js"></script>
+    <script src="./src/demo-replay.js"></script>
+    <script src="./src/demo-data-provider.js"></script>
+    <script src="./src/data-provider.js"></script>
+    <script src="./src/demo-experience.js"></script>
+    <script src="./src/app.js"></script>
+  </body>
+</html>
