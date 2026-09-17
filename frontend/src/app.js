@@ -262,18 +262,7 @@ function clearError() {
 }
 
 async function fetchJson(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, options);
-  if (!response.ok) {
-    const text = await response.text();
-    let detail = text;
-    try {
-      detail = JSON.parse(text).detail || text;
-    } catch (_) {
-      // Keep the original response text when it is not JSON.
-    }
-    throw new Error(`${response.status} ${response.statusText}: ${detail}`);
-  }
-  return response.json();
+  return window.researchDataProvider.request(path, options);
 }
 
 function evidenceSourceLabel(item) {
@@ -1072,11 +1061,11 @@ function connectResearchLoopEventStream(taskId) {
     || state.researchLoopEvents.at(-1)?.sequence
     || 0;
 
-  const source = new EventSource(
-    `${API_BASE}${endpoints.researchLoopEvents(
+  const source = window.researchDataProvider.subscribePipeline(
+    endpoints.researchLoopEvents(
       taskId,
       after,
-    )}`,
+    ),
   );
 
   state.researchLoopEventSource = source;
@@ -3671,6 +3660,10 @@ function navigateTo(view) {
 }
 
 function setup() {
+  if (window.researchDataProvider.mode === "demo") {
+    setupDemoExperience();
+    return;
+  }
   setupProductExperience();
   setupNavigation();
   qsa("[data-jump]").forEach((button) => {
