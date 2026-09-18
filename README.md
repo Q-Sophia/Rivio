@@ -8,7 +8,7 @@
 [![MCP](https://img.shields.io/badge/MCP-supported-5B5BD6)](https://modelcontextprotocol.io/)
 
 Rivio 是一个 **Evidence-first 的多 Agent 竞品情报系统**。  
-它通过 Planner、Research、Analyst、Citation、Writer、Reviewer 等角色协作，自动完成研究规划、信息采集、证据验证、竞品分析与报告生成，并通过 `Source → Evidence → Claim → Report` 证据链保证最终结论可验证、可追溯。
+它通过 Planner、Research、Analyst、Citation、Writer、Reviewer 等角色协作，自动完成研究规划、信息采集、证据验证、竞品分析与报告生成，并通过 `Source → Evidence → Claim → Report` 证据链保证最终结论可验证、可追溯。Demo展示链接：https://rivio-demo-tau.vercel.app/
 
 - **不是“多个 Agent 一起写报告”**：Harness 负责控制流，Artifact / Handoff 负责数据流，Agent 只处理需要语义判断的任务。
 - **不是“搜到什么就相信什么”**：Evidence 必须经过逐字引用、原文偏移与内容哈希校验，Claim 还要再次经过 Citation Check。
