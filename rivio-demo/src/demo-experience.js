@@ -12,21 +12,13 @@ async function setupDemoExperience() {
   document.body.prepend(banner);
   const bannerSize = new ResizeObserver(() => document.body.style.setProperty('--demo-banner-height', `${banner.offsetHeight}px`));
   bannerSize.observe(banner);
-  const limitations = document.createElement('div');
-  limitations.className = 'demo-limitations';
-  qs('.research-brief-intro').after(limitations);
   const stats = document.createElement('section');
   stats.className = 'demo-stats'; stats.id = 'demo-stats';
   qs('.workspace-product-header').after(stats);
-  qs('#product-brief-title').textContent = '小红书与抖音竞品分析';
-  qs('.research-brief-intro').textContent = '查看一条真实历史研究的加速回放，或直接阅读最终报告。默认回放约 33 秒。';
   qs('#product-research-request').value = '小红书与抖音竞品分析';
   qs('#product-research-request').readOnly = true;
   qsa('.research-eyebrow').forEach(e => { e.textContent = e.textContent.replace(/LIVE/g, 'RECORDED'); });
   qsa('#product-brief-confirm-state input, #product-brief-confirm-state textarea').forEach(e => { e.readOnly = true; });
-  const reviewNote = document.createElement('div');
-  reviewNote.className = 'demo-limitations'; reviewNote.id = 'demo-review';
-  qs('#product-report-meta').after(reviewNote);
   let data;
   let screen = 'home';
   let lastFrame = '';
@@ -38,6 +30,8 @@ async function setupDemoExperience() {
     history.replaceState(null, '', url);
   }
   function apply(snapshot) {
+    qs('#product-parse-brief-btn').classList.toggle('demo-click-target', screen === 'playing' && snapshot.elapsed >= 1600 && snapshot.elapsed < 2000);
+    qs('#product-confirm-brief-btn').classList.toggle('demo-click-target', screen === 'playing' && snapshot.elapsed >= 2500 && snapshot.elapsed < 3000);
     qs('#demo-clock').textContent = snapshot.finished ? '已加载历史最终结果' : `回放 ${(snapshot.elapsed / 1000).toFixed(1)} / 33 秒（非原始耗时）`;
     // Presentation of the saved request, not a recording of historical keystrokes.
     // Update before the event-frame guard: the first Pipeline event is at 3s.
@@ -77,9 +71,13 @@ async function setupDemoExperience() {
       ${state.data.evidenceCoverage.length ? `<details><summary>最终 Coverage 明细（保留异常合并对象）</summary>${state.data.evidenceCoverage.map(c => `<p>${escapeHtml(c.competitor)} · ${escapeHtml(c.dimension)}：${escapeHtml(c.status)}</p>`).join('')}</details>` : ''}
       <details><summary>本地来源与证据摘录（无需请求原站）</summary>${state.data.sources.map(s => `<article><strong>${escapeHtml(s.title)}</strong><p>${escapeHtml(s.url)}</p>${state.data.evidence.filter(e => e.source_id === s.id).map(e => `<blockquote>${escapeHtml(e.snippet)}</blockquote>`).join('') || '<p>该来源暂无关联证据。</p>'}</article>`).join('')}</details>`;
     stats.querySelectorAll('details').forEach((detail, index) => { detail.open = expanded[index] || false; });
-    qs('#product-activity-stream').scrollTop = qs('#product-activity-stream').scrollHeight;
-    const review = state.data.review;
-    reviewNote.textContent = review ? `历史规则审查：${review.approved ? '通过' : '未通过'}。${review.issues.map(i => i.message).join('；')}。证据缺口与研究限制保留在报告中。` : '';
+    // The panel owns overflow, not the inner stream. Wait for layout, and follow
+    // every update even when WorkspaceProjection's rolling list stays at 160.
+    requestAnimationFrame(() => {
+      if (state.productView !== 'workspace') return;
+      const panel = qs('#product-activity-stream').closest('.activity-stream-panel');
+      panel.scrollTop = panel.scrollHeight;
+    });
     qs('#product-workspace-status').textContent = snapshot.finished ? '历史流程已完成 · 仍有证据缺口' : '历史记录回放中';
     if (!snapshot.events.length) qs('#product-activity-stream').textContent = '等待回放历史事件。';
     if (!state.data.evidence.length) qs('#product-selected-evidence-chain').textContent = '等待历史验证证据。';
@@ -92,7 +90,6 @@ async function setupDemoExperience() {
     screen = 'playing'; setUrl('replay');
     lastFrame = '';
     introPhase = '';
-    limitations.hidden = true;
     qs('#product-research-request').value = '';
     state.productLastActivityCount = 0; state.productSelectedReportStatementId = '';
     state.productReportEvidenceCollapsed = false;
@@ -107,7 +104,6 @@ async function setupDemoExperience() {
   }
   function home() {
     screen = 'home'; lastFrame = ''; provider.replay.reset(); apply(provider.replay.snapshot());
-    limitations.hidden = false;
     qs('#product-research-request').value = data.brief.request_text;
     qs('#product-brief-input-status').textContent = '点击“开始 Demo 回放”，演示输入需求 → 已确认 Brief → 团队研究。';
     setProductBriefPhase('input'); navigateProduct('brief'); setUrl('home');
@@ -115,9 +111,21 @@ async function setupDemoExperience() {
   }
   try {
     data = await provider.load();
-    limitations.textContent = `原始需求：${data.brief.request_text}。${data.limitations.join(' ')}`;
     ['#demo-play', '#demo-report', '#demo-replay'].forEach(id => { qs(id).disabled = false; });
     qs('#demo-play').addEventListener('click', play);
+    qs('#product-parse-brief-btn').addEventListener('click', () => {
+      provider.replay.reset(); screen = 'confirm'; lastFrame = '';
+      apply(provider.replay.snapshot());
+      state.intentDraft = { ...data.brief, status: 'confirmed' };
+      renderProductBriefSummary(state.intentDraft);
+      setProductBriefPhase('confirm'); navigateProduct('brief');
+      qs('#product-brief-confirm-status').textContent = '请检查 Research Brief 后确认。';
+    });
+    qs('#product-confirm-brief-btn').addEventListener('click', () => {
+      screen = 'playing'; lastFrame = ''; setUrl('replay');
+      provider.replay.play(apply, 3000);
+    });
+    qs('#product-edit-brief-btn').addEventListener('click', home);
     qs('#demo-replay').addEventListener('click', play);
     qs('#demo-report').addEventListener('click', report);
     qs('#demo-skip').addEventListener('click', report);

@@ -2468,7 +2468,8 @@ button {
 @media (max-width: 640px) { .demo-mode .demo-stats { margin-inline: 16px; } }
 .demo-stats article { padding: 12px; border-bottom: 1px solid #d8e2dc; }
 .demo-mode #open-diagnostics-btn, .demo-mode .workspace-stage-recovery,
-.demo-mode #product-stop-research-btn, .demo-mode .research-prompt-footer,
+.demo-mode #product-stop-research-btn,
 .demo-mode .research-examples, .demo-mode .product-history-window,
-.demo-mode #product-confirm-brief-btn, .demo-mode #product-launch-research-btn,
-.demo-mode #product-edit-brief-btn { display: none !important; }
+.demo-mode #product-launch-research-btn { display: none !important; }
+.demo-click-target { position: relative; outline: 4px solid #e4b451; outline-offset: 5px; transform: scale(.97); }
+.demo-click-target::before { content: '↖ 演示点击'; position: absolute; right: 0; bottom: calc(100% + 12px); white-space: nowrap; padding: 4px 10px; border-radius: 6px; background: #214d42; color: white; font-size: 13px; }

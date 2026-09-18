@@ -78,10 +78,10 @@
       this.finished = true; this.stop();
     }
     skip() { this.stop(); return this.advance(this.data.replay.durationMs); }
-    play(onChange) {
-      this.reset(); onChange(this.snapshot());
+    play(onChange, startMs = 0) {
+      this.reset(); onChange(this.advance(startMs));
       const start = performance.now();
-      this.timer = setInterval(() => onChange(this.advance(performance.now() - start)), 80);
+      this.timer = setInterval(() => onChange(this.advance(startMs + performance.now() - start)), 80);
     }
   }
   global.DemoReplay = DemoReplay;
